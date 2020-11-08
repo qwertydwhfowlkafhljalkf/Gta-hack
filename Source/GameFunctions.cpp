@@ -151,7 +151,8 @@ Vector3 Cheat::GameFunctions::MultiplyVector(Vector3 vector, float inc) {
 	return vector;
 }
 
-Vector3 Cheat::GameFunctions::AddVector(Vector3 vector, Vector3 vector2) {
+Vector3 Cheat::GameFunctions::AddVector(Vector3 vector, Vector3 vector2) 
+{
 	vector.x += vector2.x;
 	vector.y += vector2.y;
 	vector.z += vector2.z;
@@ -162,12 +163,13 @@ Vector3 Cheat::GameFunctions::AddVector(Vector3 vector, Vector3 vector2) {
 }
 
 
-
-
-double Cheat::GameFunctions::DegreeToRadian(double n) {
+double Cheat::GameFunctions::DegreeToRadian(double n) 
+{
 	return n * 0.017453292519943295;
 }
-Vector3 Cheat::GameFunctions::RotationToDirection(Vector3 rot) {
+
+Vector3 Cheat::GameFunctions::RotationToDirection(Vector3 rot) 
+{
 	double num = DegreeToRadian(rot.z);
 	double num2 = DegreeToRadian(rot.x);
 	double val = cos(num2);
@@ -179,7 +181,6 @@ Vector3 Cheat::GameFunctions::RotationToDirection(Vector3 rot) {
 
 
 }
-
 
 
 void Cheat::GameFunctions::SetRankRockstarGift(int RPValue)
@@ -239,7 +240,8 @@ void Cheat::GameFunctions::RequestControl(Entity input)
 }
 
 
-Vector3 Cheat::GameFunctions::RotToDirection(Vector3* rot) {
+Vector3 Cheat::GameFunctions::RotToDirection(Vector3* rot) 
+{
 	float radiansZ = rot->z * 0.0174532924f;
 	float radiansX = rot->x * 0.0174532924f;
 	float num = abs((float)cos((double)radiansX));
@@ -250,7 +252,8 @@ Vector3 Cheat::GameFunctions::RotToDirection(Vector3* rot) {
 	return dir;
 }
 
-Vector3 Cheat::GameFunctions::AddTwoVectors(Vector3* vectorA, Vector3* vectorB) {
+Vector3 Cheat::GameFunctions::AddTwoVectors(Vector3* vectorA, Vector3* vectorB) 
+{
 	Vector3 result;
 	result.x = vectorA->x;
 	result.y = vectorA->y;
@@ -261,7 +264,8 @@ Vector3 Cheat::GameFunctions::AddTwoVectors(Vector3* vectorA, Vector3* vectorB) 
 	return result;
 }
 
-Vector3 Cheat::GameFunctions::MultiplyVector(Vector3* vector, float x) {
+Vector3 Cheat::GameFunctions::MultiplyVector(Vector3* vector, float x) 
+{
 	Vector3 result;
 	result.x = vector->x;
 	result.y = vector->y;
@@ -272,7 +276,8 @@ Vector3 Cheat::GameFunctions::MultiplyVector(Vector3* vector, float x) {
 	return result;
 }
 
-float Cheat::GameFunctions::GetDistanceBetweenTwoVectors(Vector3* pointA, Vector3* pointB) {
+float Cheat::GameFunctions::GetDistanceBetweenTwoVectors(Vector3* pointA, Vector3* pointB) 
+{
 	float a_x = pointA->x;
 	float a_y = pointA->y;
 	float a_z = pointA->z;
@@ -288,7 +293,8 @@ float Cheat::GameFunctions::GetDistanceBetweenTwoVectors(Vector3* pointA, Vector
 	return(float)sqrt(sum_2 + z_ba);
 }
 
-float Cheat::GameFunctions::GetVectorLength(Vector3* vector) {
+float Cheat::GameFunctions::GetVectorLength(Vector3* vector) 
+{
 	double x = (double)vector->x;
 	double y = (double)vector->y;
 	double z = (double)vector->z;
@@ -417,20 +423,17 @@ void Cheat::GameFunctions::RequestControlOfId(Entity netid)
 bool Cheat::GameFunctions::RequestNetworkControl(uint vehID)
 {
 	int Tries = 0;
-	bool
-		hasControl = false,
-		giveUp = false;
-	do
+	bool hasControl = false, giveUp = false;
+
+	while (!hasControl && !giveUp)
 	{
 		hasControl = NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(vehID);
 		Tries++;
-		if (Tries > 300)
-			giveUp = true;
-	} while (!hasControl && !giveUp);
+		if (Tries > 300) { giveUp = true; }
+	}
 
-	if (giveUp)
-		return false;
-	else return true;
+	if (giveUp) { return false; } 
+	return true;
 }
 
 Ped Cheat::GameFunctions::CreatePed(char* PedName, Vector3 SpawnCoordinates, int ped_type, bool network_handle)
@@ -1117,7 +1120,8 @@ void Cheat::GameFunctions::MaxDowngradeVehicle(int VehicleHandle)
 	VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 22); // Remove xeon headlights
 }
 
-float Cheat::GameFunctions::Get3DDistance(Vector3 a, Vector3 b) {
+float Cheat::GameFunctions::Get3DDistance(Vector3 a, Vector3 b) 
+{
 	float x = pow((a.x - b.x), 2);
 	float y = pow((a.y - b.y), 2);
 	float z = pow((a.z - b.z), 2);
@@ -1352,6 +1356,7 @@ void Cheat::GameFunctions::InstructionalKeysInit()
 	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(200);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
+
 void Cheat::GameFunctions::InstructionsAdd(char* text, int button) 
 {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(VAR_INSTRUCTIONAL_CONTAINER, "SET_DATA_SLOT");
@@ -1363,6 +1368,7 @@ void Cheat::GameFunctions::InstructionsAdd(char* text, int button)
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 	VAR_INSTRUCTIONAL_COUNT++;
 }
+
 void Cheat::GameFunctions::InstructionsEnd() 
 {
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(VAR_INSTRUCTIONAL_CONTAINER, "DRAW_INSTRUCTIONAL_BUTTONS");
@@ -1380,7 +1386,6 @@ void Cheat::GameFunctions::SetSessionTime(int h, int m, int s)
 	NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(h, m, s);
 	GameHooking::set_session_time_info(1, 0);
 }
-
 
 void Cheat::GameFunctions::AddBlipToVehicle(Vehicle Vehicle)
 {
@@ -1504,6 +1509,7 @@ void Cheat::GameFunctions::CursorGUINavigationLoop()
 		}
 	}
 }
+
 void Cheat::GameFunctions::EnableDisableCursorGUINavigation()
 {
 	if (GUI::menuLevel != 0 && !GUI::GUIControlsDisabled)
@@ -1539,30 +1545,6 @@ bool Cheat::GameFunctions::PlayerIsFreemodeScriptHost(Player Player)
 	else
 	{
 		return false;
-	}
-}
-
-int FadeSpeedPreviousTick;
-void Cheat::GameFunctions::RGBFader(int& r, int& g, int& b, int FadeSpeed)
-{
-	if (GetTickCount64() - FadeSpeedPreviousTick > FadeSpeed)
-	{
-		if (r > 0 && b == 0)
-		{
-			r--;
-			g++;
-		}
-		if (g > 0 && r == 0)
-		{
-			g--;
-			b++;
-		}
-		if (b > 0 && g == 0)
-		{
-			r++;
-			b--;
-		}
-		FadeSpeedPreviousTick = GetTickCount64();
 	}
 }
 

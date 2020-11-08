@@ -427,7 +427,6 @@ namespace Cheat
 		bool IsCursorAtXYPosition(VECTOR2 const& boxCentre, VECTOR2 const& boxSize);
 		void ChangePedModelLocalPlayer(Hash PedModel);
 		bool PlayerIsFreemodeScriptHost(Player Player);
-		void RGBFader(int& r, int& g, int& b, int FadeSpeed);
 		void CopySelectedPlayerOutfit(Player SelectedPlayer);
 		int ReturnPlayerRockstarID(Player PlayerHandle);
 		std::string ReturnPlayerIPAddressAsString(Player PlayerHandle);

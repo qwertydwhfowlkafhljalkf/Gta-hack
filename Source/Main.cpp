@@ -41,7 +41,7 @@ int SessionTimeHour;
 int SessionTimeMinutes;
 int SessionTimeSeconds;
 
-void Cheat::Main() 
+void Cheat::Main()
 { 
 	Cheat::CheatFeatures::NoneLooped();
 	while (true) 
@@ -4404,4 +4404,3 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 	}
 	return TRUE;
 }
-

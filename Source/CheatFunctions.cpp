@@ -299,11 +299,6 @@ void Cheat::CheatFunctions::SaveOption(std::string OptionName, std::string Optio
 			Cheat::GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(LogMessage), "Textures", "AdvancedNotificationImage", false, 4, "Config", "", 0.5f, "");
 			WriteStringToIni(OptionValue, ReturnConfigFilePath(), "SETTINGS", OptionName);
 		}
-		else
-		{
-			std::string DisableMessage = "'" + OptionName + "' cannot be saved";
-			Cheat::GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(DisableMessage), "Textures", "AdvancedNotificationImage", false, 4, "Config", "", 0.5f, "");
-		}
 	}
 }
 
