@@ -102,7 +102,7 @@ void Cheat::CheatFeatures::Looped()
 	MobileRadioBool ? MobileRadio(true) : MobileRadio(false);
 	WeaponRapidFireBool ? WeaponRapidFire() : NULL;
 	PlayerIgnoredBool ? PlayerIgnored(true) : PlayerIgnored(false);
-	NoClipBool ? NoClip() : NULL;
+	NoClipBool ? NoClip() : NoClipWasEnabled ? ENTITY::SET_ENTITY_COLLISION(PlayerPedID, true, true) : NULL;
 	RainbowVehicleBool ? RainbowVehicle() : NULL;
 	TeleportGunBool ? TeleportGun() : NULL;
 	DeleteGunBool ? DeleteGun() : NULL;
@@ -650,8 +650,10 @@ void Cheat::CheatFeatures::PlayerIgnored(bool toggle)
 }
 
 bool Cheat::CheatFeatures::NoClipBool = false;
+bool Cheat::CheatFeatures::NoClipWasEnabled = false;
 void Cheat::CheatFeatures::NoClip()
 {
+	NoClipWasEnabled = true;
 	float x, y, z;
 	float d = 0.999999f;
 

@@ -72,7 +72,6 @@ bool Cheat::CheatFunctions::DoesFileExists(const std::string& fileName)
 }
 
 
-
 std::string Cheat::CheatFunctions::GetLastErrorAsString()
 {
 	DWORD errorMessageID = ::GetLastError();
@@ -450,8 +449,8 @@ void Cheat::CheatFunctions::CreateConsole()
 	std::cin.clear();
 
 
-	//Print current build
-	std::cout << "Build: " << Cheat::CheatFunctions::ReturnCheatBuildAsString() << std::endl;
+	//Print build info
+	std::cout << "Build: " << Cheat::CheatFunctions::ReturnCheatBuildAsString() << " | Compile Date & Time: " << __DATE__ << " " << __TIME__ << std::endl;
 }
 
 
@@ -505,4 +504,5 @@ bool Cheat::CheatFunctions::StringToBool(std::string String)
 	{
 		return false;
 	}
+	return -1;
 }

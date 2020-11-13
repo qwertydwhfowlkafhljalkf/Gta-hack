@@ -2,11 +2,11 @@
 
 typedef bool(__cdecl* IsDLCPresent)							(std::uint32_t dlcHash);
 typedef char* (__cdecl* SetSessionWeather)					(bool visibleToEveryone, int weatherId, int arg3, int arg4);
-typedef uint32_t*(*__stdcall fpFileRegister)				(int*, const char*, bool, const char*, bool);
+typedef uint32_t*(__cdecl* fpFileRegister)					(int*, const char*, bool, const char*, bool);
 typedef BOOL(__cdecl* GetEventData)							(int eventGroup, int eventIndex, uint64_t* argStruct, int argStructSize);
 typedef void (__cdecl* SetSessionTime)						(int, int);
 using GetScriptHandlerIfNetworked							= void* (*) ();
-using GetScriptHandler = void* (*) ();
+using GetScriptHandler										= void* (*) ();
 using GetLabelText = const char* (*)						(void* this_, const char* label);
 typedef __int64(__cdecl* GetPlayerAddress)					(Player);
 typedef __int64(__cdecl* GetChatData)						(__int64 a1, __int64 a2, __int64 a3, const char* origText, BOOL a5);

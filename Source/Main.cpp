@@ -1,45 +1,18 @@
 #pragma once
 #include "stdafx.h"
 int Cheat::CheatFeatures::selectedPlayer;
-float TeleportFoward = 1.f;			//Used by Teleport Forward option
-int engine_multiplier;				//Used by Vehicle Multipliers Options
-int torque_multiplier;				//Used by Vehicle Multipliers Options
-int SetTimeHour = 0;				//Used by World Time options
-int SetTimeMinutes = 0;				//Used by World Time options
-int SetTimeSeconds = 0;				//Used by World Time options
-int VehiclePrimaryColorRed;			//Used by Vehicle Color features
-int VehiclePrimaryColorGreen;		//Used by Vehicle Color features
-int VehiclePrimaryColorBlue;		//Used by Vehicle Color features	
-int VehicleSecondaryColorRed;		//Used by Vehicle Color features
-int VehicleSecondaryColorGreen;		//Used by Vehicle Color features
-int VehicleSecondaryColorBlue;		//Used by Vehicle Color features
-int VehicleNeonLightRed;			//Used by Vehicle Color features
-int VehicleNeonLightGreen;			//Used by Vehicle Color features
-int VehicleNeonLightBlue;			//Used by Vehicle Color features
-int WheelColorRed;					//Used by Vehicle Color features
-int WheelColorGreen;				//Used by Vehicle Color features
-int WheelColorBlue;					//Used by Vehicle Color features
-int intexploits;					//Used by Report Stats
-int intoffensive;					//Used by Report Stats
-int REPORTSTRENGTH;					//Used by Report Stats
-int OFFENSIVETAGPLATE;				//Used by Report Stats
-int OFFENSIVEUGC;					//Used by Report Stats
-int EXPLOITS;						//Used by Report Stats
-int GRIEFING;						//Used by Report Stats
-int COMMENDSTRENGTH;				//Used by Report Stats
-int FRIENDLY;						//Used by Report Stats
-int HELPFUL;						//Used by Report Stats
-int VCANNOYINGME;					//Used by Report Stats
-int VCHATE;							//Used by Report Stats
-int BADCREWNAME;					//Used by Report Stats
-int BADCREWMOTTO;					//Used by Report Stats
-int BADCREWSTATUS;					//Used by Report Stats
-int BADCREWEMBLEM;					//Used by Report Stats
-int ISPUNISHED;						//Used by Report Stats
+float TeleportFoward = 1.f;																//Used by Teleport Forward option
+int engine_multiplier, torque_multiplier;												//Used by Vehicle Multipliers options
+int SetTimeHour = 0, SetTimeMinutes = 0, SetTimeSeconds = 0;							//Used by World Time options	
+int SessionTimeHour, SessionTimeMinutes, SessionTimeSeconds;							//Used by Session Time option
+int VehiclePrimaryColorRed, VehiclePrimaryColorGreen, VehiclePrimaryColorBlue;			//Used by Vehicle Color features
+int VehicleSecondaryColorRed, VehicleSecondaryColorGreen, VehicleSecondaryColorBlue;	//Used by Vehicle Color features	
+int VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue;					//Used by Vehicle Color features	
+int WheelColorRed, WheelColorGreen, WheelColorBlue;										//Used by Vehicle Color features
 int PlayerWantedLevelInteger = 0;   //Used by Set Wanted Level Option
-int SessionTimeHour;
-int SessionTimeMinutes;
-int SessionTimeSeconds;
+int intexploits, intoffensive, REPORTSTRENGTH, OFFENSIVETAGPLATE, OFFENSIVEUGC,			//Used by Report Stats		
+    EXPLOITS, GRIEFING, COMMENDSTRENGTH, FRIENDLY, HELPFUL, VCANNOYINGME, VCHATE,						
+	BADCREWNAME, BADCREWMOTTO, BADCREWSTATUS, BADCREWEMBLEM, ISPUNISHED;						
 
 void Cheat::Main()
 { 

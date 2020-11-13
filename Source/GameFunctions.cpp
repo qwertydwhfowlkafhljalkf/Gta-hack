@@ -1609,3 +1609,8 @@ bool Cheat::GameFunctions::IsCurrentGTAOCharacterChar0()
 		return false;
 	}
 }
+
+void Cheat::GameFunctions::PlayFrontendSoundDefault(char* SoundName)
+{
+	AUDIO::PLAY_SOUND_FRONTEND(-1, SoundName, "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
+}

@@ -232,6 +232,7 @@ namespace Cheat
 		extern bool PlayerIgnoredBool;
 		void PlayerIgnored(bool toggle);
 		extern bool NoClipBool;
+		extern bool NoClipWasEnabled;
 		void NoClip();
 		extern bool RainbowVehicleBool;
 		void RainbowVehicle();
@@ -431,6 +432,7 @@ namespace Cheat
 		int ReturnPlayerRockstarID(Player PlayerHandle);
 		std::string ReturnPlayerIPAddressAsString(Player PlayerHandle);
 		bool IsCurrentGTAOCharacterChar0();
+		void PlayFrontendSoundDefault(char* SoundName);
 	}
 	namespace LogFunctions 
 	{
