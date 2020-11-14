@@ -9,7 +9,7 @@ int VehiclePrimaryColorRed, VehiclePrimaryColorGreen, VehiclePrimaryColorBlue;		
 int VehicleSecondaryColorRed, VehicleSecondaryColorGreen, VehicleSecondaryColorBlue;	//Used by Vehicle Color features	
 int VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue;					//Used by Vehicle Color features	
 int WheelColorRed, WheelColorGreen, WheelColorBlue;										//Used by Vehicle Color features
-int PlayerWantedLevelInteger = 0;   //Used by Set Wanted Level Option
+int PlayerWantedLevelInteger = 0;														//Used by Set Wanted Level Option
 int intexploits, intoffensive, REPORTSTRENGTH, OFFENSIVETAGPLATE, OFFENSIVEUGC,			//Used by Report Stats		
     EXPLOITS, GRIEFING, COMMENDSTRENGTH, FRIENDLY, HELPFUL, VCANNOYINGME, VCHATE,						
 	BADCREWNAME, BADCREWMOTTO, BADCREWSTATUS, BADCREWEMBLEM, ISPUNISHED;						

@@ -38,7 +38,7 @@ std::string Cheat::CheatFunctions::ReturnDateTimeFormatAsString(const char* Date
 
 std::string Cheat::CheatFunctions::ReturnCheatBuildAsString()
 {
-	return "1.3.0.0";
+	return "1.3.0.1";
 }
 
 std::string Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath()
@@ -481,7 +481,7 @@ void Cheat::CheatFunctions::WriteBoolToIni(bool b00l, std::string file, std::str
 
 bool Cheat::CheatFunctions::StringToBool(std::string String)
 {
-	std::transform(String.begin(), String.end(), String.begin(), ::tolower);
+	std::transform(String.begin(), String.end(), String.begin(), tolower);
 	if (String == "true")
 	{
 		return true;
@@ -498,5 +498,5 @@ bool Cheat::CheatFunctions::StringToBool(std::string String)
 	{
 		return false;
 	}
-	return -1;
+	return false;
 }
