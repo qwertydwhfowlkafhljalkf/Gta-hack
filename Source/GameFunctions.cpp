@@ -567,10 +567,9 @@ void PlayScenarioNearbyPeds(char* Scenario)
 	}
 }
 
-bool ShowPlayerInformationPlayerList = true;
 void Cheat::GameFunctions::LoadPlayerInformation(char* playerName, Player p) 
 {
-	if (ShowPlayerInformationPlayerList)
+	if (Cheat::CheatFeatures::ShowPlayerInformationPlayerList)
 	{
 		//Definitions
 		Ped SelectedPlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(p);
@@ -1181,16 +1180,11 @@ void Cheat::GameFunctions::DrawMarkerAbovePlayer(int Type, Player player, RGBA C
 	GRAPHICS::DRAW_MARKER(Type, coords.x, coords.y, coords.z + 1.3f, 0.f, 0.f, 0.f, 0.f, 180.f, 0.f, 0.3f, 0.3f, 0.3f, Color.r, Color.g, Color.b, Color.a, 1, 1, 1, 0, 0, 0, 0);
 }
 
-bool VehicleSpawnerSpawnInsideVehicle = false;
-bool VehicleSpawnerDeleteOldVehicle = false;
-bool VehicleSpawnerSpawnWithBlip = false;
-bool spawnvehiclewithgodmode = false;
-bool spawnmaxupgraded = false;
 void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 {
 	Hash model = GAMEPLAY::GET_HASH_KEY(ModelHash);
 	if (!STREAMING::IS_MODEL_IN_CDIMAGE(model) || !STREAMING::IS_MODEL_A_VEHICLE(model)) { Cheat::GameFunctions::MinimapNotification("~r~That is not a valid vehicle model"); return; }
-	if (VehicleSpawnerDeleteOldVehicle) { Cheat::GameFunctions::DeleteVehicle(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID)); }
+	if (Cheat::CheatFeatures::VehicleSpawnerDeleteOldVehicle) { Cheat::GameFunctions::DeleteVehicle(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID)); }
 	STREAMING::REQUEST_MODEL(GAMEPLAY::GET_HASH_KEY(ModelHash));
 	while (!STREAMING::HAS_MODEL_LOADED(GAMEPLAY::GET_HASH_KEY(ModelHash))) { WAIT(0); }
 	Vector3 pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(Cheat::GameFunctions::PlayerPedID, 0.0, 5.0, 0);
@@ -1198,10 +1192,10 @@ void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 	if (veh != 0)
 	{
 		NETWORK::NETWORK_FADE_OUT_ENTITY(veh, true, false);
-		if (VehicleSpawnerSpawnInsideVehicle) { PED::SET_PED_INTO_VEHICLE(Cheat::GameFunctions::PlayerPedID, veh, -1); }
-		if (spawnvehiclewithgodmode) { if (VehicleSpawnerSpawnInsideVehicle) { Cheat::CheatFeatures::VehicleGodmodeBool = true; } else { GameFunctions::ChangeEntityInvincibilityState(veh, true); } }
-		if (spawnmaxupgraded) { MaxUpgradeVehicle(veh); }
-		if (VehicleSpawnerSpawnWithBlip) { Cheat::GameFunctions::AddBlipToVehicle(veh); }
+		if (Cheat::CheatFeatures::VehicleSpawnerSpawnInsideVehicle) { PED::SET_PED_INTO_VEHICLE(Cheat::GameFunctions::PlayerPedID, veh, -1); }
+		if (Cheat::CheatFeatures::VehicleSpawnerSpawnWithGodmode) { if (Cheat::CheatFeatures::VehicleSpawnerSpawnInsideVehicle) { Cheat::CheatFeatures::VehicleGodmodeBool = true; } else { GameFunctions::ChangeEntityInvincibilityState(veh, true); } }
+		if (Cheat::CheatFeatures::VehicleSpawnerSpawnMaxUpgraded) { MaxUpgradeVehicle(veh); }
+		if (Cheat::CheatFeatures::VehicleSpawnerSpawnWithBlip) { Cheat::GameFunctions::AddBlipToVehicle(veh); }
 		VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(veh, "Vehicle");
 		VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, true);
 		VEHICLE::SET_VEHICLE_IS_STOLEN(veh, false);

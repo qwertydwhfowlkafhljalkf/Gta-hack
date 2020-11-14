@@ -158,6 +158,12 @@ namespace Cheat
 		extern bool ShowJoiningPlayersNotification;
 		extern bool LogChatMessages;
 		extern bool GTAODeveloperMode;
+		extern bool VehicleSpawnerSpawnInsideVehicle;
+		extern bool VehicleSpawnerDeleteOldVehicle;
+		extern bool VehicleSpawnerSpawnWithBlip;
+		extern bool VehicleSpawnerSpawnWithGodmode;
+		extern bool VehicleSpawnerSpawnMaxUpgraded;
+		extern bool ShowPlayerInformationPlayerList;
 
 		void NoneLooped();
 		void Looped();
@@ -509,10 +515,3 @@ namespace Cheat
 	bool FloatVector(std::string option, std::vector<float> Vector, int& position, bool IsSavable = true);
 	bool StringVector(std::string option, std::vector<std::string> Vector, int& position, std::string InformationText, bool IsSavable = true);
 }
-
-extern bool VehicleSpawnerSpawnInsideVehicle;
-extern bool VehicleSpawnerDeleteOldVehicle;
-extern bool VehicleSpawnerSpawnWithBlip;
-extern bool spawnvehiclewithgodmode;
-extern bool spawnmaxupgraded;
-extern bool ShowPlayerInformationPlayerList;

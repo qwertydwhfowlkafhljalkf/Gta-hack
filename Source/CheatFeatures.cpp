@@ -13,6 +13,12 @@ bool Cheat::CheatFeatures::ShowVehicleInfoAndPreview = true;
 bool Cheat::CheatFeatures::ShowJoiningPlayersNotification = true;
 bool Cheat::CheatFeatures::LogChatMessages = true;
 bool Cheat::CheatFeatures::GTAODeveloperMode = false;
+bool Cheat::CheatFeatures::VehicleSpawnerSpawnInsideVehicle = false;
+bool Cheat::CheatFeatures::VehicleSpawnerDeleteOldVehicle = false;
+bool Cheat::CheatFeatures::VehicleSpawnerSpawnWithBlip = false;
+bool Cheat::CheatFeatures::VehicleSpawnerSpawnWithGodmode = false;
+bool Cheat::CheatFeatures::VehicleSpawnerSpawnMaxUpgraded = false;
+bool Cheat::CheatFeatures::ShowPlayerInformationPlayerList = true;
 
 int PostInitBannerNotificationScaleformHandle;
 void Cheat::CheatFeatures::NoneLooped()

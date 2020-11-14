@@ -2554,11 +2554,11 @@ void Cheat::Main()
 		case VehicleSpawnSettings:
 		{
 			Cheat::Title("Vehicle Spawn Settings");
-			Cheat::Toggle("Spawn Inside Vehicle", VehicleSpawnerSpawnInsideVehicle, "");
-			Cheat::Toggle("Spawn With Godmode", spawnvehiclewithgodmode, "");
-			Cheat::Toggle("Spawn Max Upgraded", spawnmaxupgraded, "");
-			Cheat::Toggle("Delete Old Vehicle", VehicleSpawnerDeleteOldVehicle, "");
-			Cheat::Toggle("Spawn With Blip", VehicleSpawnerSpawnWithBlip, "");
+			Cheat::Toggle("Spawn Inside Vehicle", Cheat::CheatFeatures::VehicleSpawnerSpawnInsideVehicle, "");
+			Cheat::Toggle("Spawn With Godmode", Cheat::CheatFeatures::VehicleSpawnerSpawnWithGodmode, "");
+			Cheat::Toggle("Spawn Max Upgraded", Cheat::CheatFeatures::VehicleSpawnerSpawnMaxUpgraded, "");
+			Cheat::Toggle("Delete Old Vehicle", Cheat::CheatFeatures::VehicleSpawnerDeleteOldVehicle, "");
+			Cheat::Toggle("Spawn With Blip", Cheat::CheatFeatures::VehicleSpawnerSpawnWithBlip, "");
 		}
 		break; 
 		case worldmenu:
@@ -4102,7 +4102,7 @@ void Cheat::Main()
 			Cheat::Title("Cheat Settings");
 			Cheat::Toggle("Controller Support", Cheat::GUI::ControllerInput, "Enables Cheat GUI Controller Support");
 			Cheat::Break("Player List", true);
-			Cheat::Toggle("Show Player Information", ShowPlayerInformationPlayerList, "Toggle Player Information Box");
+			Cheat::Toggle("Show Player Information", Cheat::CheatFeatures::ShowPlayerInformationPlayerList, "Toggle Player Information Box");
 			Cheat::Toggle("Show Player Tags", Cheat::CheatFeatures::ShowPlayerTagsPlayerList, "Toggle Player Tags");
 			Cheat::Toggle("Hide Own IP Address", Cheat::CheatFeatures::HideOwnIPAddress, "Hiddes Local IP Address");
 			Cheat::Break("Speed", true);
