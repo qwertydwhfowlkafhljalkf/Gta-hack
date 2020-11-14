@@ -92,8 +92,8 @@ bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argS
 GetChatData GetChatDataOriginal = nullptr;
 __int64 GetChatDataHooked(__int64 a1, __int64 a2, __int64 a3, const char* origText, BOOL isTeam)
 {
-	//__int8 ChatMessagePlayerID = *(std::int8_t*)((a3, a2, a3) + 0x2D); //TODO: Invalid Player ID Offset?
-	//std::string ChatMessagePlayerName = PLAYER::GET_PLAYER_NAME(ChatMessagePlayerID);
+	//__int8 ChatMessageCheat::GameFunctions::PlayerID = *(std::int8_t*)((a3, a2, a3) + 0x2D); //TODO: Invalid Player ID Offset?
+	//std::string ChatMessagePlayerName = PLAYER::GET_PLAYER_NAME(ChatMessageCheat::GameFunctions::PlayerID);
 
 	if (Cheat::CheatFeatures::LogChatMessages)
 	{

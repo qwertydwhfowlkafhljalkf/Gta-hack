@@ -87,16 +87,16 @@ std::string Cheat::CheatFunctions::GetLastErrorAsString()
 }
 
 
-Player PlayerID;
-Ped PlayerPedID;
+Player Cheat::GameFunctions::PlayerID;
+Ped Cheat::GameFunctions::PlayerPedID;
 void Cheat::CheatFunctions::LoopedFunctions()
 {
 	//Load MP vehicles in SP bypass
 	globalHandle(4268340).As<BOOL>() = true;
 
 	//Player ID's and Ped
-	PlayerID = PLAYER::PLAYER_ID();
-	PlayerPedID = PLAYER::PLAYER_PED_ID();
+	Cheat::GameFunctions::PlayerID = PLAYER::PLAYER_ID();
+	Cheat::GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
 
 	//Features
 	Cheat::CheatFeatures::Looped();
@@ -404,28 +404,23 @@ void Cheat::CheatFunctions::CreateConsole()
 	RECT CurrentRect;
 	GetWindowRect(ConsoleWindowHandle, &CurrentRect);
 	MoveWindow(ConsoleWindowHandle, CurrentRect.left, CurrentRect.top, 1100, 500, TRUE);
-	CloseHandle(ConsoleWindowHandle);
 
 	//Disable Close Button Console Window And Set Max Window Size
-	HWND hwnd = ::GetConsoleWindow();
-	if (hwnd != NULL)
+	SetWindowLong(ConsoleWindowHandle, GWL_STYLE, GetWindowLong(ConsoleWindowHandle, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
+	HMENU hMenu = GetSystemMenu(ConsoleWindowHandle, FALSE);
+	if (hMenu != NULL) { DeleteMenu(hMenu, SC_CLOSE, MF_BYCOMMAND); }
+
+	//Disable Console Quick Edit Mode
+	HANDLE stdIn = GetStdHandle(STD_INPUT_HANDLE);
+	if (stdIn != INVALID_HANDLE_VALUE) 
 	{
-		SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
-
-		HMENU hMenu = ::GetSystemMenu(hwnd, FALSE);
-		if (hMenu != NULL) DeleteMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
-
-
-		//Disable Console Quick Edit Mode
-		HANDLE stdIn = GetStdHandle(STD_INPUT_HANDLE);
-		if (stdIn != INVALID_HANDLE_VALUE) {
-			DWORD dwMode = 0;
-			if (GetConsoleMode(stdIn, &dwMode)) {
-				dwMode &= ~ENABLE_QUICK_EDIT_MODE;
-				SetConsoleMode(stdIn, dwMode | ENABLE_EXTENDED_FLAGS);
-			}
+		DWORD dwMode = 0;
+		if (GetConsoleMode(stdIn, &dwMode)) {
+			dwMode &= ~ENABLE_QUICK_EDIT_MODE;
+			SetConsoleMode(stdIn, dwMode | ENABLE_EXTENDED_FLAGS);
 		}
 	}
+	CloseHandle(ConsoleWindowHandle);
 
 	//Redirect Std Outputs to Console
 	HANDLE ConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -447,7 +442,6 @@ void Cheat::CheatFunctions::CreateConsole()
 	std::cerr.clear();
 	std::wcin.clear();
 	std::cin.clear();
-
 
 	//Print build info
 	std::cout << "Build: " << Cheat::CheatFunctions::ReturnCheatBuildAsString() << " | Compile Date & Time: " << __DATE__ << " " << __TIME__ << std::endl;

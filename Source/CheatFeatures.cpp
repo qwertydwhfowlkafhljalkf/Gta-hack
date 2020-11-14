@@ -52,19 +52,19 @@ void Cheat::CheatFeatures::Looped()
 	Cheat::GameFunctions::CursorGUINavigationLoop();
 
 	//Speedometer
-	if (PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, 0)) 
+	if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) 
 	{
 		std::ostringstream Speed;
 		if (UseKMH)
 		{
-			Speed << Cheat::GameFunctions::MSToKMH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0))) << " KM/H";
+			Speed << Cheat::GameFunctions::MSToKMH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0))) << " KM/H";
 		}
 		else
 		{
-			Speed << Cheat::GameFunctions::MSToMPH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0))) << " MP/H";
+			Speed << Cheat::GameFunctions::MSToMPH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0))) << " MP/H";
 		}
 		if (SpeedometerVectorPosition == 1 || SpeedometerVectorPosition == 3) { Cheat::Speedometer(Speed.str()); }
-		if (SpeedometerVectorPosition == 2 || SpeedometerVectorPosition == 3) { VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0), CheatFunctions::StringToChar(Speed.str())); }
+		if (SpeedometerVectorPosition == 2 || SpeedometerVectorPosition == 3) { VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0), CheatFunctions::StringToChar(Speed.str())); }
 	}
 
 	GodmodeBool ? Godmode(true) : Godmode(false);
@@ -102,7 +102,7 @@ void Cheat::CheatFeatures::Looped()
 	MobileRadioBool ? MobileRadio(true) : MobileRadio(false);
 	WeaponRapidFireBool ? WeaponRapidFire() : NULL;
 	PlayerIgnoredBool ? PlayerIgnored(true) : PlayerIgnored(false);
-	NoClipBool ? NoClip() : NoClipWasEnabled ? ENTITY::SET_ENTITY_COLLISION(PlayerPedID, true, true) : NULL;
+	NoClipBool ? NoClip() : NoClipWasEnabled ? ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, true, true), NoClipWasEnabled = false : NULL;
 	RainbowVehicleBool ? RainbowVehicle() : NULL;
 	TeleportGunBool ? TeleportGun() : NULL;
 	DeleteGunBool ? DeleteGun() : NULL;
@@ -144,7 +144,7 @@ void Cheat::CheatFeatures::Looped()
 bool Cheat::CheatFeatures::GodmodeBool = false;
 void Cheat::CheatFeatures::Godmode(bool toggle)
 {
-	ENTITY::SET_ENTITY_INVINCIBLE(PlayerPedID, toggle);
+	ENTITY::SET_ENTITY_INVINCIBLE(Cheat::GameFunctions::PlayerPedID, toggle);
 }
 
 bool Cheat::CheatFeatures::NeverWantedBool = false;
@@ -152,7 +152,7 @@ void Cheat::CheatFeatures::NeverWanted(bool toggle)
 {
 	if (toggle)
 	{
-		PLAYER::CLEAR_PLAYER_WANTED_LEVEL(PlayerID);
+		PLAYER::CLEAR_PLAYER_WANTED_LEVEL(Cheat::GameFunctions::PlayerID);
 		PLAYER::SET_MAX_WANTED_LEVEL(0);
 	}
 	else
@@ -165,16 +165,16 @@ bool Cheat::CheatFeatures::NoWeaponReloadBool = false;
 void Cheat::CheatFeatures::NoWeaponReload()
 {
 	Hash cur;
-	if (WEAPON::GET_CURRENT_PED_WEAPON(PlayerPedID, &cur, 1))
+	if (WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &cur, 1))
 	{
 		if (WEAPON::IS_WEAPON_VALID(cur))
 		{
 			int maxAmmo;
-			if (WEAPON::GET_MAX_AMMO(PlayerPedID, cur, &maxAmmo))
+			if (WEAPON::GET_MAX_AMMO(Cheat::GameFunctions::PlayerPedID, cur, &maxAmmo))
 			{
-				WEAPON::SET_PED_AMMO(PlayerPedID, cur, maxAmmo);
-				maxAmmo = WEAPON::GET_MAX_AMMO_IN_CLIP(PlayerPedID, cur, 1);
-				if (maxAmmo > 0) { WEAPON::SET_AMMO_IN_CLIP(PlayerPedID, cur, maxAmmo); }
+				WEAPON::SET_PED_AMMO(Cheat::GameFunctions::PlayerPedID, cur, maxAmmo);
+				maxAmmo = WEAPON::GET_MAX_AMMO_IN_CLIP(Cheat::GameFunctions::PlayerPedID, cur, 1);
+				if (maxAmmo > 0) { WEAPON::SET_AMMO_IN_CLIP(Cheat::GameFunctions::PlayerPedID, cur, maxAmmo); }
 			}
 		}
 	}
@@ -207,20 +207,20 @@ void Cheat::CheatFeatures::GravityGun()
 {
 	Entity EntityTarget;
 	DWORD equippedWeapon;
-	WEAPON::GET_CURRENT_PED_WEAPON(PlayerPedID, &equippedWeapon, 1);
+	WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &equippedWeapon, 1);
 
 	Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
 	Vector3 dir = Cheat::GameFunctions::RotToDirection(&rot);
 	Vector3 camPosition = CAM::GET_GAMEPLAY_CAM_COORD();
-	Vector3 playerPosition = ENTITY::GET_ENTITY_COORDS(PlayerPedID, 1);
+	Vector3 playerPosition = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 1);
 	float spawnDistance = Cheat::GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &playerPosition);
 	spawnDistance += 5;
 	Vector3 spawnPosition = Cheat::GameFunctions::AddTwoVectors(&camPosition, &Cheat::GameFunctions::MultiplyVector(&dir, spawnDistance));
 
-	Player tempPed = PlayerID;
+	Player tempPed = Cheat::GameFunctions::PlayerID;
 	if (equippedWeapon == WeaponCombatPistol)
 	{
-		if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(PlayerID, &EntityTarget) && GetAsyncKeyState(0x02))
+		if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &EntityTarget) && GetAsyncKeyState(0x02))
 		{
 			Vector3 EntityTargetPos = ENTITY::GET_ENTITY_COORDS(EntityTarget, 0);
 			PLAYER::DISABLE_PLAYER_FIRING(tempPed, true);
@@ -242,7 +242,7 @@ void Cheat::CheatFeatures::GravityGun()
 				PLAYER::DISABLE_PLAYER_FIRING(tempPed, false);
 			}
 		}
-		if (!PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(PlayerID, &EntityTarget))
+		if (!PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &EntityTarget))
 		{
 			PLAYER::DISABLE_PLAYER_FIRING(tempPed, false);
 		}
@@ -289,13 +289,13 @@ void Cheat::CheatFeatures::OneHitKill(bool toggle)
 {
 	if (toggle)
 	{
-		PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerPedID), 999999);
-		PLAYER::SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerPedID), 999999);
+		PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::GameFunctions::PlayerPedID), 999999);
+		PLAYER::SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::GameFunctions::PlayerPedID), 999999);
 	}
 	else
 	{
-		PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerPedID), 1);
-		PLAYER::SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerPedID), 1);
+		PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::GameFunctions::PlayerPedID), 1);
+		PLAYER::SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::GameFunctions::PlayerPedID), 1);
 	}
 }
 
@@ -411,14 +411,14 @@ void Cheat::CheatFeatures::ProtectionSessionWeather(bool toggle)
 bool Cheat::CheatFeatures::SuperJumpBool = false;
 void Cheat::CheatFeatures::SuperJump()
 {
-	GAMEPLAY::SET_SUPER_JUMP_THIS_FRAME(PlayerID);
+	GAMEPLAY::SET_SUPER_JUMP_THIS_FRAME(Cheat::GameFunctions::PlayerID);
 }
 
 bool Cheat::CheatFeatures::PlayerForceFieldBool = false;
 void Cheat::CheatFeatures::PlayerForceField()
 {
 	if(!NoRagdollAndSeatbeltBool) { NoRagdollAndSeatbeltBool = true; Cheat::GameFunctions::MinimapNotification("~o~Enabled No Ragdoll & Seatbelt feature to prevent your character from flying around"); }
-	FIRE::ADD_EXPLOSION(ENTITY::GET_ENTITY_COORDS(PlayerPedID, 0).x, ENTITY::GET_ENTITY_COORDS(PlayerPedID, 0).y, ENTITY::GET_ENTITY_COORDS(PlayerPedID, 0).z, 7, 100.0f, false, true, 0.0f);
+	FIRE::ADD_EXPLOSION(ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 0).x, ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 0).y, ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 0).z, 7, 100.0f, false, true, 0.0f);
 }
 
 bool Cheat::CheatFeatures::FastRunBool = false;
@@ -426,11 +426,11 @@ void Cheat::CheatFeatures::FastRun(bool toggle)
 {
 	if (toggle)
 	{
-		PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PlayerID, 1.39f);
+		PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(Cheat::GameFunctions::PlayerID, 1.39f);
 	}
 	else
 	{
-		PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PlayerID, 1.00f);
+		PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(Cheat::GameFunctions::PlayerID, 1.00f);
 	}
 }
 
@@ -465,12 +465,12 @@ void Cheat::CheatFeatures::JumpAroundMode()
 
 	Vehicle* vehs = new Vehicle[ArrSize];
 	vehs[0] = ElementAmount;
-	int VehFound = PED::GET_PED_NEARBY_VEHICLES(PlayerPedID, vehs);
+	int VehFound = PED::GET_PED_NEARBY_VEHICLES(Cheat::GameFunctions::PlayerPedID, vehs);
 
 	for (int i = 0; i < VehFound; i++)
 	{
 		int OffsetID = i * 2 + 2;
-		if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, false))
+		if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false))
 		{
 			if (VEHICLE::IS_VEHICLE_ON_ALL_WHEELS(vehs[OffsetID]) == TRUE)
 			{
@@ -544,9 +544,9 @@ void Cheat::CheatFeatures::FreeCam(bool toggle)
 bool Cheat::CheatFeatures::VehicleHornBoostBool = false;
 void Cheat::CheatFeatures::VehicleHornBoost()
 {
-	if (PLAYER::IS_PLAYER_PRESSING_HORN(PlayerID))
+	if (PLAYER::IS_PLAYER_PRESSING_HORN(Cheat::GameFunctions::PlayerID))
 	{
-		Vehicle Veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerID), false);
+		Vehicle Veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::GameFunctions::PlayerID), false);
 		Cheat::GameFunctions::RequestControlOfEnt(Veh);
 		VEHICLE::SET_VEHICLE_FORWARD_SPEED(Veh, 70);
 	}
@@ -568,7 +568,7 @@ void Cheat::CheatFeatures::FakeWantedLevel(bool toggle)
 bool Cheat::CheatFeatures::VehicleGodmodeBool = false;
 void Cheat::CheatFeatures::VehicleGodmode(bool toggle)
 {
-	Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(PlayerPedID);
+	Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID);
 	if (toggle)
 	{
 		GameFunctions::ChangeEntityInvincibilityState(veh, true);
@@ -584,11 +584,11 @@ void Cheat::CheatFeatures::VehicleInvisible(bool toggle)
 {
 	if (toggle)
 	{
-		ENTITY::SET_ENTITY_VISIBLE(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), false, true);
+		ENTITY::SET_ENTITY_VISIBLE(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), false, true);
 	}
 	else
 	{
-		ENTITY::SET_ENTITY_VISIBLE(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), true, true);
+		ENTITY::SET_ENTITY_VISIBLE(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), true, true);
 	}
 }
 
@@ -597,11 +597,11 @@ void Cheat::CheatFeatures::PlayerInvisible(bool toggle)
 {
 	if (toggle)
 	{
-		ENTITY::SET_ENTITY_VISIBLE(PlayerPedID, false, true);
+		ENTITY::SET_ENTITY_VISIBLE(Cheat::GameFunctions::PlayerPedID, false, true);
 	}
 	else
 	{
-		ENTITY::SET_ENTITY_VISIBLE(PlayerPedID, true, true);
+		ENTITY::SET_ENTITY_VISIBLE(Cheat::GameFunctions::PlayerPedID, true, true);
 	}
 }
 
@@ -625,19 +625,19 @@ void Cheat::CheatFeatures::MobileRadio(bool toggle)
 bool Cheat::CheatFeatures::WeaponRapidFireBool = false;
 void Cheat::CheatFeatures::WeaponRapidFire()
 {
-	if (!PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, 1)) 
+	if (!PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 1)) 
 	{
-		PLAYER::DISABLE_PLAYER_FIRING(PlayerPedID, 1);
+		PLAYER::DISABLE_PLAYER_FIRING(Cheat::GameFunctions::PlayerPedID, 1);
 		Vector3 gameplayCam = CAM::_GET_GAMEPLAY_CAM_COORDS();
 		Vector3 gameplayCamRot = CAM::GET_GAMEPLAY_CAM_ROT(0);
 		Vector3 gameplayCamDirection = Cheat::GameFunctions::RotationToDirection(gameplayCamRot);
 		Vector3 startCoords = Cheat::GameFunctions::AddVector(gameplayCam, (Cheat::GameFunctions::MultiplyVector(gameplayCamDirection, 1.0f)));
 		Vector3 endCoords = Cheat::GameFunctions::AddVector(startCoords, Cheat::GameFunctions::MultiplyVector(gameplayCamDirection, 500.0f));
 		Hash weaponhash;
-		WEAPON::GET_CURRENT_PED_WEAPON(PlayerPedID, &weaponhash, 1);
+		WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &weaponhash, 1);
 		if (CONTROLS::IS_CONTROL_PRESSED(2, 208) || GetKeyState(VK_LBUTTON) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
 		{
-			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(startCoords.x, startCoords.y, startCoords.z, endCoords.x, endCoords.y, endCoords.z, 50, 1, weaponhash, PlayerPedID, 1, 1, 0xbf800000);
+			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(startCoords.x, startCoords.y, startCoords.z, endCoords.x, endCoords.y, endCoords.z, 50, 1, weaponhash, Cheat::GameFunctions::PlayerPedID, 1, 1, 0xbf800000);
 		}
 	}
 }
@@ -646,7 +646,7 @@ void Cheat::CheatFeatures::WeaponRapidFire()
 bool Cheat::CheatFeatures::PlayerIgnoredBool = false;
 void Cheat::CheatFeatures::PlayerIgnored(bool toggle)
 {
-	PLAYER::SET_EVERYONE_IGNORE_PLAYER(PlayerPedID, toggle);
+	PLAYER::SET_EVERYONE_IGNORE_PLAYER(Cheat::GameFunctions::PlayerPedID, toggle);
 }
 
 bool Cheat::CheatFeatures::NoClipBool = false;
@@ -659,9 +659,9 @@ void Cheat::CheatFeatures::NoClip()
 
 	Cheat::GameFunctions::GetCameraDirection(&x, &y, &z);
 
-	if (!PED::IS_PED_ON_FOOT(PlayerPedID))
+	if (!PED::IS_PED_ON_FOOT(Cheat::GameFunctions::PlayerPedID))
 	{
-		int currentCar = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, PLAYER::PLAYER_ID());
+		int currentCar = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, PLAYER::PLAYER_ID());
 		Vector3 Pos = ENTITY::GET_ENTITY_COORDS(currentCar, false);
 		Vector3 rotation = CAM::GET_GAMEPLAY_CAM_ROT(0);
 
@@ -679,16 +679,16 @@ void Cheat::CheatFeatures::NoClip()
 	}
 	else
 	{
-		Vector3 Pos = ENTITY::GET_ENTITY_COORDS(PlayerPedID, false);
+		Vector3 Pos = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, false);
 
 		Vector3 rotation = CAM::GET_GAMEPLAY_CAM_ROT(0);
-		ENTITY::SET_ENTITY_COLLISION(PlayerPedID, true, true);
-		ENTITY::SET_ENTITY_ROTATION(PlayerPedID, rotation.x, rotation.y, rotation.z, 2, 1);
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(PlayerPedID, Pos.x, Pos.y, Pos.z, 0, 0, 0);
+		ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, true, true);
+		ENTITY::SET_ENTITY_ROTATION(Cheat::GameFunctions::PlayerPedID, rotation.x, rotation.y, rotation.z, 2, 1);
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Cheat::GameFunctions::PlayerPedID, Pos.x, Pos.y, Pos.z, 0, 0, 0);
 		if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed() || CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, 232) && Cheat::GUI::ControllerInput)
 		{
-			ENTITY::SET_ENTITY_COLLISION(PlayerPedID, false, false);
-			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(PlayerPedID, Pos.x + (x * d), Pos.y + (y * d), Pos.z + (z * d), 0, 0, 0);
+			ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, false, false);
+			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Cheat::GameFunctions::PlayerPedID, Pos.x + (x * d), Pos.y + (y * d), Pos.z + (z * d), 0, 0, 0);
 		}
 	}
 }
@@ -697,22 +697,22 @@ void Cheat::CheatFeatures::NoClip()
 bool Cheat::CheatFeatures::RainbowVehicleBool = false;
 void Cheat::CheatFeatures::RainbowVehicle()
 {
-	//int Red = GameFunctions::ReturnRandomInteger(0, 255);
-	//int Green = GameFunctions::ReturnRandomInteger(0, 255);
-	//int Blue = GameFunctions::ReturnRandomInteger(0, 255);
-	//VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), Red, Green, Blue);
-	//VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), Red, Green, Blue);
+	int Red = GameFunctions::ReturnRandomInteger(0, 255);
+	int Green = GameFunctions::ReturnRandomInteger(0, 255);
+	int Blue = GameFunctions::ReturnRandomInteger(0, 255);
+	VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), Red, Green, Blue);
+	VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), Red, Green, Blue);
 }
 
 bool Cheat::CheatFeatures::TeleportGunBool = false;
 void Cheat::CheatFeatures::TeleportGun()
 {
-	if (PED::IS_PED_SHOOTING(PlayerPedID))
+	if (PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
 	{
 		Vector3 iCoord;
-		if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(PlayerPedID, &iCoord))
+		if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(Cheat::GameFunctions::PlayerPedID, &iCoord))
 		{
-			ENTITY::SET_ENTITY_COORDS(PlayerPedID, iCoord.x, iCoord.y, iCoord.z + 1, 0, 0, 1, 1);
+			ENTITY::SET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, iCoord.x, iCoord.y, iCoord.z + 1, 0, 0, 1, 1);
 			WAIT(0, false);
 		}
 	}
@@ -722,7 +722,7 @@ bool Cheat::CheatFeatures::EntityInformationGunBool = false;
 void Cheat::CheatFeatures::EntityInformationGun()
 {
 	Entity AimedEntityHandle;
-	if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(PlayerID, &AimedEntityHandle))
+	if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &AimedEntityHandle))
 	{
 		Vector3 AimedEntityCoords = ENTITY::GET_ENTITY_COORDS(AimedEntityHandle, false);
 		std::string AimedEntityHealth = "Entity Health: " + std::to_string(ENTITY::GET_ENTITY_HEALTH(AimedEntityHandle));
@@ -744,11 +744,11 @@ bool Cheat::CheatFeatures::CartoonGunBool = false;
 void Cheat::CheatFeatures::CartoonGun()
 {
 	Vector3 v0, v1;
-	Entity WeaponEntityHandle = WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX(PlayerPedID);
-	if (PED::IS_PED_SHOOTING(PlayerPedID))
+	Entity WeaponEntityHandle = WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX(Cheat::GameFunctions::PlayerPedID);
+	if (PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
 	{
 		while (!STREAMING::HAS_NAMED_PTFX_ASSET_LOADED("scr_rcbarry2")) { STREAMING::REQUEST_NAMED_PTFX_ASSET("scr_rcbarry2"); WAIT(0); }
-		GAMEPLAY::GET_MODEL_DIMENSIONS(WEAPON::GET_SELECTED_PED_WEAPON(PlayerPedID), &v0, &v1);
+		GAMEPLAY::GET_MODEL_DIMENSIONS(WEAPON::GET_SELECTED_PED_WEAPON(Cheat::GameFunctions::PlayerPedID), &v0, &v1);
 		GRAPHICS::USE_PARTICLE_FX_ASSET("scr_rcbarry2");
 		GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY("muz_clown", WeaponEntityHandle, (v0.x - v1.x) / 2.0f + 0.7f, 0.f, 0.f, 0.f, 180.f, 0.f, 1.f, true, true, true);
 	}
@@ -759,12 +759,12 @@ void Cheat::CheatFeatures::DeleteGun()
 {
 	Entity AimedAtEntity;
 	DWORD equippedWeapon;
-	WEAPON::GET_CURRENT_PED_WEAPON(PlayerPedID, &equippedWeapon, 1);
+	WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &equippedWeapon, 1);
 	if (equippedWeapon == WeaponSNSPistol || equippedWeapon == 0x88374054) //mk2 SNS Pistol
 	{
-		if (PED::IS_PED_SHOOTING(PlayerPedID))
+		if (PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
 		{
-			if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(PlayerID, &AimedAtEntity))
+			if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &AimedAtEntity))
 			{
 				Cheat::GameFunctions::RequestControlOfEnt(AimedAtEntity);
 				ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&AimedAtEntity);
@@ -779,7 +779,7 @@ void Cheat::CheatFeatures::DeleteGun()
 bool Cheat::CheatFeatures::UnlimitedSpecialAbilityBool = false;
 void Cheat::CheatFeatures::UnlimitedSpecialAbility()
 {
-	if (!NETWORK::NETWORK_IS_SESSION_STARTED()) { PLAYER::SPECIAL_ABILITY_FILL_METER(PlayerID, 1); }
+	if (!NETWORK::NETWORK_IS_SESSION_STARTED()) { PLAYER::SPECIAL_ABILITY_FILL_METER(Cheat::GameFunctions::PlayerID, 1); }
 }
 
 bool Cheat::CheatFeatures::SpectatePlayerBool = false;
@@ -787,13 +787,13 @@ void Cheat::CheatFeatures::SpectatePlayer(bool toggle)
 {
 	if (toggle)
 	{
-		NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(PlayerPedID, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(selectedPlayer));
+		NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(Cheat::GameFunctions::PlayerPedID, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(selectedPlayer));
 		std::string String = "Spectating '" + (std::string)PLAYER::GET_PLAYER_NAME(selectedPlayer) + "'";
 		Cheat::GameFunctions::SubtitleNotification(CheatFunctions::StringToChar(String), 1);
 	}
 	else
 	{
-		NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(false, PlayerPedID);
+		NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(false, Cheat::GameFunctions::PlayerPedID);
 	}
 }
 
@@ -802,17 +802,17 @@ void Cheat::CheatFeatures::NoRagdollAndSeatbelt(bool toggle)
 {
 	if (toggle)
 	{
-		PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(PlayerPedID, false);
-		PED::SET_PED_CAN_RAGDOLL(PlayerPedID, false);
-		PED::SET_PED_CONFIG_FLAG(PlayerPedID, 32, true);
-		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(PlayerPedID, false);
+		PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(Cheat::GameFunctions::PlayerPedID, false);
+		PED::SET_PED_CAN_RAGDOLL(Cheat::GameFunctions::PlayerPedID, false);
+		PED::SET_PED_CONFIG_FLAG(Cheat::GameFunctions::PlayerPedID, 32, true);
+		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(Cheat::GameFunctions::PlayerPedID, false);
 	}
 	else
 	{
-		PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(PlayerPedID, true);
-		PED::SET_PED_CAN_RAGDOLL(PlayerPedID, true);
-		PED::SET_PED_CONFIG_FLAG(PlayerPedID, 32, false);
-		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(PlayerPedID, true);
+		PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(Cheat::GameFunctions::PlayerPedID, true);
+		PED::SET_PED_CAN_RAGDOLL(Cheat::GameFunctions::PlayerPedID, true);
+		PED::SET_PED_CONFIG_FLAG(Cheat::GameFunctions::PlayerPedID, 32, false);
+		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(Cheat::GameFunctions::PlayerPedID, true);
 	}
 }
 
@@ -832,7 +832,7 @@ void Cheat::CheatFeatures::FreezeAllPlayers()
 {
 	for (int i = 0; i < 32; i++)
 	{
-		if (i != PlayerPedID)
+		if (i != Cheat::GameFunctions::PlayerPedID)
 		{
 			Ped Player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer);
 			AI::CLEAR_PED_TASKS_IMMEDIATELY(Player);
@@ -849,13 +849,13 @@ bool Cheat::CheatFeatures::TriggerBotBool = false;
 void Cheat::CheatFeatures::TriggerBot()
 {
 	Entity AimedAtEntity;
-	if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(PlayerID, &AimedAtEntity))
+	if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &AimedAtEntity))
 	{
 		Vector3 BoneCoords;
 		BoneCoords = PED::GET_PED_BONE_COORDS(AimedAtEntity, SKEL_Head, 0.1f, 0.0f, 0.0f);
-		if (TriggerBot_ShootNPCBool && TriggerBot_ShootPlayersBool) { if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) { PED::SET_PED_SHOOTS_AT_COORD(PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); } }
-		else if (TriggerBot_ShootNPCBool && !TriggerBot_ShootPlayersBool) { if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && !PED::IS_PED_A_PLAYER(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) { PED::SET_PED_SHOOTS_AT_COORD(PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); } }
-		else if (TriggerBot_ShootPlayersBool && !TriggerBot_ShootNPCBool) { if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && PED::IS_PED_A_PLAYER(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) { PED::SET_PED_SHOOTS_AT_COORD(PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); } }
+		if (TriggerBot_ShootNPCBool && TriggerBot_ShootPlayersBool) { if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) { PED::SET_PED_SHOOTS_AT_COORD(Cheat::GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); } }
+		else if (TriggerBot_ShootNPCBool && !TriggerBot_ShootPlayersBool) { if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && !PED::IS_PED_A_PLAYER(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) { PED::SET_PED_SHOOTS_AT_COORD(Cheat::GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); } }
+		else if (TriggerBot_ShootPlayersBool && !TriggerBot_ShootNPCBool) { if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && PED::IS_PED_A_PLAYER(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) { PED::SET_PED_SHOOTS_AT_COORD(Cheat::GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); } }
 	}
 }
 
@@ -863,20 +863,20 @@ void Cheat::CheatFeatures::TriggerBot()
 bool Cheat::CheatFeatures::SuperBrakesBool = false;
 void Cheat::CheatFeatures::SuperBrakes()
 {
-	if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlVehicleBrake)) { VEHICLE::SET_VEHICLE_FORWARD_SPEED(PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0), 0.0f); }
+	if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlVehicleBrake)) { VEHICLE::SET_VEHICLE_FORWARD_SPEED(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0), 0.0f); }
 }
 
 bool Cheat::CheatFeatures::TinyPlayerBool = false;
 void Cheat::CheatFeatures::TinyPlayer(bool toggle)
 {
-	PED::SET_PED_CONFIG_FLAG(PlayerPedID, 223, toggle);
+	PED::SET_PED_CONFIG_FLAG(Cheat::GameFunctions::PlayerPedID, 223, toggle);
 }
 
 bool Cheat::CheatFeatures::UnlimitedRocketBoostBool = false;
 void Cheat::CheatFeatures::UnlimitedRocketBoost()
 {
-	if (PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, 0)) {
-		Ped veh = PED::GET_VEHICLE_PED_IS_USING(PlayerPedID);
+	if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) {
+		Ped veh = PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID);
 		VEHICLE::_SET_VEHICLE_ROCKET_BOOST_REFILL_TIME(veh, 0);
 		VEHICLE::_SET_VEHICLE_ROCKET_BOOST_PERCENTAGE(veh, 100.0f);
 
@@ -893,7 +893,7 @@ std::string Cheat::CheatFeatures::VehicleGun_VehicleNameString;
 bool Cheat::CheatFeatures::VehicleGunBool = false;
 void Cheat::CheatFeatures::VehicleGun()
 {
-	Ped playerPed = PlayerPedID;
+	Ped playerPed = Cheat::GameFunctions::PlayerPedID;
 	if (PED::IS_PED_SHOOTING(playerPed))
 	{
 		float offset = 0;
@@ -902,7 +902,7 @@ void Cheat::CheatFeatures::VehicleGun()
 
 		while (!STREAMING::HAS_MODEL_LOADED(vehmodel)) { WAIT(0); }
 
-		Vector3 coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PlayerPedID, 0.0, 5.0, 0.0);
+		Vector3 coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(Cheat::GameFunctions::PlayerPedID, 0.0, 5.0, 0.0);
 
 		if (STREAMING::IS_MODEL_IN_CDIMAGE(vehmodel) && STREAMING::IS_MODEL_A_VEHICLE(vehmodel))
 		{
@@ -936,7 +936,7 @@ void Cheat::CheatFeatures::PlayerESP()
 	if (NETWORK::NETWORK_GET_NUM_CONNECTED_PLAYERS() > 1)
 	{
 		for (int i = 1; i <= 32; i++) {
-			if (PlayerID != i) {
+			if (Cheat::GameFunctions::PlayerID != i) {
 				Vector3 entitylocation = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), false);
 				Vector3 top1world = { entitylocation.x + 0.3f, NULL, entitylocation.y + 0.3f, NULL, entitylocation.z + .8f, NULL };
 				Vector3 top2world = { entitylocation.x - 0.3f, NULL, entitylocation.y + 0.3f, NULL, entitylocation.z + .8f, NULL };
@@ -963,7 +963,7 @@ void Cheat::CheatFeatures::PlayerESP()
 				GRAPHICS::DRAW_LINE(top4world.x, top4world.y, top4world.z, bottom4world.x, bottom4world.y, bottom4world.z, 0, 0, 255, 255);
 
 				Vector3 locationOne = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), false);
-				Vector3 locationTwo = ENTITY::GET_ENTITY_COORDS(PlayerPedID, false);
+				Vector3 locationTwo = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, false);
 				GRAPHICS::DRAW_LINE(locationOne.x, locationOne.y, locationOne.z, locationTwo.x, locationTwo.y, locationTwo.z, 0, 0, 255, 255);
 			}
 		}
@@ -974,14 +974,14 @@ void Cheat::CheatFeatures::PlayerESP()
 bool Cheat::CheatFeatures::OffRadarBool = false;
 void Cheat::CheatFeatures::OffRadar()
 {
-	globalHandle(2425662).At(1 + (PlayerID * 421)).At(200).As<int>() = 1;
+	globalHandle(2425662).At(1 + (Cheat::GameFunctions::PlayerID * 421)).At(200).As<int>() = 1;
 	globalHandle(2439138).At(70).As<int>() = NETWORK::GET_NETWORK_TIME();
 }
 
 bool Cheat::CheatFeatures::RevealPlayersBool = false;
 void Cheat::CheatFeatures::RevealPlayers()
 {
-	//globalHandle(2424073).At(1 + (PlayerID * 421)).At(203).As<int>() = 1;
+	//globalHandle(2424073).At(1 + (Cheat::GameFunctions::PlayerID * 421)).At(203).As<int>() = 1;
 	//globalHandle(2437549).At(71).As<int>() = NETWORK::GET_NETWORK_TIME();
 }
 
@@ -996,9 +996,9 @@ void Cheat::CheatFeatures::ExplodeLoopSelectedPlayer()
 bool Cheat::CheatFeatures::DriveOnWaterBool = false;
 void Cheat::CheatFeatures::DriveOnWater()
 {
-	Player player = PlayerID;
-	Ped playerPed = PlayerPedID;
-	Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+	Player player = Cheat::GameFunctions::PlayerID;
+	Ped playerPed = Cheat::GameFunctions::PlayerPedID;
+	Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 	DWORD model = ENTITY::GET_ENTITY_MODEL(veh);
 	Vector3 pos = ENTITY::GET_ENTITY_COORDS(playerPed, 0);
 	float height = 0;
@@ -1052,15 +1052,15 @@ bool Cheat::CheatFeatures::SuperManBool = false;
 void Cheat::CheatFeatures::SuperMan()
 {
 	if(!Cheat::CheatFeatures::NoRagdollAndSeatbeltBool) { Cheat::CheatFeatures::NoRagdollAndSeatbeltBool = true; Cheat::GameFunctions::MinimapNotification("No Ragdoll & Seatbelt feature enabled for this feature"); }
-	WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("GADGET_PARACHUTE"), 1, 1);
-	ENTITY::SET_ENTITY_INVINCIBLE(PlayerPedID, true);
-	PED::SET_PED_TO_RAGDOLL_WITH_FALL(PlayerPedID, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0);
+	WEAPON::GIVE_DELAYED_WEAPON_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("GADGET_PARACHUTE"), 1, 1);
+	ENTITY::SET_ENTITY_INVINCIBLE(Cheat::GameFunctions::PlayerPedID, true);
+	PED::SET_PED_TO_RAGDOLL_WITH_FALL(Cheat::GameFunctions::PlayerPedID, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0);
 
-	if (ENTITY::IS_ENTITY_IN_AIR(PlayerPedID) && !PED::IS_PED_RAGDOLL(PlayerPedID))
+	if (ENTITY::IS_ENTITY_IN_AIR(Cheat::GameFunctions::PlayerPedID) && !PED::IS_PED_RAGDOLL(Cheat::GameFunctions::PlayerPedID))
 	{
-		if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed()) { Cheat::GameFunctions::ApplyForceToEntity(PlayerPedID, 0, 6, 0); }
-		if (GetAsyncKeyState(0x53) && Cheat::CheatFunctions::IsGameWindowFocussed()) { Cheat::GameFunctions::ApplyForceToEntity(PlayerPedID, 0, -6, 0); }
-		if (GetAsyncKeyState(VK_SHIFT) && Cheat::CheatFunctions::IsGameWindowFocussed()) { Cheat::GameFunctions::ApplyForceToEntity(PlayerPedID, 0, 0, 6); }
+		if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed()) { Cheat::GameFunctions::ApplyForceToEntity(Cheat::GameFunctions::PlayerPedID, 0, 6, 0); }
+		if (GetAsyncKeyState(0x53) && Cheat::CheatFunctions::IsGameWindowFocussed()) { Cheat::GameFunctions::ApplyForceToEntity(Cheat::GameFunctions::PlayerPedID, 0, -6, 0); }
+		if (GetAsyncKeyState(VK_SHIFT) && Cheat::CheatFunctions::IsGameWindowFocussed()) { Cheat::GameFunctions::ApplyForceToEntity(Cheat::GameFunctions::PlayerPedID, 0, 0, 6); }
 	}
 }
 
@@ -1077,9 +1077,9 @@ void Cheat::CheatFeatures::RainbowGun()
 {
 	for (int i = 0; i < sizeof(Cheat::GameArrays::WeaponsHashList) / sizeof(Cheat::GameArrays::WeaponsHashList[0]); i++)
 	{
-		if (WEAPON::HAS_PED_GOT_WEAPON(PlayerPedID, Cheat::GameArrays::WeaponsHashList[i], 0))
+		if (WEAPON::HAS_PED_GOT_WEAPON(Cheat::GameFunctions::PlayerPedID, Cheat::GameArrays::WeaponsHashList[i], 0))
 		{
-			WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, Cheat::GameArrays::WeaponsHashList[i], rand() % 8);
+			WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, Cheat::GameArrays::WeaponsHashList[i], rand() % 8);
 		}
 	}
 }
@@ -1131,10 +1131,10 @@ void Cheat::CheatFeatures::MoneyDrop()
 bool Cheat::CheatFeatures::MoneyGunBool = false;
 void Cheat::CheatFeatures::MoneyGun()
 {
-	if (PED::IS_PED_SHOOTING(PlayerPedID))
+	if (PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
 	{
 		Vector3 coords;
-		if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(PlayerPedID, &coords))
+		if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(Cheat::GameFunctions::PlayerPedID, &coords))
 		{
 			Hash PolyBag = GAMEPLAY::GET_HASH_KEY("p_poly_bag_01_s");
 			STREAMING::REQUEST_MODEL(PolyBag);
@@ -1153,10 +1153,24 @@ bool Cheat::CheatFeatures::VehicleWeapons_DrawLaser = false;
 bool Cheat::CheatFeatures::VehicleWeaponsBool = false;
 void Cheat::CheatFeatures::VehicleWeapons()
 {
-	if (VehicleWeapons_DrawLaser) { Cheat::GameFunctions::DrawVehicleLasers(); }
-	if (PLAYER::IS_PLAYER_PRESSING_HORN(PlayerID) && VehicleWeapons_LastTick + 150 < GetTickCount64() && PLAYER::IS_PLAYER_CONTROL_ON(PlayerID) && PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, 0))
+	if (VehicleWeapons_DrawLaser) 
+	{ 
+		Vehicle VehicleHandle = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
+		Vector3 getcoords1 = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(VehicleHandle, 0.6f, 0.6707f, 0.3711f);
+		Vector3 getcoords2 = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(VehicleHandle, -0.6f, 0.6707f, 0.3711f);
+		Vector3 getcoords3 = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(VehicleHandle, 0.6f, 25.0707f, 0.3711f);
+		Vector3 getcoords4 = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(VehicleHandle, -0.6f, 25.0707f, 0.3711f);
+		float StartCoords1[] = { getcoords1.x, getcoords1.y, getcoords1.z };
+		float StartCoords2[] = { getcoords2.x, getcoords2.y, getcoords2.z };
+		float EndCoords1[] = { getcoords3.x, getcoords3.y, getcoords3.z };
+		float EndCoords2[] = { getcoords4.x, getcoords4.y, getcoords4.z };
+		GRAPHICS::DRAW_LINE(getcoords1.x, getcoords1.y, getcoords1.z, getcoords3.x, getcoords3.y, getcoords3.z, 255, 0, 0, 255);
+		GRAPHICS::DRAW_LINE(getcoords2.x, getcoords2.y, getcoords2.z, getcoords4.x, getcoords4.y, getcoords4.z, 255, 0, 0, 255);
+	}
+
+	if (PLAYER::IS_PLAYER_PRESSING_HORN(Cheat::GameFunctions::PlayerID) && VehicleWeapons_LastTick + 150 < GetTickCount64() && PLAYER::IS_PLAYER_CONTROL_ON(Cheat::GameFunctions::PlayerID) && PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0))
 	{
-		Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(PlayerPedID);
+		Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID);
 
 		Vector3 v0, v1;
 		GAMEPLAY::GET_MODEL_DIMENSIONS(ENTITY::GET_ENTITY_MODEL(veh), &v0, &v1);
@@ -1174,8 +1188,8 @@ void Cheat::CheatFeatures::VehicleWeapons()
 			Vector3 coords1from = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(veh, (v1.x + 0.25f), v1.y + 1.25f, 0.1f);
 			Vector3 coords0to = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(veh, -v1.x, v1.y + 100.0f, 0.1f);
 			Vector3 coords1to = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(veh, v1.x, v1.y + 100.0f, 0.1f);
-			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(coords0from.x, coords0from.y, coords0from.z, coords0to.x, coords0to.y, coords0to.z, 250, 1, weaponAssetRocket, PlayerPedID, 1, 0, -1.0);
-			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(coords1from.x, coords1from.y, coords1from.z, coords1to.x, coords1to.y, coords1to.z, 250, 1, weaponAssetRocket, PlayerPedID, 1, 0, -1.0);
+			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(coords0from.x, coords0from.y, coords0from.z, coords0to.x, coords0to.y, coords0to.z, 250, 1, weaponAssetRocket, Cheat::GameFunctions::PlayerPedID, 1, 0, -1.0);
+			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(coords1from.x, coords1from.y, coords1from.z, coords1to.x, coords1to.y, coords1to.z, 250, 1, weaponAssetRocket, Cheat::GameFunctions::PlayerPedID, 1, 0, -1.0);
 		}
 		VehicleWeapons_LastTick = GetTickCount64();
 	}
@@ -1185,10 +1199,10 @@ void Cheat::CheatFeatures::VehicleWeapons()
 bool Cheat::CheatFeatures::AirstrikeGunBool = false;
 void Cheat::CheatFeatures::AirstrikeGun()
 {
-	if (PED::IS_PED_SHOOTING(PlayerPedID))
+	if (PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
 	{
 		Vector3 coords;
-		WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(PlayerPedID, &coords);
+		WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(Cheat::GameFunctions::PlayerPedID, &coords);
 		if (coords.x != 0 || coords.y != 0 || coords.z != 0) {
 			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(coords.x, coords.y, coords.z + 30, coords.x, coords.y, coords.z, 250, 0, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), 0, 1, 1, 500);
 		}
@@ -1201,11 +1215,11 @@ void Cheat::CheatFeatures::SuperRun()
 {
 	if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlSprint) && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlScriptPadUp))
 	{
-		Ped ped = PlayerPedID;
+		Ped ped = Cheat::GameFunctions::PlayerPedID;
 		Vector3 offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ped, 0.f, 0.6f, 0.f);
 		ENTITY::APPLY_FORCE_TO_ENTITY(ped, 1, 0.0f, 1.3f, 0.f, 0.0f, 0.0f, 0.0f, 0, 1, 1, 1, 0, 1.f);
-		PLAYER::SET_PLAYER_SPRINT(PlayerID, true);
-		PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(PlayerID, 1.59f);
+		PLAYER::SET_PLAYER_SPRINT(Cheat::GameFunctions::PlayerID, true);
+		PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(Cheat::GameFunctions::PlayerID, 1.59f);
 	}
 }
 
@@ -1219,7 +1233,7 @@ void Cheat::CheatFeatures::CustomWeaponBullets()
 	Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
 	Vector3 dir = Cheat::GameFunctions::RotToDirection(&rot);
 	Vector3 camPosition = CAM::GET_GAMEPLAY_CAM_COORD();
-	Vector3 playerPosition = ENTITY::GET_ENTITY_COORDS(PlayerPedID, 1);
+	Vector3 playerPosition = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 1);
 	float spawnDistance = Cheat::GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &playerPosition);
 	spawnDistance += 0.25;
 	Vector3 spawnPosition = Cheat::GameFunctions::AddTwoVectors(&camPosition, &Cheat::GameFunctions::MultiplyVector(&dir, spawnDistance));
@@ -1228,7 +1242,7 @@ void Cheat::CheatFeatures::CustomWeaponBullets()
 	endDistance += 1000;
 	Vector3 endPosition = Cheat::GameFunctions::AddTwoVectors(&camPosition, &Cheat::GameFunctions::MultiplyVector(&dir, endDistance));
 
-	if (PED::IS_PED_ON_FOOT(PlayerPedID) && PED::IS_PED_SHOOTING(PlayerPedID))
+	if (PED::IS_PED_ON_FOOT(Cheat::GameFunctions::PlayerPedID) && PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
 	{
 		Hash weaponAssetRocket1 = GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_NOSE_TURRET_VALKYRIE");
 		Hash weaponAssetRocket2 = GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_TANK");
@@ -1246,10 +1260,10 @@ void Cheat::CheatFeatures::CustomWeaponBullets()
 			WEAPON::REQUEST_WEAPON_ASSET(weaponAssetRocket4, 31, 0);
 			while (!WEAPON::HAS_WEAPON_ASSET_LOADED(weaponAssetRocket4)) { WAIT(0); }
 		}
-		if (CustomWeaponBullets_ValkyrieGun) { GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, weaponAssetRocket1, PlayerPedID, 1, 0, -1.0); }
-		if (CustomWeaponBullets_TankBullets) { GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, weaponAssetRocket2, PlayerPedID, 1, 0, -1.0); }
-		if (CustomWeaponBullets_RpgBullets) { GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, weaponAssetRocket3, PlayerPedID, 1, 0, -1.0); }
-		if (CustomWeaponBullets_FireworkBullets) { GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, weaponAssetRocket4, PlayerPedID, 1, 0, -1.0); }
+		if (CustomWeaponBullets_ValkyrieGun) { GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, weaponAssetRocket1, Cheat::GameFunctions::PlayerPedID, 1, 0, -1.0); }
+		if (CustomWeaponBullets_TankBullets) { GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, weaponAssetRocket2, Cheat::GameFunctions::PlayerPedID, 1, 0, -1.0); }
+		if (CustomWeaponBullets_RpgBullets) { GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, weaponAssetRocket3, Cheat::GameFunctions::PlayerPedID, 1, 0, -1.0); }
+		if (CustomWeaponBullets_FireworkBullets) { GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, weaponAssetRocket4, Cheat::GameFunctions::PlayerPedID, 1, 0, -1.0); }
 	}
 }
 
@@ -1257,7 +1271,7 @@ void Cheat::CheatFeatures::CustomWeaponBullets()
 bool Cheat::CheatFeatures::ShowSessionInformationBool = false;
 void Cheat::CheatFeatures::ShowSessionInformation()
 {
-	Vector3 playerCoord = ENTITY::GET_ENTITY_COORDS(PlayerPedID, 0);
+	Vector3 playerCoord = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 0);
 	std::string NumbConnectedPlayers;
 	NumbConnectedPlayers = "Connected Players: " + std::to_string(NETWORK::NETWORK_GET_NUM_CONNECTED_PLAYERS());
 	std::string xMsg = " X " + std::to_string(playerCoord.x);
@@ -1275,13 +1289,13 @@ void Cheat::CheatFeatures::ShowSessionInformation()
 bool Cheat::CheatFeatures::AutoGiveAllWeaponsBool = false;
 void Cheat::CheatFeatures::AutoGiveAllWeapons()
 {
-	if (PLAYER::IS_PLAYER_PLAYING(PlayerID)) 
+	if (PLAYER::IS_PLAYER_PLAYING(Cheat::GameFunctions::PlayerID)) 
 	{ 
 		for (int i = 0; i < (sizeof(Cheat::GameArrays::WeaponsHashList) / 4); i++)
 		{
-			if (!WEAPON::HAS_PED_GOT_WEAPON(PlayerPedID, Cheat::GameArrays::WeaponsHashList[i], false))
+			if (!WEAPON::HAS_PED_GOT_WEAPON(Cheat::GameFunctions::PlayerPedID, Cheat::GameArrays::WeaponsHashList[i], false))
 			{
-				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PlayerPedID, Cheat::GameArrays::WeaponsHashList[i], 9999, false);
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(Cheat::GameFunctions::PlayerPedID, Cheat::GameArrays::WeaponsHashList[i], 9999, false);
 			}
 		}
 	}

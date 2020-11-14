@@ -355,6 +355,8 @@ namespace Cheat
 	}
 	namespace GameFunctions 
 	{
+		extern Player PlayerID;
+		extern Ped PlayerPedID;
 		void GiveAllWeaponsToPlayer(Ped Player);
 		void RepairAndCleanVehicle();
 		void SubtitleNotification(char* Message, int ShowDuration = 4000);
@@ -367,13 +369,11 @@ namespace Cheat
 		Vector3 AddVector(Vector3 vector, Vector3 vector2);
 		Vector3 RotationToDirection(Vector3 rot);
 		void SetRankRockstarGift(int RPValue);
-		void DrawVehicleLasers();
 		void RequestControl(Entity input);
 		Vector3 RotToDirection(Vector3* rot);
 		Vector3 AddTwoVectors(Vector3* vectorA, Vector3* vectorB);
 		Vector3 MultiplyVector(Vector3* vector, float x);
 		float GetDistanceBetweenTwoVectors(Vector3* pointA, Vector3* pointB);
-		float GetVectorLength(Vector3* vector);
 		Vector3 GetBlipMarker();
 		void TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight);
 		int ReturnRandomInteger(int start, int end);
@@ -383,7 +383,6 @@ namespace Cheat
 		void GetCameraDirection(float* dirX, float* dirY, float* dirZ);
 		void RequestControlOfEnt(Entity entity);
 		void RequestControlOfId(Entity netid);
-		bool RequestNetworkControl(uint vehID);
 		Ped CreatePed(char* PedName, Vector3 SpawnCoordinates, int ped_type, bool network_handle);
 		Ped ClonePed(Ped ped);
 		char* DisplayKeyboardAndReturnInput(int MaxInput);
@@ -511,8 +510,6 @@ namespace Cheat
 	bool StringVector(std::string option, std::vector<std::string> Vector, int& position, std::string InformationText, bool IsSavable = true);
 }
 
-extern Player PlayerID;
-extern Ped PlayerPedID;
 extern bool VehicleSpawnerSpawnInsideVehicle;
 extern bool VehicleSpawnerDeleteOldVehicle;
 extern bool VehicleSpawnerSpawnWithBlip;

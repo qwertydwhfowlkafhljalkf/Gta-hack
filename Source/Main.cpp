@@ -45,7 +45,7 @@ void Cheat::Main()
 			{
 				for (int i = 1; i <= 32; i++) 
 				{
-					if (PlayerID != i) { NETWORK::NETWORK_SESSION_KICK_PLAYER(i); }
+					if (Cheat::GameFunctions::PlayerID != i) { NETWORK::NETWORK_SESSION_KICK_PLAYER(i); }
 				}
 			}
 		}
@@ -57,7 +57,7 @@ void Cheat::Main()
 			{
 				for (int i = 0; i < 32; i++) 
 				{
-					if (PlayerID != i) 
+					if (Cheat::GameFunctions::PlayerID != i) 
 					{
 						Cheat::GameFunctions::SubtitleNotification("Giving all weapons to all players in session, one moment", 2000);
 						Cheat::GameFunctions::GiveAllWeaponsToPlayer(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
@@ -74,7 +74,7 @@ void Cheat::Main()
 			{
 				for (int i = 0; i < 32; i++)
 				{
-					if (PlayerID != i)
+					if (Cheat::GameFunctions::PlayerID != i)
 					{
 						Cheat::GameFunctions::RequestControlOfEnt(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
 						AI::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
@@ -86,7 +86,7 @@ void Cheat::Main()
 			if (Cheat::Option("Airstrike All Players", ""))
 			{
 				for (int i = 1; i < 32; i++) {
-					if (PlayerID != i) {
+					if (Cheat::GameFunctions::PlayerID != i) {
 						Vector3 Coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), 1);
 						Coords.z += 15;
 						GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35, Coords.x, Coords.y, Coords.z, 250, 1, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), 1, 1, 500);
@@ -98,7 +98,7 @@ void Cheat::Main()
 			if (Cheat::Option("Trap All Players", ""))
 			{
 				for (int i = 1; i < 32; i++) {
-					if (PlayerID != i) 
+					if (Cheat::GameFunctions::PlayerID != i) 
 					{
 						Vector3 remotePos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), 0);
 						OBJECT::CREATE_OBJECT(GAMEPLAY::GET_HASH_KEY("prop_gold_cont_01"), remotePos.x, remotePos.y, remotePos.z - 1.f, true, false, false);
@@ -109,7 +109,7 @@ void Cheat::Main()
 			{ 
 				for (int i = 1; i <= 32; i++) 
 				{
-					if (PlayerID != i) 
+					if (Cheat::GameFunctions::PlayerID != i) 
 					{
 						Cheat::GameFunctions::AttachObjectToPed(i, "prop_beach_fire");
 					}
@@ -2138,18 +2138,18 @@ void Cheat::Main()
 			Cheat::MenuOption("Vehicle Customizer >", VehicleCustomizerMenu);
 			if (Cheat::Option("Delete Current Vehicle", "Delete the current vehicle"))
 			{
-				if (!Cheat::GameFunctions::DeleteVehicle(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID))) 
+				if (!Cheat::GameFunctions::DeleteVehicle(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID))) 
 				{
 					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
 				}		
 			}
-			if (Cheat::Option("Flip Up", "Flip vehicle up")) { VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, false)); }
+			if (Cheat::Option("Flip Up", "Flip vehicle up")) { VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false)); }
 			if (Cheat::Option("Set Max Vehicle Speed", "")) 
 			{
-				if (PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, false)) 
+				if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, false)) 
 				{
 					int MaxSpeedInput = Cheat::GameFunctions::DisplayKeyboardAndReturnInputInteger(3);
-					Vehicle VehicleHandle = PED::GET_VEHICLE_PED_IS_USING(PlayerPedID);
+					Vehicle VehicleHandle = PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID);
 					if (Cheat::CheatFeatures::UseKMH) 
 					{
 						ENTITY::SET_ENTITY_MAX_SPEED(VehicleHandle, Cheat::GameFunctions::KMHToMS(MaxSpeedInput));
@@ -2185,8 +2185,8 @@ void Cheat::Main()
 			}
 			if (Cheat::Option("Max Upgrade", "Max Upgrade current vehicle"))
 			{
-				if (PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, 0)) {
-					Cheat::GameFunctions::MaxUpgradeVehicle(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID));
+				if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) {
+					Cheat::GameFunctions::MaxUpgradeVehicle(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID));
 					Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Max Upgraded", "Textures", "AdvancedNotificationImage", false, 4, "Vehicle Customizer", "", 1.0, "");
 				}
 				else 
@@ -2196,8 +2196,8 @@ void Cheat::Main()
 			}
 			if (Cheat::Option("Max Downgrade", "Max downgrade current vehicle"))
 			{
-				if (PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, 0)) {
-					Cheat::GameFunctions::MaxDowngradeVehicle(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID));
+				if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) {
+					Cheat::GameFunctions::MaxDowngradeVehicle(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID));
 					Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Max Downgraded", "Textures", "AdvancedNotificationImage", false, 4, "Vehicle Customizer", "", 1.0, "");
 				}
 				else 
@@ -2206,9 +2206,9 @@ void Cheat::Main()
 				}
 			}
 			if (Cheat::Option("Add Blip Registration", "Add Blip To Current Vehicle")) {
-				if (PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, 0)) {
+				if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) {
 
-					Cheat::GameFunctions::AddBlipToVehicle(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID));
+					Cheat::GameFunctions::AddBlipToVehicle(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID));
 				}
 				else
 				{
@@ -2217,8 +2217,8 @@ void Cheat::Main()
 			}
 			if (Cheat::Option("Change License Plate Text", "Input custom vehicle license plate text"))
 			{
-				if (PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, 0)) {			
-					Vehicle VehicleHandle = PED::GET_VEHICLE_PED_IS_USING(PlayerPedID);
+				if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) {			
+					Vehicle VehicleHandle = PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID);
 					char* KeyboardInput = Cheat::GameFunctions::DisplayKeyboardAndReturnInput(8);
 					if (KeyboardInput == "0") { break; }
 					VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(VehicleHandle, KeyboardInput);
@@ -2243,9 +2243,9 @@ void Cheat::Main()
 			Cheat::Int("Primary Color: Blue", VehiclePrimaryColorBlue, 0, 255, 1);
 			if (Cheat::Option("Set Primary Color", "")) 
 			{
-				if (PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, 0)) 
+				if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) 
 				{
-					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 					VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, VehiclePrimaryColorRed, VehiclePrimaryColorGreen, VehiclePrimaryColorBlue);
 				}
 				else
@@ -2258,9 +2258,9 @@ void Cheat::Main()
 			Cheat::Int("Secondary Color: Blue", VehicleSecondaryColorBlue, 0, 255, 1);
 			if (Cheat::Option("Set Secondary Color", "")) 
 			{
-				if (PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, 0)) 
+				if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) 
 				{
-					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 					VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(veh, VehicleSecondaryColorRed, VehicleSecondaryColorGreen, VehicleSecondaryColorBlue);
 				}
 				else
@@ -2274,7 +2274,7 @@ void Cheat::Main()
 		{
 			Cheat::Title("Color Options");
 			if (Cheat::Option("Random", "Get random color")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, rand() % 255, rand() % 255, rand() % 255);
 				if (VEHICLE::GET_IS_VEHICLE_SECONDARY_COLOUR_CUSTOM(veh))
 					VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(veh, rand() % 255, rand() % 255, rand() % 255);
@@ -2282,91 +2282,91 @@ void Cheat::Main()
 			Cheat::MenuOption("Custom Color >", VehicleCustomizerColorMenu);
 			Cheat::Break("~bold~Color Presets", true);
 			if (Cheat::Option("Chrome", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 120, 120);
 			}
 			if (Cheat::Option("Black", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 0, 0, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("White", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 255, 255);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Red", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 0, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Green", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 0, 255, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Blue", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 0, 0, 255);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Orange", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 128, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Yellow", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 255, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Purple", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 204, 0, 204);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Grey", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 96, 96, 96);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Brown", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 165, 42, 42);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Pink", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 51, 255);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Cool Green", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 0, 255, 196);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Hot Pink", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 0, 145);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Lime", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 128, 255, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Lava Red", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 60, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Mint Green", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 0, 255, 119);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
 			if (Cheat::Option("Neon Green", "")) {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 187, 255, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
@@ -2377,7 +2377,7 @@ void Cheat::Main()
 			Cheat::Title("Neon Options");
 			if (Cheat::Option("Enable Neons", "Enable Vehicle Neons")) 
 			{
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 1);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 0, 1);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 1, 1);
@@ -2390,7 +2390,7 @@ void Cheat::Main()
 				VEHICLE::SET_VEHICLE_MOD_KIT(VehID, 0);
 			}
 			if (Cheat::Option("Disable Neons", "Disable Vehicle Neons")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 1);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 0, 0);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 1, 0);
@@ -2407,9 +2407,9 @@ void Cheat::Main()
 			Cheat::Int("Neon Color: Blue", VehicleNeonLightBlue, 0, 255, 1);
 			if (Cheat::Option("Set Neon Color", "Set Vehicle Neon Colors")) 
 			{
-				if (PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, 0)) 
+				if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) 
 				{
-					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 					VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(veh, VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue);
 				}
 				else
@@ -2419,62 +2419,62 @@ void Cheat::Main()
 			}
 			Cheat::Break("Neon Presets", true);
 			if (Cheat::Option("Red", "")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 1);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 255, 0, 0);
 			}
 			if (Cheat::Option("Green", "")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 0, 255, 0);
 			}
 			if (Cheat::Option("Blue", "")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 0, 0, 255);
 			}
 			if (Cheat::Option("Hot Pink", "")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 226, 35, 157);
 			}
 			if (Cheat::Option("Yellow", "")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 247, 244, 0);
 			}
 			if (Cheat::Option("Orange", "")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 247, 91, 0);
 			}
 			if (Cheat::Option("Aqua", "")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 40, 255, 255);
 			}
 			if (Cheat::Option("White", "")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 255, 255, 255);
 			}
 			if (Cheat::Option("Magenta", "")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 102, 0, 35);
 			}
 			if (Cheat::Option("Purple", "")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 53, 0, 83);
 			}
 			if (Cheat::Option("Dark Green", "")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 0, 118, 0);
 			}
 			if (Cheat::Option("Rose Red", "")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0);
+				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 161, 0, 0);
 			}
@@ -2486,8 +2486,8 @@ void Cheat::Main()
 			Cheat::Int("Engine Multiplier", engine_multiplier, 0, 1000, 1, "Set Engine Multiplier value");
 			Cheat::Int("Engine Torque Multiplier", torque_multiplier, 0, 1000, 1, "Set engine torque multiplier value");
 			if (Cheat::Option("Set", "Set Multiplier")) {
-				if (PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, 0)) {
-					Vehicle CurrentVehicle = PED::GET_VEHICLE_PED_IS_USING(PlayerPedID);
+				if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) {
+					Vehicle CurrentVehicle = PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID);
 					VEHICLE::_SET_VEHICLE_ENGINE_POWER_MULTIPLIER(CurrentVehicle, engine_multiplier); // Engine Multiplier
 					VEHICLE::_SET_VEHICLE_ENGINE_TORQUE_MULTIPLIER(CurrentVehicle, torque_multiplier); // Engine Torque Multiplier
 				}
@@ -2503,18 +2503,18 @@ void Cheat::Main()
 			Cheat::Title("Door Options");
 			if (Cheat::Option("Open All Doors", "Open All Vehicle Doors"))
 			{
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), 0, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), 1, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), 2, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), 3, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), 4, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), 5, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), 6, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), 7, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 0, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 1, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 2, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 3, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 4, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 5, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 6, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 7, true, false);
 			}
-			if (Cheat::Option("Close All Doors", "Close All Vehicle Doors")) { VEHICLE::SET_VEHICLE_DOORS_SHUT(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), true); }
-			if (Cheat::Option("Lock All Doors", "Lock All Vehicle Doors")) { VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), 4); }
-			if (Cheat::Option("Unlock All Doors", "Unlock All Vehicle Doors")) { VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(PlayerPedID), 0); }
+			if (Cheat::Option("Close All Doors", "Close All Vehicle Doors")) { VEHICLE::SET_VEHICLE_DOORS_SHUT(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), true); }
+			if (Cheat::Option("Lock All Doors", "Lock All Vehicle Doors")) { VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 4); }
+			if (Cheat::Option("Unlock All Doors", "Unlock All Vehicle Doors")) { VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 0); }
 		}
 		break;
 		case vehicleweaponsmenu:
@@ -2570,7 +2570,7 @@ void Cheat::Main()
 			Cheat::MenuOption("Nearby Peds >", nearbypeds_menu); 
 			Cheat::Toggle("Snow (local)", Cheat::CheatFeatures::WorldSnowLocalBool, "GTA Online Only");
 			if (Cheat::Option("Clear Area", "Clear area of vehicles, objects etc")) {
-				Vector3 MyPos = ENTITY::GET_ENTITY_COORDS(PlayerPedID, false);
+				Vector3 MyPos = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, false);
 				GAMEPLAY::CLEAR_AREA(MyPos.x, MyPos.y, MyPos.z, 250, true, 0, 0, 0);
 				GAMEPLAY::CLEAR_AREA_OF_COPS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
 				GAMEPLAY::CLEAR_AREA_OF_OBJECTS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
@@ -2584,12 +2584,12 @@ void Cheat::Main()
 
 				Vehicle *vehs = new Vehicle[ArrSize];
 				vehs[0] = ElementAmount;
-				int VehFound = PED::GET_PED_NEARBY_VEHICLES(PlayerPedID, vehs);
+				int VehFound = PED::GET_PED_NEARBY_VEHICLES(Cheat::GameFunctions::PlayerPedID, vehs);
 
 				for (int i = 0; i < VehFound; i++)
 				{
 					int OffsetID = i * 2 + 2;
-					if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, false))
+					if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false))
 					{
 						Cheat::GameFunctions::RequestControlOfEnt(vehs[OffsetID]);
 						ENTITY::SET_ENTITY_COORDS(vehs[OffsetID], 6400.f, 6400.f, 0.f, false, false, false, false);
@@ -2613,13 +2613,13 @@ void Cheat::Main()
 				Ped *peds = new Ped[ArrSize];
 				peds[0] = ElementAmount;
 
-				int PedFound = PED::GET_PED_NEARBY_PEDS(PlayerPedID, peds, -1);
+				int PedFound = PED::GET_PED_NEARBY_PEDS(Cheat::GameFunctions::PlayerPedID, peds, -1);
 
 				for (int i = 0; i < PedFound; i++)
 				{
 					int OffsetID = i * 2 + 2;
 					Cheat::GameFunctions::RequestControlOfEnt(peds[OffsetID]);
-					if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && PlayerPedID != peds[OffsetID])
+					if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && Cheat::GameFunctions::PlayerPedID != peds[OffsetID])
 					{
 						Vector3 pos = ENTITY::GET_ENTITY_COORDS(peds[OffsetID], false);
 						FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 0, 1000.f, true, false, 0.f);
@@ -2635,13 +2635,13 @@ void Cheat::Main()
 				Ped *peds = new Ped[ArrSize];
 				peds[0] = ElementAmount;
 
-				int PedFound = PED::GET_PED_NEARBY_PEDS(PlayerPedID, peds, -1);
+				int PedFound = PED::GET_PED_NEARBY_PEDS(Cheat::GameFunctions::PlayerPedID, peds, -1);
 
 				for (int i = 0; i < PedFound; i++)
 				{
 					int OffsetID = i * 2 + 2;
 					Cheat::GameFunctions::RequestControlOfEnt(peds[OffsetID]);
-					if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && PlayerPedID != peds[OffsetID])
+					if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && Cheat::GameFunctions::PlayerPedID != peds[OffsetID])
 					{
 						PED::APPLY_DAMAGE_TO_PED(peds[OffsetID], 1000, false);
 					}
@@ -2774,12 +2774,12 @@ void Cheat::Main()
 
 				Vehicle *vehs = new Vehicle[ArrSize];
 				vehs[0] = ElementAmount;
-				int VehFound = PED::GET_PED_NEARBY_VEHICLES(PlayerPedID, vehs);
+				int VehFound = PED::GET_PED_NEARBY_VEHICLES(Cheat::GameFunctions::PlayerPedID, vehs);
 
 				for (int i = 0; i < VehFound; i++)
 				{
 					int OffsetID = i * 2 + 2;
-					if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, false))
+					if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false))
 					{
 						Cheat::GameFunctions::RequestControlOfEnt(vehs[OffsetID]);
 						Vector3 coords = ENTITY::GET_ENTITY_COORDS(vehs[OffsetID], false);
@@ -2795,12 +2795,12 @@ void Cheat::Main()
 
 				Vehicle *vehs = new Vehicle[ArrSize];
 				vehs[0] = ElementAmount;
-				int VehFound = PED::GET_PED_NEARBY_VEHICLES(PlayerPedID, vehs);
+				int VehFound = PED::GET_PED_NEARBY_VEHICLES(Cheat::GameFunctions::PlayerPedID, vehs);
 
 				for (int i = 0; i < VehFound; i++)
 				{
 					int OffsetID = i * 2 + 2;
-					if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, false))
+					if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false))
 					{
 						Cheat::GameFunctions::RequestControlOfEnt(vehs[OffsetID]);
 						ENTITY::SET_ENTITY_COORDS(vehs[OffsetID], 6400.f, 6400.f, 0.f, false, false, false, false);
@@ -2814,7 +2814,7 @@ void Cheat::Main()
 				const int arrSize = numElements * 2 + 2;
 				Vehicle veh[arrSize];
 				veh[0] = numElements;
-				int count = PED::GET_PED_NEARBY_VEHICLES(PlayerPedID, veh);
+				int count = PED::GET_PED_NEARBY_VEHICLES(Cheat::GameFunctions::PlayerPedID, veh);
 				if (veh != NULL)
 				{
 					for (int i = 1; i <= count; i++)
@@ -2822,7 +2822,7 @@ void Cheat::Main()
 						int offsettedID = i;
 						if (veh[offsettedID] != NULL && ENTITY::DOES_ENTITY_EXIST(veh[offsettedID]))
 						{
-							Cheat::GameFunctions::RequestNetworkControl(veh[offsettedID]);
+							Cheat::GameFunctions::RequestControlOfEnt(veh[offsettedID]);
 							VEHICLE::SET_VEHICLE_FORWARD_SPEED(veh[offsettedID], 10000.0f);
 						}
 					}
@@ -2887,13 +2887,13 @@ void Cheat::Main()
 					Vector3 waypoint1 = UI::GET_BLIP_COORDS(UI::GET_FIRST_BLIP_INFO_ID(8));
 					STREAMING::REQUEST_MODEL(GAMEPLAY::GET_HASH_KEY("marshall"));
 					while (!STREAMING::HAS_MODEL_LOADED(GAMEPLAY::GET_HASH_KEY("marshall"))) WAIT(0);
-					Vector3 pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PlayerPedID, 0.0, 5.0, 0);
-					Vehicle veh = VEHICLE::CREATE_VEHICLE(GAMEPLAY::GET_HASH_KEY("marshall"), pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(PlayerPedID), 1, 1);
+					Vector3 pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(Cheat::GameFunctions::PlayerPedID, 0.0, 5.0, 0);
+					Vehicle veh = VEHICLE::CREATE_VEHICLE(GAMEPLAY::GET_HASH_KEY("marshall"), pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(Cheat::GameFunctions::PlayerPedID), 1, 1);
 					if (veh != 0)
 					{
 						Ped Driver = PED::CREATE_RANDOM_PED_AS_DRIVER(veh, false);
 						PED::SET_PED_INTO_VEHICLE(Driver, veh, -1);
-						PED::SET_PED_INTO_VEHICLE(PlayerPedID, veh, 0);
+						PED::SET_PED_INTO_VEHICLE(Cheat::GameFunctions::PlayerPedID, veh, 0);
 						AI::TASK_VEHICLE_DRIVE_TO_COORD(Driver, veh, waypoint1.x, waypoint1.y, waypoint1.z, 40, 1, ENTITY::GET_ENTITY_MODEL(veh), 7, 6, -1);
 						VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(veh, "CRUSADER");
 						Cheat::GameFunctions::MinimapNotification("NPC Driver Spawned");
@@ -3124,169 +3124,169 @@ void Cheat::Main()
 			Cheat::Title("Weapon Options");
 			if (Cheat::Option("Give All Weapons", ""))
 			{
-				Cheat::GameFunctions::GiveAllWeaponsToPlayer(PlayerPedID);
+				Cheat::GameFunctions::GiveAllWeaponsToPlayer(Cheat::GameFunctions::PlayerPedID);
 			}
 			if (Cheat::Option("Remove All Weapons", ""))
 			{
 				if (Cheat::CheatFeatures::AutoGiveAllWeaponsBool) { Cheat::GameFunctions::MinimapNotification("Disable 'Auto Give All Weapons' to use this"); }
-				else { WEAPON::REMOVE_ALL_PED_WEAPONS(PlayerPedID, true); }
+				else { WEAPON::REMOVE_ALL_PED_WEAPONS(Cheat::GameFunctions::PlayerPedID, true); }
 			}
 			if (Cheat::Option("Max Upgrade Weapons", "Max Upgrade All Weapons"))
 			{
 				//Mk2 Weapons
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_PISTOL_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_PISTOL_MK2_CLIP_INCENDIARY"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_PISTOL_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_PISTOL_MK2_CAMO_IND_01"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_SMG_MK2_CLIP_FMJ"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_PI_SUPP"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_07"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_SB_BARREL_02"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_SMG_MK2_CAMO_IND_01"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_ASSAULTRIFLE_MK2_CLIP_FMJ"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_AR_SUPP_02"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_07"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_AR_BARREL_02"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_ASSAULTRIFLE_MK2_CAMO_IND_01"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_PISTOL_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_PISTOL_MK2_CLIP_INCENDIARY"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_PISTOL_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_PISTOL_MK2_CAMO_IND_01"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_SMG_MK2_CLIP_FMJ"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_PI_SUPP"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_07"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_SB_BARREL_02"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_SMG_MK2_CAMO_IND_01"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_ASSAULTRIFLE_MK2_CLIP_FMJ"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_AR_SUPP_02"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_07"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_AR_BARREL_02"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_ASSAULTRIFLE_MK2_CAMO_IND_01"));
 				
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_CARBINERIFLE_MK2_CLIP_FMJ"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_AR_SUPP"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_07"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_CR_BARREL_02"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_CARBINERIFLE_MK2_CAMO"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_CARBINERIFLE_MK2_CLIP_FMJ"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_AR_SUPP"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_07"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_CR_BARREL_02"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_CARBINERIFLE_MK2_CAMO"));
 
 
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_COMBATMG_MK2_CLIP_FMJ"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_SCOPE_MEDIUM_MK2"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_07"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MG_BARREL_02"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_COMBATMG_MK2_CAMO_IND_01"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_COMBATMG_MK2_CLIP_FMJ"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_SCOPE_MEDIUM_MK2"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_07"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MG_BARREL_02"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_COMBATMG_MK2_CAMO_IND_01"));
 				
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_HEAVYSNIPER_MK2_CLIP_EXPLOSIVE"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_SR_SUPP_03"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_09"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_SR_BARREL_02"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_HEAVYSNIPER_MK2_CAMO_IND_01"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_HEAVYSNIPER_MK2_CLIP_EXPLOSIVE"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_SR_SUPP_03"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_09"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_SR_BARREL_02"));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_HEAVYSNIPER_MK2_CAMO_IND_01"));
 
 				// Attachments FlashLight
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xAF113F99, 0x359B7AAE); //Advanced Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x0A3D4D34, 0x7BC4CDDC); //Combat PDW
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x13532244, 0x359B7AAE); //Micro SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x22D8FE39, 0x359B7AAE); //AP Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xD205520E, 0x359B7AAE); //Heavy Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x7F229F94, 0x7BC4CDDC); //Bullpump Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x1B06D571, 0x359B7AAE); //Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x5EF9FEC4, 0x359B7AAE); //Combat Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x99AEEB3B, 0x359B7AAE); //.50 Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x2BE6766B, 0x7BC4CDDC); //SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xEFE7E2DF, 0x7BC4CDDC); //Assault SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xBFEFFF6D, 0x7BC4CDDC); //Assault Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x83BF0278, 0x7BC4CDDC); //Carbine Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xAF113F99, 0x359B7AAE); //Advanced Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x0A3D4D34, 0x7BC4CDDC); //Combat PDW
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x13532244, 0x359B7AAE); //Micro SMG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x22D8FE39, 0x359B7AAE); //AP Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xD205520E, 0x359B7AAE); //Heavy Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x7F229F94, 0x7BC4CDDC); //Bullpump Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x1B06D571, 0x359B7AAE); //Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x5EF9FEC4, 0x359B7AAE); //Combat Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x99AEEB3B, 0x359B7AAE); //.50 Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x2BE6766B, 0x7BC4CDDC); //SMG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xEFE7E2DF, 0x7BC4CDDC); //Assault SMG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xBFEFFF6D, 0x7BC4CDDC); //Assault Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x83BF0278, 0x7BC4CDDC); //Carbine Rifle
 
 				//Attachments Clips
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xAF113F99, 0x8EC1C979); //Extened Clip Advanced Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x05FC3C11, 0xBC54DA77); //Advanced scope Sniper Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x22D8FE39, 0x249A17D5); //Extended Clip AP Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x0C472FE2, 0xBC54DA77); //Advanced scope Heavy Sniper
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xD205520E, 0x64F9C62B); //Heavy Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xBFD21232, 0x7B0033B3); //SNS Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xC0A3098D, 0x7C8BD10E); //Special Carbine
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xE284C527, 0x86BD7F72); //Assault Shotgun
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x7F229F94, 0xB3688B0F); //Bullpump Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x7FD62962, 0xD6C59CD6); //Combat MG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x1B06D571, 0xED265A1C); //Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x5EF9FEC4, 0xD67B4F2D); //Combat Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x99AEEB3B, 0xD9D3AC92); //.50 Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x083839C4, 0x33BA12E8); //Vintage Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x13532244, 0x10E6BA2B); //Micro SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x2BE6766B, 0x350966FB); //SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xEFE7E2DF, 0xBB46E417); //Assault SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x0A3D4D34, 0x334A5203); //Combat PDW
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x9D07F764, 0x82158B47); //MG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x61012683, 0xEAC8C270); //Gusenberg
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xBFEFFF6D, 0xB1214F9B); //Assault Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x83BF0278, 0x91109691); //Carbine Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xC734385A, 0xCCFD2AC5); //Marksman Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xAF113F99, 0x8EC1C979); //Extened Clip Advanced Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x05FC3C11, 0xBC54DA77); //Advanced scope Sniper Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x22D8FE39, 0x249A17D5); //Extended Clip AP Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x0C472FE2, 0xBC54DA77); //Advanced scope Heavy Sniper
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xD205520E, 0x64F9C62B); //Heavy Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xBFD21232, 0x7B0033B3); //SNS Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xC0A3098D, 0x7C8BD10E); //Special Carbine
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xE284C527, 0x86BD7F72); //Assault Shotgun
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x7F229F94, 0xB3688B0F); //Bullpump Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x7FD62962, 0xD6C59CD6); //Combat MG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x1B06D571, 0xED265A1C); //Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x5EF9FEC4, 0xD67B4F2D); //Combat Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x99AEEB3B, 0xD9D3AC92); //.50 Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x083839C4, 0x33BA12E8); //Vintage Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x13532244, 0x10E6BA2B); //Micro SMG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x2BE6766B, 0x350966FB); //SMG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xEFE7E2DF, 0xBB46E417); //Assault SMG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x0A3D4D34, 0x334A5203); //Combat PDW
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x9D07F764, 0x82158B47); //MG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x61012683, 0xEAC8C270); //Gusenberg
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xBFEFFF6D, 0xB1214F9B); //Assault Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x83BF0278, 0x91109691); //Carbine Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xC734385A, 0xCCFD2AC5); //Marksman Rifle
 
 				//Attachments Scopes
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xAF113F99, 0xAA2C45B4); //Extened Clip Advanced Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x05FC3C11, 0xD2443DDC); //Advanced scope Sniper Rifle, 
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x0C472FE2, 0xD2443DDC); //Advanced scope Heavy Sniper
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xC0A3098D, 0xA0D89C42); //Special Carbine
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x7F229F94, 0xAA2C45B4); //Bullpump Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x13532244, 0x9D2FBF29); //Micro SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x2BE6766B, 0x3CC6BA57); //SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xEFE7E2DF, 0x9D2FBF29); //Assault SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x0A3D4D34, 0xAA2C45B4); //Combat PDW
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x3C00AFED, 0x82158B47); //MG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xBFEFFF6D, 0x9D2FBF29); //Assault Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x83BF0278, 0xA0D89C42); //Carbine Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xAF113F99, 0xAA2C45B4); //Extened Clip Advanced Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x05FC3C11, 0xD2443DDC); //Advanced scope Sniper Rifle, 
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x0C472FE2, 0xD2443DDC); //Advanced scope Heavy Sniper
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xC0A3098D, 0xA0D89C42); //Special Carbine
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x7F229F94, 0xAA2C45B4); //Bullpump Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x13532244, 0x9D2FBF29); //Micro SMG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x2BE6766B, 0x3CC6BA57); //SMG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xEFE7E2DF, 0x9D2FBF29); //Assault SMG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x0A3D4D34, 0xAA2C45B4); //Combat PDW
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x3C00AFED, 0x82158B47); //MG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xBFEFFF6D, 0x9D2FBF29); //Assault Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x83BF0278, 0xA0D89C42); //Carbine Rifle
 
 				//Attachments Supressors
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xAF113F99, 0x8EC1C979); //Advanced Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x05FC3C11, 0xA73D4664); //Sniper Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x22D8FE39, 0xC304849A); //AP Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xD205520E, 0xC304849A); //Heavy Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xC0A3098D, 0xA73D4664); //Special Carbine
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x7F229F94, 0x837445AA); //Bullpump Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x1B06D571, 0x65EA7EBB); //Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x5EF9FEC4, 0xC304849A); //Combat Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x083839C4, 0xC304849A); //Vintage Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x2BE6766B, 0xC304849A); //SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xEFE7E2DF, 0xA73D4664); //Assault SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xBFEFFF6D, 0xA73D4664); //Assault Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x83BF0278, 0x837445AA); //Carbine Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xC734385A, 0x837445AA); //Marksman Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x1D073A89, 0xE608B35E); //Pump Shotgun
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xAF113F99, 0x8EC1C979); //Advanced Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x05FC3C11, 0xA73D4664); //Sniper Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x22D8FE39, 0xC304849A); //AP Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xD205520E, 0xC304849A); //Heavy Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xC0A3098D, 0xA73D4664); //Special Carbine
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x7F229F94, 0x837445AA); //Bullpump Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x1B06D571, 0x65EA7EBB); //Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x5EF9FEC4, 0xC304849A); //Combat Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x083839C4, 0xC304849A); //Vintage Pistol
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x2BE6766B, 0xC304849A); //SMG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xEFE7E2DF, 0xA73D4664); //Assault SMG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xBFEFFF6D, 0xA73D4664); //Assault Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x83BF0278, 0x837445AA); //Carbine Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xC734385A, 0x837445AA); //Marksman Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x1D073A89, 0xE608B35E); //Pump Shotgun
 
 				//Attachments Grip
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xC0A3098D, 0xC164F53); //Special Carbine
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x7F229F94, 0xC164F53); //Bullpump Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x9D61E50F, 0xC164F53); //Bullpump ShotGun
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xBFEFFF6D, 0xC164F53); //Assault Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x83BF0278, 0xC164F53); //Carbine Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xC734385A, 0xC164F53); //Marksman Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x0A3D4D34, 0xC164F53); //Combat PDW
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x7FD62962, 0xC164F53); //Combat MG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0xE284C527, 0xC164F53); //Assault Shotgun
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xC0A3098D, 0xC164F53); //Special Carbine
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x7F229F94, 0xC164F53); //Bullpump Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x9D61E50F, 0xC164F53); //Bullpump ShotGun
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xBFEFFF6D, 0xC164F53); //Assault Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x83BF0278, 0xC164F53); //Carbine Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xC734385A, 0xC164F53); //Marksman Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x0A3D4D34, 0xC164F53); //Combat PDW
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x7FD62962, 0xC164F53); //Combat MG
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xE284C527, 0xC164F53); //Assault Shotgun
 
 				//Special Finish
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(PlayerPedID, 0x83BF0278, 0xD89B9658); //Carbine Rifle
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(Cheat::GameFunctions::PlayerPedID, 0x83BF0278, 0xD89B9658); //Carbine Rifle
 
 				//Paints
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x1B06D571, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x5EF9FEC4, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x22D8FE39, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x99AEEB3B, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x13532244, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x2BE6766B, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0xEFE7E2DF, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0xBFEFFF6D, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x83BF0278, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0xAF113F99, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x9D07F764, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x7FD62962, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x1D073A89, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x7846A318, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0xE284C527, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x9D61E50F, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x05FC3C11, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x0C472FE2, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0xA284510B, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0xB1CA77B1, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x42BF8A85, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x687652CE, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x61012683, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0xC0A3098D, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0xD205520E, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0xBFD21232, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x7F229F94, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x083839C4, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x7F7497E5, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0xA89CB99E, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x63AB0442, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0xC734385A, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x0A3D4D34, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0xF9D04ADB, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(PlayerPedID, 0x0A3D4D34, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x1B06D571, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x5EF9FEC4, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x22D8FE39, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x99AEEB3B, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x13532244, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x2BE6766B, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0xEFE7E2DF, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0xBFEFFF6D, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x83BF0278, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0xAF113F99, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x9D07F764, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x7FD62962, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x1D073A89, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x7846A318, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0xE284C527, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x9D61E50F, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x05FC3C11, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x0C472FE2, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0xA284510B, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0xB1CA77B1, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x42BF8A85, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x687652CE, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x61012683, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0xC0A3098D, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0xD205520E, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0xBFD21232, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x7F229F94, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x083839C4, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x7F7497E5, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0xA89CB99E, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x63AB0442, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0xC734385A, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x0A3D4D34, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0xF9D04ADB, 2);
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x0A3D4D34, 2);
 			}
 			Cheat::MenuOption("Custom Bullets >", custombulletsmenu);
 			Cheat::MenuOption("Vehicle Gun >", vehiclegunmenu);
@@ -3367,13 +3367,13 @@ void Cheat::Main()
 			if (Cheat::Option("Teleport To Objective", "")) { Cheat::GameFunctions::TeleportToObjective(); }
 			if (Cheat::Option("Teleport Into Last Used Vehicle", "")) {
 				Vehicle LastUsedVehicle = VEHICLE::GET_LAST_DRIVEN_VEHICLE();
-				PED::SET_PED_INTO_VEHICLE(PlayerPedID, LastUsedVehicle, -1);
+				PED::SET_PED_INTO_VEHICLE(Cheat::GameFunctions::PlayerPedID, LastUsedVehicle, -1);
 			}
 			if (Cheat::Float("Teleport Forward", TeleportFoward, 1.f, 10.f, 1.f, false, false, "Select to teleport"))
 			{
-				Vector3 Coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PlayerPedID, 0.0, TeleportFoward, 0.0);
-				int Handle = PlayerPedID;
-				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) { Handle = PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, 0); }
+				Vector3 Coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(Cheat::GameFunctions::PlayerPedID, 0.0, TeleportFoward, 0.0);
+				int Handle = Cheat::GameFunctions::PlayerPedID;
+				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) { Handle = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0); }
 				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Handle, Coords.x, Coords.y, Coords.z, 0, 0, 1);
 			}
 			Cheat::MenuOption("IPL Teleports >", iplteleports);
@@ -3473,27 +3473,27 @@ void Cheat::Main()
 			Cheat::MenuOption("Go to IPL Loader submenu", iplloader);
 			if (Cheat::Option("North Yankton", ""))
 			{
-				ENTITY::SET_ENTITY_COORDS(PlayerPedID, 5309.519f, -5212.37f, 83.522f, true, false, false, true);
+				ENTITY::SET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 5309.519f, -5212.37f, 83.522f, true, false, false, true);
 			}
 			if (Cheat::Option("Yacht", ""))
 			{
-				ENTITY::SET_ENTITY_COORDS(PlayerPedID, -2045.8f, -1031.2f, 11.9f, true, false, false, true);
+				ENTITY::SET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, -2045.8f, -1031.2f, 11.9f, true, false, false, true);
 			}
 			if (Cheat::Option("Destroyed Hospital", ""))
 			{
-				ENTITY::SET_ENTITY_COORDS(PlayerPedID, 356.8f, -590.1f, 43.3f, true, false, false, true);
+				ENTITY::SET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 356.8f, -590.1f, 43.3f, true, false, false, true);
 			}
 			if (Cheat::Option("Jewelry Store", ""))
 			{
-				ENTITY::SET_ENTITY_COORDS(PlayerPedID, -630.4f, -236.7f, 40.0f, true, false, false, true);
+				ENTITY::SET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, -630.4f, -236.7f, 40.0f, true, false, false, true);
 			}
 			if (Cheat::Option("Morgue", ""))
 			{
-				ENTITY::SET_ENTITY_COORDS(PlayerPedID, 244.9f, -1374.7f, 39.5f, true, false, false, true);
+				ENTITY::SET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 244.9f, -1374.7f, 39.5f, true, false, false, true);
 			}
 			if (Cheat::Option("Cargo Ship", ""))
 			{
-				ENTITY::SET_ENTITY_COORDS(PlayerPedID, -90.0f, -2365.8f, 14.3f, true, false, false, true);
+				ENTITY::SET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, -90.0f, -2365.8f, 14.3f, true, false, false, true);
 			}
 		}
 		break; 
@@ -3542,14 +3542,14 @@ void Cheat::Main()
 			}
 			if (Cheat::Option("Attach to player", "Attach to selected player"))
 			{
-				if (PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer) != PlayerPedID)
+				if (PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer) != Cheat::GameFunctions::PlayerPedID)
 				{
-					ENTITY::ATTACH_ENTITY_TO_ENTITY(PlayerPedID, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), 0, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, true, true, false, true, 2, true);
+					ENTITY::ATTACH_ENTITY_TO_ENTITY(Cheat::GameFunctions::PlayerPedID, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), 0, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, true, true, false, true, 2, true);
 				}
 			}
 			if (Cheat::Option("Detach from player", "Detach from selected player"))
 			{
-				ENTITY::DETACH_ENTITY(PlayerPedID, true, true);
+				ENTITY::DETACH_ENTITY(Cheat::GameFunctions::PlayerPedID, true, true);
 			}
 			if (Cheat::Option("Slingshot Vehicle", "Slingshot selected player vehicle"))
 			{
@@ -3664,7 +3664,7 @@ void Cheat::Main()
 						if (Cheat::GameFunctions::PlayerIsFreemodeScriptHost(i)) { PlayernameString.append(" ~o~[Host]"); }
 						if (Cheat::GameFunctions::IsPlayerFriend(i)) { PlayernameString.append(" ~b~[Friend]"); }
 						if (Cheat::GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) { PlayernameString.append(" ~p~[Interior]"); }
-						if (PlayerID == i) { PlayernameString.append(" ~g~[You]"); }
+						if (Cheat::GameFunctions::PlayerID == i) { PlayernameString.append(" ~g~[You]"); }
 					}
 					Cheat::MenuOptionPlayerList(PlayernameString, SelectedPlayerMenu, i) ? Cheat::CheatFeatures::selectedPlayer = i : NULL;
 					if (Cheat::GUI::currentOption == Cheat::GUI::optionCount) { Cheat::GameFunctions::LoadPlayerInformation(PLAYER::GET_PLAYER_NAME(i), i); }
@@ -3683,7 +3683,7 @@ void Cheat::Main()
 			{
 				Entity handle;
 				Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), false);
-				PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, false) ? handle = PED::GET_VEHICLE_PED_IS_USING(PlayerPedID) : handle = PlayerPedID;
+				PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, false) ? handle = PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID) : handle = Cheat::GameFunctions::PlayerPedID;
 				Cheat::GameFunctions::TeleportToCoords(handle, coords, false);
 
 			}
@@ -3713,8 +3713,8 @@ void Cheat::Main()
 			{
 				if (NETWORK::NETWORK_IS_SESSION_STARTED())
 				{
-					uint64_t kick_sp[4] = { 1667907776, Cheat::CheatFeatures::selectedPlayer, 0, 0 };
-					SCRIPT::TRIGGER_SCRIPT_EVENT(1, kick_sp, 4, 1 << Cheat::CheatFeatures::selectedPlayer);
+					//uint64_t kick_sp[4] = { 1667907776, Cheat::CheatFeatures::selectedPlayer, 0, 0 };
+					//SCRIPT::TRIGGER_SCRIPT_EVENT(1, kick_sp, 4, 1 << Cheat::CheatFeatures::selectedPlayer);
 				}
 			}
 		}
@@ -3727,7 +3727,7 @@ void Cheat::Main()
 			if (Cheat::Option("Teleport Into Vehicle", "Teleport into Selected Player vehicle"))
 			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), false);
-				for (int i = -1; i < 16; i++) { if (VEHICLE::IS_VEHICLE_SEAT_FREE(veh, i)) { PED::SET_PED_INTO_VEHICLE(PlayerPedID, veh, i); } }
+				for (int i = -1; i < 16; i++) { if (VEHICLE::IS_VEHICLE_SEAT_FREE(veh, i)) { PED::SET_PED_INTO_VEHICLE(Cheat::GameFunctions::PlayerPedID, veh, i); } }
 			}
 		}
 		break; 
@@ -3745,15 +3745,15 @@ void Cheat::Main()
 			Cheat::Toggle("Unlimited Special Ability", Cheat::CheatFeatures::UnlimitedSpecialAbilityBool, "Always 100% Special Ability");
 			Cheat::Toggle("Ignored By Everyone", Cheat::CheatFeatures::PlayerIgnoredBool, "NPC's will (mostly) ignore you");
 			Cheat::Toggle("Never Wanted", Cheat::CheatFeatures::NeverWantedBool, "Never get a wanted level");
-			if (Cheat::Int("Wanted Level", PlayerWantedLevelInteger, 0, 5, 1, false, false, "Set Wanted Level")) { Cheat::CheatFeatures::NeverWantedBool = false; PLAYER::SET_PLAYER_WANTED_LEVEL(PlayerID, PlayerWantedLevelInteger, false); PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(PlayerID, false); }
+			if (Cheat::Int("Wanted Level", PlayerWantedLevelInteger, 0, 5, 1, false, false, "Set Wanted Level")) { Cheat::CheatFeatures::NeverWantedBool = false; PLAYER::SET_PLAYER_WANTED_LEVEL(Cheat::GameFunctions::PlayerID, PlayerWantedLevelInteger, false); PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(Cheat::GameFunctions::PlayerID, false); }
 			Cheat::Toggle("Invisible", Cheat::CheatFeatures::PlayerInvisibleBool, "Makes your character invisible");
 			Cheat::Toggle("Explosive Melee", Cheat::CheatFeatures::ExplosiveMeleeBool, "Objects you hit with melee explode");
 			Cheat::Toggle("Tiny Player", Cheat::CheatFeatures::TinyPlayerBool, "Lowers your character's scaling");
 			Cheat::Toggle("Super Man", Cheat::CheatFeatures::SuperManBool, "Fly around like a superman!");
-			if (Cheat::Int("Player Opacity", Cheat::CheatFeatures::PlayerOpacityInt, 50, 250, 50, false, "Changes local player opacity")) { ENTITY::SET_ENTITY_ALPHA(PlayerPedID, (Cheat::CheatFeatures::PlayerOpacityInt), false); }
-			if (Cheat::Option("Suicide", "Kill your character")) { PED::APPLY_DAMAGE_TO_PED(PlayerPedID, 300, true); }
+			if (Cheat::Int("Player Opacity", Cheat::CheatFeatures::PlayerOpacityInt, 50, 250, 50, false, "Changes local player opacity")) { ENTITY::SET_ENTITY_ALPHA(Cheat::GameFunctions::PlayerPedID, (Cheat::CheatFeatures::PlayerOpacityInt), false); }
+			if (Cheat::Option("Suicide", "Kill your character")) { PED::APPLY_DAMAGE_TO_PED(Cheat::GameFunctions::PlayerPedID, 300, true); }
 			if (Cheat::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(2437549).At(3880).As<int>() = 1; }
-			if (Cheat::Option("Clean Player", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(PlayerPedID); Cheat::GameFunctions::MinimapNotification("Player Cleaned"); }	
+			if (Cheat::Option("Clean Player", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(Cheat::GameFunctions::PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(Cheat::GameFunctions::PlayerPedID); Cheat::GameFunctions::MinimapNotification("Player Cleaned"); }	
 		}
 		break;
 		case playermoneymenu:
@@ -3775,64 +3775,64 @@ void Cheat::Main()
 		case componentschangermenu:
 		{
 			Cheat::Title("Components Changer");
-			if (Cheat::Int("Face", face, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 0, face, 0); }
-			if (Cheat::Int("Face Texture", facetexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 0, face, facetexture); }
-			if (Cheat::Int("Head", head, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 0, head, 0); }
-			if (Cheat::Int("Head Texture", headtexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 1, head, headtexture); }
-			if (Cheat::Int("Hair", hair, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 2, hair, 0); }
-			if (Cheat::Int("Hair Texture", hairtexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 2, hair, hairtexture); }
-			if (Cheat::Int("Torso", torso, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 3, torso, 0); }
-			if (Cheat::Int("Torso Texture", torsotexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 3, torso, torsotexture); }
-			if (Cheat::Int("Legs", legs, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 4, legs, 0); }
-			if (Cheat::Int("Legs Texture", legstexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 4, legs, legstexture); }
-			if (Cheat::Int("Hands", hands, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 5, hands, 0); }
-			if (Cheat::Int("Hands Texture", handstexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 5, hands, handstexture); }
-			if (Cheat::Int("Feet", feet, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 6, feet, 0); }
-			if (Cheat::Int("Feet Texture", feettexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 6, feet, feettexture); }
-			if (Cheat::Int("Eyes", eyes, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 7, eyes, 0); }
-			if (Cheat::Int("Eyes Texture", eyestexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 7, eyes, eyestexture); }
-			if (Cheat::Int("Accesories", accesories, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 8, accesories, 0); }
-			if (Cheat::Int("Accesories Texture", accesoriestexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 8, accesories, accesoriestexture); }
-			if (Cheat::Int("Accesories2", accesoriessec, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 9, accesoriessec, 0); }
-			if (Cheat::Int("Accesories2 Texture", accesoriessectexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 9, accesoriessec, accesoriessectexture); }
-			if (Cheat::Int("Torso 2", torsosec, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 11, torsosec, 0); }
-			if (Cheat::Int("Torso 2 Texture", torsosectexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 11, torsosec, torsosectexture); }
-			if (Cheat::Int("Textures", textures, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(PlayerPedID, 10, textures, 0); }
-			if (Cheat::Int("Textures Texture", texturestexture, 0, 255, 1, false, false, "")) {  Cheat::GameFunctions::SetPedTexture(PlayerPedID, 9, textures, texturestexture); }
+			if (Cheat::Int("Face", face, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 0, face, 0); }
+			if (Cheat::Int("Face Texture", facetexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 0, face, facetexture); }
+			if (Cheat::Int("Head", head, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 0, head, 0); }
+			if (Cheat::Int("Head Texture", headtexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 1, head, headtexture); }
+			if (Cheat::Int("Hair", hair, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 2, hair, 0); }
+			if (Cheat::Int("Hair Texture", hairtexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 2, hair, hairtexture); }
+			if (Cheat::Int("Torso", torso, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 3, torso, 0); }
+			if (Cheat::Int("Torso Texture", torsotexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 3, torso, torsotexture); }
+			if (Cheat::Int("Legs", legs, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 4, legs, 0); }
+			if (Cheat::Int("Legs Texture", legstexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 4, legs, legstexture); }
+			if (Cheat::Int("Hands", hands, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 5, hands, 0); }
+			if (Cheat::Int("Hands Texture", handstexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 5, hands, handstexture); }
+			if (Cheat::Int("Feet", feet, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 6, feet, 0); }
+			if (Cheat::Int("Feet Texture", feettexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 6, feet, feettexture); }
+			if (Cheat::Int("Eyes", eyes, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 7, eyes, 0); }
+			if (Cheat::Int("Eyes Texture", eyestexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 7, eyes, eyestexture); }
+			if (Cheat::Int("Accesories", accesories, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 8, accesories, 0); }
+			if (Cheat::Int("Accesories Texture", accesoriestexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 8, accesories, accesoriestexture); }
+			if (Cheat::Int("Accesories2", accesoriessec, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 9, accesoriessec, 0); }
+			if (Cheat::Int("Accesories2 Texture", accesoriessectexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 9, accesoriessec, accesoriessectexture); }
+			if (Cheat::Int("Torso 2", torsosec, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 11, torsosec, 0); }
+			if (Cheat::Int("Torso 2 Texture", torsosectexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 11, torsosec, torsosectexture); }
+			if (Cheat::Int("Textures", textures, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 10, textures, 0); }
+			if (Cheat::Int("Textures Texture", texturestexture, 0, 255, 1, false, false, "")) {  Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 9, textures, texturestexture); }
 		}
 		break;
 		case outfitsmenu:
 		{
 			Cheat::Title("Outfits");
-			if (Cheat::Option("Random Outfit", "Get random outfit")) { PED::SET_PED_RANDOM_COMPONENT_VARIATION(PlayerPedID, true); }
+			if (Cheat::Option("Random Outfit", "Get random outfit")) { PED::SET_PED_RANDOM_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, true); }
 			if (Cheat::Option("Police Uniform", "Get police uniform"))
 			{
-				PED::SET_PED_PROP_INDEX(PlayerPedID, 0, 45, 0, 0);
-				PED::SET_PED_COMPONENT_VARIATION(PlayerPedID, 11, 48, 0, 0);
-				PED::SET_PED_COMPONENT_VARIATION(PlayerPedID, 4, 34, 0, 0);
-				PED::SET_PED_COMPONENT_VARIATION(PlayerPedID, 3, 0, 0, 0);
-				PED::SET_PED_COMPONENT_VARIATION(PlayerPedID, 6, 25, 0, 0);
-				PED::SET_PED_COMPONENT_VARIATION(PlayerPedID, 8, 35, 0, 0);			
+				PED::SET_PED_PROP_INDEX(Cheat::GameFunctions::PlayerPedID, 0, 45, 0, 0);
+				PED::SET_PED_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, 11, 48, 0, 0);
+				PED::SET_PED_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, 4, 34, 0, 0);
+				PED::SET_PED_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, 3, 0, 0, 0);
+				PED::SET_PED_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, 6, 25, 0, 0);
+				PED::SET_PED_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, 8, 35, 0, 0);			
 			}
 			if (Cheat::Option("Default Variation", "Get default pedmodel variation")) 
 			{
-				PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PlayerPedID);
+				PED::SET_PED_DEFAULT_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID);
 			}
 			if (Cheat::Option("Random Variation", "Get random pedmodel variation"))
 			{
-				PED::SET_PED_RANDOM_COMPONENT_VARIATION(PlayerPedID, true);
+				PED::SET_PED_RANDOM_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, true);
 			}
 			if (Cheat::Option("Random Accessories", "")) 
 			{
-				PED::SET_PED_RANDOM_PROPS(PlayerPedID);
+				PED::SET_PED_RANDOM_PROPS(Cheat::GameFunctions::PlayerPedID);
 			}
 			if (Cheat::Option("Reset Appearance", "")) 
 			{
-				PED::CLEAR_ALL_PED_PROPS(PlayerPedID);
-				PED::CLEAR_PED_DECORATIONS(PlayerPedID);
-				PED::SET_PED_COMPONENT_VARIATION(PlayerPedID, 1, 0, 0, 0);
-				PED::SET_PED_COMPONENT_VARIATION(PlayerPedID, 5, 0, 0, 0);
-				PED::SET_PED_COMPONENT_VARIATION(PlayerPedID, 9, 0, 0, 0);
+				PED::CLEAR_ALL_PED_PROPS(Cheat::GameFunctions::PlayerPedID);
+				PED::CLEAR_PED_DECORATIONS(Cheat::GameFunctions::PlayerPedID);
+				PED::SET_PED_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, 1, 0, 0, 0);
+				PED::SET_PED_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, 5, 0, 0, 0);
+				PED::SET_PED_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, 9, 0, 0, 0);
 			}
 
 		}
@@ -3911,7 +3911,7 @@ void Cheat::Main()
 		case AnimationsAndScenariosMenu:
 		{
 			Cheat::Title("Animations & Scenarios");
-			if (Cheat::Option("Stop Scenarios & Animations", "")) { AI::CLEAR_PED_TASKS_IMMEDIATELY(PlayerPedID); }
+			if (Cheat::Option("Stop Scenarios & Animations", "")) { AI::CLEAR_PED_TASKS_IMMEDIATELY(Cheat::GameFunctions::PlayerPedID); }
 			Cheat::Break("Animations", true);
 			if (Cheat::Option("Sex Receiver", ""))
 			{
@@ -3967,122 +3967,122 @@ void Cheat::Main()
 			if (Cheat::Option("Paparizzi", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_PAPARAZZI", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_PAPARAZZI", 0, true);
 			}
 			if (Cheat::Option("Drug Dealer", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_DRUG_DEALER_HARD", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_DRUG_DEALER_HARD", 0, true);
 			}
 			if (Cheat::Option("Drinking Coffee", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_AA_COFFEE", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_AA_COFFEE", 0, true);
 			}
 			if (Cheat::Option("Playing Instruments", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_MUSICIAN", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_MUSICIAN", 0, true);
 			}
 			if (Cheat::Option("Flexing", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_MUSCLE_FLEX", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_MUSCLE_FLEX", 0, true);
 			}
 			if (Cheat::Option("Jogging", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_JOG_STANDING", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_JOG_STANDING", 0, true);
 			}
 			if (Cheat::Option("Binoculars", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_BINOCULARS", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_BINOCULARS", 0, true);
 			}
 			if (Cheat::Option("Clipboard", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_CLIPBOARD", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_CLIPBOARD", 0, true);
 			}
 			if (Cheat::Option("Bench Press", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "PROP_HUMAN_SEAT_MUSCLE_BENCH_PRESS", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "PROP_HUMAN_SEAT_MUSCLE_BENCH_PRESS", 0, true);
 			}
 			if (Cheat::Option("Chin Ups", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "PROP_HUMAN_MUSCLE_CHIN_UPS", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "PROP_HUMAN_MUSCLE_CHIN_UPS", 0, true);
 			}
 			if (Cheat::Option("BBQ", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "PROP_HUMAN_BBQ", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "PROP_HUMAN_BBQ", 0, true);
 			}
 			if (Cheat::Option("Superhero", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_SUPERHERO", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_SUPERHERO", 0, true);
 			}
 			if (Cheat::Option("Fishing", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_STAND_FISHING", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_STAND_FISHING", 0, true);
 			}
 			if (Cheat::Option("Security", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_SECURITY_SHINE_TORCH", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_SECURITY_SHINE_TORCH", 0, true);
 			}
 			if (Cheat::Option("Leaf Blower", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_GARDENER_LEAF_BLOWER", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_GARDENER_LEAF_BLOWER", 0, true);
 			}
 			if (Cheat::Option("Film Shocking", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_MOBILE_FILM_SHOCKING", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_MOBILE_FILM_SHOCKING", 0, true);
 			}
 			if (Cheat::Option("Idle Cop", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_COP_IDLES", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_COP_IDLES", 0, true);
 			}
 			if (Cheat::Option("Drinking", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_DRINKING", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_DRINKING", 0, true);
 			}
 			if (Cheat::Option("Golf Player", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_GOLF_PLAYER", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_GOLF_PLAYER", 0, true);
 			}
 			if (Cheat::Option("Welding", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_WELDING", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_WELDING", 0, true);
 			}
 			if (Cheat::Option("Smoking Pot", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_SMOKING_POT", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_SMOKING_POT", 0, true);
 			}
 			if (Cheat::Option("Hammering", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_HAMMERING", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_HAMMERING", 0, true);
 			}
 			if (Cheat::Option("Tennis", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_TENNIS_PLAYER", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_TENNIS_PLAYER", 0, true);
 			}
 			if (Cheat::Option("Drilling", "")) 
 			{
 				Cheat::GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(PlayerPedID, "WORLD_HUMAN_CONST_DRILL", 0, true);
+				AI::TASK_START_SCENARIO_IN_PLACE(Cheat::GameFunctions::PlayerPedID, "WORLD_HUMAN_CONST_DRILL", 0, true);
 			}
 		}
 		break; 
