@@ -239,7 +239,7 @@ bool Cheat::VehicleOption(std::string option, std::string ModelName)
 	}
 	if (GUI::currentOption == GUI::optionCount)
 	{
-		std::transform(ModelName.begin(), ModelName.end(), ModelName.begin(), ::tolower);
+		std::transform(ModelName.begin(), ModelName.end(), ModelName.begin(), tolower);
 		VehiclePreviewDictName = "Textures";
 		VehiclePreviewName	   = "NoVehiclePreviewAvailable";
 

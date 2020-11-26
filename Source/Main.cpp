@@ -1,18 +1,26 @@
 #pragma once
 #include "stdafx.h"
 int Cheat::CheatFeatures::selectedPlayer;
-float TeleportFoward = 1.f;																//Used by Teleport Forward option
-int engine_multiplier, torque_multiplier;												//Used by Vehicle Multipliers options
-int SetTimeHour = 0, SetTimeMinutes = 0, SetTimeSeconds = 0;							//Used by World Time options	
-int SessionTimeHour, SessionTimeMinutes, SessionTimeSeconds;							//Used by Session Time option
-int VehiclePrimaryColorRed, VehiclePrimaryColorGreen, VehiclePrimaryColorBlue;			//Used by Vehicle Color features
-int VehicleSecondaryColorRed, VehicleSecondaryColorGreen, VehicleSecondaryColorBlue;	//Used by Vehicle Color features	
-int VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue;					//Used by Vehicle Color features	
-int WheelColorRed, WheelColorGreen, WheelColorBlue;										//Used by Vehicle Color features
-int PlayerWantedLevelInteger = 0;														//Used by Set Wanted Level Option
-int intexploits, intoffensive, REPORTSTRENGTH, OFFENSIVETAGPLATE, OFFENSIVEUGC,			//Used by Report Stats		
+float TeleportFoward = 1.f;																					//Used by Teleport Forward option
+int engine_multiplier, torque_multiplier;																	//Used by Vehicle Multipliers options
+int SetTimeHour = 0, SetTimeMinutes = 0, SetTimeSeconds = 0;												//Used by World Time options	
+int SessionTimeHour, SessionTimeMinutes, SessionTimeSeconds;												//Used by Session Time option
+int VehiclePrimaryColorRed, VehiclePrimaryColorGreen, VehiclePrimaryColorBlue;								//Used by Vehicle Color features
+int VehicleSecondaryColorRed, VehicleSecondaryColorGreen, VehicleSecondaryColorBlue;						//Used by Vehicle Color features	
+int VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue;										//Used by Vehicle Color features	
+int WheelColorRed, WheelColorGreen, WheelColorBlue;															//Used by Vehicle Color features
+int PlayerWantedLevelInteger = 0;																			//Used by Set Wanted Level Option
+int intexploits, intoffensive, REPORTSTRENGTH, OFFENSIVETAGPLATE, OFFENSIVEUGC,								//Used by Report Stats		
     EXPLOITS, GRIEFING, COMMENDSTRENGTH, FRIENDLY, HELPFUL, VCANNOYINGME, VCHATE,						
-	BADCREWNAME, BADCREWMOTTO, BADCREWSTATUS, BADCREWEMBLEM, ISPUNISHED;						
+	BADCREWNAME, BADCREWMOTTO, BADCREWSTATUS, BADCREWEMBLEM, ISPUNISHED;		
+int SetPedTexture_Torso = 0, SetPedTexture_TorsoTexture = 0, SetPedTexture_Face = 0,						//Used by SetPedTexture
+    SetPedTexture_FaceTexture = 0, SetPedTexture_Head = 0, SetPedTexture_HeadTexture = 0, 
+	SetPedTexture_Hair = 0, SetPedTexture_HairTexture = 0, SetPedTexture_Legs = 0, 
+	SetPedTexture_LegsTexture = 0, SetPedTexture_Hands = 0, SetPedTexture_HandsTexture = 0, 
+	SetPedTexture_Feet = 0, SetPedTexture_FeetTexture = 0, SetPedTexture_Eyes = 0,
+	SetPedTexture_EyesTexture = 0, SetPedTexture_Accesories = 0, SetPedTexture_AccesoriesTexture = 0, 
+	SetPedTexture_AccesoriesSec = 0, SetPedTexture_AccesoriesSecTexture = 0, SetPedTexture_Textures = 0, 
+	SetPedTexture_TexturesTexture = 0, SetPedTexture_TorsoSec = 0,  SetPedTexture_TorsoSecTexture = 0;
 
 void Cheat::Main()
 { 
@@ -2648,117 +2656,151 @@ void Cheat::Main()
 				}
 			}
 			Cheat::Break("~bold~Scenarios", true);
-			if (Cheat::Option("Paparizzi", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_PAPARAZZI");
+			if (Cheat::Option("Paparizzi", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_PAPARAZZI");
 			}
-			if (Cheat::Option("Drug Dealer", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_DRUG_DEALER_HARD");
+			if (Cheat::Option("Drug Dealer", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_DRUG_DEALER_HARD");
 			}
-			if (Cheat::Option("Drinking Coffee", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_AA_COFFEE");
+			if (Cheat::Option("Drinking Coffee", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_AA_COFFEE");
 			}
-			if (Cheat::Option("Playing Instruments", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_MUSICIAN");
+			if (Cheat::Option("Playing Instruments", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_MUSICIAN");
 			}
-			if (Cheat::Option("Flexing", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_MUSCLE_FLEX");
+			if (Cheat::Option("Flexing", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_MUSCLE_FLEX");
 			}
-			if (Cheat::Option("Jogging", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_JOG_STANDING");
+			if (Cheat::Option("Jogging", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_JOG_STANDING");
 			}
-			if (Cheat::Option("Binoculars", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_BINOCULARS");
+			if (Cheat::Option("Binoculars", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_BINOCULARS");
 			}
-			if (Cheat::Option("Clipboard", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_CLIPBOARD");
+			if (Cheat::Option("Clipboard", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_CLIPBOARD");
 			}
-			if (Cheat::Option("Bench Press", "")) {
-				PlayScenarioNearbyPeds("PROP_HUMAN_SEAT_MUSCLE_BENCH_PRESS");
+			if (Cheat::Option("Bench Press", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("PROP_HUMAN_SEAT_MUSCLE_BENCH_PRESS");
 			}
-			if (Cheat::Option("Chin Ups", "")) {
-				PlayScenarioNearbyPeds("PROP_HUMAN_MUSCLE_CHIN_UPS");
+			if (Cheat::Option("Chin Ups", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("PROP_HUMAN_MUSCLE_CHIN_UPS");
 			}
-			if (Cheat::Option("BBQ", "")) {
-				PlayScenarioNearbyPeds("PROP_HUMAN_BBQ");
+			if (Cheat::Option("BBQ", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("PROP_HUMAN_BBQ");
 			}
-			if (Cheat::Option("Superhero", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_SUPERHERO");
+			if (Cheat::Option("Superhero", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_SUPERHERO");
 			}
-			if (Cheat::Option("Fishing", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_STAND_FISHING");
+			if (Cheat::Option("Fishing", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_STAND_FISHING");
 			}
-			if (Cheat::Option("Security", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_SECURITY_SHINE_TORCH");
+			if (Cheat::Option("Security", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_SECURITY_SHINE_TORCH");
 			}
-			if (Cheat::Option("Leaf Blower", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_GARDENER_LEAF_BLOWER");
+			if (Cheat::Option("Leaf Blower", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_GARDENER_LEAF_BLOWER");
 			}
-			if (Cheat::Option("Film Shocking", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_MOBILE_FILM_SHOCKING");
+			if (Cheat::Option("Film Shocking", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_MOBILE_FILM_SHOCKING");
 			}
-			if (Cheat::Option("Idle Cop", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_COP_IDLES");
+			if (Cheat::Option("Idle Cop", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_COP_IDLES");
 			}
-			if (Cheat::Option("Drinking", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_DRINKING");
+			if (Cheat::Option("Drinking", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_DRINKING");
 			}
-			if (Cheat::Option("Golf Player", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_GOLF_PLAYER");
+			if (Cheat::Option("Golf Player", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_GOLF_PLAYER");
 			}
-			if (Cheat::Option("Welding", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_WELDING");
+			if (Cheat::Option("Welding", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_WELDING");
 			}
-			if (Cheat::Option("Smoking Pot", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_SMOKING_POT");
+			if (Cheat::Option("Smoking Pot", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_SMOKING_POT");
 			}
-			if (Cheat::Option("Hammering", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_HAMMERING");
+			if (Cheat::Option("Hammering", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_HAMMERING");
 			}
-			if (Cheat::Option("Tennis", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_TENNIS_PLAYER");
+			if (Cheat::Option("Tennis", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_TENNIS_PLAYER");
 			}
-			if (Cheat::Option("Drilling", "")) {
-				PlayScenarioNearbyPeds("WORLD_HUMAN_CONST_DRILL");
+			if (Cheat::Option("Drilling", "")) 
+			{
+				Cheat::GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_CONST_DRILL");
 
 			}
 			Cheat::Break("~bold~Animations", true);
-			if (Cheat::Option("Sex Receiver", "")) {
+			if (Cheat::Option("Sex Receiver", "")) 
+			{
 				Cheat::GameFunctions::ClearNearbyPedAnimations();
 				Cheat::GameFunctions::DoNearbyPedsAnimation("rcmpaparazzo_2", "shag_loop_poppy");
 			}
-			if (Cheat::Option("Sex Giver", "")) {
+			if (Cheat::Option("Sex Giver", "")) 
+			{
 				Cheat::GameFunctions::ClearNearbyPedAnimations();
 				Cheat::GameFunctions::DoNearbyPedsAnimation("rcmpaparazzo_2", "shag_loop_a");
 			}
-			if (Cheat::Option("Stripper Dance", "")) {
+			if (Cheat::Option("Stripper Dance", "")) 
+			{
 				Cheat::GameFunctions::ClearNearbyPedAnimations();
 				Cheat::GameFunctions::DoNearbyPedsAnimation("mini@strip_club@private_dance@part1", "priv_dance_p1");
 			}
-			if (Cheat::Option("Pole Dance", "")) {
+			if (Cheat::Option("Pole Dance", "")) 
+			{
 				Cheat::GameFunctions::ClearNearbyPedAnimations();
 				Cheat::GameFunctions::DoNearbyPedsAnimation("mini@strip_club@pole_dance@pole_dance1", "pd_dance_01");
 			}
-			if (Cheat::Option("Push Ups", "")) {
+			if (Cheat::Option("Push Ups", "")) 
+			{
 				Cheat::GameFunctions::ClearNearbyPedAnimations();
 				Cheat::GameFunctions::DoNearbyPedsAnimation("amb@world_human_push_ups@male@base", "base");
 			}
-			if (Cheat::Option("Sit Ups", "")) {
+			if (Cheat::Option("Sit Ups", "")) 
+			{
 				Cheat::GameFunctions::ClearNearbyPedAnimations();
 				Cheat::GameFunctions::DoNearbyPedsAnimation("amb@world_human_sit_ups@male@base", "base");
 			}
-			if (Cheat::Option("Celebrate", "")) {
+			if (Cheat::Option("Celebrate", "")) 
+			{
 				Cheat::GameFunctions::ClearNearbyPedAnimations();
 				Cheat::GameFunctions::DoNearbyPedsAnimation("rcmfanatic1celebrate", "celebrate");
 			}
-			if (Cheat::Option("Electrocution", "")) {
+			if (Cheat::Option("Electrocution", "")) 
+			{
 				Cheat::GameFunctions::ClearNearbyPedAnimations();
 				Cheat::GameFunctions::DoNearbyPedsAnimation("ragdoll@human", "electrocute");
 			}
-			if (Cheat::Option("Suicide", "")) {
+			if (Cheat::Option("Suicide", "")) 
+			{
 				Cheat::GameFunctions::ClearNearbyPedAnimations();
 				Cheat::GameFunctions::DoNearbyPedsAnimation("mp_suicide", "pistol");
 			}
-			if (Cheat::Option("Showering", "")) {
+			if (Cheat::Option("Showering", "")) 
+			{
 				Cheat::GameFunctions::ClearNearbyPedAnimations();
 				Cheat::GameFunctions::DoNearbyPedsAnimation("mp_safehouseshower@male@", "male_shower_idle_b");
 			}
@@ -3775,30 +3817,30 @@ void Cheat::Main()
 		case componentschangermenu:
 		{
 			Cheat::Title("Components Changer");
-			if (Cheat::Int("Face", face, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 0, face, 0); }
-			if (Cheat::Int("Face Texture", facetexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 0, face, facetexture); }
-			if (Cheat::Int("Head", head, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 0, head, 0); }
-			if (Cheat::Int("Head Texture", headtexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 1, head, headtexture); }
-			if (Cheat::Int("Hair", hair, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 2, hair, 0); }
-			if (Cheat::Int("Hair Texture", hairtexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 2, hair, hairtexture); }
-			if (Cheat::Int("Torso", torso, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 3, torso, 0); }
-			if (Cheat::Int("Torso Texture", torsotexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 3, torso, torsotexture); }
-			if (Cheat::Int("Legs", legs, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 4, legs, 0); }
-			if (Cheat::Int("Legs Texture", legstexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 4, legs, legstexture); }
-			if (Cheat::Int("Hands", hands, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 5, hands, 0); }
-			if (Cheat::Int("Hands Texture", handstexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 5, hands, handstexture); }
-			if (Cheat::Int("Feet", feet, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 6, feet, 0); }
-			if (Cheat::Int("Feet Texture", feettexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 6, feet, feettexture); }
-			if (Cheat::Int("Eyes", eyes, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 7, eyes, 0); }
-			if (Cheat::Int("Eyes Texture", eyestexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 7, eyes, eyestexture); }
-			if (Cheat::Int("Accesories", accesories, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 8, accesories, 0); }
-			if (Cheat::Int("Accesories Texture", accesoriestexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 8, accesories, accesoriestexture); }
-			if (Cheat::Int("Accesories2", accesoriessec, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 9, accesoriessec, 0); }
-			if (Cheat::Int("Accesories2 Texture", accesoriessectexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 9, accesoriessec, accesoriessectexture); }
-			if (Cheat::Int("Torso 2", torsosec, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 11, torsosec, 0); }
-			if (Cheat::Int("Torso 2 Texture", torsosectexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 11, torsosec, torsosectexture); }
-			if (Cheat::Int("Textures", textures, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 10, textures, 0); }
-			if (Cheat::Int("Textures Texture", texturestexture, 0, 255, 1, false, false, "")) {  Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 9, textures, texturestexture); }
+			if (Cheat::Int("Face", SetPedTexture_Face, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 0, SetPedTexture_Face, 0); }
+			if (Cheat::Int("Face Texture", SetPedTexture_FaceTexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 0, SetPedTexture_Face, SetPedTexture_Face); }
+			if (Cheat::Int("Head", SetPedTexture_Head, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 0, SetPedTexture_Head, 0); }
+			if (Cheat::Int("Head Texture", SetPedTexture_HeadTexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 1, SetPedTexture_Head, SetPedTexture_HeadTexture); }
+			if (Cheat::Int("Hair", SetPedTexture_Hair, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 2, SetPedTexture_Hair, 0); }
+			if (Cheat::Int("Hair Texture", SetPedTexture_HairTexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 2, SetPedTexture_Hair, SetPedTexture_HairTexture); }
+			if (Cheat::Int("Torso", SetPedTexture_Torso, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 3, SetPedTexture_Torso, 0); }
+			if (Cheat::Int("Torso Texture", SetPedTexture_TorsoTexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 3, SetPedTexture_Torso, SetPedTexture_TorsoTexture); }
+			if (Cheat::Int("Legs", SetPedTexture_Legs, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 4, SetPedTexture_Legs, 0); }
+			if (Cheat::Int("Legs Texture", SetPedTexture_LegsTexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 4, SetPedTexture_Legs, SetPedTexture_LegsTexture); }
+			if (Cheat::Int("Hands", SetPedTexture_Hands, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 5, SetPedTexture_Hands, 0); }
+			if (Cheat::Int("Hands Texture", SetPedTexture_HandsTexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 5, SetPedTexture_Hands, SetPedTexture_HandsTexture); }
+			if (Cheat::Int("Feet", SetPedTexture_Feet, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 6, SetPedTexture_Feet, 0); }
+			if (Cheat::Int("Feet Texture", SetPedTexture_FeetTexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 6, SetPedTexture_Feet, SetPedTexture_FeetTexture); }
+			if (Cheat::Int("Eyes", SetPedTexture_Eyes, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 7, SetPedTexture_Eyes, 0); }
+			if (Cheat::Int("Eyes Texture", SetPedTexture_EyesTexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 7, SetPedTexture_Eyes, SetPedTexture_EyesTexture); }
+			if (Cheat::Int("Accesories", SetPedTexture_Accesories, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 8, SetPedTexture_Accesories, 0); }
+			if (Cheat::Int("Accesories Texture", SetPedTexture_AccesoriesTexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 8, SetPedTexture_Accesories, SetPedTexture_AccesoriesTexture); }
+			if (Cheat::Int("Accesories2", SetPedTexture_AccesoriesSec, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 9, SetPedTexture_AccesoriesSec, 0); }
+			if (Cheat::Int("Accesories2 Texture", SetPedTexture_AccesoriesSecTexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 9, SetPedTexture_AccesoriesSec, SetPedTexture_AccesoriesSecTexture); }
+			if (Cheat::Int("Torso 2", SetPedTexture_TorsoSec, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 11, SetPedTexture_TorsoSec, 0); }
+			if (Cheat::Int("Torso 2 Texture", SetPedTexture_TorsoSecTexture, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 11, SetPedTexture_TorsoSec, SetPedTexture_TorsoSecTexture); }
+			if (Cheat::Int("Textures", SetPedTexture_Textures, 0, 255, 1, false, false, "")) { Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 10, SetPedTexture_Textures, 0); }
+			if (Cheat::Int("Textures Texture", SetPedTexture_TexturesTexture, 0, 255, 1, false, false, "")) {  Cheat::GameFunctions::SetPedTexture(Cheat::GameFunctions::PlayerPedID, 9, SetPedTexture_Textures, SetPedTexture_TexturesTexture); }
 		}
 		break;
 		case outfitsmenu:

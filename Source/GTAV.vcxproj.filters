@@ -36,9 +36,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameFunctions.h">
-      <Filter>Header Files\Game Functions</Filter>
-    </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>

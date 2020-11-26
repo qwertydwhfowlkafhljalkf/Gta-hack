@@ -817,44 +817,20 @@ const std::vector<std::string> Cheat::GameArrays::SummerSpecialModels = {
 	"DUKES3",			"COQUETTE4",	"CLUB"
 };
 
-//TODO: Very tedious, WIP
+//TODO: Very tedious
 const std::vector<VehicleModelPicturesStruct> Cheat::GameArrays::VehicleModelPictures = {
-	{ "lgm_dlc_specialraces", "ruston" }
+	{ "lgm_dlc_specialraces", "ruston" },
+	{ "lgm_dlc_specialraces", "gp1" },
+	{ "lgm_dlc_specialraces", "turismo2" },
+	{ "lgm_dlc_specialraces", "infernus2" },
+	{ "elt_dlc_smuggler", "alphaz1" },
+	{ "candc_smuggler", "bombushka" },
+	{ "lgm_dlc_smuggler", "cyclone" },
+	{ "elt_dlc_smuggler", "havok" }
 };
 
 
 /*
-if (ModelName == "gp1")
-		{
-			VehiclePreviewDictName = "lgm_dlc_specialraces";
-			VehiclePreviewName = "gp1";
-		}
-		if (ModelName == "turismo2")
-		{
-			VehiclePreviewDictName = "lgm_dlc_specialraces";
-			VehiclePreviewName = "turismo2";
-		}
-
-		 if (ModelName == "infernus2")
-		{
-			VehiclePreviewDictName = "lgm_dlc_specialraces";
-			VehiclePreviewName = "infernus2";
-		}
-		 if (ModelName == "ALPHAZ1")
-		{
-			VehiclePreviewDictName = "elt_dlc_smuggler";
-			VehiclePreviewName = "alphaz1";
-		}
-		 if (ModelName == "BOMBUSHKA")
-		{
-			VehiclePreviewDictName = "candc_smuggler";
-			VehiclePreviewName = "bombushka";
-		}
-		 if (ModelName == "CYCLONE")
-		{
-			VehiclePreviewDictName = "lgm_dlc_smuggler";
-			VehiclePreviewName = "cyclone";
-		}
 		 if (ModelName == "HAVOK")
 		{
 			VehiclePreviewDictName = "elt_dlc_smuggler";

@@ -45,10 +45,8 @@
 #include "GameHooking.h"
 #include "GUI.h"
 #include "Types.h"
-#include "GameFunctions.h"
 #include "GameArrays.h"
 #include "Offsets.h"
-
 
 
 namespace Cheat 
@@ -438,6 +436,7 @@ namespace Cheat
 		std::string ReturnPlayerIPAddressAsString(Player PlayerHandle);
 		bool IsCurrentGTAOCharacterChar0();
 		void PlayFrontendSoundDefault(char* SoundName);
+		void PlayScenarioNearbyPeds(char* Scenario);
 	}
 	namespace LogFunctions 
 	{

@@ -26,36 +26,10 @@ void Cheat::GameFunctions::RepairAndCleanVehicle()
 	}
 }
 
-
-int torso = 0;
-int torsotexture = 0;
-int face = 0;
-int facetexture = 0;
-int head = 0;
-int headtexture = 0;
-int hair = 0;
-int hairtexture = 0;
-int legs = 0;
-int legstexture = 0;
-int hands = 0;
-int handstexture = 0;
-int feet = 0;
-int feettexture = 0;
-int eyes = 0;
-int eyestexture = 0;
-int accesories = 0;
-int accesoriestexture = 0;
-int accesoriessec = 0;
-int accesoriessectexture = 0;
-int textures = 0;
-int texturestexture = 0;
-int torsosec = 0;
-int torsosectexture = 0;
 void Cheat::GameFunctions::SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID) 
 { 
 	PED::SET_PED_COMPONENT_VARIATION(Ped, ComponentID, DrawableID, TextureID, 0);
 }
-
 
 void Cheat::GameFunctions::TeleportToObjective()
 {
@@ -122,8 +96,7 @@ void Cheat::GameFunctions::SetOffAlarmPlayerVehicle(Ped selectedPed)
 
 bool Cheat::GameFunctions::IsPlayerFriend(Player player)
 {
-	BOOL BplayerFriend = false;
-	bool bplayerFriend = false;
+	bool BplayerFriend = false;
 	int handle[76];
 	NETWORK::NETWORK_HANDLE_FROM_PLAYER(player, &handle[0], 13);
 	if (NETWORK::NETWORK_IS_HANDLE_VALID(&handle[0], 13))
@@ -132,16 +105,16 @@ bool Cheat::GameFunctions::IsPlayerFriend(Player player)
 	}
 	if (BplayerFriend == 1) 
 	{ 
-		bplayerFriend = true; 
+		return true;
 	}
 	else
 	{
-		bplayerFriend = false;
+		return false;
 	}
-	return bplayerFriend;
 }
 
-Vector3 Cheat::GameFunctions::MultiplyVector(Vector3 vector, float inc) {
+Vector3 Cheat::GameFunctions::MultiplyVector(Vector3 vector, float inc) 
+{
 	vector.x *= inc;
 	vector.y *= inc;
 	vector.z *= inc;
@@ -545,7 +518,7 @@ void Cheat::GameFunctions::DoNearbyPedsAnimation(char* AnimationName, char* Anim
 }
 
 
-void PlayScenarioNearbyPeds(char* Scenario)
+void Cheat::GameFunctions::PlayScenarioNearbyPeds(char* Scenario)
 {
 	const int ElementAmount = 10;
 	const int ArrSize = ElementAmount * 2 + 2;

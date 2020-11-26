@@ -54,6 +54,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <BrowseInformation>true</BrowseInformation>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -82,7 +83,6 @@
     <ClInclude Include="CrossMapping.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="GameArrays.h" />
-    <ClInclude Include="GameFunctions.h" />
     <ClInclude Include="GameHooking.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="GUI.h" />
