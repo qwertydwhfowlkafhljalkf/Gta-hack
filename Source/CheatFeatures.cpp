@@ -41,6 +41,9 @@ void Cheat::CheatFeatures::NoneLooped()
 	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING(CheatFunctions::StringToChar(OpenGUIString));
 	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(5);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+
+	//Load MP vehicles in SP bypass
+	globalHandle(4268340).As<BOOL>() = true;
 }
 
 void Cheat::CheatFeatures::Looped()

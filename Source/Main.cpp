@@ -25,7 +25,7 @@ int SetPedTexture_Torso = 0, SetPedTexture_TorsoTexture = 0, SetPedTexture_Face 
 void Cheat::Main()
 { 
 	Cheat::CheatFeatures::NoneLooped();
-	while (true) 
+	while (true)
 	{
 		Cheat::CheatFunctions::LoopedFunctions();
 
@@ -3547,10 +3547,8 @@ void Cheat::Main()
 		break; 
 		case SelectedPlayerTrollMenu:
 		{
-			Cheat::GameFunctions::DrawMarkerAbovePlayer(21, Cheat::CheatFeatures::selectedPlayer, { 0, 0, 255, 255 });
-			Cheat::GameFunctions::LoadPlayerInformation(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::selectedPlayer), Cheat::CheatFeatures::selectedPlayer);
 			Cheat::Title("Troll Options");
-			Cheat::MenuOption("Attachment Options >", attachoptions);
+			Cheat::MenuOption("Attachment Options >", SelectedPlayerAttachmentOptions);
 			Cheat::Toggle("Explode Loop", Cheat::CheatFeatures::ExplodeLoopSelectedPlayerBool, "Run explode loop on selected player", false);
 			Cheat::Toggle("Freeze Player", Cheat::CheatFeatures::FreezeSelectedPlayerBool, "Freeze character of selected player", false);
 			Cheat::Toggle("Shake Cam", Cheat::CheatFeatures::ShakeCamSelectedPlayerBool, "Shake selected player character camera", false);
@@ -3667,7 +3665,8 @@ void Cheat::Main()
 				PED::SET_PED_COMBAT_RANGE(eclone[egcount], 1000);
 				egcount++;
 			}
-			if (Cheat::Option("Spawn Bodyguard", "Spawn Bodyguard for selected player")) {
+			if (Cheat::Option("Spawn Bodyguard", "Spawn Bodyguard for selected player")) 
+			{
 				int clone[1000];
 				int gcount = 1;
 				Ped selectedplayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer);
@@ -3699,7 +3698,7 @@ void Cheat::Main()
 			for (int i = 0; i < 32; ++i) 
 			{
 				std::string PlayernameString = PLAYER::GET_PLAYER_NAME(i);
-				if (ENTITY::DOES_ENTITY_EXIST(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) 
+				if (Cheat::GameFunctions::IsPlayerIDValid(i))
 				{
 					if (Cheat::CheatFeatures::ShowPlayerTagsPlayerList)
 					{
@@ -3716,8 +3715,6 @@ void Cheat::Main()
 		break;
 		case SelectedPlayerMenu:
 		{
-			Cheat::GameFunctions::DrawMarkerAbovePlayer(21, Cheat::CheatFeatures::selectedPlayer, { 0, 0, 255, 255 });
-			Cheat::GameFunctions::LoadPlayerInformation(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::selectedPlayer), Cheat::CheatFeatures::selectedPlayer);
 			Cheat::Title(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::selectedPlayer));
 			Cheat::Toggle("Spectate Player", Cheat::CheatFeatures::SpectatePlayerBool, "Spectate Selected Player", false);
 			if (Cheat::Option("Host Kick", "Kick selected player - Host only")) { NETWORK::NETWORK_SESSION_KICK_PLAYER(Cheat::CheatFeatures::selectedPlayer); }
@@ -3729,27 +3726,23 @@ void Cheat::Main()
 				Cheat::GameFunctions::TeleportToCoords(handle, coords, false);
 
 			}
-			Cheat::MenuOption("Teleport Options >", player_teleportmenu);
+			Cheat::MenuOption("Teleport Options >", SelectedPlayerTeleportMenu);
 			Cheat::MenuOption("Friendly Options >", SelectedPlayerFriendlyMenu);
 			Cheat::MenuOption("Troll Options >", SelectedPlayerTrollMenu);
-			//Cheat::MenuOption("Remote Options >", player_remoteoptions);
+			//Cheat::MenuOption("Remote Options >", SelectedPlayerRemoteOptions);
 			if (Cheat::Option("Copy Outfit", "Get Selected Player Outfit")) { Cheat::GameFunctions::CopySelectedPlayerOutfit(Cheat::CheatFeatures::selectedPlayer); }
 			if (Cheat::Option("View Profile", "View Selected Player Social Club Profile")) { int playerHandle; NETWORK::NETWORK_HANDLE_FROM_PLAYER(Cheat::CheatFeatures::selectedPlayer, &playerHandle, 13); NETWORK::NETWORK_SHOW_PROFILE_UI(&playerHandle); }
 		}
 		break;
 		case SelectedPlayerFriendlyMenu:
 		{
-			Cheat::GameFunctions::DrawMarkerAbovePlayer(21, Cheat::CheatFeatures::selectedPlayer, { 0, 0, 255, 255 });
-			Cheat::GameFunctions::LoadPlayerInformation(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::selectedPlayer), Cheat::CheatFeatures::selectedPlayer);
 			Cheat::Title("Friendly Options");
-			Cheat::MenuOption("Money Options >", playermoneymenu);
+			Cheat::MenuOption("Money Options >", SelectedPlayerMoneyMenu);
 			if (Cheat::Option("Give All Weapons", "Give all weapons to selected player")) { Cheat::GameFunctions::GiveAllWeaponsToPlayer(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer)); }
 		}
 		break;
-		case player_remoteoptions: 
+		case SelectedPlayerRemoteOptions:
 		{
-			Cheat::GameFunctions::DrawMarkerAbovePlayer(21, Cheat::CheatFeatures::selectedPlayer, { 0, 0, 255, 255 });
-			Cheat::GameFunctions::LoadPlayerInformation(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::selectedPlayer), Cheat::CheatFeatures::selectedPlayer);
 			Cheat::Title("Remote Options");
 			if (Cheat::Option("Kick To Single Player", "Kick Selected Player to SP")) 
 			{
@@ -3761,10 +3754,8 @@ void Cheat::Main()
 			}
 		}
 		break; 
-		case player_teleportmenu:
+		case SelectedPlayerTeleportMenu:
 		{
-			Cheat::GameFunctions::DrawMarkerAbovePlayer(21, Cheat::CheatFeatures::selectedPlayer, { 0, 0, 255, 255 });
-			Cheat::GameFunctions::LoadPlayerInformation(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::selectedPlayer), Cheat::CheatFeatures::selectedPlayer);
 			Cheat::Title("Teleport Options"); 
 			if (Cheat::Option("Teleport Into Vehicle", "Teleport into Selected Player vehicle"))
 			{
@@ -3798,10 +3789,8 @@ void Cheat::Main()
 			if (Cheat::Option("Clean Player", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(Cheat::GameFunctions::PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(Cheat::GameFunctions::PlayerPedID); Cheat::GameFunctions::MinimapNotification("Player Cleaned"); }	
 		}
 		break;
-		case playermoneymenu:
+		case SelectedPlayerMoneyMenu:
 		{
-			Cheat::GameFunctions::DrawMarkerAbovePlayer(21, Cheat::CheatFeatures::selectedPlayer, { 0, 0, 255, 255 });
-			Cheat::GameFunctions::LoadPlayerInformation(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::selectedPlayer), Cheat::CheatFeatures::selectedPlayer);
 			Cheat::Title("Money Options");
 			Cheat::Toggle("Toggle", Cheat::CheatFeatures::MoneyDropBool, "Enable Money Drop on selected player", false);
 			Cheat::Int("Drop Delay", Cheat::CheatFeatures::MoneyDropDelay, 50, 2000, 50, false, true, "Set to 1500 to prevent transaction errors");
@@ -3879,10 +3868,8 @@ void Cheat::Main()
 
 		}
 		break; 
-		case attachoptions:
+		case SelectedPlayerAttachmentOptions:
 		{
-			Cheat::GameFunctions::DrawMarkerAbovePlayer(21, Cheat::CheatFeatures::selectedPlayer, { 0, 0, 255, 255 });
-			Cheat::GameFunctions::LoadPlayerInformation(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::selectedPlayer), Cheat::CheatFeatures::selectedPlayer);
 			Cheat::Title("Attach Options");
 			if (Cheat::Option("Plate", ""))				{ Cheat::GameFunctions::AttachObjectToPed(Cheat::CheatFeatures::selectedPlayer, "p_oil_slick_01"); }
 			if (Cheat::Option("EMP", ""))				{ Cheat::GameFunctions::AttachObjectToPed(Cheat::CheatFeatures::selectedPlayer, "hei_prop_heist_emp"); }

@@ -544,7 +544,8 @@ void Cheat::GameFunctions::LoadPlayerInformation(char* playerName, Player p)
 {
 	if (Cheat::CheatFeatures::ShowPlayerInformationPlayerList)
 	{
-		//Definitions
+		//Definitions & error handling
+		if (!GameFunctions::IsPlayerIDValid(p)) { return; }
 		Ped SelectedPlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(p);
 		RequestControlOfEnt(SelectedPlayerPed);
 
@@ -1538,4 +1539,17 @@ bool Cheat::GameFunctions::IsCurrentGTAOCharacterChar0()
 void Cheat::GameFunctions::PlayFrontendSoundDefault(char* SoundName)
 {
 	AUDIO::PLAY_SOUND_FRONTEND(-1, SoundName, "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
+}
+
+/*
+Description: Check whether or not the provided integer correspondents to a valid Player Ped.
+Note(s): This function assumes the player has a Ped.
+*/
+bool Cheat::GameFunctions::IsPlayerIDValid(Player ID)
+{
+	if (ENTITY::DOES_ENTITY_EXIST(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(ID)))
+	{
+		return true;
+	}
+	return false;
 }

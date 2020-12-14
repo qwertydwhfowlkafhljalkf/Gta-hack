@@ -91,9 +91,6 @@ Player Cheat::GameFunctions::PlayerID;
 Ped Cheat::GameFunctions::PlayerPedID;
 void Cheat::CheatFunctions::LoopedFunctions()
 {
-	//Load MP vehicles in SP bypass
-	globalHandle(4268340).As<BOOL>() = true;
-
 	//Player ID's and Ped
 	Cheat::GameFunctions::PlayerID = PLAYER::PLAYER_ID();
 	Cheat::GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
@@ -103,6 +100,29 @@ void Cheat::CheatFunctions::LoopedFunctions()
 
 	//Controls
 	Cheat::GUI::ControlsLoop();
+
+	//Submenu handlers - additional submenu logic is looped here
+	if (Cheat::GUI::currentMenu == SelectedPlayerMenu				||
+		Cheat::GUI::currentMenu == SelectedPlayerFriendlyMenu		||
+		Cheat::GUI::currentMenu == SelectedPlayerRemoteOptions		||
+		Cheat::GUI::currentMenu == SelectedPlayerTeleportMenu		||
+		Cheat::GUI::currentMenu == SelectedPlayerMoneyMenu			||
+		Cheat::GUI::currentMenu == SelectedPlayerAttachmentOptions	||
+		Cheat::GUI::currentMenu == SelectedPlayerTrollMenu			||
+		Cheat::GUI::currentMenu == SelectedPlayerRemoteOptions)
+	{
+		if (Cheat::GameFunctions::IsPlayerIDValid(Cheat::CheatFeatures::selectedPlayer))
+		{
+			Cheat::GameFunctions::DrawMarkerAbovePlayer(21, Cheat::CheatFeatures::selectedPlayer, { 0, 0, 255, 255 });
+			Cheat::GameFunctions::LoadPlayerInformation(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::selectedPlayer), Cheat::CheatFeatures::selectedPlayer);
+		}
+		else
+		{
+			Cheat::GUI::PreviousMenu = NOMENU;
+			Cheat::GUI::MoveMenu(MainMenu);
+			Cheat::GameFunctions::MinimapNotification("~r~Invalid Player ID");
+		}
+	}
 }
 
 

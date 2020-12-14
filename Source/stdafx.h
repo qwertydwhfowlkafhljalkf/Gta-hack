@@ -89,7 +89,6 @@ namespace Cheat
 		extern int optionCount;
 		extern int optionCountMenuBottom;
 		extern int TotalOptionsCount;
-		extern int PreviousSubMenu;
 		extern SubMenus currentMenu;
 		extern int menuLevel;
 		extern int PreviousMenuLevel;
@@ -437,6 +436,7 @@ namespace Cheat
 		bool IsCurrentGTAOCharacterChar0();
 		void PlayFrontendSoundDefault(char* SoundName);
 		void PlayScenarioNearbyPeds(char* Scenario);
+		bool IsPlayerIDValid(Player ID);
 	}
 	namespace LogFunctions 
 	{
