@@ -1327,8 +1327,7 @@ const std::vector<VehicleModelPicturesStruct> Cheat::GameArrays::VehicleModelPic
 {"sssa_default","rocoto"},
 {"sssa_dlc_battle","serrano"},
 {"lgm_dlc_arena","toros"},
-{"lgm_dlc_executive1","xls"},
-
+{"lgm_dlc_executive1","xls"}
 };
 
 
