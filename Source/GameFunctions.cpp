@@ -1376,7 +1376,7 @@ char* Cheat::GameFunctions::ReturnOnlinePlayerPictureString(Player PlayerHandle)
 {
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
-		int Index = ONLINE_PLAYER_PICTURE_INDEX + 2; //This index changes with each major patch
+		int Index = ONLINE_PLAYER_PICTURE_INDEX + 2;
 		for (int x = 0; x <= 150; x += 5)
 		{
 			int playerId = globalHandle(Index).At(x).As<int>();

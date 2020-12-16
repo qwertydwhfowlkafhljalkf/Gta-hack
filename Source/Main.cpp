@@ -189,7 +189,6 @@ void Cheat::Main()
 				if (Cheat::Option("Snowlight", "")) { GameHooking::session_weather(true, 12, 76, 0); }
 				if (Cheat::Option("Xmas", "")) { GameHooking::session_weather(true, 13, 76, 0); }
 				if (Cheat::Option("Halloween", "")) { GameHooking::session_weather(true, 14, 76, 0); }
-				if (Cheat::Option("Black Screen", "")) { GameHooking::session_weather(true, 15, 76, 0); }
 			}
 			else
 			{
@@ -1726,6 +1725,7 @@ void Cheat::Main()
 		case DLCVehiclesMenu:
 		{
 			Cheat::Title("DLC Vehicles");
+			Cheat::MenuOption("The Cayo Perico Heist >", CayoPericoHeistDLCMenu);
 			Cheat::MenuOption("2020 Summer Special >", SummerSpecialDLCMenu);
 			Cheat::MenuOption("The Diamond Casino Heist >", diamondcasinoheist);
 			Cheat::MenuOption("The Diamond Casino & Resort >", casinodlc);
@@ -1736,6 +1736,18 @@ void Cheat::Main()
 			Cheat::MenuOption("Smuggler's Run >", smugglersrun);
 			Cheat::MenuOption("Gunrunning >", gunrunningdlc);
 			Cheat::MenuOption("Cunning Stunts >", CunningStuntsDLCMenu);
+		}
+		break;
+		case CayoPericoHeistDLCMenu:
+		{
+			Cheat::Title("The Cayo Perico Heist");
+			for (auto const& i : Cheat::GameArrays::CayoPericoHeistModels)
+			{
+				if (Cheat::VehicleOption(UI::_GET_LABEL_TEXT(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(i)))), i))
+				{
+					Cheat::GameFunctions::SpawnVehicle(CheatFunctions::StringToChar(i));
+				}
+			}
 		}
 		break;
 		case SummerSpecialDLCMenu:
@@ -3785,7 +3797,7 @@ void Cheat::Main()
 			Cheat::Toggle("Super Man", Cheat::CheatFeatures::SuperManBool, "Fly around like a superman!");
 			if (Cheat::Int("Player Opacity", Cheat::CheatFeatures::PlayerOpacityInt, 50, 250, 50, false, "Changes local player opacity")) { ENTITY::SET_ENTITY_ALPHA(Cheat::GameFunctions::PlayerPedID, (Cheat::CheatFeatures::PlayerOpacityInt), false); }
 			if (Cheat::Option("Suicide", "Kill your character")) { PED::APPLY_DAMAGE_TO_PED(Cheat::GameFunctions::PlayerPedID, 300, true); }
-			if (Cheat::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(2437549).At(3880).As<int>() = 1; }
+			if (Cheat::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(2540384).At(4620).As<int>() = 1; }
 			if (Cheat::Option("Clean Player", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(Cheat::GameFunctions::PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(Cheat::GameFunctions::PlayerPedID); Cheat::GameFunctions::MinimapNotification("Player Cleaned"); }	
 		}
 		break;

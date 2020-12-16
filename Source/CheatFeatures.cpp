@@ -43,7 +43,7 @@ void Cheat::CheatFeatures::NoneLooped()
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 
 	//Load MP vehicles in SP bypass
-	globalHandle(4268340).As<BOOL>() = true;
+	globalHandle(4269479).As<BOOL>() = true;
 }
 
 void Cheat::CheatFeatures::Looped()

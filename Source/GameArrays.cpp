@@ -817,9 +817,40 @@ const std::vector<std::string> Cheat::GameArrays::SummerSpecialModels = {
 	"DUKES3",			"COQUETTE4",	"CLUB"
 };
 
+const std::vector<std::string> Cheat::GameArrays::CayoPericoHeistModels = {
+	"ALKONOST",	"ANNIHILATOR2", "AVISA",
+	"BRIOSO2", "DINGHY5", "ITALIRSX", "VETO2",
+	"PENUMBRA2", "OPENWHEEL2", "KOSATKA",
+	"LONGFIN", "MANCHEZ2",  "PATROLBOAT",
+	"SEASPARROW2", "seasparrow3", "SQUADDIE",
+	"SLAMTRUCK", "TOREADOR", "VERUS",
+	"VETIR", "WINKY","WEEVIL", "VETO",	
+};
+
 //TODO: Very tedious
 const std::vector<VehicleModelPicturesStruct> Cheat::GameArrays::VehicleModelPictures = {
-	{"lgm_dlc_executive1","pfister811"},
+{"candc_heist4","alkonost"},
+{"candc_heist4","annihilator2"},
+{"candc_heist4","avisa"},
+{"sssa_dlc_heist4","brioso2"},
+{"candc_heist4","dinghy5"},
+{"lgm_dlc_heist4","italirsx"},
+{"sssa_dlc_heist4","kosatka"},
+{"dock_dlc_heist4","longfin"},
+{"candc_heist4","manchez2"},
+{"candc_heist4","patrolboat"},
+{"sssa_dlc_heist4","seasparrow2"},
+{"candc_heist4","seasparrow3"},
+{"sssa_dlc_heist4","slamtruck"},
+{"candc_heist4","squaddie"},
+{"candc_heist4","toreador"},
+{"candc_heist4","verus"},
+{"candc_heist4","vetir"},
+{"candc_heist4","veto"},
+{"candc_heist4","veto2"},
+{"candc_heist4","weevil"},
+{"candc_heist4","winky"},
+{"lgm_dlc_executive1","pfister811"},
 {"lgm_default","adder"},
 {"lgm_dlc_xmas2017","autarch_b"},
 {"lsc_jan2016","banshee2"},
