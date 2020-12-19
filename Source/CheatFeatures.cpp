@@ -72,7 +72,7 @@ void Cheat::CheatFeatures::Looped()
 		{
 			Speed << Cheat::GameFunctions::MSToMPH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0))) << " MP/H";
 		}
-		if (SpeedometerVectorPosition == 1 || SpeedometerVectorPosition == 3) { Cheat::Speedometer(Speed.str()); }
+		if (SpeedometerVectorPosition == 1 || SpeedometerVectorPosition == 3) { GUI::Drawing::Text(Speed.str(), { 0, 0, 255, 255 }, { 0.90f, 0.5000f }, { 0.70f, 0.70f }, false); }
 		if (SpeedometerVectorPosition == 2 || SpeedometerVectorPosition == 3) { VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0), CheatFunctions::StringToChar(Speed.str())); }
 	}
 
@@ -227,7 +227,7 @@ void Cheat::CheatFeatures::GravityGun()
 	Vector3 spawnPosition = Cheat::GameFunctions::AddTwoVectors(&camPosition, &Cheat::GameFunctions::MultiplyVector(&dir, spawnDistance));
 
 	Player tempPed = Cheat::GameFunctions::PlayerID;
-	if (equippedWeapon == WeaponCombatPistol)
+	if (equippedWeapon == 0x5EF9FEC4) //CombatPistol
 	{
 		if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &EntityTarget) && GetAsyncKeyState(0x02))
 		{
@@ -481,7 +481,7 @@ void Cheat::CheatFeatures::JumpAroundMode()
 		int OffsetID = i * 2 + 2;
 		if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false))
 		{
-			if (VEHICLE::IS_VEHICLE_ON_ALL_WHEELS(vehs[OffsetID]) == TRUE)
+			if (VEHICLE::IS_VEHICLE_ON_ALL_WHEELS(vehs[OffsetID]) == true)
 			{
 				ENTITY::APPLY_FORCE_TO_ENTITY(vehs[OffsetID], 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0);
 			}
@@ -493,32 +493,32 @@ bool FreeCamFeaturedUsed = false;
 bool Cheat::CheatFeatures::FreeCamBool = false;
 void Cheat::CheatFeatures::FreeCam(bool toggle)
 {
-	static std::int32_t cam;
-	static float dist;
-	auto rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
-	auto coord = CAM::GET_GAMEPLAY_CAM_COORD();
-	Vector3 p_coord = { 0,0,0 };
+	Cam CameraHandle;
+	Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
+	Vector3 coord = CAM::GET_GAMEPLAY_CAM_COORD();
+	Vector3 p_coord = { 0, 0, 0 };
 
 	if (toggle)
 	{
 		FreeCamFeaturedUsed = true;
-		if (!CAM::DOES_CAM_EXIST(cam)) {
-			cam = CAM::CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", 1);
-			CAM::SET_CAM_ROT(cam, rot.x, rot.y, rot.z, 0);
-			CAM::SET_CAM_COORD(cam, coord.x, coord.y, coord.z);
+		if (!CAM::DOES_CAM_EXIST(CameraHandle))
+		{
+			CameraHandle = CAM::CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", 1);
+			CAM::SET_CAM_ROT(CameraHandle, rot.x, rot.y, rot.z, 0);
+			CAM::SET_CAM_COORD(CameraHandle, coord.x, coord.y, coord.z);
 		}
 
 		CAM::RENDER_SCRIPT_CAMS(true, true, 700, 1, 1);
-		CAM::SET_CAM_ACTIVE(cam, 1);
-		CAM::SET_CAM_ROT(cam, rot.x, rot.y, rot.z, 0);
+		CAM::SET_CAM_ACTIVE(CameraHandle, 1);
+		CAM::SET_CAM_ROT(CameraHandle, rot.x, rot.y, rot.z, 0);
 
-		p_coord = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1);
+		p_coord = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 1);
 
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(PLAYER::PLAYER_PED_ID(), p_coord.x, p_coord.y, p_coord.z, 0, 0, 0);
-		PLAYER::DISABLE_PLAYER_FIRING(PLAYER::PLAYER_PED_ID(), 1);
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(GameFunctions::PlayerPedID, p_coord.x, p_coord.y, p_coord.z, 0, 0, 0);
+		PLAYER::DISABLE_PLAYER_FIRING(GameFunctions::PlayerPedID, 1);
 		UI::HIDE_HUD_AND_RADAR_THIS_FRAME();
 
-		auto speed = .5f;
+		float speed = .5f;
 		if (GetAsyncKeyState(VK_LSHIFT))
 		{
 			speed += .3f;
@@ -527,14 +527,14 @@ void Cheat::CheatFeatures::FreeCam(bool toggle)
 		if (GetAsyncKeyState(0x53))
 		{
 			speed /= -1;
-			auto c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(cam), &Cheat::GameFunctions::MultiplyVector(&Cheat::GameFunctions::RotToDirection(&rot), speed));
-			CAM::SET_CAM_COORD(cam, c.x, c.y, c.z);
+			Vector3 c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(CameraHandle), &Cheat::GameFunctions::MultiplyVector(&Cheat::GameFunctions::RotToDirection(&rot), speed));
+			CAM::SET_CAM_COORD(CameraHandle, c.x, c.y, c.z);
 		}
 
 		if (GetAsyncKeyState(0x57))
 		{
-			auto c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(cam), &Cheat::GameFunctions::MultiplyVector(&Cheat::GameFunctions::RotToDirection(&rot), speed));
-			CAM::SET_CAM_COORD(cam, c.x, c.y, c.z);
+			Vector3 c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(CameraHandle), &Cheat::GameFunctions::MultiplyVector(&Cheat::GameFunctions::RotToDirection(&rot), speed));
+			CAM::SET_CAM_COORD(CameraHandle, c.x, c.y, c.z);
 		}
 	}
 	else
@@ -543,8 +543,8 @@ void Cheat::CheatFeatures::FreeCam(bool toggle)
 		{
 			FreeCamFeaturedUsed = false;
 			CAM::RENDER_SCRIPT_CAMS(0, 1, 10, 0, 0);
-			CAM::SET_CAM_ACTIVE(cam, false);
-			CAM::DESTROY_CAM(cam, true);
+			CAM::SET_CAM_ACTIVE(CameraHandle, false);
+			CAM::DESTROY_CAM(CameraHandle, true);
 		}
 	}
 }
@@ -769,7 +769,7 @@ void Cheat::CheatFeatures::DeleteGun()
 	Entity AimedAtEntity;
 	DWORD equippedWeapon;
 	WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &equippedWeapon, 1);
-	if (equippedWeapon == WeaponSNSPistol || equippedWeapon == 0x88374054) //mk2 SNS Pistol
+	if (equippedWeapon == 0xBFD21232 || equippedWeapon == 0x88374054) //SNS Pistol & mk2 SNS Pistol
 	{
 		if (PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
 		{
@@ -898,7 +898,7 @@ void Cheat::CheatFeatures::UnlimitedRocketBoost()
 	}
 }
 
-std::string Cheat::CheatFeatures::VehicleGun_VehicleNameString;
+std::string Cheat::CheatFeatures::VehicleGun_VehicleNameString = "HYDRA";
 bool Cheat::CheatFeatures::VehicleGunBool = false;
 void Cheat::CheatFeatures::VehicleGun()
 {
@@ -1084,13 +1084,15 @@ void Cheat::CheatFeatures::ShakeCamSelectedPlayer()
 bool Cheat::CheatFeatures::RainbowGunBool = false;
 void Cheat::CheatFeatures::RainbowGun()
 {
-	for (int i = 0; i < sizeof(Cheat::GameArrays::WeaponsHashList) / sizeof(Cheat::GameArrays::WeaponsHashList[0]); i++)
+	for (int i = 0; i < Cheat::GameArrays::WeaponsHashList.size(); i++)
 	{
-		if (WEAPON::HAS_PED_GOT_WEAPON(Cheat::GameFunctions::PlayerPedID, Cheat::GameArrays::WeaponsHashList[i], 0))
+		Hash CurrentHash = Cheat::GameArrays::WeaponsHashList[i].WeaponHash;
+		if (WEAPON::HAS_PED_GOT_WEAPON(Cheat::GameFunctions::PlayerPedID, CurrentHash, 0))
 		{
-			WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, Cheat::GameArrays::WeaponsHashList[i], rand() % 8);
+			WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, CurrentHash, rand() % 8);
 		}
 	}
+
 }
 
 bool Cheat::CheatFeatures::DisablePhoneBool = false;
@@ -1300,11 +1302,12 @@ void Cheat::CheatFeatures::AutoGiveAllWeapons()
 {
 	if (PLAYER::IS_PLAYER_PLAYING(Cheat::GameFunctions::PlayerID)) 
 	{ 
-		for (int i = 0; i < (sizeof(Cheat::GameArrays::WeaponsHashList) / 4); i++)
+		for (int i = 0; i < Cheat::GameArrays::WeaponsHashList.size(); i++)
 		{
-			if (!WEAPON::HAS_PED_GOT_WEAPON(Cheat::GameFunctions::PlayerPedID, Cheat::GameArrays::WeaponsHashList[i], false))
+			Hash CurrentHash = Cheat::GameArrays::WeaponsHashList[i].WeaponHash;
+			if (!WEAPON::HAS_PED_GOT_WEAPON(Cheat::GameFunctions::PlayerPedID, CurrentHash, false))
 			{
-				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(Cheat::GameFunctions::PlayerPedID, Cheat::GameArrays::WeaponsHashList[i], 9999, false);
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(Cheat::GameFunctions::PlayerPedID, CurrentHash, 9999, false);
 			}
 		}
 	}

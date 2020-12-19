@@ -114,7 +114,7 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		if (Cheat::GameFunctions::IsPlayerIDValid(Cheat::CheatFeatures::selectedPlayer))
 		{
 			Cheat::GameFunctions::DrawMarkerAbovePlayer(21, Cheat::CheatFeatures::selectedPlayer, { 0, 0, 255, 255 });
-			Cheat::GameFunctions::LoadPlayerInformation(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::selectedPlayer), Cheat::CheatFeatures::selectedPlayer);
+			Cheat::GameFunctions::ShowPlayerInformationBox(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::selectedPlayer), Cheat::CheatFeatures::selectedPlayer);
 		}
 		else
 		{

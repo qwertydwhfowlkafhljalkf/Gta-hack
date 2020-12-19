@@ -2,10 +2,9 @@
 
 void Cheat::GameFunctions::GiveAllWeaponsToPlayer(Ped Player)
 {
-	for (int i = 0; i < (sizeof(Cheat::GameArrays::WeaponsHashList) / sizeof Cheat::GameArrays::WeaponsHashList[0]); i++)
+	for (int i = 0; i < Cheat::GameArrays::WeaponsHashList.size(); i++)
 	{
-		WEAPON::GIVE_DELAYED_WEAPON_TO_PED(Player, Cheat::GameArrays::WeaponsHashList[i], 9999, false);
-		WAIT(0.1);
+		WEAPON::GIVE_DELAYED_WEAPON_TO_PED(Player, Cheat::GameArrays::WeaponsHashList[i].WeaponHash, 9999, false);
 	}
 }
 
@@ -20,7 +19,7 @@ void Cheat::GameFunctions::RepairAndCleanVehicle()
 		VEHICLE::SET_VEHICLE_ENGINE_ON(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), true, true, true);
 		Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Fixed & Cleaned", "Textures", "AdvancedNotificationImage", false, 4, "Vehicle Customizer", "", 1.0, "");
 	}
-	else 
+	else
 	{
 		Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
 	}
@@ -36,8 +35,7 @@ void Cheat::GameFunctions::TeleportToObjective()
 	Entity e;
 	Vector3 wayp{};
 	Ped playerPed = Cheat::GameFunctions::PlayerPedID;
-	if (PED::IS_PED_IN_ANY_VEHICLE(playerPed, false))
-		e = PED::GET_VEHICLE_PED_IS_USING(playerPed);
+	if (PED::IS_PED_IN_ANY_VEHICLE(playerPed, false)) { e = PED::GET_VEHICLE_PED_IS_USING(playerPed); }
 	else e = playerPed;
 	bool blipFound = false;
 	if (ENTITY::IS_ENTITY_A_VEHICLE(e)) RequestControlOfEnt(e);
@@ -69,10 +67,10 @@ void Cheat::GameFunctions::TeleportToObjective()
 
 void Cheat::GameFunctions::BurstSelectedPlayerTires(Ped selectedPed)
 {
-	if (PED::IS_PED_IN_ANY_VEHICLE(selectedPed, FALSE))
+	if (PED::IS_PED_IN_ANY_VEHICLE(selectedPed, false))
 	{
 		RequestControl(PED::GET_VEHICLE_PED_IS_USING(selectedPed));
-		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(PED::GET_VEHICLE_PED_IS_USING(selectedPed), TRUE);
+		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(PED::GET_VEHICLE_PED_IS_USING(selectedPed), true);
 		static int tireID = 0;
 		for (tireID = 0; tireID < 8; tireID++)
 		{
@@ -83,7 +81,7 @@ void Cheat::GameFunctions::BurstSelectedPlayerTires(Ped selectedPed)
 
 void Cheat::GameFunctions::SetOffAlarmPlayerVehicle(Ped selectedPed)
 {
-	if (PED::IS_PED_IN_ANY_VEHICLE(selectedPed, FALSE))
+	if (PED::IS_PED_IN_ANY_VEHICLE(selectedPed, false))
 	{
 		Entity selectedVehicle = PED::GET_VEHICLE_PED_IS_USING(selectedPed);
 		RequestControl(PED::GET_VEHICLE_PED_IS_USING(selectedPed));
@@ -540,7 +538,7 @@ void Cheat::GameFunctions::PlayScenarioNearbyPeds(char* Scenario)
 	}
 }
 
-void Cheat::GameFunctions::LoadPlayerInformation(char* playerName, Player p) 
+void Cheat::GameFunctions::ShowPlayerInformationBox(char* playerName, Player p) 
 {
 	if (Cheat::CheatFeatures::ShowPlayerInformationPlayerList)
 	{
@@ -678,259 +676,21 @@ void Cheat::GameFunctions::LoadPlayerInformation(char* playerName, Player p)
 		Cheat::AddPlayerInfoBoxTextEntry(WantedLevel.str(), NULL, 9);
 
 
-		std::ostringstream Weapon;
-		Hash weaponHash;
+		Hash WeaponHash;
 		Cheat::AddPlayerInfoBoxTextEntry("Weapon", 10);
-		if (WEAPON::GET_CURRENT_PED_WEAPON(SelectedPlayerPed, &weaponHash, 1))
+		std::string WeaponName;
+		if (WEAPON::GET_CURRENT_PED_WEAPON(SelectedPlayerPed, &WeaponHash, 1))
 		{
-			char* weaponName;
-			if (weaponHash == 2578778090) {
-				weaponName = "Knife";
-			}
-			else if (weaponHash == 0x678B81B1) {
-				weaponName = "Nightstick";
-			}
-			else if (weaponHash == 0x4E875F73) {
-				weaponName = "Hammer";
-			}
-			else if (weaponHash == 0x958A4A8F) {
-				weaponName = "Bat";
-			}
-			else if (weaponHash == 0x440E4788) {
-				weaponName = "GolfClub";
-			}
-			else if (weaponHash == 0x84BD7BFD) {
-				weaponName = "Crowbar";
-			}
-			else if (weaponHash == 0x1B06D571) {
-				weaponName = "Pistol";
-			}
-			else if (weaponHash == 0x5EF9FEC4) {
-				weaponName = "Combat Pistol";
-			}
-			else if (weaponHash == 0x22D8FE39) {
-				weaponName = "AP Pistol";
-			}
-			else if (weaponHash == 0x99AEEB3B) {
-				weaponName = "Pistol 50";
-			}
-			else if (weaponHash == 0x13532244) {
-				weaponName = "Micro SMG";
-			}
-			else if (weaponHash == 0x2BE6766B) {
-				weaponName = "SMG";
-			}
-			else if (weaponHash == 0xEFE7E2DF) {
-				weaponName = "Assault SMG";
-			}
-			else if (weaponHash == 0xBFEFFF6D) {
-				weaponName = "Assault Riffle";
-			}
-			else if (weaponHash == 0x83BF0278) {
-				weaponName = "Carbine Riffle";
-			}
-			else if (weaponHash == 0xAF113F99) {
-				weaponName = "Advanced Riffle";
-			}
-			else if (weaponHash == 0x9D07F764) {
-				weaponName = "MG";
-			}
-			else if (weaponHash == 0x7FD62962) {
-				weaponName = "Combat MG";
-			}
-			else if (weaponHash == 0x1D073A89) {
-				weaponName = "Pump Shotgun";
-			}
-			else if (weaponHash == 0x7846A318) {
-				weaponName = "Sawed-Off Shotgun";
-			}
-			else if (weaponHash == 0xE284C527) {
-				weaponName = "Assault Shotgun";
-			}
-			else if (weaponHash == 0x9D61E50F) {
-				weaponName = "Bullpup Shotgun";
-			}
-			else if (weaponHash == 0x3656C8C1) {
-				weaponName = "Stun Gun";
-			}
-			else if (weaponHash == 0x05FC3C11) {
-				weaponName = "Sniper Rifle";
-			}
-			else if (weaponHash == 0x0C472FE2) {
-				weaponName = "Heavy Sniper";
-			}
-			else if (weaponHash == 0xA284510B) {
-				weaponName = "Grenade Launcher";
-			}
-			else if (weaponHash == 0x4DD2DC56) {
-				weaponName = "Smoke Grenade Launcher";
-			}
-			else if (weaponHash == 0xB1CA77B1) {
-				weaponName = "RPG";
-			}
-			else if (weaponHash == 0x42BF8A85) {
-				weaponName = "Minigun";
-			}
-			else if (weaponHash == 0x93E220BD) {
-				weaponName = "Grenade";
-			}
-			else if (weaponHash == 0x2C3731D9) {
-				weaponName = "Sticky Bomb";
-			}
-			else if (weaponHash == 0xFDBC8A50) {
-				weaponName = "Smoke Grenade";
-			}
-			else if (weaponHash == 0xA0973D5E) {
-				weaponName = "BZGas";
-			}
-			else if (weaponHash == 0x24B17070) {
-				weaponName = "Molotov";
-			}
-			else if (weaponHash == 0x060EC506) {
-				weaponName = "Fire Extinguisher";
-			}
-			else if (weaponHash == 0x34A67B97) {
-				weaponName = "Petrol Can";
-			}
-			else if (weaponHash == 0xFDBADCED) {
-				weaponName = "Digital scanner";
-			}
-			else if (weaponHash == 0x88C78EB7) {
-				weaponName = "Briefcase";
-			}
-			else if (weaponHash == 0x23C9F95C) {
-				weaponName = "Ball";
-			}
-			else if (weaponHash == 0x497FACC3) {
-				weaponName = "Flare";
-			}
-			else if (weaponHash == 0xF9E6AA4B) {
-				weaponName = "Bottle";
-			}
-			else if (weaponHash == 0x61012683) {
-				weaponName = "Gusenberg";
-			}
-			else if (weaponHash == 0xC0A3098D) {
-				weaponName = "Special Carabine";
-			}
-			else if (weaponHash == 0xD205520E) {
-				weaponName = "Heavy Pistol";
-			}
-			else if (weaponHash == 0xBFD21232) {
-			weaponName = "SNS Pistol";
-			}
-			else if (weaponHash == 0x7F229F94) {
-				weaponName = "Bullpup Rifle";
-			}
-			else if (weaponHash == 0x92A27487) {
-				weaponName = "Dagger";
-			}
-			else if (weaponHash == 0x083839C4) {
-				weaponName = "Vintage Pistol";
-			}
-			else if (weaponHash == 0x7F7497E5) {
-				weaponName = "Firework Launcher";
-			}
-			else if (weaponHash == 0xA89CB99E) {
-				weaponName = "Musket";
-			}
-			else if (weaponHash == 0x3AABBBAA) {
-				weaponName = "Heavy Shotgun";
-			}
-			else if (weaponHash == 0xC734385A) {
-				weaponName = "Marksman Rifle";
-			}
-			else if (weaponHash == 0x63AB0442) {
-				weaponName = "Homing Launcher";
-			}
-			else if (weaponHash == 0xAB564B93) {
-				weaponName = "Proximity Mine";
-			}
-			else if (weaponHash == 0x787F0BB) {
-				weaponName = "Snowball";
-			}
-			else if (weaponHash == 0x47757124) {
-				weaponName = "Flare Gun";
-			}
-			else if (weaponHash == 0xE232C28C) {
-				weaponName = "Garbage Bag";
-			}
-			else if (weaponHash == 0xD04C944D) {
-				weaponName = "Handcuffs";
-			}
-			else if (weaponHash == 0x0A3D4D34) {
-				weaponName = "Combat PDW";
-			}
-			else if (weaponHash == 0xDC4DB296) {
-				weaponName = "Marksman Pistol";
-			}
-			else if (weaponHash == 0xD8DF3C3C) {
-				weaponName = "Brass Knuckles";
-			}
-			else if (weaponHash == 0x6D544C99) {
-				weaponName = "Railgun";
-			}
-			else if (weaponHash == 0xBFE256D4) {
-				weaponName = "Pistol Mk II";
-			}
-			else if (weaponHash == 0x2BE6766B) {
-				weaponName = "SMG Mk II";
-			}
-			else if (weaponHash == 0x394F415C) {
-				weaponName = "Assault Rifle Mk II";
-			}
-			else if (weaponHash == 0xFAD1F1C9) {
-				weaponName = "Carbine Rifle Mk II";
-			}
-			else if (weaponHash == 0x969C3D67) {
-				weaponName = "Special Carbine Mk II";
-			}
-			else if (weaponHash == 0x84D6FAFD) {
-				weaponName = "Bullpup Rifle Mk II";
-			}
-			else if (weaponHash == 0xDBBD7280) {
-				weaponName = "Combat MG Mk II";
-			}
-			else if (weaponHash == 0x6A6C02E0) {
-				weaponName = "Marksman Rifle Mk II";
-			}
-			else if (weaponHash == 0xA914799) {
-				weaponName = "Heavy Sniper Mk II";
-			}
-			else if (weaponHash == 0x476BF155) {
-				weaponName = "Unholy Hellbringer";
-			}
-			else if (weaponHash == 0xAF3696A1) {
-				weaponName = "Up-n-Atomizer";
-			}
-			else if (weaponHash == 0xB62D1F67) {
-				weaponName = "Widowmaker";
-			}
-			else if (weaponHash == 0xBD248B55) {
-				weaponName = "Mini SMG";
-			}
-			else if (weaponHash == 0xCB96392F) {
-				weaponName = "Heavy Revolver Mk II";
-			}
-			else if (weaponHash == 0xC1B3C3D1) {
-				weaponName = "Heavy Revolver";
-			}
-			else if (weaponHash == 0x97EA20B8) {
-				weaponName = "Double Action Revolver";
-			}
-			else if (weaponHash == 0x2BE6766B) {
-				weaponName = "SMG Mk II";
-			}
-			else {
-				weaponName = "~c~Unarmed";
-			}
-			Weapon << weaponName;
+			for (int i = 0; i < Cheat::GameArrays::WeaponsHashList.size(); i++)
+			{
+				if (WeaponHash == Cheat::GameArrays::WeaponsHashList[i].WeaponHash)
+				{
+					WeaponName = Cheat::GameArrays::WeaponsHashList[i].WeaponName;
+				}
+			}
+			
 		}
-		else
-		{
-			Weapon << "~c~Unarmed";
-		}
-		Cheat::AddPlayerInfoBoxTextEntry(Weapon.str(), NULL, 10);
+		Cheat::AddPlayerInfoBoxTextEntry(WeaponName, NULL, 10);
 
 
 		//Coords
@@ -1140,13 +900,12 @@ void Cheat::GameFunctions::NearbyPedsCommitSuicide()
 				}
 				if (ENTITY::HAS_ANIM_EVENT_FIRED(ped[offsettedID], GAMEPLAY::GET_HASH_KEY("Fire")))
 				{
-					PED::SET_PED_SHOOTS_AT_COORD(ped[offsettedID], 0, 0, 0, TRUE);
+					PED::SET_PED_SHOOTS_AT_COORD(ped[offsettedID], 0, 0, 0, true);
 				}
 			}
 		}
 	}
 }
-
 
 void Cheat::GameFunctions::DrawMarkerAbovePlayer(int Type, Player player, RGBA Color)
 {
@@ -1162,23 +921,23 @@ void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 	STREAMING::REQUEST_MODEL(GAMEPLAY::GET_HASH_KEY(ModelHash));
 	while (!STREAMING::HAS_MODEL_LOADED(GAMEPLAY::GET_HASH_KEY(ModelHash))) { WAIT(0); }
 	Vector3 pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(Cheat::GameFunctions::PlayerPedID, 0.0, 5.0, 0);
-	auto veh = VEHICLE::CREATE_VEHICLE(GAMEPLAY::GET_HASH_KEY(ModelHash), pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(Cheat::GameFunctions::PlayerPedID), 1, 1);
-	if (veh != 0)
+	auto VehicleHandle = VEHICLE::CREATE_VEHICLE(GAMEPLAY::GET_HASH_KEY(ModelHash), pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(Cheat::GameFunctions::PlayerPedID), 1, 1);
+	if (VehicleHandle != 0)
 	{
-		NETWORK::NETWORK_FADE_OUT_ENTITY(veh, true, false);
-		if (Cheat::CheatFeatures::VehicleSpawnerSpawnInsideVehicle) { PED::SET_PED_INTO_VEHICLE(Cheat::GameFunctions::PlayerPedID, veh, -1); }
-		if (Cheat::CheatFeatures::VehicleSpawnerSpawnWithGodmode) { if (Cheat::CheatFeatures::VehicleSpawnerSpawnInsideVehicle) { Cheat::CheatFeatures::VehicleGodmodeBool = true; } else { GameFunctions::ChangeEntityInvincibilityState(veh, true); } }
-		if (Cheat::CheatFeatures::VehicleSpawnerSpawnMaxUpgraded) { MaxUpgradeVehicle(veh); }
-		if (Cheat::CheatFeatures::VehicleSpawnerSpawnWithBlip) { Cheat::GameFunctions::AddBlipToVehicle(veh); }
-		VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(veh, "Vehicle");
-		VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, true);
-		VEHICLE::SET_VEHICLE_IS_STOLEN(veh, false);
-		VEHICLE::SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(veh, true);
-		VEHICLE::SET_VEHICLE_IS_WANTED(veh, false); 
-		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(veh, 1, 1);
-		NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK::NET_TO_VEH(veh), 1);
-		DECORATOR::DECOR_SET_INT(veh, "MPBitset", 0);
-		ENTITY::_SET_ENTITY_SOMETHING(veh, true);
+		NETWORK::NETWORK_FADE_OUT_ENTITY(VehicleHandle, true, false);
+		if (Cheat::CheatFeatures::VehicleSpawnerSpawnInsideVehicle) { PED::SET_PED_INTO_VEHICLE(Cheat::GameFunctions::PlayerPedID, VehicleHandle, -1); }
+		if (Cheat::CheatFeatures::VehicleSpawnerSpawnWithGodmode) { if (Cheat::CheatFeatures::VehicleSpawnerSpawnInsideVehicle) { Cheat::CheatFeatures::VehicleGodmodeBool = true; } else { GameFunctions::ChangeEntityInvincibilityState(VehicleHandle, true); } }
+		if (Cheat::CheatFeatures::VehicleSpawnerSpawnMaxUpgraded) { MaxUpgradeVehicle(VehicleHandle); }
+		if (Cheat::CheatFeatures::VehicleSpawnerSpawnWithBlip) { Cheat::GameFunctions::AddBlipToVehicle(VehicleHandle); }
+		VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(VehicleHandle, "Vehicle");
+		VEHICLE::SET_VEHICLE_ENGINE_ON(VehicleHandle, true, true, true);
+		VEHICLE::SET_VEHICLE_IS_STOLEN(VehicleHandle, false);
+		VEHICLE::SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(VehicleHandle, true);
+		VEHICLE::SET_VEHICLE_IS_WANTED(VehicleHandle, false);
+		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(VehicleHandle, 1, 1);
+		NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK::NET_TO_VEH(VehicleHandle), 1);
+		DECORATOR::DECOR_SET_INT(VehicleHandle, "MPBitset", 0);
+		ENTITY::_SET_ENTITY_SOMETHING(VehicleHandle, true);
 		Cheat::GameFunctions::MinimapNotification("Vehicle Spawned");
 	}
 }
@@ -1506,10 +1265,7 @@ std::string Cheat::GameFunctions::ReturnPlayerIPAddressAsString(Player PlayerHan
 	char IPBuffer[256];
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
-		if (PlayerHandle == Cheat::GameFunctions::PlayerID && Cheat::CheatFeatures::HideOwnIPAddress)
-		{
-			return "Hidden";
-		}
+		if (PlayerHandle == Cheat::GameFunctions::PlayerID && Cheat::CheatFeatures::HideOwnIPAddress) { return "Hidden"; }
 		auto InfoLong	 = *reinterpret_cast<std::uintptr_t*>(GameHooking::get_player_address(PlayerHandle) + OFFSET_PLAYER_INFO);
 		auto IPAddress   = reinterpret_cast<std::uint8_t*>(InfoLong + 0x44);
 		IPAddress ? sprintf_s(IPBuffer, "%i.%i.%i.%i", IPAddress[3], IPAddress[2], IPAddress[1], IPAddress[0]) : sprintf_s(IPBuffer, "Unknown");
