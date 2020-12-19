@@ -690,6 +690,10 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(char* playerName, Player p)
 			}
 			
 		}
+		else
+		{
+			WeaponName = "Unarmed";
+		}
 		Cheat::AddPlayerInfoBoxTextEntry(WeaponName, NULL, 10);
 
 
