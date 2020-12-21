@@ -3557,20 +3557,24 @@ void Cheat::Main()
 			if (Cheat::Option("Set Off Car Alarm", "Enable Car Alarm of Selected Player"))
 			{
 				int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer);
-				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) {
+				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) 
+				{
 					Cheat::GameFunctions::SetOffAlarmPlayerVehicle(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer));
 				}
-				else {
+				else 
+				{
 					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
 				}
 			}
 			if (Cheat::Option("Burst Vehicle Tires", "Burst selected player vehicle tires"))
 			{
 				int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer);
-				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) {
+				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) 
+				{
 					Cheat::GameFunctions::BurstSelectedPlayerTires(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer));
 				}
-				else {
+				else 
+				{
 					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
 				}			
 			}
@@ -3596,14 +3600,16 @@ void Cheat::Main()
 			if (Cheat::Option("Slingshot Vehicle", "Slingshot selected player vehicle"))
 			{
 				int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer);
-				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) {
+				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) 
+				{
 					NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), true));
 					if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), true)))
 					{
 						ENTITY::APPLY_FORCE_TO_ENTITY(PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), true), 1, 0, 0, 20, 0, 0, 0, 1, false, true, true, true, true);
 					}
 				}
-				else {
+				else 
+				{
 					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle"); 
 				}
 			}
@@ -3655,8 +3661,7 @@ void Cheat::Main()
 				Vector3 pos = ENTITY::GET_ENTITY_COORDS(selectedplayer, 1);
 				Hash pedm = GAMEPLAY::GET_HASH_KEY("u_m_m_jesus_01");
 				STREAMING::REQUEST_MODEL(pedm);
-				while (!STREAMING::HAS_MODEL_LOADED(pedm))
-					WAIT(0);
+				while (!STREAMING::HAS_MODEL_LOADED(pedm)) { WAIT(0); }
 				eclone[egcount] = PED::CREATE_PED(26, pedm, pos.x + rand() % 1, pos.y + rand() % 1, pos.z + 1, 0, 1, 1);
 				ENTITY::SET_ENTITY_INVINCIBLE(eclone[egcount], false);
 				PED::SET_PED_COMBAT_ABILITY(eclone[egcount], 100);
@@ -3677,8 +3682,7 @@ void Cheat::Main()
 				Vector3 pos = ENTITY::GET_ENTITY_COORDS(selectedplayer, 1);
 				Hash pedm = GAMEPLAY::GET_HASH_KEY("u_m_m_jesus_01");
 				STREAMING::REQUEST_MODEL(pedm);
-				while (!STREAMING::HAS_MODEL_LOADED(pedm))
-					WAIT(0);
+				while (!STREAMING::HAS_MODEL_LOADED(pedm)) { WAIT(0); }
 				int my_group = PLAYER::GET_PLAYER_GROUP(selectedplayer);
 				clone[gcount] = PED::CREATE_PED(26, pedm, pos.x + rand() % 1, pos.y + rand() % 1, pos.z + 1, 0, 1, 1);
 				PED::SET_PED_AS_GROUP_LEADER(selectedplayer, my_group);

@@ -28,18 +28,18 @@ int Cheat::GUI::PreviousMenuLevel;
 int Cheat::GUI::optionsArray			[1000];
 SubMenus Cheat::GUI::menusArray			[1000];
 std::vector <std::string> Cheat::GUI::ThemeFilesVector;
-RGBAF Cheat::GUI::count				{ 255, 255, 255, 255, FontChaletLondon };
-RGBAF Cheat::GUI::titleText			{ 255, 255, 255, 255, FontChaletLondon };
-RGBAF Cheat::GUI::optionText		{ 255, 255, 255, 255, FontChaletLondon };
-RGBAF Cheat::GUI::breakText			{ 255, 255, 255, 255, FontChaletLondon };
-RGBA Cheat::GUI::titleRect			{ 0, 0, 255, 255 };
-RGBA Cheat::GUI::MainTitleRect		{ 0, 0, 0, 255 };
-RGBA Cheat::GUI::headerRect			{ 0, 0, 255, 200 };                      
-RGBA Cheat::GUI::optionRect			{ 0, 0, 0, 255 };
-RGBA Cheat::GUI::MenuBackgroundRect	{ 0, 0, 0, 220 }; 
-RGBA Cheat::GUI::MenuBottomRect		{ 0, 0, 0, 255 };
-RGBA Cheat::GUI::scroller			{ 0, 0, 255, 255 };
-RGBA Cheat::GUI::TopAndBottomLine	{ 0, 0, 255, 255 };
+RGBAF Cheat::GUI::count					{ 255, 255, 255, 255, FontChaletLondon };
+RGBAF Cheat::GUI::titleText				{ 255, 255, 255, 255, FontChaletLondon };
+RGBAF Cheat::GUI::optionText			{ 255, 255, 255, 255, FontChaletLondon };
+RGBAF Cheat::GUI::breakText				{ 255, 255, 255, 255, FontChaletLondon };
+RGBA Cheat::GUI::titleRect				{ 0, 0, 255, 255 };
+RGBA Cheat::GUI::MainTitleRect			{ 0, 0, 0, 255 };
+RGBA Cheat::GUI::headerRect				{ 0, 0, 255, 200 };                      
+RGBA Cheat::GUI::optionRect				{ 0, 0, 0, 255 };
+RGBA Cheat::GUI::MenuBackgroundRect		{ 0, 0, 0, 220 }; 
+RGBA Cheat::GUI::MenuBottomRect			{ 0, 0, 0, 255 };
+RGBA Cheat::GUI::scroller				{ 0, 0, 255, 255 };
+RGBA Cheat::GUI::TopAndBottomLine		{ 0, 0, 255, 255 };
 
 int Cheat::GUI::keyPressDelay				= 200;
 int Cheat::GUI::keyPressPreviousTick		= GetTickCount64();
@@ -69,7 +69,6 @@ void Cheat::GUI::Drawing::InitTextureFile()
 		Cheat::LogFunctions::DebugMessage("Failed to load Textures.ytd");
 	}
 }
-
 
 void Cheat::GUI::Drawing::Text(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center)
 {
@@ -104,7 +103,6 @@ void Cheat::GUI::Drawing::DrawScaleform(const float x, const float y, const floa
 	int ScaleFormHandle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_MENU_GLARE");
 	GRAPHICS::DRAW_SCALEFORM_MOVIE(ScaleFormHandle, x, y, sx, sy, r, g, b, 255, 0);
 }
-
 
 void Cheat::Title(std::string title)
 {
@@ -149,7 +147,6 @@ void Cheat::Title(std::string title)
 	Cheat::GameFunctions::InstructionsAdd("Select", 141);
 	Cheat::GameFunctions::InstructionsEnd();
 }
-
 
 bool Cheat::Option(std::string option, std::string InformationText)
 {
@@ -289,6 +286,7 @@ bool Cheat::VehicleOption(std::string option, std::string ModelName)
 	}
 	return false;
 }
+
 bool Cheat::Break(std::string option, bool TextCentered)
 {
 	GUI::optionCount++;
@@ -328,6 +326,7 @@ bool Cheat::Break(std::string option, bool TextCentered)
 	}
 	return false;
 }
+
 bool Cheat::MenuOption(std::string option, SubMenus newSub)
 {
 	Option(option, "");
@@ -342,6 +341,7 @@ bool Cheat::MenuOption(std::string option, SubMenus newSub)
 	}
 	return false;
 }
+
 bool Cheat::MenuOptionPlayerList(std::string option, SubMenus newSub, Player PlayerHandle)
 {
 	Option(option, "");
@@ -367,6 +367,7 @@ bool Cheat::MenuOptionPlayerList(std::string option, SubMenus newSub, Player Pla
 	}
 	return false;
 }
+
 bool Cheat::Toggle(std::string option, bool & b00l, std::string InformationText, bool IsSavable)
 {
 	//Load Option From Config
@@ -431,7 +432,6 @@ bool Cheat::Toggle(std::string option, bool & b00l, std::string InformationText,
 	}
 	return false;
 }
-
 
 bool Cheat::Int(std::string option, int & _int, int min, int max, int step, bool DisableControl, bool IsSavable, std::string InformationText)
 {
@@ -563,6 +563,7 @@ bool Cheat::Float(std::string option, float & _float, float min, float max, floa
 	else if (GUI::optionCount == GUI::currentOption && GUI::rightPressed && ReturnTrueWithValueChange) return true;
 	return false;
 }
+
 bool Cheat::IntVector(std::string option, std::vector<int> Vector, int& position, bool IsSavable)
 {
 	//Load Option From Config
@@ -602,6 +603,7 @@ bool Cheat::IntVector(std::string option, std::vector<int> Vector, int& position
 	else if (GUI::optionCount == GUI::currentOption && GUI::rightPressed) return true;
 	return false;
 }
+
 bool Cheat::FloatVector(std::string option, std::vector<float> Vector, int& position, bool IsSavable)
 {
 	//Load Option From Config
@@ -682,9 +684,8 @@ bool Cheat::StringVector(std::string option, std::vector<std::string> Vector, in
 void Cheat::GUI::End()
 {
 	GUI::TotalOptionsCount = GUI::optionCount;
-	int opcount = GUI::optionCount;
-	int currop = GUI::currentOption;
-	if (opcount >= GUI::maxVisOptions)
+	int OptionCount = GUI::optionCount;
+	if (OptionCount >= GUI::maxVisOptions)
 	{
 		GUI::Drawing::Text(std::to_string(GUI::currentOptionMenuBottom) + " / " + std::to_string(GUI::optionCountMenuBottom), GUI::count, { Cheat::GUI::guiX - 0.085f, GUI::guiY + ((GUI::maxVisOptions + 1) * 0.035f - 0.172f) }, { 0.30f, 0.30f }, true);
 		GUI::Drawing::Text(Cheat::CheatFunctions::ReturnCheatBuildAsString(), GUI::count, { Cheat::GUI::guiX + 0.085f, GUI::guiY + ((GUI::maxVisOptions + 1) * 0.035f - 0.172f) }, { 0.30f, 0.30f }, true);
@@ -699,7 +700,7 @@ void Cheat::GUI::End()
 			GUI::Drawing::Text(OptionInformationText, GUI::count, { Cheat::GUI::guiX - 0.085f, GUI::guiY + ((GUI::maxVisOptions + 2) * 0.035f - 0.179f) }, { 0.30f, 0.30f }, false); // Option Info Text
 		}
 	}
-	else if (opcount > 0)
+	else if (OptionCount > 0)
 	{
 		GUI::Drawing::Text(std::to_string(GUI::currentOptionMenuBottom) + " / " + std::to_string(GUI::optionCountMenuBottom), GUI::count, { Cheat::GUI::guiX - 0.085f, GUI::guiY + (GUI::optionCount + 1) * 0.035f - 0.172f }, { 0.30f, 0.30f }, true);
 		GUI::Drawing::Text(Cheat::CheatFunctions::ReturnCheatBuildAsString().c_str(), GUI::count, { Cheat::GUI::guiX + 0.085f, GUI::guiY + (GUI::optionCount + 1) * 0.035f - 0.172f }, { 0.30f, 0.30f }, true);
@@ -715,7 +716,6 @@ void Cheat::GUI::End()
 		}
 	}
 }
-
 
 void Cheat::GUI::ControlsLoop()
 {
