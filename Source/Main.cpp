@@ -3351,7 +3351,7 @@ void Cheat::Main()
 			}
 			Cheat::MenuOption("Custom Bullets >", custombulletsmenu);
 			Cheat::MenuOption("Vehicle Gun >", vehiclegunmenu);
-			Cheat::MenuOption("Triggerbot Settings >", aimbotsettingsmenu);		
+			Cheat::MenuOption("Triggerbot >", aimbotsettingsmenu);		
 			Cheat::Toggle("No reload", Cheat::CheatFeatures::NoWeaponReloadBool, "Always have max amount of ammo");
 			Cheat::Toggle("Auto Give All Weapons", Cheat::CheatFeatures::AutoGiveAllWeaponsBool, "Always have all weapons");
 			Cheat::Toggle("Teleport Gun", Cheat::CheatFeatures::TeleportGunBool, "Teleport to where you shoot");
