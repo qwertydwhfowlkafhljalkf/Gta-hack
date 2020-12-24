@@ -15,7 +15,7 @@ class GameHooking
 {
 public:
 	static uint64_t*						m_frameCount;
-	static IsDLCPresent					    is_DLC_present;
+	static IsDLCPresent					    is_dlc_present;
 	static SetSessionWeather				session_weather;
 	static fpFileRegister					m_fileregister;
 	static GetEventData						get_event_data;
@@ -27,6 +27,7 @@ public:
 	static GetChatData					    get_chat_data;
 
 	static void DoGameHooking();
+	static void PauseMainFiber(DWORD ms, bool ShowMessage = true);
 	static uint64_t getWorldPtr();
 	static void onTickInit();
 	static __int64** getGlobalPtr();
@@ -83,9 +84,6 @@ public:
 	};
 	static NativeHandler GetNativeHandler(uint64_t origHash);
 };
-
-void WAIT(DWORD ms, bool ShowMessage = true);
-
 
 enum eThreadState
 {

@@ -394,7 +394,6 @@ namespace Cheat
 		void ApplyForceToEntity(Entity e, float x, float y, float z);
 		void DrawMarkerAbovePlayer(int Type, Player player, RGBA Color);
 		void SpawnVehicle(char* ModelHash);
-		void NearbyPedsCommitSuicide();
 		void SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID);
 		void MaxDowngradeVehicle(int VehicleHandle);
 		void MaxUpgradeVehicle(int VehicleHandle);

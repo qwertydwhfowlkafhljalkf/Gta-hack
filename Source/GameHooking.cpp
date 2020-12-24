@@ -1,9 +1,8 @@
-#pragma once
 #include "stdafx.h"
 
 HANDLE MainFiber;
 uint64_t*															GameHooking::m_frameCount;
-IsDLCPresent														GameHooking::is_DLC_present;
+IsDLCPresent														GameHooking::is_dlc_present;
 SetSessionWeather													GameHooking::session_weather;
 GetEventData														GameHooking::get_event_data;
 SetSessionTime														GameHooking::set_session_time_info;
@@ -119,7 +118,7 @@ void GameHooking::onTickInit()
 	if (scriptFiber) { SwitchToFiber(scriptFiber); } else  { scriptFiber = CreateFiber(NULL, ScriptFunction, nullptr); }
 }
 
-void WAIT(DWORD ms, bool ShowMessage)
+void GameHooking::PauseMainFiber(DWORD ms, bool ShowMessage)
 {
 	if (ShowMessage) { Cheat::GUI::Drawing::Text("One moment please", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 1.5f, 1.5f }, true); }
 	WakeTime = timeGetTime() + ms;
@@ -335,7 +334,7 @@ void GameHooking::DoGameHooking()
 
 	//Set Patterns
 	setPat<uint64_t>("frame_count", "\x8B\x15\x00\x00\x00\x00\x41\xFF\xCF", "xx????xxx", &GameHooking::m_frameCount, true, 2); 
-	setFn<IsDLCPresent>("is_DLC_present", "\x48\x89\x5C\x24\x00\x57\x48\x83\xEC\x20\x81\xF9\x00\x00\x00\x00", "xxxx?xxxxxxx????", &GameHooking::is_DLC_present);
+	setFn<IsDLCPresent>("is_dlc_present", "\x48\x89\x5C\x24\x00\x57\x48\x83\xEC\x20\x81\xF9\x00\x00\x00\x00", "xxxx?xxxxxxx????", &GameHooking::is_dlc_present);
 	setFn<SetSessionWeather>("session_weather", "\x48\x89\x5C\x24\x00\x48\x89\x6C\x24\x00\x48\x89\x74\x24\x00\x57\x48\x83\xEC\x30\x40\x8A\xE9", "xxxx?xxxx?xxxx?xxxxxxxx", &GameHooking::session_weather);
 	setFn<GetEventData>("get_event_data", "\x48\x89\x5C\x24\x00\x57\x48\x83\xEC\x20\x49\x8B\xF8\x4C\x8D\x05\x00\x00\x00\x00\x41\x8B\xD9\xE8\x00\x00\x00\x00\x48\x85\xC0\x74\x14\x4C\x8B\x10\x44\x8B\xC3\x48\x8B\xD7\x41\xC1\xE0\x03\x48\x8B\xC8\x41\xFF\x52\x30\x48\x8B\x5C\x24\x00", "xxxx?xxxxxxxxxxx????xxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxx?", &GameHooking::get_event_data);
 	setFn<SetSessionTime>("session_time_set", "\x48\x89\x5C\x24\x08\x57\x48\x83\xEC\x20\x8B\xF9\x48\x8B\x0D\x00\x00\x00\x00\x48\x8B\xDA\x33\xD2\xE9\x00\x00\x00\x00", "xxxxxxxxxxxxxxx????xxxxxx????", &GameHooking::set_session_time_info);
@@ -432,7 +431,7 @@ void GameHooking::DoGameHooking()
 
 	//Hook Game Functions
 	Cheat::LogFunctions::DebugMessage("Hook 'GET_EVENT_DATA'");
-	auto status = MH_CreateHook(GameHooking::get_event_data, GetEventDataHooked, &GetEventDataOriginal);
+	auto status = MH_CreateHook(GameHooking::get_event_data, GetEventDataHooked, (void**)&GetEventDataOriginal);
 	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::get_event_data) != MH_OK) { Cheat::LogFunctions::Error("Failed to hook GET_EVENT_DATA", true);  std::exit(EXIT_SUCCESS); }
 	
 	Cheat::LogFunctions::DebugMessage("Hook 'GET_SCRIPT_HANDLER_IF_NETWORKED'");
@@ -448,8 +447,8 @@ void GameHooking::DoGameHooking()
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_chat_data) != MH_OK) { Cheat::LogFunctions::Error("Failed to hook GET_CHAT_DATA", true);  std::exit(EXIT_SUCCESS); }
 
 	Cheat::LogFunctions::DebugMessage("Hook 'IS_DLC_PRESENT'");
-	status = MH_CreateHook(GameHooking::is_DLC_present, IsDLCPresentHooked, (void**)&IsDLCPresentOriginal);
-	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::is_DLC_present) != MH_OK) { Cheat::LogFunctions::Error("Failed to hook IS_DLC_PRESENT", true);  std::exit(EXIT_SUCCESS); }
+	status = MH_CreateHook(GameHooking::is_dlc_present, IsDLCPresentHooked, (void**)&IsDLCPresentOriginal);
+	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::is_dlc_present) != MH_OK) { Cheat::LogFunctions::Error("Failed to hook IS_DLC_PRESENT", true);  std::exit(EXIT_SUCCESS); }
 
 }
 

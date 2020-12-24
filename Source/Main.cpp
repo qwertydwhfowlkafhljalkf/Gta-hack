@@ -2160,7 +2160,7 @@ void Cheat::Main()
 			{
 				if (!Cheat::GameFunctions::DeleteVehicle(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID))) 
 				{
-					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
+					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}		
 			}
 			if (Cheat::Option("Flip Up", "Flip vehicle up")) { VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false)); }
@@ -2183,7 +2183,7 @@ void Cheat::Main()
 				}
 				else
 				{
-					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
+					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}		
 			Cheat::Toggle("Vehicle Godmode", Cheat::CheatFeatures::VehicleGodmodeBool, "Makes current vehicle invincible");
@@ -2211,7 +2211,7 @@ void Cheat::Main()
 				}
 				else 
 				{
-					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
+					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}
 			if (Cheat::Option("Max Downgrade", "Max downgrade current vehicle"))
@@ -2222,7 +2222,7 @@ void Cheat::Main()
 				}
 				else 
 				{
-					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
+					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}
 			if (Cheat::Option("Add Blip Registration", "Add Blip To Current Vehicle")) {
@@ -2232,7 +2232,7 @@ void Cheat::Main()
 				}
 				else
 				{
-					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
+					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}
 			if (Cheat::Option("Change License Plate Text", "Input custom vehicle license plate text"))
@@ -2246,7 +2246,7 @@ void Cheat::Main()
 				}
 				else 
 				{
-					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
+					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}
 			Cheat::MenuOption("Color Options >", VehicleCustomizerColorMenu);
@@ -2270,7 +2270,7 @@ void Cheat::Main()
 				}
 				else
 				{
-					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
+					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}
 			Cheat::Int("Secondary Color: Red", VehicleSecondaryColorRed, 0, 255, 1);
@@ -2285,7 +2285,7 @@ void Cheat::Main()
 				}
 				else
 				{
-					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
+					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}
 		}
@@ -2434,7 +2434,7 @@ void Cheat::Main()
 				}
 				else
 				{
-					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
+					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}
 			Cheat::Break("Neon Presets", true);
@@ -2513,7 +2513,7 @@ void Cheat::Main()
 				}
 				else
 				{
-					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
+					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}
 		}
@@ -2523,14 +2523,10 @@ void Cheat::Main()
 			Cheat::Title("Door Options");
 			if (Cheat::Option("Open All Doors", "Open All Vehicle Doors"))
 			{
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 0, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 1, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 2, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 3, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 4, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 5, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 6, true, false);
-				VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 7, true, false);
+				for (int CurrentDoorIndex = 0; CurrentDoorIndex < 8; CurrentDoorIndex++)
+				{
+					VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), CurrentDoorIndex, true, false);
+				}
 			}
 			if (Cheat::Option("Close All Doors", "Close All Vehicle Doors")) { VEHICLE::SET_VEHICLE_DOORS_SHUT(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), true); }
 			if (Cheat::Option("Lock All Doors", "Lock All Vehicle Doors")) { VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 4); }
@@ -2542,26 +2538,32 @@ void Cheat::Main()
 			Cheat::Title("Vehicle Weapons");
 			Cheat::Toggle("Toggle Vehicle Weapons", Cheat::CheatFeatures::VehicleWeaponsBool, "Press horn button to use");
 			Cheat::Toggle("Show Lines", Cheat::CheatFeatures::VehicleWeapons_DrawLaser, "Show lines in front of vehicle");
-			if (Cheat::CheatFeatures::VehicleWeapons_TankRounds) {
+			if (Cheat::CheatFeatures::VehicleWeapons_TankRounds) 
+			{
 				Cheat::Break("Current: ~c~Tank Rounds", false);
 			}
-			if (Cheat::CheatFeatures::VehicleWeapons_VehicleRockets) {
+			if (Cheat::CheatFeatures::VehicleWeapons_VehicleRockets) 
+			{
 				Cheat::Break("Current: ~c~Vehicle Rockets", false);
 			}
-			if (Cheat::CheatFeatures::VehicleWeapons_Fireworks) {
+			if (Cheat::CheatFeatures::VehicleWeapons_Fireworks) 
+			{
 				Cheat::Break("Current: ~c~Fireworks", false);
 			}
-			if (Cheat::Option("Tank Rounds", "")) {
+			if (Cheat::Option("Tank Rounds", "")) 
+			{
 				Cheat::CheatFeatures::VehicleWeapons_TankRounds = true;
 				Cheat::CheatFeatures::VehicleWeapons_Fireworks = false;
 				Cheat::CheatFeatures::VehicleWeapons_VehicleRockets = false;
 			}
-			if (Cheat::Option("Vehicle Rockets", "")) {
+			if (Cheat::Option("Vehicle Rockets", "")) 
+			{
 				Cheat::CheatFeatures::VehicleWeapons_VehicleRockets = true;
 				Cheat::CheatFeatures::VehicleWeapons_Fireworks = false;
 				Cheat::CheatFeatures::VehicleWeapons_TankRounds = false;
 			}
-			if (Cheat::Option("Fireworks", "")) {
+			if (Cheat::Option("Fireworks", "")) 
+			{
 				Cheat::CheatFeatures::VehicleWeapons_Fireworks = true;
 				Cheat::CheatFeatures::VehicleWeapons_TankRounds = false;
 				Cheat::CheatFeatures::VehicleWeapons_VehicleRockets = false;
@@ -2586,7 +2588,8 @@ void Cheat::Main()
 			Cheat::MenuOption("Nearby Vehicles >", nearbyvehicles_menu);
 			Cheat::MenuOption("Nearby Peds >", nearbypeds_menu); 
 			Cheat::Toggle("Snow (local)", Cheat::CheatFeatures::WorldSnowLocalBool, "GTA Online Only");
-			if (Cheat::Option("Clear Area", "Clear area of vehicles, objects etc")) {
+			if (Cheat::Option("Clear Area", "Clear area of vehicles, objects etc")) 
+			{
 				Vector3 MyPos = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, false);
 				GAMEPLAY::CLEAR_AREA(MyPos.x, MyPos.y, MyPos.z, 250, true, 0, 0, 0);
 				GAMEPLAY::CLEAR_AREA_OF_COPS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
@@ -2643,7 +2646,6 @@ void Cheat::Main()
 					}
 				}
 			}
-			if (Cheat::Option("Suicide Ped", "Suicide nearby peds")) { Cheat::GameFunctions::NearbyPedsCommitSuicide(); }
 			if (Cheat::Option("Kill Peds", "Kill nearby peds"))
 			{
 				const int ElementAmount = 10;
@@ -2937,7 +2939,7 @@ void Cheat::Main()
 				{
 					Vector3 waypoint1 = UI::GET_BLIP_COORDS(UI::GET_FIRST_BLIP_INFO_ID(8));
 					STREAMING::REQUEST_MODEL(GAMEPLAY::GET_HASH_KEY("marshall"));
-					while (!STREAMING::HAS_MODEL_LOADED(GAMEPLAY::GET_HASH_KEY("marshall"))) WAIT(0);
+					while (!STREAMING::HAS_MODEL_LOADED(GAMEPLAY::GET_HASH_KEY("marshall"))) GameHooking::PauseMainFiber(0);
 					Vector3 pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(Cheat::GameFunctions::PlayerPedID, 0.0, 5.0, 0);
 					Vehicle veh = VEHICLE::CREATE_VEHICLE(GAMEPLAY::GET_HASH_KEY("marshall"), pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(Cheat::GameFunctions::PlayerPedID), 1, 1);
 					if (veh != 0)
@@ -2964,6 +2966,14 @@ void Cheat::Main()
 		{
 			Cheat::Title("IPL Loader");
 			Cheat::MenuOption("Go to IPL Teleports submenu", iplteleports);
+			if (Cheat::Option("Load MP data", ""))
+			{
+				DLC2::ON_ENTER_MP();
+			}
+			if (Cheat::Option("Unload MP data", ""))
+			{
+				DLC2::ON_ENTER_SP();
+			}
 			if (Cheat::Option("Load North Yankton", ""))
 			{
 				STREAMING::REQUEST_IPL("plg_01");
@@ -3577,7 +3587,7 @@ void Cheat::Main()
 				}
 				else 
 				{
-					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
+					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}
 			if (Cheat::Option("Burst Vehicle Tires", "Burst selected player vehicle tires"))
@@ -3589,7 +3599,7 @@ void Cheat::Main()
 				}
 				else 
 				{
-					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
+					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}			
 			}
 			if (Cheat::Option("Airstrike Player", "Airstrike selected player"))
@@ -3624,7 +3634,7 @@ void Cheat::Main()
 				}
 				else 
 				{
-					Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle"); 
+					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle"); 
 				}
 			}
 			if (Cheat::Option("Ram With Vehicle", "Ram selected player with vehicle"))
@@ -3635,7 +3645,7 @@ void Cheat::Main()
 					for (int i = 0; i < 3; i++)
 					{
 						STREAMING::REQUEST_MODEL(model);
-						while (!STREAMING::HAS_MODEL_LOADED(model)) WAIT(0);
+						while (!STREAMING::HAS_MODEL_LOADED(model)) GameHooking::PauseMainFiber(0);
 						Vector3 ourCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), false);
 						float forward = 10.f;
 						float heading = ENTITY::GET_ENTITY_HEADING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer));
@@ -3675,7 +3685,7 @@ void Cheat::Main()
 				Vector3 pos = ENTITY::GET_ENTITY_COORDS(selectedplayer, 1);
 				Hash pedm = GAMEPLAY::GET_HASH_KEY("u_m_m_jesus_01");
 				STREAMING::REQUEST_MODEL(pedm);
-				while (!STREAMING::HAS_MODEL_LOADED(pedm)) { WAIT(0); }
+				while (!STREAMING::HAS_MODEL_LOADED(pedm)) { GameHooking::PauseMainFiber(0); }
 				eclone[egcount] = PED::CREATE_PED(26, pedm, pos.x + rand() % 1, pos.y + rand() % 1, pos.z + 1, 0, 1, 1);
 				ENTITY::SET_ENTITY_INVINCIBLE(eclone[egcount], false);
 				PED::SET_PED_COMBAT_ABILITY(eclone[egcount], 100);
@@ -3696,7 +3706,7 @@ void Cheat::Main()
 				Vector3 pos = ENTITY::GET_ENTITY_COORDS(selectedplayer, 1);
 				Hash pedm = GAMEPLAY::GET_HASH_KEY("u_m_m_jesus_01");
 				STREAMING::REQUEST_MODEL(pedm);
-				while (!STREAMING::HAS_MODEL_LOADED(pedm)) { WAIT(0); }
+				while (!STREAMING::HAS_MODEL_LOADED(pedm)) { GameHooking::PauseMainFiber(0); }
 				int my_group = PLAYER::GET_PLAYER_GROUP(selectedplayer);
 				clone[gcount] = PED::CREATE_PED(26, pedm, pos.x + rand() % 1, pos.y + rand() % 1, pos.z + 1, 0, 1, 1);
 				PED::SET_PED_AS_GROUP_LEADER(selectedplayer, my_group);
@@ -4174,7 +4184,7 @@ void Cheat::Main()
 			if (Cheat::Option(OpenKeyString.c_str(), "Select to change"))
 			{
 				int PressedKey;
-				while (!Cheat::CheatFunctions::ReturnPressedKey(PressedKey)) { Cheat::GUI::Drawing::Text("~bold~Press any key to set Open Key, press Escape to cancel", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 0.900f, 0.900f }, true); WAIT(0, false); }
+				while (!Cheat::CheatFunctions::ReturnPressedKey(PressedKey)) { Cheat::GUI::Drawing::Text("~bold~Press any key to set Open Key, press Escape to cancel", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 0.900f, 0.900f }, true); GameHooking::PauseMainFiber(0, false); }
 				if (PressedKey == 27) { Cheat::GameFunctions::MinimapNotification("Canceled Setting Open Key"); break; }
 				if (PressedKey != 0) { Cheat::GUI::openKey = PressedKey; Cheat::GameFunctions::MinimapNotification("Open Key has been set"); }
 			}
@@ -4182,7 +4192,7 @@ void Cheat::Main()
 			if (Cheat::Option(GUINavigationKeyString.c_str(), "Select to change"))
 			{
 				int PressedKey;
-				while (!Cheat::CheatFunctions::ReturnPressedKey(PressedKey)) { Cheat::GUI::Drawing::Text("~bold~Press any key to set Cursor Navigation Key, press Escape to cancel", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 0.900f, 0.900f }, true); WAIT(0, false); }
+				while (!Cheat::CheatFunctions::ReturnPressedKey(PressedKey)) { Cheat::GUI::Drawing::Text("~bold~Press any key to set Cursor Navigation Key, press Escape to cancel", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 0.900f, 0.900f }, true); GameHooking::PauseMainFiber(0, false); }
 				if (PressedKey == 27) { Cheat::GameFunctions::MinimapNotification("Canceled Setting Cursor Navigation Key"); break; }
 				if (PressedKey != 0) { Cheat::GUI::GUINavigationKey = PressedKey; Cheat::GameFunctions::MinimapNotification("Cursor Navigation Key has been set"); }
 			}
@@ -4391,7 +4401,7 @@ void Cheat::Main()
 		break;
 		}
 		Cheat::GUI::End();
-		WAIT(0, false);
+		GameHooking::PauseMainFiber(0, false);
 	}
 }
 

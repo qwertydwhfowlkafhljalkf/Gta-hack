@@ -1,9 +1,9 @@
 #include "stdafx.h"
-::std::unordered_map<uint64_t, uint64_t> nativeHashMap;
+std::unordered_map<uint64_t, uint64_t> nativeHashMap;
 
 //https://www.unknowncheats.me/forum/3008857-post9618.html
 uint64_t HashMapDataArray[] = {
-0x0A1CB9094635D1A6, 0x801B883D25479F23,
+		0x0A1CB9094635D1A6, 0x801B883D25479F23,
 		 0x0A2E9FDB9A8C62F6, 0x43D5104FE8187C7A,
 		 0x0A3F820A9A9A9AC5, 0xB0334CB8F98AF662,
 		 0x0A6A279F3AA4FD70, 0x8846D4B34A33D642,

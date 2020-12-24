@@ -177,7 +177,6 @@ void Cheat::GameFunctions::SetRankRockstarGift(int RPValue)
 	Cheat::GameFunctions::MinimapNotification("Join a new GTAO session for the new ranked to be applied");
 }
 
-
 void Cheat::GameFunctions::RequestControl(Entity input)
 {
 	NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(input);
@@ -187,7 +186,7 @@ void Cheat::GameFunctions::RequestControl(Entity input)
 	{
 		if (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(input))
 		{
-			WAIT(0);
+			GameHooking::PauseMainFiber(0);
 		}
 		else
 		{
@@ -197,7 +196,6 @@ void Cheat::GameFunctions::RequestControl(Entity input)
 		tick++;
 	}
 }
-
 
 Vector3 Cheat::GameFunctions::RotToDirection(Vector3* rot) 
 {
@@ -249,7 +247,7 @@ float Cheat::GameFunctions::GetDistanceBetweenTwoVectors(Vector3* pointA, Vector
 	double y_2 = y_ba * y_ba;
 	double x_2 = x_ba * x_ba;
 	double sum_2 = y_2 + x_2;
-	return(float)sqrt(sum_2 + z_ba);
+	return (float)sqrt(sum_2 + z_ba);
 }
 
 void Cheat::GameFunctions::SubtitleNotification(char* Message, int ShowDuration)
@@ -312,7 +310,7 @@ void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoC
 		for (const float& CurrentHeight : groundCheckHeight)
 		{
 			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, CurrentHeight, false, false, true);
-			WAIT(50);
+			GameHooking::PauseMainFiber(50);
 			if (GAMEPLAY::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, CurrentHeight, &coords.z, false))
 			{
 				groundFound = true;
@@ -409,7 +407,7 @@ void Cheat::GameFunctions::AdvancedMinimapNotification(char* Message, char* PicN
 char* Cheat::GameFunctions::DisplayKeyboardAndReturnInput(int MaxInput)
 {
 	GAMEPLAY::DISPLAY_ONSCREEN_KEYBOARD(0, "", "", "", "", "", "", MaxInput);
-	while (GAMEPLAY::UPDATE_ONSCREEN_KEYBOARD() == 0) WAIT(0, false);
+	while (GAMEPLAY::UPDATE_ONSCREEN_KEYBOARD() == 0) GameHooking::PauseMainFiber(0, false);
 	if (!GAMEPLAY::GET_ONSCREEN_KEYBOARD_RESULT()) return "0";
 	return GAMEPLAY::GET_ONSCREEN_KEYBOARD_RESULT();
 }
@@ -794,13 +792,11 @@ float Cheat::GameFunctions::Get3DDistance(Vector3 a, Vector3 b)
 	return sqrt(x + y + z);
 }
 
-
 void Cheat::GameFunctions::ApplyForceToEntity(Entity e, float x, float y, float z)
 {
 	if (e != Cheat::GameFunctions::PlayerPedID && NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(e) == false) { RequestNetworkControlOfEntity(e); }
 	ENTITY::APPLY_FORCE_TO_ENTITY(e, 1, x, y, z, 0, 0, 0, 0, 1, 1, 1, 0, 1);
 }
-
 
 void Cheat::GameFunctions::DetachObjectFromPed(Ped Ped, char* ObjectName)
 {
@@ -827,7 +823,7 @@ void Cheat::GameFunctions::AttachObjectToPed(Ped Ped, char* ObjectName)
 		if (STREAMING::IS_MODEL_VALID(hash))
 		{
 			STREAMING::REQUEST_MODEL(hash);
-			while (!STREAMING::HAS_MODEL_LOADED(hash)) WAIT(0);
+			while (!STREAMING::HAS_MODEL_LOADED(hash)) GameHooking::PauseMainFiber(0);
 
 			if (STREAMING::HAS_MODEL_LOADED(hash))
 			{
@@ -837,42 +833,6 @@ void Cheat::GameFunctions::AttachObjectToPed(Ped Ped, char* ObjectName)
 					ENTITY::ATTACH_ENTITY_TO_ENTITY(attachobj[nuattach], PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped), 31086, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 2, 1);
 					nuattach++;
 					if (nuattach >= 101) { nuattach = 1; }
-				}
-			}
-		}
-	}
-}
-
-
-void Cheat::GameFunctions::NearbyPedsCommitSuicide()
-{
-	bool setUpAnim = true;
-	const int numElements = 10;
-	const int arrSize = numElements * 2 + 2;
-	Ped ped[arrSize];
-	ped[0] = numElements;
-	int count = PED::GET_PED_NEARBY_PEDS(Cheat::GameFunctions::PlayerPedID, ped, 1);
-	if (ped != NULL)
-	{
-		for (int i = 1; i <= count; i++)
-		{
-			int offsettedID = i;
-			if (ped[offsettedID] != NULL && ENTITY::DOES_ENTITY_EXIST(ped[offsettedID]))
-			{
-				if (setUpAnim)
-				{
-					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(ped[offsettedID], 0x1B06D571, 99999, true);
-					WEAPON::SET_CURRENT_PED_WEAPON(ped[offsettedID], 0x1B06D571, true);
-					char* dict = "MP_SUICIDE";
-					char* anim = "pistol";
-					STREAMING::REQUEST_ANIM_DICT(dict);
-					STREAMING::REQUEST_ANIM_SET(anim);
-					AI::TASK_PLAY_ANIM(ped[offsettedID], dict, anim, 8, -8, -1, 2105344, 0, false, 0, false);
-					setUpAnim = false;
-				}
-				if (ENTITY::HAS_ANIM_EVENT_FIRED(ped[offsettedID], GAMEPLAY::GET_HASH_KEY("Fire")))
-				{
-					PED::SET_PED_SHOOTS_AT_COORD(ped[offsettedID], 0, 0, 0, true);
 				}
 			}
 		}
@@ -891,7 +851,7 @@ void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 	if (!STREAMING::IS_MODEL_IN_CDIMAGE(model) || !STREAMING::IS_MODEL_A_VEHICLE(model)) { Cheat::GameFunctions::MinimapNotification("~r~That is not a valid vehicle model"); return; }
 	if (Cheat::CheatFeatures::VehicleSpawnerDeleteOldVehicle) { Cheat::GameFunctions::DeleteVehicle(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID)); }
 	STREAMING::REQUEST_MODEL(GAMEPLAY::GET_HASH_KEY(ModelHash));
-	while (!STREAMING::HAS_MODEL_LOADED(GAMEPLAY::GET_HASH_KEY(ModelHash))) { WAIT(0); }
+	while (!STREAMING::HAS_MODEL_LOADED(GAMEPLAY::GET_HASH_KEY(ModelHash))) { GameHooking::PauseMainFiber(0); }
 	Vector3 pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(Cheat::GameFunctions::PlayerPedID, 0.0, 5.0, 0);
 	auto VehicleHandle = VEHICLE::CREATE_VEHICLE(GAMEPLAY::GET_HASH_KEY(ModelHash), pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(Cheat::GameFunctions::PlayerPedID), 1, 1);
 	if (VehicleHandle != 0)
@@ -978,7 +938,6 @@ void Cheat::GameFunctions::CheckNewSessionMembersLoop()
 	}
 }
 
-
 bool Cheat::GameFunctions::IsEntityInInterior(Entity Entity)
 {
 	if (INTERIOR::GET_INTERIOR_FROM_ENTITY(Entity) == 0)
@@ -1062,6 +1021,7 @@ float Cheat::GameFunctions::MSToKMH(float MS)
 {
 	return roundf(MS * 3.6);
 }
+
 float Cheat::GameFunctions::MSToMPH(float MS)
 {
 	return roundf(MS * 2.2);
@@ -1071,6 +1031,7 @@ float Cheat::GameFunctions::KMHToMS(float MS)
 {
 	return roundf(MS * 0.27);
 }
+
 float Cheat::GameFunctions::MPHToMS(float MS)
 {
 	return roundf(MS * 0.44);
@@ -1119,7 +1080,6 @@ VECTOR2 Cheat::GameFunctions::ReturnCursorYXCoords()
 {
 	return { CONTROLS::GET_DISABLED_CONTROL_NORMAL(2, INPUT_CURSOR_X), CONTROLS::GET_DISABLED_CONTROL_NORMAL(2, INPUT_CURSOR_Y) };
 }
-
 
 //https://github.com/MAFINS/MenyooSP/blob/v1.3.0/Solution/source/Menu/Menu.cpp
 bool Cheat::GameFunctions::IsCursorAtXYPosition(VECTOR2 const& boxCentre, VECTOR2 const& boxSize)
@@ -1178,7 +1138,7 @@ void Cheat::GameFunctions::EnableDisableCursorGUINavigation()
 void Cheat::GameFunctions::ChangePedModelLocalPlayer(Hash PedModel)
 {
 	STREAMING::REQUEST_MODEL(PedModel);
-	while (!STREAMING::HAS_MODEL_LOADED(PedModel)) { WAIT(0); }
+	while (!STREAMING::HAS_MODEL_LOADED(PedModel)) { GameHooking::PauseMainFiber(0); }
 	PLAYER::SET_PLAYER_MODEL(Cheat::GameFunctions::PlayerID, PedModel);
 	PED::SET_PED_DEFAULT_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID);
 	STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(PedModel);
@@ -1202,7 +1162,7 @@ void Cheat::GameFunctions::CopySelectedPlayerOutfit(Player SelectedPlayer)
 	for (int i = 0; i < 12; i++)
 	{
 		PED::SET_PED_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, i, PED::GET_PED_DRAWABLE_VARIATION(SelectedPlayerPedHandle, i), PED::GET_PED_TEXTURE_VARIATION(SelectedPlayerPedHandle, i), PED::GET_PED_PALETTE_VARIATION(SelectedPlayerPedHandle, i));
-		WAIT(0, true);
+		GameHooking::PauseMainFiber(0, true);
 	}
 }
 
