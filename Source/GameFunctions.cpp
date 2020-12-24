@@ -107,7 +107,6 @@ void Cheat::GameFunctions::SetOffAlarmPlayerVehicle(Ped selectedPed)
 
 bool Cheat::GameFunctions::IsPlayerFriend(Player player)
 {
-	bool BplayerFriend = false;
 	int handle[76];
 	NETWORK::NETWORK_HANDLE_FROM_PLAYER(player, &handle[0], 13);
 	if (NETWORK::NETWORK_IS_HANDLE_VALID(&handle[0], 13))
@@ -308,19 +307,30 @@ void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoC
 	else
 	{
 		bool groundFound = false;
-		static float groundCheckHeight[] = { 100.0, 150.0, 50.0, 0.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.00 };
-		for (int i = 0; i < sizeof(groundCheckHeight) / sizeof(float); i++)
+		static std::array<float, 21> groundCheckHeight = { 0.0, 50.0, 100.0, 150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.00 };
+
+		for (const float& CurrentHeight : groundCheckHeight)
 		{
-			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, groundCheckHeight[i], false, false, true);
-			WAIT(100);
-			if (GAMEPLAY::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, groundCheckHeight[i], &coords.z, false))
+			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, CurrentHeight, false, false, true);
+			WAIT(50);
+			if (GAMEPLAY::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, CurrentHeight, &coords.z, false))
 			{
 				groundFound = true;
 				coords.z += 3.0;
 				break;
 			}
 		}
-		if (!groundFound) { coords.z = 1000.0; WEAPON::GIVE_DELAYED_WEAPON_TO_PED(TargetEntity, 0xFBAB5776, 1, false); }
+
+		if (!groundFound) 
+		{ 
+			Vector3 ClosestRoadCoord;
+			if (PATHFIND::GET_CLOSEST_ROAD(coords.x, coords.y, coords.z, 1.f, 1, 
+										   &ClosestRoadCoord, &ClosestRoadCoord, NULL, NULL, NULL, 0))
+			{
+				coords = ClosestRoadCoord;
+			}
+			GameFunctions::SubtitleNotification("~r~Ground not found; teleported to nearby road", 6000);
+		}
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
 	}
 }

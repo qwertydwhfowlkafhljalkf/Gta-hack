@@ -284,14 +284,18 @@ void Cheat::CheatFeatures::WorldSnowLocal(bool toggle)
 	globalHandle(262145).At(4723).As<BOOL>() = toggle;
 }
 
-
 bool Cheat::CheatFeatures::AutoTeleportToWaypointBool = false;
 void Cheat::CheatFeatures::AutoTeleportToWaypoint()
 {
-	if (!UI::IS_PAUSE_MENU_ACTIVE()) { if (UI::IS_WAYPOINT_ACTIVE()) { GameFunctions::TeleportToBlipCoord(SpriteWaypoint); } }
+	if (!UI::IS_PAUSE_MENU_ACTIVE()) 
+	{
+		if (UI::IS_WAYPOINT_ACTIVE()) 
+		{
+			GameFunctions::TeleportToBlipCoord(SpriteWaypoint); 
+			UI::SET_WAYPOINT_OFF(); 
+		}
+	}
 }
-
-
 
 bool Cheat::CheatFeatures::OneHitKillBool = false;
 void Cheat::CheatFeatures::OneHitKill(bool toggle)
