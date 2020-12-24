@@ -62,7 +62,10 @@ const char* GetLabelTextHooked(void* this_, const char* label)
 	return GetLabelTextOriginal(this_, label);
 }
 
-unsigned int MiscScriptsArray[] = { 0 };
+//Credits https://www.unknowncheats.me/forum/3012992-post2712.html
+unsigned int MiscScriptsArray[] = { 1317868303 , -1243454584 , -1212832151, -1252906024, -1890951223, -442306200, -966559987, 1977655521, 1998625272,
+				  -171207973, 393068387, 1097312011, -1162153263, -116602735, -738295409, -1949011582, -545396442, 1070934291, 392501634, -2029779863,
+				   -1648921703, -1333236192, 1302185744, 575518757, 1120313136};
 void* GetEventDataOriginal = nullptr;
 bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argStructSize)
 {
