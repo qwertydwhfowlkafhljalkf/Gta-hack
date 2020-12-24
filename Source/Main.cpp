@@ -84,7 +84,7 @@ void Cheat::Main()
 				{
 					if (Cheat::GameFunctions::PlayerID != i)
 					{
-						Cheat::GameFunctions::RequestControlOfEnt(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
+						Cheat::GameFunctions::RequestNetworkControlOfEntity(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
 						AI::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
 						AI::CLEAR_PED_TASKS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
 						AI::CLEAR_PED_SECONDARY_TASK(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
@@ -2608,7 +2608,7 @@ void Cheat::Main()
 					int OffsetID = i * 2 + 2;
 					if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false))
 					{
-						Cheat::GameFunctions::RequestControlOfEnt(vehs[OffsetID]);
+						Cheat::GameFunctions::RequestNetworkControlOfEntity(vehs[OffsetID]);
 						ENTITY::SET_ENTITY_COORDS(vehs[OffsetID], 6400.f, 6400.f, 0.f, false, false, false, false);
 					}
 				}
@@ -2635,7 +2635,7 @@ void Cheat::Main()
 				for (int i = 0; i < PedFound; i++)
 				{
 					int OffsetID = i * 2 + 2;
-					Cheat::GameFunctions::RequestControlOfEnt(peds[OffsetID]);
+					Cheat::GameFunctions::RequestNetworkControlOfEntity(peds[OffsetID]);
 					if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && Cheat::GameFunctions::PlayerPedID != peds[OffsetID])
 					{
 						Vector3 pos = ENTITY::GET_ENTITY_COORDS(peds[OffsetID], false);
@@ -2657,7 +2657,7 @@ void Cheat::Main()
 				for (int i = 0; i < PedFound; i++)
 				{
 					int OffsetID = i * 2 + 2;
-					Cheat::GameFunctions::RequestControlOfEnt(peds[OffsetID]);
+					Cheat::GameFunctions::RequestNetworkControlOfEntity(peds[OffsetID]);
 					if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && Cheat::GameFunctions::PlayerPedID != peds[OffsetID])
 					{
 						PED::APPLY_DAMAGE_TO_PED(peds[OffsetID], 1000, false);
@@ -2832,7 +2832,7 @@ void Cheat::Main()
 					int OffsetID = i * 2 + 2;
 					if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false))
 					{
-						Cheat::GameFunctions::RequestControlOfEnt(vehs[OffsetID]);
+						Cheat::GameFunctions::RequestNetworkControlOfEntity(vehs[OffsetID]);
 						Vector3 coords = ENTITY::GET_ENTITY_COORDS(vehs[OffsetID], false);
 						FIRE::ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1000.f, true, false, 0.f);
 					}
@@ -2853,7 +2853,7 @@ void Cheat::Main()
 					int OffsetID = i * 2 + 2;
 					if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false))
 					{
-						Cheat::GameFunctions::RequestControlOfEnt(vehs[OffsetID]);
+						Cheat::GameFunctions::RequestNetworkControlOfEntity(vehs[OffsetID]);
 						ENTITY::SET_ENTITY_COORDS(vehs[OffsetID], 6400.f, 6400.f, 0.f, false, false, false, false);
 					}
 				}
@@ -2873,7 +2873,7 @@ void Cheat::Main()
 						int offsettedID = i;
 						if (veh[offsettedID] != NULL && ENTITY::DOES_ENTITY_EXIST(veh[offsettedID]))
 						{
-							Cheat::GameFunctions::RequestControlOfEnt(veh[offsettedID]);
+							Cheat::GameFunctions::RequestNetworkControlOfEntity(veh[offsettedID]);
 							VEHICLE::SET_VEHICLE_FORWARD_SPEED(veh[offsettedID], 10000.0f);
 						}
 					}
@@ -3432,83 +3432,96 @@ void Cheat::Main()
 			{
 				Vector3 Coords;
 				Coords.x = 240.93f; Coords.y = -765.19f; Coords.z = 2558.83f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}
 			if (Cheat::Option("Diamond Casino & Resort", ""))
 			{
 				Vector3 Coords;
 				Coords.x = 916.37f; Coords.y = 51.22f; Coords.z = 80.89f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}
-			if (Cheat::Option("Mount Chiliad", "")) {
+			if (Cheat::Option("Mount Chiliad", "")) 
+			{
 				Vector3 Coords;
 				Coords.x = 496.75f; Coords.y = 5591.17f; Coords.z = 795.03f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}		
-			if (Cheat::Option("Maze Bank", "")) {
+			if (Cheat::Option("Maze Bank", "")) 
+			{
 				Vector3 Coords;
 				Coords.x = -74.94243f; Coords.y = -818.63446f; Coords.z = 326.174347f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}	
-			if (Cheat::Option("Military Base", "")) {
+			if (Cheat::Option("Military Base", "")) 
+			{
 				Vector3 Coords;
 				Coords.x = -2012.8470f; Coords.y = 2956.5270f; Coords.z = 32.8101f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}
-			if (Cheat::Option("Zancudo Tower", "")) {
+			if (Cheat::Option("Zancudo Tower", "")) 
+			{
 				Vector3 Coords;
 				Coords.x = -2356.0940f; Coords.y = 3248.645f; Coords.z = 101.4505f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}
-			if (Cheat::Option("Mask Shop", "")) {
+			if (Cheat::Option("Mask Shop", "")) 
+			{
 				Vector3 Coords;
 				Coords.x = -1338.16f; Coords.y = -1278.11f; Coords.z = 4.87f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}	
 			if (Cheat::Option("LSC", "")) {
 				Vector3 Coords;
 				Coords.x = -373.01f; Coords.y = -124.91f; Coords.z = 38.31f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}
-			if (Cheat::Option("Ammunation", "")) {
+			if (Cheat::Option("Ammunation", "")) 
+			{
 				Vector3 Coords;
 				Coords.x = 247.3652f; Coords.y = -45.8777f; Coords.z = 69.9411f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}	
-			if (Cheat::Option("Airport", "")) {
+			if (Cheat::Option("Airport", "")) 
+			{
 				Vector3 Coords;
 				Coords.x = -1102.2910f; Coords.y = -2894.5160f; Coords.z = 13.9467f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}
-			if (Cheat::Option("Clothes Store", "")) {
+			if (Cheat::Option("Clothes Store", "")) 
+			{
 				Vector3 Coords;
 				Coords.x = -718.91f; Coords.y = -158.16f; Coords.z = 37.00f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}
-			if (Cheat::Option("Waterfall", "")) {
+			if (Cheat::Option("Waterfall", "")) 
+			{
 				Vector3 Coords;
 				Coords.x = -597.9525f; Coords.y = 4475.2910f; Coords.z = 25.6890f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}
-			if (Cheat::Option("FIB", "")) {
+			if (Cheat::Option("FIB", "")) 
+			{
 				Vector3 Coords;
 				Coords.x = 135.5220f; Coords.y = -749.0003f; Coords.z = 260.0000f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}
-			if (Cheat::Option("Human Labs", "")) {
+			if (Cheat::Option("Human Labs", "")) 
+			{
 				Vector3 Coords;
 				Coords.x = 3617.231f; Coords.y = 3739.871f; Coords.z = 28.6901f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}	
-			if (Cheat::Option("MMI", "")) {
+			if (Cheat::Option("MMI", "")) 
+			{
 				Vector3 Coords;
 				Coords.x = -222.1977f; Coords.y = -1185.8500f; Coords.z = 23.0294f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}		
-			if (Cheat::Option("Sandy Shores Airfield", "")) {
+			if (Cheat::Option("Sandy Shores Airfield", "")) 
+			{
 				Vector3 Coords;
 				Coords.x = 1741.4960f; Coords.y = 3269.2570f; Coords.z = 41.6014f;
-				Cheat::GameFunctions::TPto(Coords);
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, Coords, false, false);
 			}
 		}
 		break;
@@ -3629,7 +3642,7 @@ void Cheat::Main()
 						float xVector = forward * sin(Cheat::GameFunctions::DegreesToRadians(heading)) * -1.f;
 						float yVector = forward * cos(Cheat::GameFunctions::DegreesToRadians(heading));
 						Vehicle veh = VEHICLE::CREATE_VEHICLE(model, ourCoords.x - xVector, ourCoords.y - yVector, ourCoords.z, heading, true, true);
-						Cheat::GameFunctions::RequestControlOfEnt(veh);
+						Cheat::GameFunctions::RequestNetworkControlOfEntity(veh);
 						VEHICLE::SET_VEHICLE_FORWARD_SPEED(veh, 250);
 						STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);
 					}
@@ -3642,12 +3655,12 @@ void Cheat::Main()
 			}
 			if (Cheat::Option("Clone Player", "Clone selected player"))
 			{
-				PED::CLONE_PED(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), ENTITY::GET_ENTITY_HEADING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer)), 1, 1);
+				Cheat::GameFunctions::ClonePed(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer));
 			}
 			if (Cheat::Option("Kick out of vehicle", "Kick selected player out of vehicle"))
 			{
 				Ped playerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer);
-				Cheat::GameFunctions::RequestControlOfEnt(playerPed);
+				Cheat::GameFunctions::RequestNetworkControlOfEntity(playerPed);
 				AI::CLEAR_PED_TASKS_IMMEDIATELY(playerPed);
 				AI::CLEAR_PED_TASKS(playerPed);
 				AI::CLEAR_PED_SECONDARY_TASK(playerPed);
@@ -3727,11 +3740,8 @@ void Cheat::Main()
 			if (Cheat::Option("Host Kick", "Kick selected player - Host only")) { NETWORK::NETWORK_SESSION_KICK_PLAYER(Cheat::CheatFeatures::selectedPlayer); }
 			if (Cheat::Option("Teleport To", "Teleport to selected player coords"))
 			{
-				Entity handle;
-				Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), false);
-				PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, false) ? handle = PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID) : handle = Cheat::GameFunctions::PlayerPedID;
-				Cheat::GameFunctions::TeleportToCoords(handle, coords, false);
-
+				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), false), 
+					                                   false, false);
 			}
 			Cheat::MenuOption("Teleport Options >", SelectedPlayerTeleportMenu);
 			Cheat::MenuOption("Friendly Options >", SelectedPlayerFriendlyMenu);
@@ -3947,7 +3957,7 @@ void Cheat::Main()
 		case AnimationsAndScenariosMenu:
 		{
 			Cheat::Title("Animations & Scenarios");
-			if (Cheat::Option("Stop Scenarios & Animations", "")) { AI::CLEAR_PED_TASKS_IMMEDIATELY(Cheat::GameFunctions::PlayerPedID); }
+			if (Cheat::Option("Stop Scenarios & Animations", "")) { Cheat::GameFunctions::ClearAllAnimations(); }
 			Cheat::Break("Animations", true);
 			if (Cheat::Option("Sex Receiver", ""))
 			{

@@ -378,16 +378,14 @@ namespace Cheat
 		Vector3 AddTwoVectors(Vector3* vectorA, Vector3* vectorB);
 		Vector3 MultiplyVector(Vector3* vector, float x);
 		float GetDistanceBetweenTwoVectors(Vector3* pointA, Vector3* pointB);
-		void TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight);
+		void TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicle);
 		int ReturnRandomInteger(int start, int end);
 		float GetDistanceBetweenTwoPoints(Vector3 A, Vector3 B);
 		Vector3 GetEntityCoords(Entity entity);
 		float DegreesToRadians(float degs);
 		void GetCameraDirection(float* dirX, float* dirY, float* dirZ);
-		void RequestControlOfEnt(Entity entity);
-		void RequestControlOfId(Entity netid);
-		Ped CreatePed(char* PedName, Vector3 SpawnCoordinates, int ped_type, bool network_handle);
-		Ped ClonePed(Ped ped);
+		void RequestNetworkControlOfEntity(Entity entity);
+		void ClonePed(Ped ped);
 		char* DisplayKeyboardAndReturnInput(int MaxInput);
 		int DisplayKeyboardAndReturnInputInteger(int MaxInput);
 		void ClearAllAnimations();
@@ -412,7 +410,6 @@ namespace Cheat
 		void DoLocalPedAnimation(char* AnimationName, char* AnimationID);
 		void AttachObjectToPed(Ped Ped, char* ObjectName);
 		void DetachObjectFromPed(Ped Ped, char* ObjectName);
-		void TPto(Vector3 Coords);
 		void MinimapNotification(char* Message);
 		void AdvancedMinimapNotification(char* Message, char* PicName1, char* PicName2, bool Flash, int IconType, char* Sender, char* Subject, float Duration, char* ClanTag);
 		void AddBlipToVehicle(Vehicle Vehicle);

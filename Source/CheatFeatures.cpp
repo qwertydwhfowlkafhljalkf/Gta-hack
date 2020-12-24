@@ -556,7 +556,7 @@ void Cheat::CheatFeatures::VehicleHornBoost()
 	if (PLAYER::IS_PLAYER_PRESSING_HORN(Cheat::GameFunctions::PlayerID))
 	{
 		Vehicle Veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::GameFunctions::PlayerID), false);
-		Cheat::GameFunctions::RequestControlOfEnt(Veh);
+		Cheat::GameFunctions::RequestNetworkControlOfEntity(Veh);
 		VEHICLE::SET_VEHICLE_FORWARD_SPEED(Veh, 70);
 	}
 }
@@ -775,7 +775,7 @@ void Cheat::CheatFeatures::DeleteGun()
 		{
 			if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &AimedAtEntity))
 			{
-				Cheat::GameFunctions::RequestControlOfEnt(AimedAtEntity);
+				Cheat::GameFunctions::RequestNetworkControlOfEntity(AimedAtEntity);
 				ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&AimedAtEntity);
 				ENTITY::SET_ENTITY_AS_MISSION_ENTITY(AimedAtEntity, 1, 1);
 				ENTITY::DELETE_ENTITY(&AimedAtEntity);
@@ -1017,7 +1017,7 @@ void Cheat::CheatFeatures::DriveOnWater()
 		if (ENTITY::DOES_ENTITY_EXIST(container) && height > -50.0f) {
 			Vector3 pRot = ENTITY::GET_ENTITY_ROTATION(playerPed, 0);
 			if (PED::IS_PED_IN_ANY_VEHICLE(playerPed, 1)) pRot = ENTITY::GET_ENTITY_ROTATION(veh, 0);
-			Cheat::GameFunctions::RequestControlOfEnt(container);
+			Cheat::GameFunctions::RequestNetworkControlOfEntity(container);
 			ENTITY::SET_ENTITY_COORDS(container, pos.x, pos.y, height - 1.5f, 0, 0, 0, 1);
 			ENTITY::SET_ENTITY_ROTATION(container, 0, 0, pRot.z, 0, 1);
 			Vector3 containerCoords = ENTITY::GET_ENTITY_COORDS(container, 1);
@@ -1026,7 +1026,7 @@ void Cheat::CheatFeatures::DriveOnWater()
 					ENTITY::SET_ENTITY_COORDS(playerPed, pos.x, pos.y, containerCoords.z + 2.0f, 0, 0, 0, 1);
 				}
 				else {
-					Cheat::GameFunctions::RequestControlOfEnt(veh);
+					Cheat::GameFunctions::RequestNetworkControlOfEntity(veh);
 					Vector3 vehc = ENTITY::GET_ENTITY_COORDS(veh, 1);
 					ENTITY::SET_ENTITY_COORDS(veh, vehc.x, vehc.y, containerCoords.z + 2.0f, 0, 0, 0, 1);
 				}
@@ -1047,7 +1047,7 @@ void Cheat::CheatFeatures::DriveOnWater()
 	else {
 		Object container = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(pos.x, pos.y, pos.z, 4.0, GAMEPLAY::GET_HASH_KEY("prop_container_ld2"), 0, 0, 1);
 		if (ENTITY::DOES_ENTITY_EXIST(container)) {
-			Cheat::GameFunctions::RequestControlOfEnt(container);
+			Cheat::GameFunctions::RequestNetworkControlOfEntity(container);
 			ENTITY::SET_ENTITY_COORDS(container, 0, 0, -1000.0f, 0, 0, 0, 1);
 			WAIT(10);
 			ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&container);

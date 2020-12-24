@@ -32,17 +32,16 @@ void Cheat::GameFunctions::SetPedTexture(Ped Ped, int ComponentID, int DrawableI
 
 void Cheat::GameFunctions::TeleportToBlipCoord(Blip TargetBlip)
 {
-	if (TargetBlip == SpriteWaypoint) 
+	if (TargetBlip == SpriteWaypoint && !UI::IS_WAYPOINT_ACTIVE())
 	{
-		if (!UI::IS_WAYPOINT_ACTIVE()) { Cheat::GameFunctions::MinimapNotification("~r~No Waypoint has been set"); return; }
+		Cheat::GameFunctions::MinimapNotification("~r~No Waypoint has been set"); 
+		return;
 	}
 
 	Blip BlipHandle = UI::GET_FIRST_BLIP_INFO_ID(TargetBlip);
 	if (UI::DOES_BLIP_EXIST(BlipHandle))
 	{
-		Entity e = Cheat::GameFunctions::PlayerPedID;
-		if (PED::IS_PED_IN_ANY_VEHICLE(e, 0)) { e = PED::GET_VEHICLE_PED_IS_USING(e); }
-		GameFunctions::TeleportToCoords(e, UI::GET_BLIP_INFO_ID_COORD(BlipHandle), true);
+		GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, UI::GET_BLIP_INFO_ID_COORD(BlipHandle), true, false);
 		return;
 	}
 	GameFunctions::MinimapNotification("~r~Target Blip does not exist");
@@ -50,13 +49,9 @@ void Cheat::GameFunctions::TeleportToBlipCoord(Blip TargetBlip)
 
 void Cheat::GameFunctions::TeleportToObjective()
 {
-	Entity e;
 	Vector3 wayp{};
-	Ped playerPed = Cheat::GameFunctions::PlayerPedID;
-	if (PED::IS_PED_IN_ANY_VEHICLE(playerPed, false)) { e = PED::GET_VEHICLE_PED_IS_USING(playerPed); }
-	else e = playerPed;
+	Ped e = Cheat::GameFunctions::PlayerPedID;
 	bool blipFound = false;
-	if (ENTITY::IS_ENTITY_A_VEHICLE(e)) RequestControlOfEnt(e);
 	for (int i = 0; i <= 1000; i++)
 	{
 		int blipIterator = UI::IS_WAYPOINT_ACTIVE() ? UI::_GET_BLIP_INFO_ID_ITERATOR() : SpriteStandard;    
@@ -66,9 +61,9 @@ void Cheat::GameFunctions::TeleportToObjective()
 			{
 				wayp = UI::GET_BLIP_INFO_ID_COORD(i);
 				blipFound = true;
-				Cheat::GameFunctions::TeleportToCoords(e, wayp, false);
+				Cheat::GameFunctions::TeleportToCoords(e, wayp, false, false);
 			}
-			GameFunctions::TeleportToCoords(e, wayp, true);
+			GameFunctions::TeleportToCoords(e, wayp, true, false);
 		}
 		break;
 	}
@@ -81,9 +76,8 @@ void Cheat::GameFunctions::TeleportToObjective()
 			blipFound = true;
 		}
 	}
-	blipFound ? Cheat::GameFunctions::TeleportToCoords(e, wayp, false) : Cheat::GameFunctions::MinimapNotification("~r~Objective not found");
+	blipFound ? Cheat::GameFunctions::TeleportToCoords(e, wayp, false, false) : Cheat::GameFunctions::MinimapNotification("~r~Objective not found");
 }
-
 
 void Cheat::GameFunctions::BurstSelectedPlayerTires(Ped selectedPed)
 {
@@ -111,7 +105,6 @@ void Cheat::GameFunctions::SetOffAlarmPlayerVehicle(Ped selectedPed)
 	}
 }
 
-
 bool Cheat::GameFunctions::IsPlayerFriend(Player player)
 {
 	bool BplayerFriend = false;
@@ -119,16 +112,12 @@ bool Cheat::GameFunctions::IsPlayerFriend(Player player)
 	NETWORK::NETWORK_HANDLE_FROM_PLAYER(player, &handle[0], 13);
 	if (NETWORK::NETWORK_IS_HANDLE_VALID(&handle[0], 13))
 	{
-		BplayerFriend = NETWORK::NETWORK_IS_FRIEND(&handle[0]);
+		if (NETWORK::NETWORK_IS_FRIEND(&handle[0]))
+		{
+			return true;
+		}
 	}
-	if (BplayerFriend == 1) 
-	{ 
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 Vector3 Cheat::GameFunctions::MultiplyVector(Vector3 vector, float inc) 
@@ -264,7 +253,6 @@ float Cheat::GameFunctions::GetDistanceBetweenTwoVectors(Vector3* pointA, Vector
 	return(float)sqrt(sum_2 + z_ba);
 }
 
-
 void Cheat::GameFunctions::SubtitleNotification(char* Message, int ShowDuration)
 {
 	UI::BEGIN_TEXT_COMMAND_PRINT("STRING");
@@ -292,29 +280,48 @@ int Cheat::GameFunctions::ReturnRandomInteger(int start, int end)
 	return GAMEPLAY::GET_RANDOM_INT_IN_RANGE(start, end);
 }
 
-void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight)
+/*
+Description: Teleport target entity to target coords
+Note(s): If AutoCorrectGroundHeight is set, the function automatically searches for nearby ground
+	     If IgnoreCurrentPedVehicle is set, the vehicle a entity may be in will be ignored and only the ped will be teleported
+*/
+void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicle)
 {
+	Entity TargetEntity = e;
+
+	if (ENTITY::IS_ENTITY_A_PED(TargetEntity))
+	{
+		if (PED::IS_PED_IN_ANY_VEHICLE(TargetEntity, false) && !IgnoreCurrentPedVehicle)
+		{ 
+			TargetEntity = PED::GET_VEHICLE_PED_IS_USING(TargetEntity);
+		}
+	}
+	if (ENTITY::IS_ENTITY_A_VEHICLE(TargetEntity))
+	{
+		GameFunctions::RequestNetworkControlOfEntity(TargetEntity);
+	}
+
 	if (!AutoCorrectGroundHeight)
 	{
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(e, coords.x, coords.y, coords.z, false, false, true);
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
 	}
 	else
 	{
 		bool groundFound = false;
-		static float groundCheckHeight[] = { 100.0, 150.0, 50.0, 0.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0 };
+		static float groundCheckHeight[] = { 100.0, 150.0, 50.0, 0.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.00 };
 		for (int i = 0; i < sizeof(groundCheckHeight) / sizeof(float); i++)
 		{
-			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(e, coords.x, coords.y, groundCheckHeight[i], 0, 0, 1);
+			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, groundCheckHeight[i], false, false, true);
 			WAIT(100);
-			if (GAMEPLAY::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, groundCheckHeight[i], &coords.z, 0))
+			if (GAMEPLAY::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, groundCheckHeight[i], &coords.z, false))
 			{
 				groundFound = true;
 				coords.z += 3.0;
 				break;
 			}
 		}
-		if (!groundFound) { coords.z = 1000.0; WEAPON::GIVE_DELAYED_WEAPON_TO_PED(Cheat::GameFunctions::PlayerPedID, 0xFBAB5776, 1, false); }
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(e, coords.x, coords.y, coords.z, false, false, true);
+		if (!groundFound) { coords.z = 1000.0; WEAPON::GIVE_DELAYED_WEAPON_TO_PED(TargetEntity, 0xFBAB5776, 1, false); }
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
 	}
 }
 
@@ -332,61 +339,34 @@ void Cheat::GameFunctions::GetCameraDirection(float* dirX, float* dirY, float* d
 	*dirZ = sin(tX);
 }
 
-void Cheat::GameFunctions::RequestControlOfEnt(Entity entity)
+void Cheat::GameFunctions::RequestNetworkControlOfEntity(Entity entity)
 {
-	int tick = 0;
-	while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(entity) && tick <= 25)
+	int EntityTick = 0;
+	int IdTick = 0;
+	while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(entity) && EntityTick <= 25)
 	{
 		NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(entity);
-		tick++;
+		EntityTick++;
 	}
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
 		int netID = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity);
-		Cheat::GameFunctions::RequestControlOfId(netID);
+		while (!NETWORK::NETWORK_HAS_CONTROL_OF_NETWORK_ID(netID) && IdTick <= 25)
+		{
+			NETWORK::NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(netID);
+			IdTick++;
+		}
 		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netID, 1);
 	}
 }
 
-void Cheat::GameFunctions::RequestControlOfId(Entity netid)
-{
-	int tick = 0;
 
-	while (!NETWORK::NETWORK_HAS_CONTROL_OF_NETWORK_ID(netid) && tick <= 25)
-	{
-		NETWORK::NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(netid);
-		tick++;
-	}
-}
-
-Ped Cheat::GameFunctions::CreatePed(char* PedName, Vector3 SpawnCoordinates, int ped_type, bool network_handle)
-{
-	Ped NewPed;
-	int PedHash = GAMEPLAY::GET_HASH_KEY(PedName);
-	if (STREAMING::IS_MODEL_IN_CDIMAGE(PedHash))
-	{
-		if (STREAMING::IS_MODEL_VALID(PedHash))
-		{
-			STREAMING::REQUEST_MODEL(PedHash);
-			while (!STREAMING::HAS_MODEL_LOADED(PedHash)) WAIT(0);
-
-			NewPed = PED::CREATE_PED(ped_type, PedHash, SpawnCoordinates.x, SpawnCoordinates.y, SpawnCoordinates.z, 0, network_handle, 1);
-			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(PedHash);
-			return NewPed;
-		}
-	}
-
-	return -1;
-}
-
-Ped Cheat::GameFunctions::ClonePed(Ped ped)
+void Cheat::GameFunctions::ClonePed(Ped ped)
 {
 	if (ENTITY::DOES_ENTITY_EXIST(ped) && !ENTITY::IS_ENTITY_DEAD(ped))
 	{
-		return PED::CLONE_PED(ped, ENTITY::GET_ENTITY_HEADING(ped), 1, 1);
+		PED::CLONE_PED(ped, ENTITY::GET_ENTITY_HEADING(ped), true, true);
 	}
-
-	return 0;
 }
 
 void Cheat::GameFunctions::MinimapNotification(char* Message)
@@ -414,19 +394,6 @@ void Cheat::GameFunctions::AdvancedMinimapNotification(char* Message, char* PicN
 	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Message);
 	UI::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG(PicName1, PicName2, Flash, IconType, Sender, Subject, Duration, ClanTag);
 	UI::_DRAW_NOTIFICATION(false, false);
-}
-
-Vector3 TPCoords;
-void Cheat::GameFunctions::TPto(Vector3 Coords)
-{
-	if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0))
-	{
-		ENTITY::SET_ENTITY_COORDS(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false), Coords.x, Coords.y, Coords.z, 0, 0, 0, 1);
-	}
-	else
-	{
-		ENTITY::SET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, Coords.x, Coords.y, Coords.z, 0, 0, 0, 1);
-	}
 }
 
 char* Cheat::GameFunctions::DisplayKeyboardAndReturnInput(int MaxInput)
@@ -467,7 +434,7 @@ void Cheat::GameFunctions::ClearNearbyPedAnimations()
 	for (int i = 0; i < PedFound; i++)
 	{
 		int OffsetID = i * 2 + 2;
-		Cheat::GameFunctions::RequestControlOfEnt(peds[OffsetID]);
+		Cheat::GameFunctions::RequestNetworkControlOfEntity(peds[OffsetID]);
 		if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && Cheat::GameFunctions::PlayerPedID != peds[OffsetID])
 		{
 			AI::CLEAR_PED_TASKS_IMMEDIATELY(peds[OffsetID]);
@@ -477,7 +444,7 @@ void Cheat::GameFunctions::ClearNearbyPedAnimations()
 
 void Cheat::GameFunctions::DoLocalPedAnimation(char* AnimationName, char* AnimationID)
 {
-	Cheat::GameFunctions::RequestControlOfEnt(Cheat::GameFunctions::PlayerPedID);
+	Cheat::GameFunctions::RequestNetworkControlOfEntity(Cheat::GameFunctions::PlayerPedID);
 	STREAMING::REQUEST_ANIM_DICT(AnimationName);
 	if (STREAMING::HAS_ANIM_DICT_LOADED((AnimationName))) { AI::TASK_PLAY_ANIM(Cheat::GameFunctions::PlayerPedID, AnimationName, AnimationID, 8.0f, 0.0f, -1, 9, 0, 0, 0, 0); }
 }
@@ -496,10 +463,10 @@ void Cheat::GameFunctions::DoNearbyPedsAnimation(char* AnimationName, char* Anim
 	for (int i = 0; i < PedFound; i++)
 	{
 		int OffsetID = i * 2 + 2;
-		Cheat::GameFunctions::RequestControlOfEnt(peds[OffsetID]);
+		Cheat::GameFunctions::RequestNetworkControlOfEntity(peds[OffsetID]);
 		if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && Cheat::GameFunctions::PlayerPedID != peds[OffsetID])
 		{
-			Cheat::GameFunctions::RequestControlOfEnt(peds[OffsetID]);
+			Cheat::GameFunctions::RequestNetworkControlOfEntity(peds[OffsetID]);
 			STREAMING::REQUEST_ANIM_DICT(AnimationName);
 			if (STREAMING::HAS_ANIM_DICT_LOADED((AnimationName)))
 			{
@@ -523,7 +490,7 @@ void Cheat::GameFunctions::PlayScenarioNearbyPeds(char* Scenario)
 	for (int i = 0; i < PedFound; i++)
 	{
 		int OffsetID = i * 2 + 2;
-		Cheat::GameFunctions::RequestControlOfEnt(peds[OffsetID]);
+		Cheat::GameFunctions::RequestNetworkControlOfEntity(peds[OffsetID]);
 		if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && Cheat::GameFunctions::PlayerPedID != peds[OffsetID])
 		{
 			AI::CLEAR_PED_TASKS_IMMEDIATELY(peds[OffsetID]);
@@ -539,7 +506,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(char* playerName, Player p)
 		//Definitions & error handling
 		if (!GameFunctions::IsPlayerIDValid(p)) { return; }
 		Ped SelectedPlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(p);
-		RequestControlOfEnt(SelectedPlayerPed);
+		RequestNetworkControlOfEntity(SelectedPlayerPed);
 
 		//Draw Title and Background
 		if (Cheat::GUI::guiX < 0.54f)
@@ -820,7 +787,7 @@ float Cheat::GameFunctions::Get3DDistance(Vector3 a, Vector3 b)
 
 void Cheat::GameFunctions::ApplyForceToEntity(Entity e, float x, float y, float z)
 {
-	if (e != Cheat::GameFunctions::PlayerPedID && NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(e) == false) { RequestControlOfEnt(e); }
+	if (e != Cheat::GameFunctions::PlayerPedID && NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(e) == false) { RequestNetworkControlOfEntity(e); }
 	ENTITY::APPLY_FORCE_TO_ENTITY(e, 1, x, y, z, 0, 0, 0, 0, 1, 1, 1, 0, 1);
 }
 
@@ -831,10 +798,7 @@ void Cheat::GameFunctions::DetachObjectFromPed(Ped Ped, char* ObjectName)
 	Object Object = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(PedCoords.x, PedCoords.y, PedCoords.z, 4.0, GAMEPLAY::GET_HASH_KEY(ObjectName), false, false, true);
 	if (ENTITY::DOES_ENTITY_EXIST(Object) && ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY(Object, Ped))
 	{
-		Cheat::GameFunctions::RequestControlOfEnt(Object);
-		int netID = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(Object);
-		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netID, 1);
-		Cheat::GameFunctions::RequestControlOfId(netID);
+		Cheat::GameFunctions::RequestNetworkControlOfEntity(Object);
 		ENTITY::DETACH_ENTITY(Object, 1, 1);
 		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(Object, 1, 1);
 		ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&Object);
@@ -1063,7 +1027,7 @@ void Cheat::GameFunctions::SetSessionTime(int h, int m, int s)
 
 void Cheat::GameFunctions::AddBlipToVehicle(Vehicle Vehicle)
 {
-	RequestControlOfEnt(Vehicle);
+	RequestNetworkControlOfEntity(Vehicle);
 	ENTITY::SET_ENTITY_AS_MISSION_ENTITY(Vehicle, true, true);
 	for (int i = 0; i < 350; i++)NETWORK::SET_NETWORK_ID_CAN_MIGRATE(Vehicle, 0);
 	VEHICLE::SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER(Vehicle, true);
@@ -1074,7 +1038,7 @@ void Cheat::GameFunctions::AddBlipToVehicle(Vehicle Vehicle)
 
 bool Cheat::GameFunctions::DeleteVehicle(Vehicle Vehicle)
 {
-	RequestControlOfEnt(Vehicle);
+	RequestNetworkControlOfEntity(Vehicle);
 	if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, false) && ENTITY::DOES_ENTITY_EXIST(Vehicle))
 	{
 		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(Vehicle, true, true);
