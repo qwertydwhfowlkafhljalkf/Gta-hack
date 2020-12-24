@@ -288,7 +288,7 @@ void Cheat::CheatFeatures::WorldSnowLocal(bool toggle)
 bool Cheat::CheatFeatures::AutoTeleportToWaypointBool = false;
 void Cheat::CheatFeatures::AutoTeleportToWaypoint()
 {
-	if (!UI::IS_PAUSE_MENU_ACTIVE()) { if (UI::IS_WAYPOINT_ACTIVE()) { Cheat::GameFunctions::TeleportToWaypoint(); } }
+	if (!UI::IS_PAUSE_MENU_ACTIVE()) { if (UI::IS_WAYPOINT_ACTIVE()) { GameFunctions::TeleportToBlipCoord(SpriteWaypoint); } }
 }
 
 
@@ -481,7 +481,7 @@ void Cheat::CheatFeatures::JumpAroundMode()
 		int OffsetID = i * 2 + 2;
 		if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false))
 		{
-			if (VEHICLE::IS_VEHICLE_ON_ALL_WHEELS(vehs[OffsetID]) == true)
+			if (VEHICLE::IS_VEHICLE_ON_ALL_WHEELS(vehs[OffsetID]))
 			{
 				ENTITY::APPLY_FORCE_TO_ENTITY(vehs[OffsetID], 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0);
 			}
@@ -491,9 +491,9 @@ void Cheat::CheatFeatures::JumpAroundMode()
 
 bool FreeCamFeaturedUsed = false;
 bool Cheat::CheatFeatures::FreeCamBool = false;
+Cam FreeCamHandle;
 void Cheat::CheatFeatures::FreeCam(bool toggle)
 {
-	Cam CameraHandle;
 	Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
 	Vector3 coord = CAM::GET_GAMEPLAY_CAM_COORD();
 	Vector3 p_coord = { 0, 0, 0 };
@@ -501,16 +501,16 @@ void Cheat::CheatFeatures::FreeCam(bool toggle)
 	if (toggle)
 	{
 		FreeCamFeaturedUsed = true;
-		if (!CAM::DOES_CAM_EXIST(CameraHandle))
+		if (!CAM::DOES_CAM_EXIST(FreeCamHandle))
 		{
-			CameraHandle = CAM::CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", 1);
-			CAM::SET_CAM_ROT(CameraHandle, rot.x, rot.y, rot.z, 0);
-			CAM::SET_CAM_COORD(CameraHandle, coord.x, coord.y, coord.z);
+			FreeCamHandle = CAM::CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", 1);
+			CAM::SET_CAM_ROT(FreeCamHandle, rot.x, rot.y, rot.z, 0);
+			CAM::SET_CAM_COORD(FreeCamHandle, coord.x, coord.y, coord.z);
 		}
 
 		CAM::RENDER_SCRIPT_CAMS(true, true, 700, 1, 1);
-		CAM::SET_CAM_ACTIVE(CameraHandle, 1);
-		CAM::SET_CAM_ROT(CameraHandle, rot.x, rot.y, rot.z, 0);
+		CAM::SET_CAM_ACTIVE(FreeCamHandle, 1);
+		CAM::SET_CAM_ROT(FreeCamHandle, rot.x, rot.y, rot.z, 0);
 
 		p_coord = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 1);
 
@@ -527,14 +527,14 @@ void Cheat::CheatFeatures::FreeCam(bool toggle)
 		if (GetAsyncKeyState(0x53))
 		{
 			speed /= -1;
-			Vector3 c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(CameraHandle), &Cheat::GameFunctions::MultiplyVector(&Cheat::GameFunctions::RotToDirection(&rot), speed));
-			CAM::SET_CAM_COORD(CameraHandle, c.x, c.y, c.z);
+			Vector3 c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(FreeCamHandle), &Cheat::GameFunctions::MultiplyVector(&Cheat::GameFunctions::RotToDirection(&rot), speed));
+			CAM::SET_CAM_COORD(FreeCamHandle, c.x, c.y, c.z);
 		}
 
 		if (GetAsyncKeyState(0x57))
 		{
-			Vector3 c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(CameraHandle), &Cheat::GameFunctions::MultiplyVector(&Cheat::GameFunctions::RotToDirection(&rot), speed));
-			CAM::SET_CAM_COORD(CameraHandle, c.x, c.y, c.z);
+			Vector3 c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(FreeCamHandle), &Cheat::GameFunctions::MultiplyVector(&Cheat::GameFunctions::RotToDirection(&rot), speed));
+			CAM::SET_CAM_COORD(FreeCamHandle, c.x, c.y, c.z);
 		}
 	}
 	else
@@ -543,8 +543,8 @@ void Cheat::CheatFeatures::FreeCam(bool toggle)
 		{
 			FreeCamFeaturedUsed = false;
 			CAM::RENDER_SCRIPT_CAMS(0, 1, 10, 0, 0);
-			CAM::SET_CAM_ACTIVE(CameraHandle, false);
-			CAM::DESTROY_CAM(CameraHandle, true);
+			CAM::SET_CAM_ACTIVE(FreeCamHandle, false);
+			CAM::DESTROY_CAM(FreeCamHandle, true);
 		}
 	}
 }

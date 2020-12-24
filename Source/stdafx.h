@@ -363,6 +363,7 @@ namespace Cheat
 		void GiveAllWeaponsToPlayer(Ped Player);
 		void RepairAndCleanVehicle();
 		void SubtitleNotification(char* Message, int ShowDuration = 4000);
+		void TeleportToBlipCoord(Blip TargetBlip);
 		void TeleportToObjective();
 		void BurstSelectedPlayerTires(Ped selectedPed);
 		void SetOffAlarmPlayerVehicle(Ped selectedPed);
@@ -377,7 +378,6 @@ namespace Cheat
 		Vector3 AddTwoVectors(Vector3* vectorA, Vector3* vectorB);
 		Vector3 MultiplyVector(Vector3* vector, float x);
 		float GetDistanceBetweenTwoVectors(Vector3* pointA, Vector3* pointB);
-		Vector3 GetBlipMarker();
 		void TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight);
 		int ReturnRandomInteger(int start, int end);
 		float GetDistanceBetweenTwoPoints(Vector3 A, Vector3 B);
@@ -397,7 +397,6 @@ namespace Cheat
 		void DrawMarkerAbovePlayer(int Type, Player player, RGBA Color);
 		void SpawnVehicle(char* ModelHash);
 		void NearbyPedsCommitSuicide();
-		void TeleportToWaypoint();
 		void SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID);
 		void MaxDowngradeVehicle(int VehicleHandle);
 		void MaxUpgradeVehicle(int VehicleHandle);

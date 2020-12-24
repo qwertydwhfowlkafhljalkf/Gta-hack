@@ -3407,11 +3407,12 @@ void Cheat::Main()
 		case teleportmenu:
 		{
 			Cheat::Title("Teleport Options");
-			if (Cheat::Option("Teleport To Waypoint", "")) { Cheat::GameFunctions::TeleportToWaypoint(); }
+			if (Cheat::Option("Teleport To Waypoint", "")) { Cheat::GameFunctions::TeleportToBlipCoord(SpriteWaypoint); }
+			if (Cheat::Option("Teleport To Personal Vehicle", "")) { Cheat::GameFunctions::TeleportToBlipCoord(SpritePersonalVehicleCar);  }
 			if (Cheat::Option("Teleport To Objective", "")) { Cheat::GameFunctions::TeleportToObjective(); }
-			if (Cheat::Option("Teleport Into Last Used Vehicle", "")) {
-				Vehicle LastUsedVehicle = VEHICLE::GET_LAST_DRIVEN_VEHICLE();
-				PED::SET_PED_INTO_VEHICLE(Cheat::GameFunctions::PlayerPedID, LastUsedVehicle, -1);
+			if (Cheat::Option("Teleport Into Last Used Vehicle", "")) 
+			{
+				PED::SET_PED_INTO_VEHICLE(Cheat::GameFunctions::PlayerPedID, VEHICLE::GET_LAST_DRIVEN_VEHICLE(), -1);
 			}
 			if (Cheat::Float("Teleport Forward", TeleportFoward, 1.f, 10.f, 1.f, false, false, "Select to teleport"))
 			{

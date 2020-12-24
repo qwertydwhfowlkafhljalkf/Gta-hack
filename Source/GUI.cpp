@@ -615,13 +615,13 @@ bool Cheat::FloatVector(std::string option, std::vector<float> Vector, int& posi
 	{
 		size_t max = static_cast<int>(Vector.size()) - 1;
 		int min = 0;
-		if (GUI::leftPressed) 
+		if (GUI::leftPressed)
 		{
-			position >= 1 ? position-- : position = max;
+			position >= 1 ? position-- : position = static_cast<int>(max);
 		}
-		if (GUI::rightPressed) 
+		if (GUI::rightPressed)
 		{
-			position < max ? position++ : position = min;
+			position < max ? position++ : position = static_cast<int>(min);
 		}
 	}
 
@@ -656,11 +656,11 @@ bool Cheat::StringVector(std::string option, std::vector<std::string> Vector, in
 		int min = 0;
 		if (GUI::leftPressed) 
 		{
-			position >= 1 ? position-- : position = max;
+			position >= 1 ? position-- : position = static_cast<int>(max);
 		}
 		if (GUI::rightPressed) 
 		{
-			position < max ? position++ : position = min;
+			position < max ? position++ : position = static_cast<int>(min);
 		}
 	}
 

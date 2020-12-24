@@ -30,6 +30,24 @@ void Cheat::GameFunctions::SetPedTexture(Ped Ped, int ComponentID, int DrawableI
 	PED::SET_PED_COMPONENT_VARIATION(Ped, ComponentID, DrawableID, TextureID, 0);
 }
 
+void Cheat::GameFunctions::TeleportToBlipCoord(Blip TargetBlip)
+{
+	if (TargetBlip == SpriteWaypoint) 
+	{
+		if (!UI::IS_WAYPOINT_ACTIVE()) { Cheat::GameFunctions::MinimapNotification("~r~No Waypoint has been set"); return; }
+	}
+
+	Blip BlipHandle = UI::GET_FIRST_BLIP_INFO_ID(TargetBlip);
+	if (UI::DOES_BLIP_EXIST(BlipHandle))
+	{
+		Entity e = Cheat::GameFunctions::PlayerPedID;
+		if (PED::IS_PED_IN_ANY_VEHICLE(e, 0)) { e = PED::GET_VEHICLE_PED_IS_USING(e); }
+		GameFunctions::TeleportToCoords(e, UI::GET_BLIP_INFO_ID_COORD(BlipHandle), true);
+		return;
+	}
+	GameFunctions::MinimapNotification("~r~Target Blip does not exist");
+}
+
 void Cheat::GameFunctions::TeleportToObjective()
 {
 	Entity e;
@@ -44,7 +62,7 @@ void Cheat::GameFunctions::TeleportToObjective()
 		int blipIterator = UI::IS_WAYPOINT_ACTIVE() ? UI::_GET_BLIP_INFO_ID_ITERATOR() : SpriteStandard;    
 		for (Blip i = UI::GET_FIRST_BLIP_INFO_ID(blipIterator);
 			UI::DOES_BLIP_EXIST(i) != 0; i = UI::GET_NEXT_BLIP_INFO_ID(blipIterator)) {
-			if (UI::GET_BLIP_INFO_ID_TYPE(i) == 4 && UI::GET_BLIP_COLOUR(i) == 5 != ColorBlue && UI::IS_BLIP_ON_MINIMAP(i) == 1) 
+			if (UI::GET_BLIP_INFO_ID_TYPE(i) == ColorPlayer && UI::GET_BLIP_COLOUR(i) == ColorYellow && UI::GET_BLIP_COLOUR(i) != ColorBlue && UI::IS_BLIP_ON_MINIMAP(i) == ColorRed)
 			{
 				wayp = UI::GET_BLIP_INFO_ID_COORD(i);
 				blipFound = true;
@@ -54,9 +72,11 @@ void Cheat::GameFunctions::TeleportToObjective()
 		}
 		break;
 	}
-	if (!blipFound) {
+	if (!blipFound) 
+	{
 		Blip i = UI::GET_FIRST_BLIP_INFO_ID(SpriteRaceFinish);
-		if (UI::DOES_BLIP_EXIST(i) != 0) {
+		if (UI::DOES_BLIP_EXIST(i)) 
+		{
 			wayp = UI::GET_BLIP_INFO_ID_COORD(i);
 			blipFound = true;
 		}
@@ -249,33 +269,8 @@ void Cheat::GameFunctions::SubtitleNotification(char* Message, int ShowDuration)
 {
 	UI::BEGIN_TEXT_COMMAND_PRINT("STRING");
 	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Message);
-	UI::END_TEXT_COMMAND_PRINT(ShowDuration, 1);
+	UI::END_TEXT_COMMAND_PRINT(ShowDuration, true);
 }
-
-Vector3 Cheat::GameFunctions::GetBlipMarker()
-{
-	static Vector3 zero;
-	Vector3 coords;
-
-	bool blipFound = false;
-	int blipIterator = UI::_GET_BLIP_INFO_ID_ITERATOR();
-	for (Blip i = UI::GET_FIRST_BLIP_INFO_ID(blipIterator); UI::DOES_BLIP_EXIST(i) != 0; i = UI::GET_NEXT_BLIP_INFO_ID(blipIterator))
-	{
-		if (UI::GET_BLIP_INFO_ID_TYPE(i) == 4)
-		{
-			coords = UI::GET_BLIP_INFO_ID_COORD(i);
-			blipFound = true;
-			break;
-		}
-	}
-	if (blipFound)
-	{
-		return coords;
-	}
-
-	return zero;
-}
-
 
 float Cheat::GameFunctions::DegreesToRadians(float degs)
 {
@@ -292,7 +287,8 @@ float Cheat::GameFunctions::GetDistanceBetweenTwoPoints(Vector3 A, Vector3 B)
 	return GAMEPLAY::GET_DISTANCE_BETWEEN_COORDS(A.x, A.y, A.z, B.x, B.y, B.z, 1);
 }
 
-int Cheat::GameFunctions::ReturnRandomInteger(int start, int end) {
+int Cheat::GameFunctions::ReturnRandomInteger(int start, int end) 
+{
 	return GAMEPLAY::GET_RANDOM_INT_IN_RANGE(start, end);
 }
 
@@ -322,7 +318,6 @@ void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoC
 	}
 }
 
-
 void Cheat::GameFunctions::GetCameraDirection(float* dirX, float* dirY, float* dirZ)
 {
 	float tX, tZ, num;
@@ -336,7 +331,6 @@ void Cheat::GameFunctions::GetCameraDirection(float* dirX, float* dirY, float* d
 	*dirY = (cos(tZ)) * num;
 	*dirZ = sin(tX);
 }
-
 
 void Cheat::GameFunctions::RequestControlOfEnt(Entity entity)
 {
@@ -799,8 +793,8 @@ void Cheat::GameFunctions::MaxUpgradeVehicle(int VehicleHandle)
 	{
 		VEHICLE::SET_VEHICLE_MOD(vehicle, i, VEHICLE::GET_NUM_VEHICLE_MODS(vehicle, i) - 1, false);
 	}
-	VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, 18, true); // Set turbo on vehicle
-	VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, 22, true); // Enable xeon headlights
+	VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, 18, true); //Set turbo on vehicle
+	VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, 22, true); //Enable xeon headlights
 }
 
 void Cheat::GameFunctions::MaxDowngradeVehicle(int VehicleHandle)
@@ -811,8 +805,8 @@ void Cheat::GameFunctions::MaxDowngradeVehicle(int VehicleHandle)
 	{
 		VEHICLE::REMOVE_VEHICLE_MOD(vehicle, i);
 	}
-	VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 18); // Remove turbo on vehicle
-	VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 22); // Remove xeon headlights
+	VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 18); //Remove turbo on vehicle
+	VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 22); //Remove xeon headlights
 }
 
 float Cheat::GameFunctions::Get3DDistance(Vector3 a, Vector3 b) 
@@ -944,15 +938,6 @@ void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 		ENTITY::_SET_ENTITY_SOMETHING(VehicleHandle, true);
 		Cheat::GameFunctions::MinimapNotification("Vehicle Spawned");
 	}
-}
-
-void Cheat::GameFunctions::TeleportToWaypoint()
-{
-	if (!UI::IS_WAYPOINT_ACTIVE()) { Cheat::GameFunctions::MinimapNotification("~r~Please set waypoint"); return; }
-	Vector3 coords = Cheat::GameFunctions::GetBlipMarker();
-	Entity e = Cheat::GameFunctions::PlayerPedID;
-	if (PED::IS_PED_IN_ANY_VEHICLE(e, 0)) { e = PED::GET_VEHICLE_PED_IS_USING(e); }
-	Cheat::GameFunctions::TeleportToCoords(e, coords, true);
 }
 
 Cam antiCrashCam;
