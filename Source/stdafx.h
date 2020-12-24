@@ -373,7 +373,6 @@ namespace Cheat
 		Vector3 AddVector(Vector3 vector, Vector3 vector2);
 		Vector3 RotationToDirection(Vector3 rot);
 		void SetRankRockstarGift(int RPValue);
-		void RequestControl(Entity input);
 		Vector3 RotToDirection(Vector3* rot);
 		Vector3 AddTwoVectors(Vector3* vectorA, Vector3* vectorB);
 		Vector3 MultiplyVector(Vector3* vector, float x);

@@ -238,7 +238,7 @@ void Cheat::CheatFeatures::GravityGun()
 				EntityTarget = PED::GET_VEHICLE_PED_IS_IN(EntityTarget, 0);
 			}
 
-			Cheat::GameFunctions::RequestControl(EntityTarget);
+			GameFunctions::RequestNetworkControlOfEntity(EntityTarget);
 
 			if (ENTITY::IS_ENTITY_A_VEHICLE(EntityTarget)) ENTITY::SET_ENTITY_HEADING(EntityTarget, ENTITY::GET_ENTITY_HEADING(tempPed));
 
@@ -792,7 +792,7 @@ void Cheat::CheatFeatures::DeleteGun()
 bool Cheat::CheatFeatures::UnlimitedSpecialAbilityBool = false;
 void Cheat::CheatFeatures::UnlimitedSpecialAbility()
 {
-	if (!NETWORK::NETWORK_IS_SESSION_STARTED()) { PLAYER::SPECIAL_ABILITY_FILL_METER(Cheat::GameFunctions::PlayerID, 1); }
+	if (!NETWORK::NETWORK_IS_SESSION_STARTED()) { PLAYER::SPECIAL_ABILITY_FILL_METER(Cheat::GameFunctions::PlayerID, true); }
 }
 
 bool Cheat::CheatFeatures::SpectatePlayerBool = false;
@@ -871,7 +871,6 @@ void Cheat::CheatFeatures::TriggerBot()
 		else if (TriggerBot_ShootPlayersBool && !TriggerBot_ShootNPCBool) { if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && PED::IS_PED_A_PLAYER(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) { PED::SET_PED_SHOOTS_AT_COORD(Cheat::GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); } }
 	}
 }
-
 
 bool Cheat::CheatFeatures::SuperBrakesBool = false;
 void Cheat::CheatFeatures::SuperBrakes()
@@ -1011,9 +1010,9 @@ void Cheat::CheatFeatures::DriveOnWater()
 {
 	Player player = Cheat::GameFunctions::PlayerID;
 	Ped playerPed = Cheat::GameFunctions::PlayerPedID;
-	Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
+	Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false);
 	DWORD model = ENTITY::GET_ENTITY_MODEL(veh);
-	Vector3 pos = ENTITY::GET_ENTITY_COORDS(playerPed, 0);
+	Vector3 pos = ENTITY::GET_ENTITY_COORDS(playerPed, false);
 	float height = 0;
 	WATER::_SET_CURRENT_INTENSITY(height);
 	if ((!(VEHICLE::IS_THIS_MODEL_A_PLANE(ENTITY::GET_ENTITY_MODEL(veh)))) && WATER::GET_WATER_HEIGHT_NO_WAVES(pos.x, pos.y, pos.z, &height)) {
@@ -1110,8 +1109,8 @@ void Cheat::CheatFeatures::DisablePhone()
 bool Cheat::CheatFeatures::NoIdleKickBool = false;
 void Cheat::CheatFeatures::NoIdleKick()
 {
-	//globalHandle(1373500).At(1165).As<int>() = -1;
-	//globalHandle(1373500).At(1149).As<int>() = -1;
+	globalHandle(1377236).At(1165).As<int>() = -1;
+	globalHandle(1377236).At(1149).As<int>() = -1;
 }
 
 bool Cheat::CheatFeatures::BribeAuthoritiesBool = false;

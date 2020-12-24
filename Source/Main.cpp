@@ -135,7 +135,7 @@ void Cheat::Main()
 			Cheat::MenuOption("Session Options >", sessionoptionsmenu);
 			Cheat::Toggle("Off Radar", Cheat::CheatFeatures::OffRadarBool, "Enables Lester Off Radar Feature");
 			//Cheat::Toggle("Reveal Players", Cheat::CheatFeatures::RevealPlayersBool, "Enables Lester Reveal Players Feature");
-			//Cheat::Toggle("No Idle Kick", Cheat::CheatFeatures::NoIdleKickBool, "Does not work when out of game focus");
+			Cheat::Toggle("No Idle Kick", Cheat::CheatFeatures::NoIdleKickBool, "Does not work when out of game focus");
 			//Cheat::Toggle("Bribe Authorities", Cheat::CheatFeatures::BribeAuthoritiesBool, "Enables Bribe Authorities");
 			if (Cheat::Option("Get Empty Session", "Get Empty (Public) Session")) { Sleep(10000); }
 		}

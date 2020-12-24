@@ -83,7 +83,7 @@ void Cheat::GameFunctions::BurstSelectedPlayerTires(Ped selectedPed)
 {
 	if (PED::IS_PED_IN_ANY_VEHICLE(selectedPed, false))
 	{
-		RequestControl(PED::GET_VEHICLE_PED_IS_USING(selectedPed));
+		RequestNetworkControlOfEntity(PED::GET_VEHICLE_PED_IS_USING(selectedPed));
 		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(PED::GET_VEHICLE_PED_IS_USING(selectedPed), true);
 		static int tireID = 0;
 		for (tireID = 0; tireID < 8; tireID++)
@@ -98,7 +98,7 @@ void Cheat::GameFunctions::SetOffAlarmPlayerVehicle(Ped selectedPed)
 	if (PED::IS_PED_IN_ANY_VEHICLE(selectedPed, false))
 	{
 		Entity selectedVehicle = PED::GET_VEHICLE_PED_IS_USING(selectedPed);
-		RequestControl(PED::GET_VEHICLE_PED_IS_USING(selectedPed));
+		RequestNetworkControlOfEntity(PED::GET_VEHICLE_PED_IS_USING(selectedPed));
 		VEHICLE::SET_VEHICLE_ALARM(selectedVehicle, true);
 		VEHICLE::START_VEHICLE_ALARM(selectedVehicle);
 		Cheat::GameFunctions::MinimapNotification("~g~Set off alarm of vehicle!");
@@ -161,7 +161,6 @@ Vector3 Cheat::GameFunctions::RotationToDirection(Vector3 rot)
 
 }
 
-
 void Cheat::GameFunctions::SetRankRockstarGift(int RPValue)
 {
 	if (RPValue < 0 || RPValue > 8000) { Cheat::GameFunctions::MinimapNotification("Invalid Rank Inputted"); return; }
@@ -175,26 +174,6 @@ void Cheat::GameFunctions::SetRankRockstarGift(int RPValue)
 		STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP1_CHAR_SET_RP_GIFT_ADMIN"), Cheat::GameArrays::RankPointsArray[RPValue - 1], 0);
 	}
 	Cheat::GameFunctions::MinimapNotification("Join a new GTAO session for the new ranked to be applied");
-}
-
-void Cheat::GameFunctions::RequestControl(Entity input)
-{
-	NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(input);
-
-	int tick = 0;
-	while (tick <= 50)
-	{
-		if (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(input))
-		{
-			GameHooking::PauseMainFiber(0);
-		}
-		else
-		{
-			return;
-		}		
-		NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(input);
-		tick++;
-	}
 }
 
 Vector3 Cheat::GameFunctions::RotToDirection(Vector3* rot) 
