@@ -15,16 +15,6 @@ void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 	}
 }
 
-
-bool Cheat::CheatFunctions::DoesDirectoryExists(const std::string& dirName_in)
-{
-	DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
-	if (ftyp == INVALID_FILE_ATTRIBUTES) { return false; }
-	if (ftyp & FILE_ATTRIBUTE_DIRECTORY) { return true;  }
-
-	return false;   
-}
-
 //See https://en.cppreference.com/w/cpp/io/manip/put_time
 std::string Cheat::CheatFunctions::ReturnDateTimeFormatAsString(const char* DateTimeFormat)
 {
@@ -48,33 +38,23 @@ std::string Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath()
 	return std::filesystem::path{ CheatModuleFilePath }.parent_path().string();
 }
 
-
 const std::string Cheat::CheatFunctions::ReturnConfigFilePath()
 {
 	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Config.ini";
 }
 
-
-char str[200];
-char str2[128];
-char* Cheat::CheatFunctions::CombineTwoChars(char* string1, char* string2)
+bool Cheat::CheatFunctions::FileOrDirectoryExists(std::string Path)
 {
-	strcpy_s(str2, "");
-	sprintf_s(str2, "%s %s", string1, string2);
-	return str2;
+	if (std::filesystem::exists(Path))
+	{
+		return true;
+	}
+	return false;
 }
-
-
-bool Cheat::CheatFunctions::DoesFileExists(const std::string& fileName)
-{
-	struct stat buffer;
-	return (stat(fileName.c_str(), &buffer) == 0);
-}
-
 
 std::string Cheat::CheatFunctions::GetLastErrorAsString()
 {
-	DWORD errorMessageID = ::GetLastError();
+	DWORD errorMessageID = GetLastError();
 	if (errorMessageID == 0) { return std::string(); }
 
 	LPSTR messageBuffer = nullptr;
@@ -321,7 +301,6 @@ void Cheat::CheatFunctions::SaveOption(std::string OptionName, std::string Optio
 	}
 }
 
-
 std::string Cheat::CheatFunctions::GetOptionValueFromConfig(std::string OptionName)
 {
 	return IniFileReturnKeyValueAsString(ReturnConfigFilePath(), "SETTINGS", OptionName);
@@ -546,7 +525,7 @@ void Cheat::CheatFunctions::IniFileWriteString(std::string string, std::string F
 
 /*
 Description: returns the value for the provided initialization file section and key
-Note(s): error handling MUST be performed before calling this function (file, section and key existence)
+Note(s):
 */
 std::string Cheat::CheatFunctions::IniFileReturnKeyValueAsString(std::string FilePath, std::string Section, std::string Key)
 {

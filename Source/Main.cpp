@@ -4161,7 +4161,7 @@ void Cheat::Main()
 			Cheat::Toggle("Show Player Tags", Cheat::CheatFeatures::ShowPlayerTagsPlayerList, "Toggle Player Tags");
 			Cheat::Toggle("Hide Own IP Address", Cheat::CheatFeatures::HideOwnIPAddress, "Hiddes Local IP Address");
 			Cheat::Break("Speed", true);
-			Cheat::Toggle("Use KM/H", Cheat::CheatFeatures::UseKMH, "If disabled uses MP/H");
+			Cheat::Toggle("Use KM/H", Cheat::CheatFeatures::UseKMH, "If disabled MP/H is used");
 			Cheat::Break("Protection", true);
 			Cheat::Toggle("Blocked Script Notifications", Cheat::CheatFeatures::ShowBlockedScriptEventNotifications, "");
 		}
@@ -4195,8 +4195,7 @@ void Cheat::Main()
 				if (PressedKey == 27) { Cheat::GameFunctions::MinimapNotification("Canceled Setting Cursor Navigation Key"); break; }
 				if (PressedKey != 0) { Cheat::GUI::GUINavigationKey = PressedKey; Cheat::GameFunctions::MinimapNotification("Cursor Navigation Key has been set"); }
 			}
-			Cheat::Int("Scroll Delay", Cheat::GUI::keyPressDelay2, 1, 200, 1, false, false);
-			Cheat::Int("Int Delay", Cheat::GUI::keyPressDelay3, 1, 200, 1, false, false);
+			Cheat::Int("Key Press Delay", Cheat::GUI::keyPressDelay, 1, 200, 1, false, false);
 		}
 		break; 
 		case headeroptionsmenu:
@@ -4339,7 +4338,7 @@ void Cheat::Main()
 					if (Cheat::Option(i, ""))
 					{
 						std::string ThemeFilePathMenuList = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes\\" + i + ".ini";
-						if (!Cheat::CheatFunctions::DoesFileExists(ThemeFilePathMenuList)) { Cheat::GameFunctions::MinimapNotification("~r~Unable to locate theme file"); break; }
+						if (!Cheat::CheatFunctions::FileOrDirectoryExists(ThemeFilePathMenuList)) { Cheat::GameFunctions::MinimapNotification("~r~Unable to locate theme file"); break; }
 						Cheat::GUI::LoadTheme(CheatFunctions::StringToChar(i), false);
 					}
 				}
@@ -4422,7 +4421,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 		DisableThreadLibraryCalls(hModule);
 		Cheat::CheatModuleHandle = hModule;
 		//Create 'gtav' directory
-		if (!Cheat::CheatFunctions::DoesDirectoryExists(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav")) { Cheat::CheatFunctions::CreateNewDirectory(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"gtav"); }
+		if (!Cheat::CheatFunctions::FileOrDirectoryExists(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav")) { Cheat::CheatFunctions::CreateNewDirectory(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"gtav"); }
 		//Extract YTD texture file from module
 		remove(Cheat::CheatFunctions::TextureFilePath().c_str());
 		Cheat::CheatFunctions::ExtractResource(hModule, 140, (LPCSTR)Cheat::CheatFunctions::TextureFilePath().c_str());

@@ -117,10 +117,6 @@ namespace Cheat
 		extern RGBA secondary;
 		extern int keyPressDelay;
 		extern int keyPressPreviousTick;
-		extern int keyPressDelay2;
-		extern int keyPressPreviousTick2;
-		extern int keyPressDelay3;
-		extern int keyPressPreviousTick3;
 		extern int openKey;
 		extern int GUINavigationKey;
 		extern int SaveItemKey;
@@ -336,9 +332,7 @@ namespace Cheat
 		std::string ReturnCheatModuleDirectoryPath();
 		void SaveOption(std::string OptionName, std::string OptionValue, bool IsSavable);
 		std::string GetOptionValueFromConfig(std::string OptionName);
-		char* CombineTwoChars(char* string1, char* string2);
-		bool DoesFileExists(const std::string& fileName);
-		bool DoesDirectoryExists(const std::string& dirName_in);
+		bool FileOrDirectoryExists(std::string Path);
 		void CreateNewDirectory(std::string Path);
 		std::string GetLastErrorAsString();
 		void LoopedFunctions();
