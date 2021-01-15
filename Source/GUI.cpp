@@ -371,7 +371,7 @@ bool Cheat::MenuOptionPlayerList(std::string option, SubMenus newSub, Player Pla
 bool Cheat::Toggle(std::string option, bool & b00l, std::string InformationText, bool IsSavable)
 {
 	//Load Option From Config
-	if (IsSavable) { CheatFunctions::LoadConfigOption("bool", option, b00l, CheatFunctions::LoadConfigOptionDummyInt, CheatFunctions::LoadConfigOptionDummyFloat); }
+	if (IsSavable) { CheatFunctions::LoadConfigOption(option, b00l); }
 
 	Option(option, InformationText);
 	if (b00l)
@@ -436,7 +436,7 @@ bool Cheat::Toggle(std::string option, bool & b00l, std::string InformationText,
 bool Cheat::Int(std::string option, int & _int, int min, int max, int step, bool DisableControl, bool IsSavable, std::string InformationText)
 {
 	//Load Option From Config
-	if (IsSavable) { CheatFunctions::LoadConfigOption("int", option, CheatFunctions::LoadConfigOptionDummyBool, _int, CheatFunctions::LoadConfigOptionDummyFloat); }
+	if (IsSavable) { CheatFunctions::LoadConfigOption(option, _int); }
 
 	Option(option, InformationText);
 
@@ -523,7 +523,7 @@ bool Cheat::Int(std::string option, int & _int, int min, int max, int step, bool
 bool Cheat::Float(std::string option, float & _float, float min, float max, float steps, bool ReturnTrueWithValueChange, bool IsSavable, std::string InformationText)
 {
 	//Load Option From Config
-	if (IsSavable) { CheatFunctions::LoadConfigOption("float", option, CheatFunctions::LoadConfigOptionDummyBool, CheatFunctions::LoadConfigOptionDummyInt, _float); }
+	if (IsSavable) { CheatFunctions::LoadConfigOption(option, _float); }
 
 	Option(option, InformationText);
 
@@ -567,7 +567,7 @@ bool Cheat::Float(std::string option, float & _float, float min, float max, floa
 bool Cheat::IntVector(std::string option, std::vector<int> Vector, int& position, bool IsSavable)
 {
 	//Load Option From Config
-	if (IsSavable) { CheatFunctions::LoadConfigOption("int", option, CheatFunctions::LoadConfigOptionDummyBool, position, CheatFunctions::LoadConfigOptionDummyFloat); }
+	if (IsSavable) { CheatFunctions::LoadConfigOption(option, position); }
 
 	Option(option, "");
 
@@ -607,7 +607,7 @@ bool Cheat::IntVector(std::string option, std::vector<int> Vector, int& position
 bool Cheat::FloatVector(std::string option, std::vector<float> Vector, int& position, bool IsSavable)
 {
 	//Load Option From Config
-	if (IsSavable) { CheatFunctions::LoadConfigOption("int", option, CheatFunctions::LoadConfigOptionDummyBool, position, CheatFunctions::LoadConfigOptionDummyFloat); }
+	if (IsSavable) { CheatFunctions::LoadConfigOption(option, position); }
 
 	Option(option, "");
 
@@ -646,7 +646,7 @@ bool Cheat::FloatVector(std::string option, std::vector<float> Vector, int& posi
 bool Cheat::StringVector(std::string option, std::vector<std::string> Vector, int & position, std::string InformationText, bool IsSavable)
 {
 	//Load Option From Config
-	if (IsSavable) { CheatFunctions::LoadConfigOption("int", option, CheatFunctions::LoadConfigOptionDummyBool, position, CheatFunctions::LoadConfigOptionDummyFloat); }
+	if (IsSavable) { CheatFunctions::LoadConfigOption(option, position); }
 
 	Option(option, InformationText);
 
@@ -902,45 +902,45 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 
 	Cheat::GUI::CurrentTheme = ThemeFileName;
 
-	std::string TitleBackgroundRed = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "title_background_red");
-	std::string TitleBackgroundGreen = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "title_background_green");
-	std::string TitleBackgroundBlue = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "title_background_blue");
-	std::string TitleBackgroundOpacity = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "title_background_opacity");
+	std::string TitleBackgroundRed = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "title_background_red");
+	std::string TitleBackgroundGreen = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "title_background_green");
+	std::string TitleBackgroundBlue = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "title_background_blue");
+	std::string TitleBackgroundOpacity = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "title_background_opacity");
 
-	std::string HeaderBackgroundRed = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "header_background_red");
-	std::string HeaderBackgroundGreen = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "header_background_green");
-	std::string HeaderBackgroundBlue = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "header_background_blue");
-	std::string HeaderBackgroundOpacity = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "header_background_opacity");
+	std::string HeaderBackgroundRed = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "header_background_red");
+	std::string HeaderBackgroundGreen = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "header_background_green");
+	std::string HeaderBackgroundBlue = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "header_background_blue");
+	std::string HeaderBackgroundOpacity = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "header_background_opacity");
 
-	std::string SmallTitleBackgroundRed = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "small_title_background_red");
-	std::string SmallTitleBackgroundGreen = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "small_title_background_green");
-	std::string SmallTitleBackgroundBlue = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "small_title_background_blue");
-	std::string SmallTitleBackgroundOpacity = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "small_title_background_opacity");
+	std::string SmallTitleBackgroundRed = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "small_title_background_red");
+	std::string SmallTitleBackgroundGreen = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "small_title_background_green");
+	std::string SmallTitleBackgroundBlue = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "small_title_background_blue");
+	std::string SmallTitleBackgroundOpacity = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "small_title_background_opacity");
 
-	std::string OptionTextRed = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "option_text_red");
-	std::string OptionTextGreen = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "option_text_green");
-	std::string OptionTextBlue = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "option_text_blue");
-	std::string OptionTextOpacity = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "option_text_opacity");
+	std::string OptionTextRed = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "option_text_red");
+	std::string OptionTextGreen = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "option_text_green");
+	std::string OptionTextBlue = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "option_text_blue");
+	std::string OptionTextOpacity = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "option_text_opacity");
 
-	std::string SelectionBoxRed = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "selection_box_red");
-	std::string SelectionBoxGreen = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "selection_box_green");
-	std::string SelectionBoxBlue = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "selection_box_blue");
-	std::string SelectionBoxOpacity = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "selection_box_opacity");
+	std::string SelectionBoxRed = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "selection_box_red");
+	std::string SelectionBoxGreen = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "selection_box_green");
+	std::string SelectionBoxBlue = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "selection_box_blue");
+	std::string SelectionBoxOpacity = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "selection_box_opacity");
 
-	std::string SelectionBoxBackgroundRed = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "selection_box_background_red");
-	std::string SelectionBoxBackgroundGreen = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "selection_box_background_green");
-	std::string SelectionBoxBackgroundBlue = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "selection_box_background_blue");
-	std::string SelectionBoxBackgroundOpacity = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "selection_box_background_opacity");
+	std::string SelectionBoxBackgroundRed = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "selection_box_background_red");
+	std::string SelectionBoxBackgroundGreen = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "selection_box_background_green");
+	std::string SelectionBoxBackgroundBlue = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "selection_box_background_blue");
+	std::string SelectionBoxBackgroundOpacity = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "selection_box_background_opacity");
 
-	std::string BottomLineRed = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "bottom_line_red");
-	std::string BottomLineGreen = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "bottom_line_green");
-	std::string BottomLineBlue = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "bottom_line_blue");
-	std::string BottomLineOpacity = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "bottom_line_opacity");
+	std::string BottomLineRed = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "bottom_line_red");
+	std::string BottomLineGreen = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "bottom_line_green");
+	std::string BottomLineBlue = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "bottom_line_blue");
+	std::string BottomLineOpacity = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "bottom_line_opacity");
 
-	std::string MenuBottomBackgroundRed = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "menu_bottom_background_red");
-	std::string MenuBottomBackgroundGreen = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "menu_bottom_background_green");
-	std::string MenuBottomBackgroundBlue = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "menu_bottom_background_blue");
-	std::string MenuBottomBackgroundOpacity = Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "menu_bottom_background_opacity");
+	std::string MenuBottomBackgroundRed = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "menu_bottom_background_red");
+	std::string MenuBottomBackgroundGreen = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "menu_bottom_background_green");
+	std::string MenuBottomBackgroundBlue = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "menu_bottom_background_blue");
+	std::string MenuBottomBackgroundOpacity = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "menu_bottom_background_opacity");
 
 	
 	if (SmallTitleBackgroundRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SmallTitleBackgroundRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(SmallTitleBackgroundRed))) { Cheat::GUI::titleRect.r = std::stoi(SmallTitleBackgroundRed); } } }
@@ -977,50 +977,50 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 	if (MenuBottomBackgroundBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(MenuBottomBackgroundBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(MenuBottomBackgroundBlue))) { Cheat::GUI::MenuBottomRect.b = std::stoi(MenuBottomBackgroundBlue); } } }
 	if (MenuBottomBackgroundOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(MenuBottomBackgroundOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(MenuBottomBackgroundOpacity))) { Cheat::GUI::MenuBottomRect.a = std::stoi(MenuBottomBackgroundOpacity); } } }
 
-	if (Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "show_header_background") == "true") { Cheat::GUI::ShowHeaderBackground = true; }
-	if (Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "show_header_gui") == "true") { Cheat::GUI::ShowHeaderGUI = true; } else { Cheat::GUI::ShowHeaderGUI = false; }
-	if (Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "restore_previous_submenu") == "false") { Cheat::GUI::RestorePreviousSubmenu = false; } else { Cheat::GUI::RestorePreviousSubmenu = true; }
-	if (Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "show_header_glare") == "false") { Cheat::GUI::ShowHeaderGlare = false; } else { Cheat::GUI::ShowHeaderGlare = true; }
+	if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "show_header_background") == "true") { Cheat::GUI::ShowHeaderBackground = true; }
+	if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "show_header_gui") == "true") { Cheat::GUI::ShowHeaderGUI = true; } else { Cheat::GUI::ShowHeaderGUI = false; }
+	if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "restore_previous_submenu") == "false") { Cheat::GUI::RestorePreviousSubmenu = false; } else { Cheat::GUI::RestorePreviousSubmenu = true; }
+	if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "show_header_glare") == "false") { Cheat::GUI::ShowHeaderGlare = false; } else { Cheat::GUI::ShowHeaderGlare = true; }
 
 	try
 	{ 
-		float X			= std::stod(Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "gui_x"));
-		float Y			= std::stod(Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "gui_y"));
-		float Width		= std::stod(Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "gui_width"));
+		float X			= std::stod(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_x"));
+		float Y			= std::stod(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_y"));
+		float Width		= std::stod(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_width"));
 
-		Cheat::GUI::keyPressDelay2 = std::stoi(Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "scroll_delay"));
-		Cheat::GUI::keyPressDelay3 = std::stoi(Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "int_delay"));
-		Cheat::CheatFeatures::BoolOptionVectorPosition = std::stoi(Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "boolean_toggle"));
+		Cheat::GUI::keyPressDelay2 = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "scroll_delay"));
+		Cheat::GUI::keyPressDelay3 = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "int_delay"));
+		Cheat::CheatFeatures::BoolOptionVectorPosition = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "boolean_toggle"));
 
 		if (Cheat::CheatFunctions::IsIntegerInRange(0.110000, 0.86000, X))
 		{
-			Cheat::GUI::guiX = std::stod(Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "gui_x"));
+			Cheat::GUI::guiX = std::stod(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_x"));
 		}
 
 		if (Cheat::CheatFunctions::IsIntegerInRange(0.100000, 0.80000, Y))
 		{
-			Cheat::GUI::guiY = std::stod(Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "gui_y"));
+			Cheat::GUI::guiY = std::stod(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_y"));
 		}
 
 		if (Cheat::CheatFunctions::IsIntegerInRange(0.210000, 0.31000, Width))
 		{
-			Cheat::GUI::guiWidth = std::stod(Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "gui_width"));
+			Cheat::GUI::guiWidth = std::stod(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_width"));
 		}
 
-		Cheat::GUI::maxVisOptions = std::stoi(Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "max_vis_options"));
-		if (Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "open_key") != "NOT_FOUND")
+		Cheat::GUI::maxVisOptions = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "max_vis_options"));
+		if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "open_key") != "NOT_FOUND")
 		{
-			Cheat::GUI::openKey = std::stoi(Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "open_key"));
+			Cheat::GUI::openKey = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "open_key"));
 		}
-		if (Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "cursor_navigation_toggle_key") != "NOT_FOUND")
+		if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "cursor_navigation_toggle_key") != "NOT_FOUND")
 		{
-			Cheat::GUI::GUINavigationKey = std::stoi(Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "cursor_navigation_toggle_key"));
+			Cheat::GUI::GUINavigationKey = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "cursor_navigation_toggle_key"));
 		}
 	}
 	catch (...) {}
 
 	//Check Theme File Version
-	if (Cheat::CheatFunctions::ReadStringFromIni(ThemeFilePath, "THEME", "theme_file_version") != "1.5")
+	if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "theme_file_version") != "1.5")
 	{
 		remove(ThemeFilePath.c_str());
 		SaveTheme(ThemeFileName);
@@ -1030,7 +1030,7 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 	//Save New Active Theme Name To Config File
 	if (!StartUp) 
 	{
-		Cheat::CheatFunctions::WriteStringToIni(Cheat::GUI::CurrentTheme, Cheat::CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "active_theme");
+		Cheat::CheatFunctions::IniFileWriteString(Cheat::GUI::CurrentTheme, Cheat::CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "active_theme");
 		Cheat::GameFunctions::MinimapNotification("Theme Loaded"); 
 	}
 }
@@ -1045,7 +1045,7 @@ void Cheat::GUI::DeleteCurrentTheme()
 	}
 	else 
 	{ 
-		Cheat::CheatFunctions::WriteStringToIni("", Cheat::CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "active_theme");
+		Cheat::CheatFunctions::IniFileWriteString("", Cheat::CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "active_theme");
 		Cheat::GUI::CurrentTheme.clear(); 
 		GUI::currentOption = 1;
 		Cheat::GameFunctions::MinimapNotification("Theme File Removed"); 
@@ -1075,61 +1075,61 @@ void Cheat::GUI::SaveTheme(std::string ThemeFileName)
 		Cheat::CheatFunctions::CreateNewDirectory(ThemeFolderPath); 
 	}
 
-	Cheat::CheatFunctions::WriteStringToIni("1.5", ThemeFilePath, "THEME", "theme_file_version");
+	Cheat::CheatFunctions::IniFileWriteString("1.5", ThemeFilePath, "THEME", "theme_file_version");
 	Cheat::CheatFunctions::WriteBoolToIni(Cheat::GUI::ShowHeaderBackground, ThemeFilePath, "THEME", "show_header_background");
 	Cheat::CheatFunctions::WriteBoolToIni(Cheat::GUI::ShowHeaderGUI, ThemeFilePath, "THEME", "show_header_gui");
 	Cheat::CheatFunctions::WriteBoolToIni(Cheat::GUI::RestorePreviousSubmenu, ThemeFilePath, "THEME", "restore_previous_submenu");
 	Cheat::CheatFunctions::WriteBoolToIni(Cheat::GUI::ShowHeaderGlare, ThemeFilePath, "THEME", "show_header_glare");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::guiX), ThemeFilePath, "THEME", "gui_x");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::guiY), ThemeFilePath, "THEME", "gui_y");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::guiWidth), ThemeFilePath, "THEME", "gui_width");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::keyPressDelay2), ThemeFilePath, "THEME", "scroll_delay");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::keyPressDelay3), ThemeFilePath, "THEME", "int_delay");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::maxVisOptions), ThemeFilePath, "THEME", "max_vis_options");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::openKey), ThemeFilePath, "THEME", "open_key");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::GUINavigationKey), ThemeFilePath, "THEME", "cursor_navigation_toggle_key");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::guiX), ThemeFilePath, "THEME", "gui_x");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::guiY), ThemeFilePath, "THEME", "gui_y");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::guiWidth), ThemeFilePath, "THEME", "gui_width");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::keyPressDelay2), ThemeFilePath, "THEME", "scroll_delay");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::keyPressDelay3), ThemeFilePath, "THEME", "int_delay");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::maxVisOptions), ThemeFilePath, "THEME", "max_vis_options");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::openKey), ThemeFilePath, "THEME", "open_key");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::GUINavigationKey), ThemeFilePath, "THEME", "cursor_navigation_toggle_key");
 
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::CheatFeatures::BoolOptionVectorPosition), ThemeFilePath, "THEME", "boolean_toggle");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::CheatFeatures::BoolOptionVectorPosition), ThemeFilePath, "THEME", "boolean_toggle");
 
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::MainTitleRect.r), ThemeFilePath, "THEME", "title_background_red");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::MainTitleRect.g), ThemeFilePath, "THEME", "title_background_green");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::MainTitleRect.b), ThemeFilePath, "THEME", "title_background_blue");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::MainTitleRect.a), ThemeFilePath, "THEME", "title_background_opacity");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MainTitleRect.r), ThemeFilePath, "THEME", "title_background_red");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MainTitleRect.g), ThemeFilePath, "THEME", "title_background_green");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MainTitleRect.b), ThemeFilePath, "THEME", "title_background_blue");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MainTitleRect.a), ThemeFilePath, "THEME", "title_background_opacity");
 
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::headerRect.r), ThemeFilePath, "THEME", "header_background_red");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::headerRect.g), ThemeFilePath, "THEME", "header_background_green");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::headerRect.b), ThemeFilePath, "THEME", "header_background_blue");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::headerRect.a), ThemeFilePath, "THEME", "header_background_opacity");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::headerRect.r), ThemeFilePath, "THEME", "header_background_red");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::headerRect.g), ThemeFilePath, "THEME", "header_background_green");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::headerRect.b), ThemeFilePath, "THEME", "header_background_blue");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::headerRect.a), ThemeFilePath, "THEME", "header_background_opacity");
 
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::titleRect.r), ThemeFilePath, "THEME", "small_title_background_red");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::titleRect.g), ThemeFilePath, "THEME", "small_title_background_green");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::titleRect.b), ThemeFilePath, "THEME", "small_title_background_blue");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::titleRect.a), ThemeFilePath, "THEME", "small_title_background_opacity");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::titleRect.r), ThemeFilePath, "THEME", "small_title_background_red");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::titleRect.g), ThemeFilePath, "THEME", "small_title_background_green");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::titleRect.b), ThemeFilePath, "THEME", "small_title_background_blue");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::titleRect.a), ThemeFilePath, "THEME", "small_title_background_opacity");
 
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::optionText.r), ThemeFilePath, "THEME", "option_text_red");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::optionText.g), ThemeFilePath, "THEME", "option_text_green");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::optionText.b), ThemeFilePath, "THEME", "option_text_blue");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::optionText.a), ThemeFilePath, "THEME", "option_text_opacity");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::optionText.r), ThemeFilePath, "THEME", "option_text_red");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::optionText.g), ThemeFilePath, "THEME", "option_text_green");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::optionText.b), ThemeFilePath, "THEME", "option_text_blue");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::optionText.a), ThemeFilePath, "THEME", "option_text_opacity");
 
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::scroller.r), ThemeFilePath, "THEME", "selection_box_red");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::scroller.g), ThemeFilePath, "THEME", "selection_box_green");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::scroller.b), ThemeFilePath, "THEME", "selection_box_blue");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::scroller.a), ThemeFilePath, "THEME", "selection_box_opacity");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::scroller.r), ThemeFilePath, "THEME", "selection_box_red");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::scroller.g), ThemeFilePath, "THEME", "selection_box_green");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::scroller.b), ThemeFilePath, "THEME", "selection_box_blue");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::scroller.a), ThemeFilePath, "THEME", "selection_box_opacity");
 
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::MenuBackgroundRect.r), ThemeFilePath, "THEME", "selection_box_background_red");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::MenuBackgroundRect.g), ThemeFilePath, "THEME", "selection_box_background_green");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::MenuBackgroundRect.b), ThemeFilePath, "THEME", "selection_box_background_blue");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::MenuBackgroundRect.a), ThemeFilePath, "THEME", "selection_box_background_opacity");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MenuBackgroundRect.r), ThemeFilePath, "THEME", "selection_box_background_red");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MenuBackgroundRect.g), ThemeFilePath, "THEME", "selection_box_background_green");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MenuBackgroundRect.b), ThemeFilePath, "THEME", "selection_box_background_blue");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MenuBackgroundRect.a), ThemeFilePath, "THEME", "selection_box_background_opacity");
 
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::TopAndBottomLine.r), ThemeFilePath, "THEME", "bottom_line_red");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::TopAndBottomLine.g), ThemeFilePath, "THEME", "bottom_line_green");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::TopAndBottomLine.b), ThemeFilePath, "THEME", "bottom_line_blue");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::TopAndBottomLine.a), ThemeFilePath, "THEME", "bottom_line_opacity");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::TopAndBottomLine.r), ThemeFilePath, "THEME", "bottom_line_red");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::TopAndBottomLine.g), ThemeFilePath, "THEME", "bottom_line_green");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::TopAndBottomLine.b), ThemeFilePath, "THEME", "bottom_line_blue");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::TopAndBottomLine.a), ThemeFilePath, "THEME", "bottom_line_opacity");
 
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::MenuBottomRect.r), ThemeFilePath, "THEME", "menu_bottom_background_red");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::MenuBottomRect.g), ThemeFilePath, "THEME", "menu_bottom_background_green");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::MenuBottomRect.b), ThemeFilePath, "THEME", "menu_bottom_background_blue");
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(Cheat::GUI::MenuBottomRect.a), ThemeFilePath, "THEME", "menu_bottom_background_opacity");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MenuBottomRect.r), ThemeFilePath, "THEME", "menu_bottom_background_red");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MenuBottomRect.g), ThemeFilePath, "THEME", "menu_bottom_background_green");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MenuBottomRect.b), ThemeFilePath, "THEME", "menu_bottom_background_blue");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MenuBottomRect.a), ThemeFilePath, "THEME", "menu_bottom_background_opacity");
 
 	Cheat::GameFunctions::MinimapNotification("Theme Saved");
 }

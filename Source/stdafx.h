@@ -33,6 +33,9 @@
 #pragma comment(lib,"ThirdParty/MinHook/libMinHook-x64-v141-md.lib")
 #include "ThirdParty/MinHook/MinHook.h"
 
+//mINI
+#include "ThirdParty/mINI/ini.h"
+
 
 //Project Header Files
 #include "Memory.h"
@@ -162,7 +165,7 @@ namespace Cheat
 		extern bool VehicleSpawnerSpawnMaxUpgraded;
 		extern bool ShowPlayerInformationPlayerList;
 
-		void NoneLooped();
+		void NonLooped();
 		void Looped();
 		extern bool GodmodeBool;
 		void Godmode(bool toggle);
@@ -327,10 +330,9 @@ namespace Cheat
 		const std::string ReturnConfigFilePath();
 		void LoadConfig();
 		bool IsOptionRegisteredAsLoaded(std::string OptionName);
-		static int	 LoadConfigOptionDummyInt;
-		static float LoadConfigOptionDummyFloat;
-		static bool  LoadConfigOptionDummyBool;
-		void LoadConfigOption(std::string DataType, std::string OptionName, bool& ReturnedBoolOptional, int& ReturnedIntOptional, float& ReturnedFloatOptional);
+		void LoadConfigOption(std::string OptionName, bool& ReturnedBool);
+		void LoadConfigOption(std::string OptionName, int& ReturnedInt);
+		void LoadConfigOption(std::string OptionName, float& ReturnedFloat);
 		std::string ReturnCheatModuleDirectoryPath();
 		void SaveOption(std::string OptionName, std::string OptionValue, bool IsSavable);
 		std::string GetOptionValueFromConfig(std::string OptionName);
@@ -350,8 +352,8 @@ namespace Cheat
 		std::string VirtualKeyCodeToString(UCHAR virtualKey);
 		void CreateConsole();
 		int ReturnNumberOfDigitsInValue(double Number);
-		void WriteStringToIni(std::string string, std::string file, std::string app, std::string key);
-		std::string ReadStringFromIni(std::string file, std::string app, std::string key);
+		void IniFileWriteString(std::string string, std::string FilePath, std::string Section, std::string Key);
+		std::string IniFileReturnKeyValueAsString(std::string FilePath, std::string Section, std::string Key);
 		void WriteBoolToIni(bool b00l, std::string file, std::string app, std::string key);
 		std::string ReturnDateTimeFormatAsString(const char* DateTimeFormat);
 		bool StringToBool(std::string String);

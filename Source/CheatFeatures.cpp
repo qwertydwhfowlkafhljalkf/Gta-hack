@@ -21,7 +21,7 @@ bool Cheat::CheatFeatures::VehicleSpawnerSpawnMaxUpgraded = false;
 bool Cheat::CheatFeatures::ShowPlayerInformationPlayerList = true;
 
 int PostInitBannerNotificationScaleformHandle;
-void Cheat::CheatFeatures::NoneLooped()
+void Cheat::CheatFeatures::NonLooped()
 {
 	//Initialize Texture File
 	Cheat::GUI::Drawing::InitTextureFile();
@@ -674,7 +674,7 @@ void Cheat::CheatFeatures::NoClip()
 
 	if (!PED::IS_PED_ON_FOOT(Cheat::GameFunctions::PlayerPedID))
 	{
-		int currentCar = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, PLAYER::PLAYER_ID());
+		int currentCar = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false);
 		Vector3 Pos = ENTITY::GET_ENTITY_COORDS(currentCar, false);
 		Vector3 rotation = CAM::GET_GAMEPLAY_CAM_ROT(0);
 

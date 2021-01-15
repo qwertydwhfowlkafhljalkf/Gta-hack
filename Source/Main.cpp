@@ -1,4 +1,3 @@
-#pragma once
 #include "stdafx.h"
 int Cheat::CheatFeatures::selectedPlayer;
 float TeleportFoward = 1.f;																					//Used by Teleport Forward option
@@ -24,7 +23,7 @@ int SetPedTexture_Torso = 0, SetPedTexture_TorsoTexture = 0, SetPedTexture_Face 
 
 void Cheat::Main()
 { 
-	Cheat::CheatFeatures::NoneLooped();
+	Cheat::CheatFeatures::NonLooped();
 	while (true)
 	{
 		Cheat::CheatFunctions::LoopedFunctions();

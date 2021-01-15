@@ -316,7 +316,7 @@ void Cheat::CheatFunctions::SaveOption(std::string OptionName, std::string Optio
 		{
 			std::string LogMessage = "'" + OptionName + "' saved";
 			Cheat::GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(LogMessage), "Textures", "AdvancedNotificationImage", false, 4, "Config", "", 0.5f, "");
-			WriteStringToIni(OptionValue, ReturnConfigFilePath(), "SETTINGS", OptionName);
+			IniFileWriteString(OptionValue, ReturnConfigFilePath(), "SETTINGS", OptionName);
 		}
 	}
 }
@@ -324,7 +324,7 @@ void Cheat::CheatFunctions::SaveOption(std::string OptionName, std::string Optio
 
 std::string Cheat::CheatFunctions::GetOptionValueFromConfig(std::string OptionName)
 {
-	return ReadStringFromIni(ReturnConfigFilePath(), "SETTINGS", OptionName);
+	return IniFileReturnKeyValueAsString(ReturnConfigFilePath(), "SETTINGS", OptionName);
 }
 
 void LoadSettingsThreadFunction()
@@ -349,7 +349,7 @@ void Cheat::CheatFunctions::LoadConfig()
 	LoadSettingsThreadHandle.detach();
 
 	//Load Active Theme Name
-	std::string ActiveThemeSetting = Cheat::CheatFunctions::ReadStringFromIni(Cheat::CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "active_theme");
+	std::string ActiveThemeSetting = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(Cheat::CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "active_theme");
 	if (ActiveThemeSetting != "NOT_FOUND") { Cheat::GUI::LoadTheme(CheatFunctions::StringToChar(ActiveThemeSetting), true); }
 }
 
@@ -367,19 +367,73 @@ bool Cheat::CheatFunctions::IsOptionRegisteredAsLoaded(std::string OptionName)
 	return false;
 }
 
-void Cheat::CheatFunctions::LoadConfigOption(std::string DataType, std::string OptionName, bool& ReturnedBoolOptional, int& ReturnedIntOptional, float& ReturnedFloatOptional)
+/*
+Description: loads the specified configuration option
+Note(s): Data is read from config.ini
+		 Function overloading is used for each data type (boolean, integer & float)
+*/
+
+//Bool
+void Cheat::CheatFunctions::LoadConfigOption(std::string OptionName, bool& ReturnedBool)
 {
 	if (!CheatFunctions::IsOptionRegisteredAsLoaded(OptionName))
 	{
-		std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
-		if (ConfigFileValue != "NOT_FOUND")
+		try
 		{
-			if (DataType == "int")		{ try { ReturnedIntOptional = std::stoi(CheatFunctions::GetOptionValueFromConfig(OptionName)); } catch (...) {} }
-			if (DataType == "bool")		{ try { ReturnedBoolOptional = CheatFunctions::StringToBool(CheatFunctions::GetOptionValueFromConfig(OptionName)); } catch (...) {} }
-			if (DataType == "float")	{ try { ReturnedFloatOptional = std::stof(CheatFunctions::GetOptionValueFromConfig(OptionName)); } catch (...) {} }
+			std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
+			if (ConfigFileValue != "NOT_FOUND")
+			{
+				ReturnedBool = CheatFunctions::StringToBool(CheatFunctions::GetOptionValueFromConfig(OptionName));
+				LoadedOptionsVector.push_back(OptionName);
+				Cheat::LogFunctions::DebugMessage("Loaded savable option (Boolean) '" + OptionName + "'");
+			}
 		}
-		LoadedOptionsVector.push_back(OptionName);
-		Cheat::LogFunctions::DebugMessage("Loaded savable option '" + OptionName + "'");
+		catch (...)
+		{
+			Cheat::LogFunctions::DebugMessage("Failed to load savable option (Boolean) '" + OptionName + "'\nData entry might be corrupted");
+		}
+	}
+}
+//Integer
+void Cheat::CheatFunctions::LoadConfigOption(std::string OptionName, int& ReturnedInt)
+{
+	if (!CheatFunctions::IsOptionRegisteredAsLoaded(OptionName))
+	{
+		try
+		{
+			std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
+			if (ConfigFileValue != "NOT_FOUND")
+			{
+				ReturnedInt = std::stoi(CheatFunctions::GetOptionValueFromConfig(OptionName));
+				LoadedOptionsVector.push_back(OptionName);
+				Cheat::LogFunctions::DebugMessage("Loaded savable option (Integer) '" + OptionName + "'");
+			}
+		}
+		catch (...)
+		{
+			Cheat::LogFunctions::DebugMessage("Failed to load savable option (Integer) '" + OptionName + "'\nData entry might be corrupted");
+		}
+	}
+}
+//Float
+void Cheat::CheatFunctions::LoadConfigOption(std::string OptionName, float& ReturnedFloat)
+{
+	if (!CheatFunctions::IsOptionRegisteredAsLoaded(OptionName))
+	{
+		try
+		{
+			std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
+			if (ConfigFileValue != "NOT_FOUND")
+			{
+				ReturnedFloat = std::stof(CheatFunctions::GetOptionValueFromConfig(OptionName));
+				LoadedOptionsVector.push_back(OptionName);
+				Cheat::LogFunctions::DebugMessage("Loaded savable option (Float) '" + OptionName + "'");
+			}
+		}
+		catch (...)
+		{
+			Cheat::LogFunctions::DebugMessage("Failed to load savable option (Float) '" + OptionName + "'\nData entry might be corrupted");
+		}
 	}
 }
 
@@ -415,7 +469,6 @@ std::string Cheat::CheatFunctions::VirtualKeyCodeToString(UCHAR virtualKey)
 
 void Cheat::CheatFunctions::CreateConsole()
 {
-	Cheat::LogFunctions::Message("Allocating Console");
 	AllocConsole();
 	SetConsoleTitleA("GTAV Cheat Console");
 
@@ -482,21 +535,31 @@ int Cheat::CheatFunctions::ReturnNumberOfDigitsInValue(double Number)
 	return i;
 }
 
-void Cheat::CheatFunctions::WriteStringToIni(std::string string, std::string file, std::string app, std::string key)
+void Cheat::CheatFunctions::IniFileWriteString(std::string string, std::string FilePath, std::string Section, std::string Key)
 {
-	WritePrivateProfileStringA(app.c_str(), key.c_str(), string.c_str(), file.c_str());
+	mINI::INIFile File(FilePath);
+	mINI::INIStructure IniStruct;
+	File.read(IniStruct);
+	IniStruct[Section][Key] = string;
+	File.write(IniStruct);
 }
 
-std::string Cheat::CheatFunctions::ReadStringFromIni(std::string file, std::string app, std::string key)
+/*
+Description: returns the value for the provided initialization file section and key
+Note(s): error handling MUST be performed before calling this function (file, section and key existence)
+*/
+std::string Cheat::CheatFunctions::IniFileReturnKeyValueAsString(std::string FilePath, std::string Section, std::string Key)
 {
-	char buf[100];
-	GetPrivateProfileStringA(app.c_str(), key.c_str(), "NOT_FOUND", buf, 100, file.c_str());
-	return (std::string)buf;
+	mINI::INIFile File(FilePath);
+	mINI::INIStructure IniStruct;
+	File.read(IniStruct);
+	if (!IniStruct.has(Section) || !IniStruct[Section].has(Key)) { return "NOT_FOUND"; }
+	return IniStruct.get(Section).get(Key);
 }
 
 void Cheat::CheatFunctions::WriteBoolToIni(bool b00l, std::string file, std::string app, std::string key)
 {
-	WriteStringToIni(b00l ? "true" : "false", file, app, key);
+	IniFileWriteString(b00l ? "true" : "false", file, app, key);
 }
 
 bool Cheat::CheatFunctions::StringToBool(std::string String)
