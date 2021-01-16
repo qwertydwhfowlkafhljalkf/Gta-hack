@@ -26,11 +26,6 @@ std::string Cheat::CheatFunctions::ReturnDateTimeFormatAsString(const char* Date
 	return TimeDateString.str();;
 }
 
-std::string Cheat::CheatFunctions::ReturnCheatBuildAsString()
-{
-	return "1.3.0.4";
-}
-
 std::string Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath()
 {
 	char CheatModuleFilePath[MAX_PATH];
@@ -167,117 +162,25 @@ std::string Cheat::CheatFunctions::TextureFilePath()
 	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Textures.ytd";
 }
 
-
-bool Cheat::CheatFunctions::ReturnPressedKey(int& PressedKey)
+int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 {
-	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { PressedKey = VK_LBUTTON; return true; }
-	else if (GetAsyncKeyState(VK_RBUTTON) & 0x8000) { PressedKey = VK_RBUTTON; return true; }
-	else if (GetAsyncKeyState(VK_MBUTTON) & 0x8000) { PressedKey = VK_MBUTTON;  return true; }
-	else if (GetAsyncKeyState(VK_BACK) & 0x8000) { PressedKey = VK_BACK; return true; }
-	else if (GetAsyncKeyState(VK_TAB) & 0x8000) { PressedKey = VK_TAB; return true; }
-	else if (GetAsyncKeyState(VK_MENU) & 0x8000) { PressedKey = VK_MENU; return true; }
-	else if (GetAsyncKeyState(VK_CAPITAL) & 0x8000) { PressedKey = VK_CAPITAL; return true; }
-	else if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) { PressedKey = VK_ESCAPE; return true; }
-	else if (GetAsyncKeyState(VK_SPACE) & 0x8000) { PressedKey = VK_SPACE; return true; }
-	else if (GetAsyncKeyState(VK_PRIOR) & 0x8000) { PressedKey = VK_PRIOR; return true; }
-	else if (GetAsyncKeyState(VK_NEXT) & 0x8000) { PressedKey = VK_NEXT; return true; }
-	else if (GetAsyncKeyState(VK_END) & 0x8000) { PressedKey = VK_END; return true; }
-	else if (GetAsyncKeyState(VK_HOME) & 0x8000) { PressedKey = VK_HOME; return true; }
-	else if (GetAsyncKeyState(VK_LEFT) & 0x8000) { PressedKey = VK_LEFT; return true; }
-	else if (GetAsyncKeyState(VK_UP) & 0x8000) { PressedKey = VK_UP; return true; }
-	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000) { PressedKey = VK_RIGHT; return true; }
-	else if (GetAsyncKeyState(VK_DOWN) & 0x8000) { PressedKey = VK_DOWN; return true; }
-	else if (GetAsyncKeyState(VK_SELECT) & 0x8000) { PressedKey = VK_SELECT; return true; }
-	else if (GetAsyncKeyState(VK_PRINT) & 0x8000) { PressedKey = VK_PRINT; return true; }
-	else if (GetAsyncKeyState(VK_SNAPSHOT) & 0x8000) { PressedKey = VK_SNAPSHOT; return true; }
-	else if (GetAsyncKeyState(VK_INSERT) & 0x8000) { PressedKey = VK_INSERT; return true; }
-	else if (GetAsyncKeyState(VK_DELETE) & 0x8000) { PressedKey = VK_DELETE; return true; }
-	else if (GetAsyncKeyState(0x30) & 0x8000) { PressedKey = 0x30; return true; }
-	else if (GetAsyncKeyState(0x31) & 0x8000) { PressedKey = 0x31; return true; }
-	else if (GetAsyncKeyState(0x32) & 0x8000) { PressedKey = 0x32; return true; }
-	else if (GetAsyncKeyState(0x32) & 0x8000) { PressedKey = 0x32; return true; }
-	else if (GetAsyncKeyState(0x33) & 0x8000) { PressedKey = 0x33; return true; }
-	else if (GetAsyncKeyState(0x34) & 0x8000) { PressedKey = 0x34; return true; }
-	else if (GetAsyncKeyState(0x36) & 0x8000) { PressedKey = 0x36; return true; }
-	else if (GetAsyncKeyState(0x37) & 0x8000) { PressedKey = 0x37; return true; }
-	else if (GetAsyncKeyState(0x38) & 0x8000) { PressedKey = 0x38; return true; }
-	else if (GetAsyncKeyState(0x39) & 0x8000) { PressedKey = 0x39; return true; }
-	else if (GetAsyncKeyState(0x41) & 0x8000) { PressedKey = 0x41; return true; }
-	else if (GetAsyncKeyState(0x42) & 0x8000) { PressedKey = 0x42; return true; }
-	else if (GetAsyncKeyState(0x43) & 0x8000) { PressedKey = 0x43; return true; }
-	else if (GetAsyncKeyState(0x44) & 0x8000) { PressedKey = 0x44; return true; }
-	else if (GetAsyncKeyState(0x45) & 0x8000) { PressedKey = 0x45; return true; }
-	else if (GetAsyncKeyState(0x46) & 0x8000) { PressedKey = 0x46; return true; }
-	else if (GetAsyncKeyState(0x47) & 0x8000) { PressedKey = 0x47; return true; }
-	else if (GetAsyncKeyState(0x48) & 0x8000) { PressedKey = 0x48; return true; }
-	else if (GetAsyncKeyState(0x49) & 0x8000) { PressedKey = 0x49; return true; }
-	else if (GetAsyncKeyState(0x4A) & 0x8000) { PressedKey = 0x4A; return true; }
-	else if (GetAsyncKeyState(0x4B) & 0x8000) { PressedKey = 0x4B; return true; }
-	else if (GetAsyncKeyState(0x4C) & 0x8000) { PressedKey = 0x4C; return true; }
-	else if (GetAsyncKeyState(0x4D) & 0x8000) { PressedKey = 0x4D; return true; }
-	else if (GetAsyncKeyState(0x4E) & 0x8000) { PressedKey = 0x4E; return true; }
-	else if (GetAsyncKeyState(0x4F) & 0x8000) { PressedKey = 0x4F; return true; }
-	else if (GetAsyncKeyState(0x50) & 0x8000) { PressedKey = 0x50; return true; }
-	else if (GetAsyncKeyState(0x51) & 0x8000) { PressedKey = 0x51; return true; }
-	else if (GetAsyncKeyState(0x52) & 0x8000) { PressedKey = 0x52; return true; }
-	else if (GetAsyncKeyState(0x53) & 0x8000) { PressedKey = 0x53; return true; }
-	else if (GetAsyncKeyState(0x54) & 0x8000) { PressedKey = 0x54; return true; }
-	else if (GetAsyncKeyState(0x55) & 0x8000) { PressedKey = 0x55; return true; }
-	else if (GetAsyncKeyState(0x56) & 0x8000) { PressedKey = 0x56; return true; }
-	else if (GetAsyncKeyState(0x57) & 0x8000) { PressedKey = 0x57; return true; }
-	else if (GetAsyncKeyState(0x58) & 0x8000) { PressedKey = 0x58; return true; }
-	else if (GetAsyncKeyState(0x59) & 0x8000) { PressedKey = 0x59; return true; }
-	else if (GetAsyncKeyState(0x5A) & 0x8000) { PressedKey = 0x5A; return true; }
-	else if (GetAsyncKeyState(VK_LWIN) & 0x8000) { PressedKey = VK_LWIN; return true; }
-	else if (GetAsyncKeyState(VK_RWIN) & 0x8000) { PressedKey = VK_RWIN; return true; }
-	else if (GetAsyncKeyState(VK_NUMPAD0) & 0x8000) { PressedKey = VK_NUMPAD0; return true; }
-	else if (GetAsyncKeyState(VK_NUMPAD1) & 0x8000) { PressedKey = VK_NUMPAD1; return true; }
-	else if (GetAsyncKeyState(VK_NUMPAD2) & 0x8000) { PressedKey = VK_NUMPAD2; return true; }
-	else if (GetAsyncKeyState(VK_NUMPAD3) & 0x8000) { PressedKey = VK_NUMPAD3; return true; }
-	else if (GetAsyncKeyState(VK_NUMPAD4) & 0x8000) { PressedKey = VK_NUMPAD4; return true; }
-	else if (GetAsyncKeyState(VK_NUMPAD6) & 0x8000) { PressedKey = VK_NUMPAD6; return true; }
-	else if (GetAsyncKeyState(VK_NUMPAD7) & 0x8000) { PressedKey = VK_NUMPAD7; return true; }
-	else if (GetAsyncKeyState(VK_NUMPAD8) & 0x8000) { PressedKey = VK_NUMPAD8; return true; }
-	else if (GetAsyncKeyState(VK_NUMPAD9) & 0x8000) { PressedKey = VK_NUMPAD9; return true; }
-	else if (GetAsyncKeyState(VK_MULTIPLY) & 0x8000) { PressedKey = VK_MULTIPLY; return true; }
-	else if (GetAsyncKeyState(VK_ADD) & 0x8000) { PressedKey = VK_ADD; return true; }
-	else if (GetAsyncKeyState(VK_SEPARATOR) & 0x8000) { PressedKey = VK_SEPARATOR; return true; }
-	else if (GetAsyncKeyState(VK_SUBTRACT) & 0x8000) { PressedKey = VK_SUBTRACT; return true; }
-	else if (GetAsyncKeyState(VK_DECIMAL) & 0x8000) { PressedKey = VK_DECIMAL; return true; }
-	else if (GetAsyncKeyState(VK_DIVIDE) & 0x8000) { PressedKey = VK_DIVIDE; return true; }
-	else if (GetAsyncKeyState(VK_F1) & 0x8000) { PressedKey = VK_F1; return true; }
-	else if (GetAsyncKeyState(VK_F2) & 0x8000) { PressedKey = VK_F2; return true; }
-	else if (GetAsyncKeyState(VK_F3) & 0x8000) { PressedKey = VK_F3; return true; }
-	else if (GetAsyncKeyState(VK_F4) & 0x8000) { PressedKey = VK_F4; return true; }
-	else if (GetAsyncKeyState(VK_F5) & 0x8000) { PressedKey = VK_F5; return true; }
-	else if (GetAsyncKeyState(VK_F6) & 0x8000) { PressedKey = VK_F6; return true; }
-	else if (GetAsyncKeyState(VK_F7) & 0x8000) { PressedKey = VK_F7; return true; }
-	else if (GetAsyncKeyState(VK_F8) & 0x8000) { PressedKey = VK_F8; return true; }
-	else if (GetAsyncKeyState(VK_F9) & 0x8000) { PressedKey = VK_F9; return true; }
-	else if (GetAsyncKeyState(VK_F10) & 0x8000) { PressedKey = VK_F10; return true; }
-	else if (GetAsyncKeyState(VK_F11) & 0x8000) { PressedKey = VK_F11; return true; }
-	else if (GetAsyncKeyState(VK_F12) & 0x8000) { PressedKey = VK_F12; return true; }
-	else if (GetAsyncKeyState(VK_F13) & 0x8000) { PressedKey = VK_F13; return true; }
-	else if (GetAsyncKeyState(VK_F14) & 0x8000) { PressedKey = VK_F14; return true; }
-	else if (GetAsyncKeyState(VK_F15) & 0x8000) { PressedKey = VK_F15; return true; }
-	else if (GetAsyncKeyState(VK_F16) & 0x8000) { PressedKey = VK_F16; return true; }
-	else if (GetAsyncKeyState(VK_F17) & 0x8000) { PressedKey = VK_F17; return true; }
-	else if (GetAsyncKeyState(VK_F18) & 0x8000) { PressedKey = VK_F18; return true; }
-	else if (GetAsyncKeyState(VK_F19) & 0x8000) { PressedKey = VK_F19; return true; }
-	else if (GetAsyncKeyState(VK_F20) & 0x8000) { PressedKey = VK_F20; return true; }
-	else if (GetAsyncKeyState(VK_F21) & 0x8000) { PressedKey = VK_F21; return true; }
-	else if (GetAsyncKeyState(VK_F22) & 0x8000) { PressedKey = VK_F22; return true; }
-	else if (GetAsyncKeyState(VK_F23) & 0x8000) { PressedKey = VK_F23; return true; }
-	else if (GetAsyncKeyState(VK_F24) & 0x8000) { PressedKey = VK_F24; return true; }
-	else if (GetAsyncKeyState(VK_NUMLOCK) & 0x8000) { PressedKey = VK_NUMLOCK; return true; }
-	else if (GetAsyncKeyState(VK_SCROLL) & 0x8000) { PressedKey = VK_SCROLL; return true; }
-	else if (GetAsyncKeyState(VK_LSHIFT) & 0x8000) { PressedKey = VK_LSHIFT; return true; }
-	else if (GetAsyncKeyState(VK_RSHIFT) & 0x8000) { PressedKey = VK_RSHIFT; return true; }
-	else if (GetAsyncKeyState(VK_LCONTROL) & 0x8000) { PressedKey = VK_LCONTROL; return true; }
-	else if (GetAsyncKeyState(VK_OEM_CLEAR) & 0x8000) { PressedKey = VK_OEM_CLEAR; return true; }
-	return false;
+	while (true)
+	{
+		Cheat::GUI::Drawing::Text("~bold~Press any key, press Escape to cancel", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 0.900f, 0.900f }, true); GameHooking::PauseMainFiber(0, false);
+		for (int i = 1; i < 256; i++)
+		{
+			if (GetAsyncKeyState(i) & 0x8000 && i != VK_RETURN && i != VK_NUMPAD5)
+			{
+				if (i == VK_ESCAPE)
+				{
+					Cheat::GameFunctions::MinimapNotification("Canceled Key Selection");
+					return 0;
+				}
+				return i;
+			}
+		}
+	}
 }
-
 
 void Cheat::CheatFunctions::SaveOption(std::string OptionName, std::string OptionValue, bool IsSavable)
 {
@@ -308,7 +211,7 @@ std::string Cheat::CheatFunctions::GetOptionValueFromConfig(std::string OptionNa
 
 void LoadSettingsThreadFunction()
 {
-	Cheat::GUI::EnableGUIControlsDisabled();
+	Cheat::GUI::ChangeGUIControlsState(false);
 	for (int SubMenuInt = MainMenu; SubMenuInt != SUBMENUS_END; SubMenuInt++)
 	{
 		SubMenus CurrentSubMenuInt = static_cast<SubMenus>(SubMenuInt);
@@ -318,7 +221,7 @@ void LoadSettingsThreadFunction()
 	Cheat::GUI::CloseGUI();
 	Cheat::GUI::PreviousMenu = NOMENU;
 	Cheat::GUI::CheatGUIHasBeenOpened = false;
-	Cheat::GUI::EnableGUIControlsDisabled();
+	Cheat::GUI::ChangeGUIControlsState(true);
 }
 
 void Cheat::CheatFunctions::LoadConfig()
@@ -363,13 +266,13 @@ void Cheat::CheatFunctions::LoadConfigOption(std::string OptionName, bool& Retur
 			if (ConfigFileValue != "NOT_FOUND")
 			{
 				ReturnedBool = CheatFunctions::StringToBool(CheatFunctions::GetOptionValueFromConfig(OptionName));
-				LoadedOptionsVector.push_back(OptionName);
 				Cheat::LogFunctions::DebugMessage("Loaded savable option (Boolean) '" + OptionName + "'");
 			}
+			LoadedOptionsVector.push_back(OptionName);
 		}
 		catch (...)
 		{
-			Cheat::LogFunctions::DebugMessage("Failed to load savable option (Boolean) '" + OptionName + "'\nData entry might be corrupted");
+			Cheat::LogFunctions::DebugMessage("Failed to load savable option (Boolean) '" + OptionName + "'");
 		}
 	}
 }
@@ -384,13 +287,13 @@ void Cheat::CheatFunctions::LoadConfigOption(std::string OptionName, int& Return
 			if (ConfigFileValue != "NOT_FOUND")
 			{
 				ReturnedInt = std::stoi(CheatFunctions::GetOptionValueFromConfig(OptionName));
-				LoadedOptionsVector.push_back(OptionName);
 				Cheat::LogFunctions::DebugMessage("Loaded savable option (Integer) '" + OptionName + "'");
 			}
+			LoadedOptionsVector.push_back(OptionName);
 		}
 		catch (...)
 		{
-			Cheat::LogFunctions::DebugMessage("Failed to load savable option (Integer) '" + OptionName + "'\nData entry might be corrupted");
+			Cheat::LogFunctions::DebugMessage("Failed to load savable option (Integer) '" + OptionName + "'");
 		}
 	}
 }
@@ -405,13 +308,13 @@ void Cheat::CheatFunctions::LoadConfigOption(std::string OptionName, float& Retu
 			if (ConfigFileValue != "NOT_FOUND")
 			{
 				ReturnedFloat = std::stof(CheatFunctions::GetOptionValueFromConfig(OptionName));
-				LoadedOptionsVector.push_back(OptionName);
 				Cheat::LogFunctions::DebugMessage("Loaded savable option (Float) '" + OptionName + "'");
 			}
+			LoadedOptionsVector.push_back(OptionName);
 		}
 		catch (...)
 		{
-			Cheat::LogFunctions::DebugMessage("Failed to load savable option (Float) '" + OptionName + "'\nData entry might be corrupted");
+			Cheat::LogFunctions::DebugMessage("Failed to load savable option (Float) '" + OptionName + "'");
 		}
 	}
 }
@@ -496,7 +399,7 @@ void Cheat::CheatFunctions::CreateConsole()
 	std::cin.clear();
 
 	//Print build info
-	std::cout << "Build: " << Cheat::CheatFunctions::ReturnCheatBuildAsString() << " | Compile Date & Time: " << __DATE__ << " " << __TIME__ << std::endl;
+	std::cout << "Build: " << CHEAT_BUILD_NUMBER << " | Compile Date & Time: " << __DATE__ << " " << __TIME__ << std::endl;
 }
 
 

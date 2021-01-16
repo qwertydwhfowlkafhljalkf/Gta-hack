@@ -6,6 +6,7 @@
 #pragma warning(disable : 4091)	
 #pragma warning(disable : 6262)
 
+#define CHEAT_BUILD_NUMBER "1.3.0.4"
 
 #include <windows.h>
 #include <string>
@@ -132,7 +133,7 @@ namespace Cheat
 		void BackMenu();
 		void CloseGUI();
 		void End();
-		void EnableGUIControlsDisabled();
+		void ChangeGUIControlsState(bool State);
 		void LoadThemeFilesLooped();
 		void LoadTheme(std::string ThemeFileName, bool StartUp);
 		void SaveTheme(std::string ThemeFileName);
@@ -322,7 +323,6 @@ namespace Cheat
 	}
 	namespace CheatFunctions 
 	{
-		std::string ReturnCheatBuildAsString();
 		const std::string ReturnConfigFilePath();
 		void LoadConfig();
 		bool IsOptionRegisteredAsLoaded(std::string OptionName);
@@ -341,7 +341,7 @@ namespace Cheat
 		bool IsIntegerInRange(unsigned low, unsigned high, unsigned x);
 		bool ExtractResource(const HINSTANCE hInstance, WORD resourceID, LPCSTR szFilename);
 		std::string TextureFilePath();
-		bool ReturnPressedKey(int &PressedKey);
+		int WaitForAndReturnPressedKey();
 		char* StringToChar(std::string string);
 		std::string VirtualKeyCodeToString(UCHAR virtualKey);
 		void CreateConsole();

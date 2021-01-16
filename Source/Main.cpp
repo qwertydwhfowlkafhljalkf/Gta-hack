@@ -4183,16 +4183,14 @@ void Cheat::Main()
 			if (Cheat::Option(OpenKeyString.c_str(), "Select to change"))
 			{
 				int PressedKey;
-				while (!Cheat::CheatFunctions::ReturnPressedKey(PressedKey)) { Cheat::GUI::Drawing::Text("~bold~Press any key to set Open Key, press Escape to cancel", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 0.900f, 0.900f }, true); GameHooking::PauseMainFiber(0, false); }
-				if (PressedKey == 27) { Cheat::GameFunctions::MinimapNotification("Canceled Setting Open Key"); break; }
+				PressedKey = Cheat::CheatFunctions::WaitForAndReturnPressedKey();
 				if (PressedKey != 0) { Cheat::GUI::openKey = PressedKey; Cheat::GameFunctions::MinimapNotification("Open Key has been set"); }
 			}
 			std::string GUINavigationKeyString = "Cursor Navigation: ~c~" + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::GUINavigationKey);
 			if (Cheat::Option(GUINavigationKeyString.c_str(), "Select to change"))
 			{
 				int PressedKey;
-				while (!Cheat::CheatFunctions::ReturnPressedKey(PressedKey)) { Cheat::GUI::Drawing::Text("~bold~Press any key to set Cursor Navigation Key, press Escape to cancel", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 0.900f, 0.900f }, true); GameHooking::PauseMainFiber(0, false); }
-				if (PressedKey == 27) { Cheat::GameFunctions::MinimapNotification("Canceled Setting Cursor Navigation Key"); break; }
+				PressedKey = Cheat::CheatFunctions::WaitForAndReturnPressedKey();
 				if (PressedKey != 0) { Cheat::GUI::GUINavigationKey = PressedKey; Cheat::GameFunctions::MinimapNotification("Cursor Navigation Key has been set"); }
 			}
 			Cheat::Int("Key Press Delay", Cheat::GUI::keyPressDelay, 1, 200, 1, false, false);
