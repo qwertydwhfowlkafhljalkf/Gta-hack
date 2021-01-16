@@ -21,7 +21,7 @@ void Cheat::GameFunctions::RepairAndCleanVehicle()
 	}
 	else
 	{
-		Cheat::GameFunctions::MinimapNotification("~r~Player isn't in a vehicle");
+		Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 	}
 }
 
@@ -818,16 +818,10 @@ void Cheat::GameFunctions::AttachObjectToPed(Ped Ped, char* ObjectName)
 	}
 }
 
-void Cheat::GameFunctions::DrawMarkerAbovePlayer(int Type, Player player, RGBA Color)
-{
-	Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player), false);
-	GRAPHICS::DRAW_MARKER(Type, coords.x, coords.y, coords.z + 1.3f, 0.f, 0.f, 0.f, 0.f, 180.f, 0.f, 0.3f, 0.3f, 0.3f, Color.r, Color.g, Color.b, Color.a, 1, 1, 1, 0, 0, 0, 0);
-}
-
 void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 {
 	Hash model = GAMEPLAY::GET_HASH_KEY(ModelHash);
-	if (!STREAMING::IS_MODEL_IN_CDIMAGE(model) || !STREAMING::IS_MODEL_A_VEHICLE(model)) { Cheat::GameFunctions::MinimapNotification("~r~That is not a valid vehicle model"); return; }
+	if (!STREAMING::IS_MODEL_IN_CDIMAGE(model) || !STREAMING::IS_MODEL_A_VEHICLE(model)) { Cheat::GameFunctions::MinimapNotification("~r~That is not a valid Vehicle model"); return; }
 	if (Cheat::CheatFeatures::VehicleSpawnerDeleteOldVehicle) { Cheat::GameFunctions::DeleteVehicle(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID)); }
 	STREAMING::REQUEST_MODEL(GAMEPLAY::GET_HASH_KEY(ModelHash));
 	while (!STREAMING::HAS_MODEL_LOADED(GAMEPLAY::GET_HASH_KEY(ModelHash))) { GameHooking::PauseMainFiber(0); }
@@ -871,7 +865,6 @@ void Cheat::GameFunctions::EnableDisableAntiCrashCamera()
 		PLAYER::SET_PLAYER_CONTROL(Cheat::GameFunctions::PlayerID, false, 0);
 	}
 }
-
 
 std::vector<std::string> CurrentPlayerNamesSession;
 std::vector<std::string> CurrentPlayerNamesSession2;
@@ -1021,16 +1014,16 @@ void Cheat::GameFunctions::ChangeEntityInvincibilityState(Entity EntityHandle, b
 	if (Enable)
 	{
 		ENTITY::SET_ENTITY_INVINCIBLE(EntityHandle, true);
-		ENTITY::SET_ENTITY_PROOFS(EntityHandle, 0, 0, 0, 0, 0, 0, 0, 0);
-		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(EntityHandle, 0);
-		VEHICLE::SET_VEHICLE_WHEELS_CAN_BREAK(EntityHandle, 0);
+		ENTITY::SET_ENTITY_PROOFS(EntityHandle, false, false, false, false, false, false, false, false);
+		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(EntityHandle, false);
+		VEHICLE::SET_VEHICLE_WHEELS_CAN_BREAK(EntityHandle, false);
 		VEHICLE::SET_VEHICLE_CAN_BE_VISIBLY_DAMAGED(EntityHandle, false);
 	}
 	else
 	{
 		ENTITY::SET_ENTITY_INVINCIBLE(EntityHandle, false);
-		ENTITY::SET_ENTITY_PROOFS(EntityHandle, 0, 0, 0, 0, 0, 0, 0, 0);
-		VEHICLE::SET_VEHICLE_CAN_BE_VISIBLY_DAMAGED(EntityHandle, 1);
+		ENTITY::SET_ENTITY_PROOFS(EntityHandle, false, false, false, false, false, false, false, false);
+		VEHICLE::SET_VEHICLE_CAN_BE_VISIBLY_DAMAGED(EntityHandle, true);
 	}
 }
 

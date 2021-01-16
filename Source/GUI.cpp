@@ -46,7 +46,6 @@ int Cheat::GUI::keyPressPreviousTick		= GetTickCount64();
 int Cheat::GUI::openKey						= VK_F4;
 int Cheat::GUI::GUINavigationKey			= VK_F5;
 int Cheat::GUI::SaveItemKey					= VK_F12;
-bool Cheat::GUI::ControllerInput			= true;
 bool Cheat::GUI::RestorePreviousSubmenu		= true;
 
 
@@ -54,16 +53,51 @@ static fpFileRegister RegisterTextureFile = (fpFileRegister)(Memory::pattern("48
 void Cheat::GUI::Drawing::InitTextureFile()
 {
 	Cheat::LogFunctions::Message("Loading Texture File");
+
+	remove(CheatFunctions::StringToChar(Cheat::CheatFunctions::TextureFilePath()));
+
+	//Find and load the resource
+	HRSRC hResource = FindResourceA(Cheat::CheatModuleHandle, MAKEINTRESOURCEA(140), "CHEAT_DATA");
+	if (!hResource) { goto Error; }
+	HGLOBAL hFileResource = LoadResource(Cheat::CheatModuleHandle, hResource);
+	if (!hFileResource) { goto Error; }
+
+	//Open and map this to a disk file
+	LPVOID lpFile = LockResource(hFileResource);
+	DWORD dwSize = SizeofResource(Cheat::CheatModuleHandle, hResource);
+
+	//Open the file and filemap
+	HANDLE hFile = CreateFileA(CheatFunctions::StringToChar(Cheat::CheatFunctions::TextureFilePath()), GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFileMap = CreateFileMapping(hFile, NULL, PAGE_READWRITE, 0, dwSize, NULL);
+	if (!hFileMap) { goto Error; }
+
+	LPVOID lpAddress = MapViewOfFile(hFileMap, FILE_MAP_WRITE, 0, 0, 0);
+	if (!lpAddress) { goto Error; }
+
+	//Write the file
+	CopyMemory(lpAddress, lpFile, dwSize);
+
+	//Un-map the file and close the handles
+	UnmapViewOfFile(lpAddress);
+	CloseHandle(hFileMap);
+	CloseHandle(hFile);
+
+
 	int textureID;
 	if (Cheat::CheatFunctions::FileOrDirectoryExists(Cheat::CheatFunctions::TextureFilePath()))
 	{
 		RegisterTextureFile(&textureID, Cheat::CheatFunctions::TextureFilePath().c_str(), true, "Textures.ytd", false);
+		return;
 	}
-	else 
-	{ 
-		Cheat::GameFunctions::MinimapNotification("~r~Failed to load Texture"); 
-		Cheat::LogFunctions::DebugMessage("Failed to load Textures.ytd");
+	else
+	{
+		goto Error;
 	}
+
+	//Error
+Error:
+	Cheat::GameFunctions::MinimapNotification("~r~Failed to load Texture");
+	Cheat::LogFunctions::DebugMessage("Failed to load Textures.ytd");
 }
 
 void Cheat::GUI::Drawing::Text(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center)
@@ -724,7 +758,7 @@ void Cheat::GUI::ControlsLoop()
 
 		if (GetTickCount64() - GUI::keyPressPreviousTick > GUI::keyPressDelay) 
 		{
-			if (GetAsyncKeyState(GUI::openKey) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed() || CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlScriptRB) && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlFrontendX) && GUI::ControllerInput)
+			if (GetAsyncKeyState(GUI::openKey) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
 			{
 				if (GUI::menuLevel == 0)
 				{
@@ -748,13 +782,13 @@ void Cheat::GUI::ControlsLoop()
 				Cheat::GameFunctions::PlayFrontendSoundDefault("SELECT");
 				GUI::keyPressPreviousTick = GetTickCount64();
 			}
-			else if (GetAsyncKeyState(VK_NUMPAD0) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed() || CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlFrontendCancel) && GUI::ControllerInput)
+			else if (GetAsyncKeyState(VK_NUMPAD0) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
 			{
 				if (GUI::menuLevel > 0) { GUI::BackMenu(); Cheat::GameFunctions::PlayFrontendSoundDefault("BACK"); }
 
 				GUI::keyPressPreviousTick = GetTickCount64();
 			}
-			else if (GetAsyncKeyState(VK_NUMPAD8) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed() || CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlFrontendUp) && GUI::ControllerInput)
+			else if (GetAsyncKeyState(VK_NUMPAD8) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
 			{
 				GUI::currentOption > 1 ? GUI::currentOption-- : GUI::currentOption = GUI::optionCount;
 				if (GUI::menuLevel > 0)
@@ -762,7 +796,7 @@ void Cheat::GUI::ControlsLoop()
 
 				GUI::keyPressPreviousTick = GetTickCount64();
 			}
-			else if (GetAsyncKeyState(VK_NUMPAD2) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed() || CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlFrontendDown) && GUI::ControllerInput)
+			else if (GetAsyncKeyState(VK_NUMPAD2) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
 			{
 				GUI::currentOption < GUI::optionCount ? GUI::currentOption++ : GUI::currentOption = 1;
 				if (GUI::menuLevel > 0)
@@ -770,7 +804,7 @@ void Cheat::GUI::ControlsLoop()
 
 				GUI::keyPressPreviousTick = GetTickCount64();
 			}
-			else if (GetAsyncKeyState(VK_NUMPAD6) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed() || CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlPhoneRight) && GUI::ControllerInput)
+			else if (GetAsyncKeyState(VK_NUMPAD6) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
 			{
 				GUI::leftPressed = true;
 				if (GUI::menuLevel > 0)
@@ -778,7 +812,7 @@ void Cheat::GUI::ControlsLoop()
 
 				GUI::keyPressPreviousTick = GetTickCount64();
 			}
-			else if (GetAsyncKeyState(VK_NUMPAD4) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed() || CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlPhoneLeft) && GUI::ControllerInput)
+			else if (GetAsyncKeyState(VK_NUMPAD4) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
 			{
 				GUI::rightPressed = true;
 				if (GUI::menuLevel > 0)
@@ -786,7 +820,7 @@ void Cheat::GUI::ControlsLoop()
 
 				GUI::keyPressPreviousTick = GetTickCount64();
 			}
-			else if (GetAsyncKeyState(VK_NUMPAD5) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed() || CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlFrontendAccept) && GUI::ControllerInput)
+			else if (GetAsyncKeyState(VK_NUMPAD5) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
 			{
 				GUI::selectPressed = true;
 				if (GUI::menuLevel > 0)

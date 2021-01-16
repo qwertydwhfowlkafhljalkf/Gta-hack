@@ -2153,8 +2153,8 @@ void Cheat::Main()
 		{
 			Cheat::Title("Vehicle Options");
 			Cheat::MenuOption("Spawner >", vehiclespawnermenu);
-			Cheat::MenuOption("Vehicle Weapons >", vehicleweaponsmenu);
 			Cheat::MenuOption("Vehicle Customizer >", VehicleCustomizerMenu);
+			Cheat::MenuOption("Vehicle Weapons >", vehicleweaponsmenu);
 			if (Cheat::Option("Delete Current Vehicle", "Delete the current vehicle"))
 			{
 				if (!Cheat::GameFunctions::DeleteVehicle(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID))) 
@@ -2925,7 +2925,7 @@ void Cheat::Main()
 			Cheat::Toggle("Free Cam", Cheat::CheatFeatures::FreeCamBool, "Use W and S to control. Shift to go faster");
 			Cheat::Toggle("Show Joining Players Notification", Cheat::CheatFeatures::ShowJoiningPlayersNotification, "");
 			Cheat::Toggle("No Orbital Cannon Cooldown", Cheat::CheatFeatures::OrbitalCannonCooldownBypassBool, "");
-			Cheat::Toggle("Developer Mode", Cheat::CheatFeatures::GTAODeveloperMode, "Toggles GTAO Spectator Options");
+			Cheat::Toggle("Rockstar Developer Mode", Cheat::CheatFeatures::GTAODeveloperMode, "Toggles GTAO Spectator Options");
 			Cheat::Toggle("Auto Teleport To Waypoint", Cheat::CheatFeatures::AutoTeleportToWaypointBool, "");
 			Cheat::Toggle("Force Field", Cheat::CheatFeatures::PlayerForceFieldBool, "Gives your character a force field");
 			Cheat::Toggle("Show Session Information", Cheat::CheatFeatures::ShowSessionInformationBool, "Show session info (next to radar)");
@@ -4155,7 +4155,6 @@ void Cheat::Main()
 		case CheatSettingsMenu:
 		{
 			Cheat::Title("Cheat Settings");
-			Cheat::Toggle("Controller Support", Cheat::GUI::ControllerInput, "Enables Cheat GUI Controller Support");
 			Cheat::Break("Player List", true);
 			Cheat::Toggle("Show Player Information", Cheat::CheatFeatures::ShowPlayerInformationPlayerList, "Toggle Player Information Box");
 			Cheat::Toggle("Show Player Tags", Cheat::CheatFeatures::ShowPlayerTagsPlayerList, "Toggle Player Tags");
@@ -4420,9 +4419,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 		Cheat::CheatModuleHandle = hModule;
 		//Create 'gtav' directory
 		if (!Cheat::CheatFunctions::FileOrDirectoryExists(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav")) { Cheat::CheatFunctions::CreateNewDirectory(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"gtav"); }
-		//Extract YTD texture file from module
-		remove(Cheat::CheatFunctions::TextureFilePath().c_str());
-		Cheat::CheatFunctions::ExtractResource(hModule, 140, (LPCSTR)Cheat::CheatFunctions::TextureFilePath().c_str());
 		//Continue cheat loading
 		CreateThread(NULL, NULL, InitThread, hModule, NULL, NULL);
 		break;

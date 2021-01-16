@@ -683,7 +683,7 @@ void Cheat::CheatFeatures::NoClip()
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(currentCar, Pos.x, Pos.y, Pos.z, 0, 0, 0);
 		if (ENTITY::DOES_ENTITY_EXIST(currentCar) && ENTITY::IS_ENTITY_A_VEHICLE(currentCar))
 		{
-			if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed() || CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, 232) && Cheat::GUI::ControllerInput)
+			if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed())
 			{
 				ENTITY::SET_ENTITY_COLLISION(currentCar, false, false);
 				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(currentCar, Pos.x + (x * d), Pos.y + (y * d), Pos.z + (z * d), 0, 0, 0);
@@ -698,7 +698,7 @@ void Cheat::CheatFeatures::NoClip()
 		ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, true, true);
 		ENTITY::SET_ENTITY_ROTATION(Cheat::GameFunctions::PlayerPedID, rotation.x, rotation.y, rotation.z, 2, 1);
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Cheat::GameFunctions::PlayerPedID, Pos.x, Pos.y, Pos.z, 0, 0, 0);
-		if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed() || CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, 232) && Cheat::GUI::ControllerInput)
+		if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed())
 		{
 			ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, false, false);
 			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Cheat::GameFunctions::PlayerPedID, Pos.x + (x * d), Pos.y + (y * d), Pos.z + (z * d), 0, 0, 0);
@@ -1008,48 +1008,54 @@ void Cheat::CheatFeatures::ExplodeLoopSelectedPlayer()
 bool Cheat::CheatFeatures::DriveOnWaterBool = false;
 void Cheat::CheatFeatures::DriveOnWater()
 {
-	Player player = Cheat::GameFunctions::PlayerID;
-	Ped playerPed = Cheat::GameFunctions::PlayerPedID;
 	Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false);
 	DWORD model = ENTITY::GET_ENTITY_MODEL(veh);
-	Vector3 pos = ENTITY::GET_ENTITY_COORDS(playerPed, false);
-	float height = 0;
+	Vector3 pos = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
+	float height = 0.f;
 	WATER::_SET_CURRENT_INTENSITY(height);
-	if ((!(VEHICLE::IS_THIS_MODEL_A_PLANE(ENTITY::GET_ENTITY_MODEL(veh)))) && WATER::GET_WATER_HEIGHT_NO_WAVES(pos.x, pos.y, pos.z, &height)) {
-		Object container = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(pos.x, pos.y, pos.z, 4.0, GAMEPLAY::GET_HASH_KEY("prop_container_ld2"), 0, 0, 1);
-		if (ENTITY::DOES_ENTITY_EXIST(container) && height > -50.0f) {
-			Vector3 pRot = ENTITY::GET_ENTITY_ROTATION(playerPed, 0);
-			if (PED::IS_PED_IN_ANY_VEHICLE(playerPed, 1)) pRot = ENTITY::GET_ENTITY_ROTATION(veh, 0);
+	if (!VEHICLE::IS_THIS_MODEL_A_PLANE(ENTITY::GET_ENTITY_MODEL(veh)) && WATER::GET_WATER_HEIGHT_NO_WAVES(pos.x, pos.y, pos.z, &height)) 
+	{
+		Object container = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(pos.x, pos.y, pos.z, 4.0, GAMEPLAY::GET_HASH_KEY("prop_container_ld2"), false, false, true);
+		if (ENTITY::DOES_ENTITY_EXIST(container) && height > -50.0f) 
+		{
+			Vector3 pRot = ENTITY::GET_ENTITY_ROTATION(GameFunctions::PlayerPedID, 0);
+			if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, 1)) pRot = ENTITY::GET_ENTITY_ROTATION(veh, 0);
 			Cheat::GameFunctions::RequestNetworkControlOfEntity(container);
-			ENTITY::SET_ENTITY_COORDS(container, pos.x, pos.y, height - 1.5f, 0, 0, 0, 1);
+			ENTITY::SET_ENTITY_COORDS(container, pos.x, pos.y, height - 1.5f, false, false, false, 1);
 			ENTITY::SET_ENTITY_ROTATION(container, 0, 0, pRot.z, 0, 1);
 			Vector3 containerCoords = ENTITY::GET_ENTITY_COORDS(container, 1);
-			if (pos.z < containerCoords.z) {
-				if (!PED::IS_PED_IN_ANY_VEHICLE(playerPed, 0)) {
-					ENTITY::SET_ENTITY_COORDS(playerPed, pos.x, pos.y, containerCoords.z + 2.0f, 0, 0, 0, 1);
+			if (pos.z < containerCoords.z) 
+			{
+				if (!PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false))
+				{
+					ENTITY::SET_ENTITY_COORDS(GameFunctions::PlayerPedID, pos.x, pos.y, containerCoords.z + 2.0f, 0, 0, 0, 1);
 				}
-				else {
+				else 
+				{
 					Cheat::GameFunctions::RequestNetworkControlOfEntity(veh);
 					Vector3 vehc = ENTITY::GET_ENTITY_COORDS(veh, 1);
 					ENTITY::SET_ENTITY_COORDS(veh, vehc.x, vehc.y, containerCoords.z + 2.0f, 0, 0, 0, 1);
 				}
 			}
 		}
-		else {
+		else 
+		{
 			Hash model = GAMEPLAY::GET_HASH_KEY("prop_container_ld2");
 			STREAMING::REQUEST_MODEL(model);
 			while (!STREAMING::HAS_MODEL_LOADED(model)) GameHooking::PauseMainFiber(0);
-			container = OBJECT::CREATE_OBJECT(model, pos.x, pos.y, pos.z, 1, 1, 0);
+			container = OBJECT::CREATE_OBJECT(model, pos.x, pos.y, pos.z, true, true, false);
 
-			(container);
+			//(container);
 			ENTITY::FREEZE_ENTITY_POSITION(container, 1);
 			ENTITY::SET_ENTITY_ALPHA(container, 0, 1);
 			ENTITY::SET_ENTITY_VISIBLE(container, 0, 0);
 		}
 	}
-	else {
-		Object container = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(pos.x, pos.y, pos.z, 4.0, GAMEPLAY::GET_HASH_KEY("prop_container_ld2"), 0, 0, 1);
-		if (ENTITY::DOES_ENTITY_EXIST(container)) {
+	else 
+	{
+		Object container = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(pos.x, pos.y, pos.z, 4.0, GAMEPLAY::GET_HASH_KEY("prop_container_ld2"), false, false, true);
+		if (ENTITY::DOES_ENTITY_EXIST(container)) 
+		{
 			Cheat::GameFunctions::RequestNetworkControlOfEntity(container);
 			ENTITY::SET_ENTITY_COORDS(container, 0, 0, -1000.0f, 0, 0, 0, 1);
 			GameHooking::PauseMainFiber(10);
@@ -1064,7 +1070,7 @@ bool Cheat::CheatFeatures::SuperManBool = false;
 void Cheat::CheatFeatures::SuperMan()
 {
 	if(!Cheat::CheatFeatures::NoRagdollAndSeatbeltBool) { Cheat::CheatFeatures::NoRagdollAndSeatbeltBool = true; Cheat::GameFunctions::MinimapNotification("No Ragdoll & Seatbelt feature enabled for this feature"); }
-	WEAPON::GIVE_DELAYED_WEAPON_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("GADGET_PARACHUTE"), 1, 1);
+	WEAPON::GIVE_DELAYED_WEAPON_TO_PED(Cheat::GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("GADGET_PARACHUTE"), 1, true);
 	ENTITY::SET_ENTITY_INVINCIBLE(Cheat::GameFunctions::PlayerPedID, true);
 	PED::SET_PED_TO_RAGDOLL_WITH_FALL(Cheat::GameFunctions::PlayerPedID, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0);
 

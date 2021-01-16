@@ -88,7 +88,8 @@ void Cheat::CheatFunctions::LoopedFunctions()
 	{
 		if (Cheat::GameFunctions::IsPlayerIDValid(Cheat::CheatFeatures::selectedPlayer))
 		{
-			Cheat::GameFunctions::DrawMarkerAbovePlayer(21, Cheat::CheatFeatures::selectedPlayer, { 0, 0, 255, 255 });
+			Vector3 SelectedPlayerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), false);
+			GRAPHICS::DRAW_MARKER(21, SelectedPlayerCoords.x, SelectedPlayerCoords.y, SelectedPlayerCoords.z + 1.3f, 0.f, 0.f, 0.f, 0.f, 180.f, 0.f, 0.3f, 0.3f, 0.3f, 0, 0, 255, 255, 1, 1, 1, 0, 0, 0, 0);
 			Cheat::GameFunctions::ShowPlayerInformationBox(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::selectedPlayer), Cheat::CheatFeatures::selectedPlayer);
 		}
 		else
@@ -100,7 +101,6 @@ void Cheat::CheatFunctions::LoopedFunctions()
 	}
 }
 
-
 bool Cheat::CheatFunctions::IsGameWindowFocussed()
 {
 	HWND GameWindowHandle = FindWindowA(0, "Grand Theft Auto V");
@@ -108,53 +108,14 @@ bool Cheat::CheatFunctions::IsGameWindowFocussed()
 	if (GameWindowHandle == HandleProcessWithKeyboardFocus) { return true; } else { return false; }
 }
 
-
 bool Cheat::CheatFunctions::StringIsInteger(const std::string& s)
 {
 	return !s.empty() && std::find_if(s.begin(), s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
 }
+
 bool Cheat::CheatFunctions::IsIntegerInRange(unsigned low, unsigned high, unsigned x)
 {
 	return  ((x - low) <= (high - low));
-}
-
-
-bool Cheat::CheatFunctions::ExtractResource(const HINSTANCE hInstance, WORD resourceID, LPCSTR szFilename)
-{
-	try
-	{
-		//Find and load the resource
-		HRSRC hResource = FindResource(hInstance, MAKEINTRESOURCE(resourceID), L"CHEAT_DATA");
-		if (!hResource) { throw; }
-		HGLOBAL hFileResource = LoadResource(hInstance, hResource);
-		if (!hFileResource) { throw; }
-
-		//Open and map this to a disk file
-		LPVOID lpFile = LockResource(hFileResource);
-		DWORD dwSize = SizeofResource(hInstance, hResource);
-
-		//Open the file and filemap
-		HANDLE hFile = CreateFileA(szFilename, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-		HANDLE hFileMap = CreateFileMapping(hFile, NULL, PAGE_READWRITE, 0, dwSize, NULL);
-		if (!hFileMap) { throw; }
-
-		LPVOID lpAddress = MapViewOfFile(hFileMap, FILE_MAP_WRITE, 0, 0, 0);
-		if (!lpAddress) { throw; }
-
-		//Write the file
-		CopyMemory(lpAddress, lpFile, dwSize);
-
-		//Un-map the file and close the handles
-		UnmapViewOfFile(lpAddress);
-		CloseHandle(hFileMap);
-		CloseHandle(hFile);
-		return true;
-	}
-	catch (...)
-	{
-		MessageBoxA(NULL, "Failed to extract Texture File", "Error", MB_OK | MB_ICONWARNING | MB_TOPMOST);
-	}
-	return false;
 }
 
 std::string Cheat::CheatFunctions::TextureFilePath()

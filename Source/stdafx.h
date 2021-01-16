@@ -84,7 +84,6 @@ namespace Cheat
 		extern bool leftPressed;
 		extern bool rightPressed;
 		extern bool center;
-		extern bool ControllerInput;
 		extern bool RestorePreviousSubmenu;
 		extern int maxVisOptions;
 		extern int currentOption;
@@ -339,7 +338,6 @@ namespace Cheat
 		bool IsGameWindowFocussed();
 		bool StringIsInteger(const std::string& s);
 		bool IsIntegerInRange(unsigned low, unsigned high, unsigned x);
-		bool ExtractResource(const HINSTANCE hInstance, WORD resourceID, LPCSTR szFilename);
 		std::string TextureFilePath();
 		int WaitForAndReturnPressedKey();
 		char* StringToChar(std::string string);
@@ -387,7 +385,6 @@ namespace Cheat
 		void ShowPlayerInformationBox(char* playerName, Player p);
 		float Get3DDistance(Vector3 a, Vector3 b);
 		void ApplyForceToEntity(Entity e, float x, float y, float z);
-		void DrawMarkerAbovePlayer(int Type, Player player, RGBA Color);
 		void SpawnVehicle(char* ModelHash);
 		void SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID);
 		void MaxDowngradeVehicle(int VehicleHandle);
