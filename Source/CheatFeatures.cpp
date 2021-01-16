@@ -788,7 +788,6 @@ void Cheat::CheatFeatures::DeleteGun()
 	}
 }
 
-
 bool Cheat::CheatFeatures::UnlimitedSpecialAbilityBool = false;
 void Cheat::CheatFeatures::UnlimitedSpecialAbility()
 {
