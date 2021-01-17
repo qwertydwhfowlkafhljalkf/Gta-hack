@@ -173,6 +173,7 @@ std::string Cheat::CheatFunctions::GetOptionValueFromConfig(std::string OptionNa
 void LoadSettingsThreadFunction()
 {
 	Cheat::GUI::ChangeGUIControlsState(false);
+	Cheat::GUI::HideGUIElements = true;
 	for (int SubMenuInt = MainMenu; SubMenuInt != SUBMENUS_END; SubMenuInt++)
 	{
 		SubMenus CurrentSubMenuInt = static_cast<SubMenus>(SubMenuInt);
@@ -183,6 +184,7 @@ void LoadSettingsThreadFunction()
 	Cheat::GUI::PreviousMenu = NOMENU;
 	Cheat::GUI::CheatGUIHasBeenOpened = false;
 	Cheat::GUI::ChangeGUIControlsState(true);
+	Cheat::GUI::HideGUIElements = false;
 }
 
 void Cheat::CheatFunctions::LoadConfig()
@@ -195,7 +197,6 @@ void Cheat::CheatFunctions::LoadConfig()
 	std::string ActiveThemeSetting = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(Cheat::CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "active_theme");
 	if (ActiveThemeSetting != "NOT_FOUND") { Cheat::GUI::LoadTheme(CheatFunctions::StringToChar(ActiveThemeSetting), true); }
 }
-
 
 std::vector <std::string> LoadedOptionsVector;
 bool Cheat::CheatFunctions::IsOptionRegisteredAsLoaded(std::string OptionName)

@@ -10,6 +10,7 @@ bool Cheat::GUI::rightPressed			= false;
 bool Cheat::GUI::ShowHeaderBackground	= true;
 bool Cheat::GUI::ShowHeaderGUI			= true;
 bool Cheat::GUI::ShowHeaderGlare		= true;
+bool Cheat::GUI::HideGUIElements		= false; //If set prevents the Text, Glare, Sprite and other GUI elements from being rendered on-screen
 bool Cheat::GUI::CheatGUIHasBeenOpened	= false;
 bool Cheat::GUI::CurrentOptionIsSavable	= false;
 std::string OptionInformationText;
@@ -43,7 +44,7 @@ RGBA Cheat::GUI::TopAndBottomLine		{ 0, 0, 255, 255 };
 
 int Cheat::GUI::keyPressDelay				= 200;
 int Cheat::GUI::keyPressPreviousTick		= GetTickCount64();
-int Cheat::GUI::openKey						= VK_F4;
+int Cheat::GUI::OpenGUIKey					= VK_F4;
 int Cheat::GUI::GUINavigationKey			= VK_F5;
 int Cheat::GUI::SaveItemKey					= VK_F12;
 bool Cheat::GUI::RestorePreviousSubmenu		= true;
@@ -102,36 +103,48 @@ Error:
 
 void Cheat::GUI::Drawing::Text(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center)
 {
-	UI::SET_TEXT_CENTRE(center);
-	UI::SET_TEXT_COLOUR(rgbaf.r, rgbaf.g, rgbaf.b, rgbaf.a);
-	UI::SET_TEXT_FONT(rgbaf.f);
-	UI::SET_TEXT_SCALE(size.w, size.h);
-	UI::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
-	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(CheatFunctions::StringToChar(text));
-	UI::END_TEXT_COMMAND_DISPLAY_TEXT(position.x, position.y);
+	if (!GUI::HideGUIElements)
+	{
+		UI::SET_TEXT_CENTRE(center);
+		UI::SET_TEXT_COLOUR(rgbaf.r, rgbaf.g, rgbaf.b, rgbaf.a);
+		UI::SET_TEXT_FONT(rgbaf.f);
+		UI::SET_TEXT_SCALE(size.w, size.h);
+		UI::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
+		UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(CheatFunctions::StringToChar(text));
+		UI::END_TEXT_COMMAND_DISPLAY_TEXT(position.x, position.y);
+	}
 }
 
 void Cheat::GUI::Drawing::Spriter(std::string Streamedtexture, std::string textureName, float x, float y, float width, float height, float rotation, int r, int g, int b, int a)
 {
-	if (!GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED(CheatFunctions::StringToChar(Streamedtexture)))
+	if (!GUI::HideGUIElements)
 	{
-		GRAPHICS::REQUEST_STREAMED_TEXTURE_DICT(CheatFunctions::StringToChar(Streamedtexture.c_str()), false);
-	}
-	else
-	{
-		GRAPHICS::DRAW_SPRITE(CheatFunctions::StringToChar(Streamedtexture), CheatFunctions::StringToChar(textureName), x, y, width, height, rotation, r, g, b, a);
+		if (!GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED(CheatFunctions::StringToChar(Streamedtexture)))
+		{
+			GRAPHICS::REQUEST_STREAMED_TEXTURE_DICT(CheatFunctions::StringToChar(Streamedtexture.c_str()), false);
+		}
+		else
+		{
+			GRAPHICS::DRAW_SPRITE(CheatFunctions::StringToChar(Streamedtexture), CheatFunctions::StringToChar(textureName), x, y, width, height, rotation, r, g, b, a);
+		}
 	}
 }
 
 void Cheat::GUI::Drawing::Rect(RGBA rgba, VECTOR2 position, VECTOR2_2 size)
 {
-	GRAPHICS::DRAW_RECT(position.x, position.y, size.w, size.h, rgba.r, rgba.g, rgba.b, rgba.a);
+	if (!GUI::HideGUIElements)
+	{
+		GRAPHICS::DRAW_RECT(position.x, position.y, size.w, size.h, rgba.r, rgba.g, rgba.b, rgba.a);
+	}
 }
 
 void Cheat::GUI::Drawing::DrawScaleform(const float x, const float y, const float sx, const float sy, const int r, const int g, const int b)
 {
-	int ScaleFormHandle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_MENU_GLARE");
-	GRAPHICS::DRAW_SCALEFORM_MOVIE(ScaleFormHandle, x, y, sx, sy, r, g, b, 255, 0);
+	if (!GUI::HideGUIElements)
+	{
+		int ScaleFormHandle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_MENU_GLARE");
+		GRAPHICS::DRAW_SCALEFORM_MOVIE(ScaleFormHandle, x, y, sx, sy, r, g, b, 255, 0);
+	}
 }
 
 void Cheat::Title(std::string title)
@@ -162,20 +175,23 @@ void Cheat::Title(std::string title)
 	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_VEH_HEADLIGHT, true);
 
 	//Control Buttons
-	std::string SaveOptionKeyString = "Press " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::SaveItemKey) + " to save selected option";
-	std::string CloseGUIString = "Press " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::openKey) + " to close GUI";
-	std::string CursorNavigationString;
-	if (Cheat::CheatFeatures::CursorGUINavigationEnabled) { CursorNavigationString = "Press " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::GUINavigationKey) + " to disable cursor"; }
-	else { CursorNavigationString = "Press " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::GUINavigationKey) + " to enable cursor"; }
-	Cheat::GameFunctions::InstructionalKeysInit();
-	Cheat::GameFunctions::InstructionsAdd(CheatFunctions::StringToChar(CloseGUIString), 80);
-	Cheat::GameFunctions::InstructionsAdd(CheatFunctions::StringToChar(CursorNavigationString), 80);
-	if (GUI::CurrentOptionIsSavable) { Cheat::GameFunctions::InstructionsAdd(CheatFunctions::StringToChar(SaveOptionKeyString), 80); }
-	Cheat::GameFunctions::InstructionsAdd("Back", 136);
-	Cheat::GameFunctions::InstructionsAdd("Up/Down", 10);
-	Cheat::GameFunctions::InstructionsAdd("Change Value", 46);
-	Cheat::GameFunctions::InstructionsAdd("Select", 141);
-	Cheat::GameFunctions::InstructionsEnd();
+	if (!GUI::HideGUIElements)
+	{
+		std::string SaveOptionKeyString = "Press " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::SaveItemKey) + " to save selected option";
+		std::string CloseGUIString = "Press " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::OpenGUIKey) + " to close GUI";
+		std::string CursorNavigationString;
+		if (Cheat::CheatFeatures::CursorGUINavigationEnabled) { CursorNavigationString = "Press " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::GUINavigationKey) + " to disable cursor"; }
+		else { CursorNavigationString = "Press " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::GUINavigationKey) + " to enable cursor"; }
+		Cheat::GameFunctions::InstructionalKeysInit();
+		Cheat::GameFunctions::InstructionsAdd(CheatFunctions::StringToChar(CloseGUIString), 80);
+		Cheat::GameFunctions::InstructionsAdd(CheatFunctions::StringToChar(CursorNavigationString), 80);
+		if (GUI::CurrentOptionIsSavable) { Cheat::GameFunctions::InstructionsAdd(CheatFunctions::StringToChar(SaveOptionKeyString), 80); }
+		Cheat::GameFunctions::InstructionsAdd("Back", 136);
+		Cheat::GameFunctions::InstructionsAdd("Up/Down", 10);
+		Cheat::GameFunctions::InstructionsAdd("Change Value", 46);
+		Cheat::GameFunctions::InstructionsAdd("Select", 141);
+		Cheat::GameFunctions::InstructionsEnd();
+	}
 }
 
 bool Cheat::Option(std::string option, std::string InformationText)
@@ -758,7 +774,7 @@ void Cheat::GUI::ControlsLoop()
 
 		if (GetTickCount64() - GUI::keyPressPreviousTick > GUI::keyPressDelay) 
 		{
-			if (GetAsyncKeyState(GUI::openKey) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
+			if (GetAsyncKeyState(GUI::OpenGUIKey) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
 			{
 				if (GUI::menuLevel == 0)
 				{
@@ -1034,7 +1050,7 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 		Cheat::GUI::maxVisOptions = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "max_vis_options"));
 		if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "open_key") != "NOT_FOUND")
 		{
-			Cheat::GUI::openKey = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "open_key"));
+			Cheat::GUI::OpenGUIKey = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "open_key"));
 		}
 		if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "cursor_navigation_toggle_key") != "NOT_FOUND")
 		{
@@ -1109,7 +1125,7 @@ void Cheat::GUI::SaveTheme(std::string ThemeFileName)
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::guiWidth), ThemeFilePath, "THEME", "gui_width");
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::keyPressDelay), ThemeFilePath, "THEME", "key_press_delay");
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::maxVisOptions), ThemeFilePath, "THEME", "max_vis_options");
-	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::openKey), ThemeFilePath, "THEME", "open_key");
+	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::OpenGUIKey), ThemeFilePath, "THEME", "open_key");
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::GUINavigationKey), ThemeFilePath, "THEME", "cursor_navigation_toggle_key");
 
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::CheatFeatures::BoolOptionVectorPosition), ThemeFilePath, "THEME", "boolean_toggle");

@@ -33,7 +33,7 @@ void Cheat::CheatFeatures::NonLooped()
 	Cheat::LogFunctions::Message("GTAV Cheat Initialization Completed");
 
 	//Init Scaleform Banner Notification
-	std::string OpenGUIString = "Cheat has been successfully initialized. Have fun!\nPress " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::openKey) + " to open GUI";
+	std::string OpenGUIString = "Cheat has been successfully initialized. Have fun!\nPress " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::OpenGUIKey) + " to open GUI";
 	PostInitBannerNotificationScaleformHandle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("mp_big_message_freemode");
 	while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(PostInitBannerNotificationScaleformHandle)) { GameHooking::PauseMainFiber(0, false); }
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "SHOW_SHARD_WASTED_MP_MESSAGE");

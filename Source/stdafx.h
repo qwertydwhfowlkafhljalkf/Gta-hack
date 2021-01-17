@@ -76,6 +76,7 @@ namespace Cheat
 		extern bool ShowHeaderBackground;
 		extern bool ShowHeaderGUI;
 		extern bool ShowHeaderGlare;
+		extern bool HideGUIElements;
 		extern bool CheatGUIHasBeenOpened;
 		extern bool CurrentOptionIsSavable;
 		extern std::string CurrentTheme;
@@ -117,16 +118,9 @@ namespace Cheat
 		extern RGBA secondary;
 		extern int keyPressDelay;
 		extern int keyPressPreviousTick;
-		extern int openKey;
+		extern int OpenGUIKey;
 		extern int GUINavigationKey;
 		extern int SaveItemKey;
-		extern int openpress;
-		extern int downpress;
-		extern int uppress;
-		extern int backpress;
-		extern int click;
-		extern int leftpress;
-		extern int rightpress;
 		extern void DeleteCurrentTheme();
 		void MoveMenu(SubMenus menu);
 		void BackMenu();

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 int Cheat::CheatFeatures::selectedPlayer;
 float TeleportFoward = 1.f;																					//Used by Teleport Forward option
 int engine_multiplier, torque_multiplier;																	//Used by Vehicle Multipliers options
@@ -2292,79 +2292,96 @@ void Cheat::Main()
 		case vehicle_lsc_color_options:
 		{
 			Cheat::Title("Color Options");
-			if (Cheat::Option("Random", "Get random color")) {
+			if (Cheat::Option("Random", "Get random color")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, rand() % 255, rand() % 255, rand() % 255);
 				if (VEHICLE::GET_IS_VEHICLE_SECONDARY_COLOUR_CUSTOM(veh))
+				{
 					VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(veh, rand() % 255, rand() % 255, rand() % 255);
+				}
 			}
 			Cheat::MenuOption("Custom Color >", VehicleCustomizerColorMenu);
 			Cheat::Break("~bold~Color Presets", true);
-			if (Cheat::Option("Chrome", "")) {
+			if (Cheat::Option("Chrome", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 120, 120);
 			}
-			if (Cheat::Option("Black", "")) {
+			if (Cheat::Option("Black", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 0, 0, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("White", "")) {
+			if (Cheat::Option("White", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 255, 255);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Red", "")) {
+			if (Cheat::Option("Red", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 0, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Green", "")) {
+			if (Cheat::Option("Green", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 0, 255, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Blue", "")) {
+			if (Cheat::Option("Blue", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 0, 0, 255);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Orange", "")) {
+			if (Cheat::Option("Orange", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 128, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Yellow", "")) {
+			if (Cheat::Option("Yellow", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 255, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Purple", "")) {
+			if (Cheat::Option("Purple", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 204, 0, 204);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Grey", "")) {
+			if (Cheat::Option("Grey", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 96, 96, 96);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Brown", "")) {
+			if (Cheat::Option("Brown", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 165, 42, 42);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Pink", "")) {
+			if (Cheat::Option("Pink", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 51, 255);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Cool Green", "")) {
+			if (Cheat::Option("Cool Green", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 0, 255, 196);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Hot Pink", "")) {
+			if (Cheat::Option("Hot Pink", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 0, 145);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
@@ -2374,17 +2391,20 @@ void Cheat::Main()
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 128, 255, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Lava Red", "")) {
+			if (Cheat::Option("Lava Red", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 255, 60, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Mint Green", "")) {
+			if (Cheat::Option("Mint Green", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 0, 255, 119);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
 			}
-			if (Cheat::Option("Neon Green", "")) {
+			if (Cheat::Option("Neon Green", "")) 
+			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(veh, 187, 255, 0);
 				VEHICLE::SET_VEHICLE_COLOURS(veh, 0, 0);
@@ -2396,30 +2416,17 @@ void Cheat::Main()
 			Cheat::Title("Neon Options");
 			if (Cheat::Option("Enable Neons", "Enable Vehicle Neons")) 
 			{
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
-				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 1);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 0, 1);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 1, 1);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 2, 1);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 3, 1);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 4, 1);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 5, 1);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 6, 1);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 7, 1);
-				VEHICLE::SET_VEHICLE_MOD_KIT(VehID, 0);
+				for (int i = 0; i <= 7; i++)
+				{
+					VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false), i, true);
+				}
 			}
-			if (Cheat::Option("Disable Neons", "Disable Vehicle Neons")) {
-				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
-				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 1);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 0, 0);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 1, 0);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 2, 0);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 3, 0);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 4, 0);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 5, 0);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 6, 0);
-				VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(VehID, 7, 0);
-				VEHICLE::SET_VEHICLE_MOD_KIT(VehID, 0);
+			if (Cheat::Option("Disable Neons", "Disable Vehicle Neons")) 
+			{
+				for (int i = 0; i <= 7; i++)
+				{
+					VEHICLE::_SET_VEHICLE_NEON_LIGHT_ENABLED(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false), i, false);
+				}
 			}
 			Cheat::Int("Neon Color: Red", VehicleNeonLightRed, 0, 255, 1);
 			Cheat::Int("Neon Color: Green", VehicleNeonLightGreen, 0, 255, 1);
@@ -2437,62 +2444,74 @@ void Cheat::Main()
 				}
 			}
 			Cheat::Break("Neon Presets", true);
-			if (Cheat::Option("Red", "")) {
+			if (Cheat::Option("Red", "")) 
+			{
 				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 1);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 255, 0, 0);
 			}
-			if (Cheat::Option("Green", "")) {
+			if (Cheat::Option("Green", "")) 
+			{
 				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 0, 255, 0);
 			}
-			if (Cheat::Option("Blue", "")) {
+			if (Cheat::Option("Blue", "")) 
+			{
 				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 0, 0, 255);
 			}
-			if (Cheat::Option("Hot Pink", "")) {
+			if (Cheat::Option("Hot Pink", "")) 
+			{
 				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 226, 35, 157);
 			}
-			if (Cheat::Option("Yellow", "")) {
+			if (Cheat::Option("Yellow", "")) 
+			{
 				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 247, 244, 0);
 			}
-			if (Cheat::Option("Orange", "")) {
+			if (Cheat::Option("Orange", "")) 
+			{
 				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 247, 91, 0);
 			}
-			if (Cheat::Option("Aqua", "")) {
+			if (Cheat::Option("Aqua", "")) 
+			{
 				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 40, 255, 255);
 			}
-			if (Cheat::Option("White", "")) {
+			if (Cheat::Option("White", "")) 
+			{
 				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 255, 255, 255);
 			}
-			if (Cheat::Option("Magenta", "")) {
+			if (Cheat::Option("Magenta", "")) 
+			{
 				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 102, 0, 35);
 			}
-			if (Cheat::Option("Purple", "")) {
+			if (Cheat::Option("Purple", "")) 
+			{
 				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 53, 0, 83);
 			}
-			if (Cheat::Option("Dark Green", "")) {
+			if (Cheat::Option("Dark Green", "")) 
+			{
 				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 0, 118, 0);
 			}
-			if (Cheat::Option("Rose Red", "")) {
+			if (Cheat::Option("Rose Red", "")) 
+			{
 				int VehID = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0);
 				VEHICLE::_IS_VEHICLE_NEON_LIGHT_ENABLED(VehID, 8);
 				VEHICLE::_SET_VEHICLE_NEON_LIGHTS_COLOUR(VehID, 161, 0, 0);
@@ -2504,8 +2523,10 @@ void Cheat::Main()
 			Cheat::Title("Multipliers");	
 			Cheat::Int("Engine Multiplier", engine_multiplier, 0, 1000, 1, "Set Engine Multiplier value");
 			Cheat::Int("Engine Torque Multiplier", torque_multiplier, 0, 1000, 1, "Set engine torque multiplier value");
-			if (Cheat::Option("Set", "Set Multiplier")) {
-				if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) {
+			if (Cheat::Option("Set", "Set Multiplier")) 
+			{
+				if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) 
+				{
 					Vehicle CurrentVehicle = PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID);
 					VEHICLE::_SET_VEHICLE_ENGINE_POWER_MULTIPLIER(CurrentVehicle, engine_multiplier); // Engine Multiplier
 					VEHICLE::_SET_VEHICLE_ENGINE_TORQUE_MULTIPLIER(CurrentVehicle, torque_multiplier); // Engine Torque Multiplier
@@ -4178,21 +4199,19 @@ void Cheat::Main()
 			Cheat::Float("X-Axis", Cheat::GUI::guiX, 0.11f, 0.86f, 0.01f, true, false, "");
 			Cheat::Float("Y-Axis", Cheat::GUI::guiY, 0.10f, 0.90f, 0.01f, true, false, "");
 			Cheat::Float("GUI Width", Cheat::GUI::guiWidth, 0.21f, 0.30f, 0.01f, true, false, "TODO: Text Scaling not implemented");
-			std::string OpenKeyString = "Open Key: ~c~" + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::openKey);
+			std::string OpenKeyString = "Open Key: ~c~" + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::OpenGUIKey);
 			if (Cheat::Option(OpenKeyString.c_str(), "Select to change"))
 			{
-				int PressedKey;
-				PressedKey = Cheat::CheatFunctions::WaitForAndReturnPressedKey();
-				if (PressedKey != 0) { Cheat::GUI::openKey = PressedKey; Cheat::GameFunctions::MinimapNotification("Open Key has been set"); }
+				int PressedKey = Cheat::CheatFunctions::WaitForAndReturnPressedKey();
+				if (PressedKey != 0) { Cheat::GUI::OpenGUIKey = PressedKey; Cheat::GameFunctions::MinimapNotification("Open Key has been set"); }
 			}
 			std::string GUINavigationKeyString = "Cursor Navigation: ~c~" + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::GUINavigationKey);
 			if (Cheat::Option(GUINavigationKeyString.c_str(), "Select to change"))
 			{
-				int PressedKey;
-				PressedKey = Cheat::CheatFunctions::WaitForAndReturnPressedKey();
+				int PressedKey = Cheat::CheatFunctions::WaitForAndReturnPressedKey();
 				if (PressedKey != 0) { Cheat::GUI::GUINavigationKey = PressedKey; Cheat::GameFunctions::MinimapNotification("Cursor Navigation Key has been set"); }
 			}
-			Cheat::Int("Key Press Delay", Cheat::GUI::keyPressDelay, 1, 200, 1, false, false);
+			Cheat::Int("Key Press Delay", Cheat::GUI::keyPressDelay, 1, 250, 1, false, false);
 		}
 		break; 
 		case headeroptionsmenu:
