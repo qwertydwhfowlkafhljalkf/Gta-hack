@@ -256,11 +256,7 @@ int Cheat::GameFunctions::ReturnRandomInteger(int start, int end)
 	return GAMEPLAY::GET_RANDOM_INT_IN_RANGE(start, end);
 }
 
-/*
-Description: Teleport target entity to target coords
-Note(s): If AutoCorrectGroundHeight is set, the function automatically searches for nearby ground
-	     If IgnoreCurrentPedVehicle is set, the vehicle a entity may be in will be ignored and only the ped will be teleported
-*/
+
 void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicle)
 {
 	Entity TargetEntity = e;

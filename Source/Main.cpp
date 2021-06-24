@@ -4437,7 +4437,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 		DisableThreadLibraryCalls(hModule);
 		Cheat::CheatModuleHandle = hModule;
 		//Create 'gtav' directory
-		if (!Cheat::CheatFunctions::FileOrDirectoryExists(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav")) { Cheat::CheatFunctions::CreateNewDirectory(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"gtav"); }
+		if (!Cheat::CheatFunctions::FileOrDirectoryExists(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav")) { Cheat::CheatFunctions::CreateNewDirectory(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav"); }
 		//Continue cheat loading
 		CreateThread(NULL, NULL, InitThread, hModule, NULL, NULL);
 		break;
