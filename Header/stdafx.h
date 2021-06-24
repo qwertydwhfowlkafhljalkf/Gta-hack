@@ -31,26 +31,26 @@
 
 
 //MinHook
-#pragma comment(lib,"ThirdParty/MinHook/libMinHook-x64-v141-md.lib")
-#include "ThirdParty/MinHook/MinHook.h"
+#pragma comment(lib, "ThirdParty/MinHook/libMinHook-x64-v141-md.lib")
+#include "../ThirdParty/MinHook/MinHook.h"
 
 //mINI
-#include "ThirdParty/mINI/ini.h"
+#include "../ThirdParty/mINI/ini.h"
 
 
 //Project Header Files
-#include "Memory.h"
-#include "Types.h"
-#include "Enums.h"
-#include "CrossMapping.h"
-#include "NativeInvoker.h"
-#include "NativeCaller.h"
-#include "Natives.h"
-#include "GameHooking.h"
-#include "GUI.h"
-#include "Types.h"
-#include "GameArrays.h"
-#include "Offsets.h"
+#include "../Header/Game Hooking/Memory.h"
+#include "../Header/Game Hooking/Types.h"
+#include "../Header/Game Hooking/Enums.h"
+#include "../Header/Game Hooking/CrossMapping.h"
+#include "../Header/Game Hooking/NativeInvoker.h"
+#include "../Header/Game Hooking/NativeCaller.h"
+#include "../Header/Game Hooking/Natives.h"
+#include "../Header/Game Hooking/GameHooking.h"
+#include "../Header/GUI/GUI.h"
+#include "../Header/Game Hooking/Types.h"
+#include "../Header/Game Functions/GameArrays.h"
+#include "../Header/Game Hooking/Offsets.h"
 
 
 namespace Cheat 

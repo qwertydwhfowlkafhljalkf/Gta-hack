@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+﻿#include "../Header/stdafx.h"
 int Cheat::CheatFeatures::selectedPlayer;
 float TeleportFoward = 1.f;																					//Used by Teleport Forward option
 int engine_multiplier, torque_multiplier;																	//Used by Vehicle Multipliers options

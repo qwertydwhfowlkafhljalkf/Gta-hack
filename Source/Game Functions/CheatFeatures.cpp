@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Header/stdafx.h"
 
 int Cheat::CheatFeatures::BoolOptionVectorPosition = 0; //0: Shop Box. 1: Circle
 int Cheat::CheatFeatures::SpeedometerVectorPosition = 0;

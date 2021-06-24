@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Header/stdafx.h"
 
 //https://wiki.rage.mp/index.php?title=Weapons
 const std::vector<WeaponHashesStruct> Cheat::GameArrays::WeaponsHashList = {

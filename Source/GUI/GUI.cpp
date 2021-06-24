@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Header/stdafx.h"
 
 float Cheat::GUI::guiX					= 0.11f;
 float Cheat::GUI::guiY					= 0.30f;

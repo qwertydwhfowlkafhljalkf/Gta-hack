@@ -80,35 +80,35 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CrossMapping.h" />
-    <ClInclude Include="Enums.h" />
-    <ClInclude Include="GameArrays.h" />
-    <ClInclude Include="GameHooking.h" />
-    <ClInclude Include="Memory.h" />
+    <ClInclude Include="Header\Game Functions\GameArrays.h" />
+    <ClInclude Include="Header\Game Hooking\CrossMapping.h" />
+    <ClInclude Include="Header\Game Hooking\enums.h" />
+    <ClInclude Include="Header\Game Hooking\GameHooking.h" />
+    <ClInclude Include="Header\Game Hooking\Memory.h" />
+    <ClInclude Include="Header\Game Hooking\nativeCaller.h" />
+    <ClInclude Include="Header\Game Hooking\NativeInvoker.h" />
+    <ClInclude Include="Header\Game Hooking\natives.h" />
+    <ClInclude Include="Header\Game Hooking\Offsets.h" />
+    <ClInclude Include="Header\Game Hooking\types.h" />
+    <ClInclude Include="Header\resource.h" />
+    <ClInclude Include="Header\stdafx.h" />
     <ClInclude Include="GUI.h" />
-    <ClInclude Include="NativeCaller.h" />
-    <ClInclude Include="NativeInvoker.h" />
-    <ClInclude Include="Natives.h" />
-    <ClInclude Include="Offsets.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CrossMapping.cpp" />
-    <ClCompile Include="CheatFeatures.cpp" />
-    <ClCompile Include="GameArrays.cpp" />
-    <ClCompile Include="GameFunctions.cpp" />
-    <ClCompile Include="GameHooking.cpp" />
-    <ClCompile Include="LogFunctions.cpp" />
-    <ClCompile Include="Memory.cpp" />
-    <ClCompile Include="GUI.cpp" />
-    <ClCompile Include="CheatFunctions.cpp" />
-    <ClCompile Include="NativeInvoker.cpp" />
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Source\Cheat Functions\CheatFunctions.cpp" />
+    <ClCompile Include="Source\Cheat Functions\LogFunctions.cpp" />
+    <ClCompile Include="Source\Game Functions\CheatFeatures.cpp" />
+    <ClCompile Include="Source\Game Functions\GameArrays.cpp" />
+    <ClCompile Include="Source\Game Functions\GameFunctions.cpp" />
+    <ClCompile Include="Source\Game Hooking\CrossMapping.cpp" />
+    <ClCompile Include="Source\Game Hooking\GameHooking.cpp" />
+    <ClCompile Include="Source\Game Hooking\Memory.cpp" />
+    <ClCompile Include="Source\Game Hooking\NativeInvoker.cpp" />
+    <ClCompile Include="Source\GUI\GUI.cpp" />
+    <ClCompile Include="Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="GTAV.rc" />
+    <ResourceCompile Include="Source\GTAV.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

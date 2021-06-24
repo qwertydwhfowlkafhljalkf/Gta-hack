@@ -1,79 +1,79 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="CrossMapping.cpp">
-      <Filter>Source Files\Game Hooking</Filter>
-    </ClCompile>
-    <ClCompile Include="Memory.cpp">
-      <Filter>Source Files\Game Hooking</Filter>
-    </ClCompile>
-    <ClCompile Include="GameFunctions.cpp">
-      <Filter>Source Files\Game Functions</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI.cpp">
-      <Filter>Source Files\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="CheatFunctions.cpp">
-      <Filter>Source Files\Cheat Functions</Filter>
-    </ClCompile>
-    <ClCompile Include="LogFunctions.cpp">
-      <Filter>Source Files\Cheat Functions</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="Source\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NativeInvoker.cpp">
+    <ClCompile Include="Source\GUI\GUI.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game Hooking\CrossMapping.cpp">
       <Filter>Source Files\Game Hooking</Filter>
     </ClCompile>
-    <ClCompile Include="GameArrays.cpp">
-      <Filter>Source Files\Game Functions</Filter>
-    </ClCompile>
-    <ClCompile Include="CheatFeatures.cpp">
-      <Filter>Source Files\Game Functions</Filter>
-    </ClCompile>
-    <ClCompile Include="GameHooking.cpp">
+    <ClCompile Include="Source\Game Hooking\GameHooking.cpp">
       <Filter>Source Files\Game Hooking</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game Hooking\Memory.cpp">
+      <Filter>Source Files\Game Hooking</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game Hooking\NativeInvoker.cpp">
+      <Filter>Source Files\Game Hooking</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game Functions\CheatFeatures.cpp">
+      <Filter>Source Files\Game Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game Functions\GameArrays.cpp">
+      <Filter>Source Files\Game Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game Functions\GameFunctions.cpp">
+      <Filter>Source Files\Game Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Cheat Functions\CheatFunctions.cpp">
+      <Filter>Source Files\Cheat Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Cheat Functions\LogFunctions.cpp">
+      <Filter>Source Files\Cheat Functions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GUI.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="CrossMapping.h">
-      <Filter>Header Files\Game Hooking</Filter>
-    </ClInclude>
-    <ClInclude Include="NativeInvoker.h">
-      <Filter>Header Files\Game Hooking</Filter>
-    </ClInclude>
-    <ClInclude Include="Memory.h">
-      <Filter>Header Files\Game Hooking</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="Header\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
+    <ClInclude Include="Header\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameArrays.h">
+    <ClInclude Include="Header\Game Hooking\CrossMapping.h">
+      <Filter>Header Files\Game Hooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Game Hooking\enums.h">
+      <Filter>Header Files\Game Hooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Game Hooking\GameHooking.h">
+      <Filter>Header Files\Game Hooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Game Hooking\Memory.h">
+      <Filter>Header Files\Game Hooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Game Hooking\nativeCaller.h">
+      <Filter>Header Files\Game Hooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Game Hooking\NativeInvoker.h">
+      <Filter>Header Files\Game Hooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Game Hooking\natives.h">
+      <Filter>Header Files\Game Hooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Game Hooking\Offsets.h">
+      <Filter>Header Files\Game Hooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Game Hooking\types.h">
+      <Filter>Header Files\Game Hooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Game Functions\GameArrays.h">
       <Filter>Header Files\Game Functions</Filter>
-    </ClInclude>
-    <ClInclude Include="Types.h">
-      <Filter>Header Files\Game Hooking</Filter>
-    </ClInclude>
-    <ClInclude Include="Natives.h">
-      <Filter>Header Files\Game Hooking</Filter>
-    </ClInclude>
-    <ClInclude Include="NativeCaller.h">
-      <Filter>Header Files\Game Hooking</Filter>
-    </ClInclude>
-    <ClInclude Include="Enums.h">
-      <Filter>Header Files\Game Hooking</Filter>
-    </ClInclude>
-    <ClInclude Include="GameHooking.h">
-      <Filter>Header Files\Game Hooking</Filter>
-    </ClInclude>
-    <ClInclude Include="Offsets.h">
-      <Filter>Header Files\Game Hooking</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +106,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="GTAV.rc" />
+    <ResourceCompile Include="Source\GTAV.rc" />
   </ItemGroup>
 </Project>

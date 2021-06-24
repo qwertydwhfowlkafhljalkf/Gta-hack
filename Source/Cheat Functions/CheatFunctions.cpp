@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Header/stdafx.h"
 
 
 void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)

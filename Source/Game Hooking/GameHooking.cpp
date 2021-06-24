@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Header/stdafx.h"
 
 HANDLE MainFiber;
 uint64_t*															GameHooking::m_frameCount;

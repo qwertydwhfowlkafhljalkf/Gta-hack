@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Header/stdafx.h"
 
 static NativeManagerContext g_context;
 static UINT64 g_hash;
