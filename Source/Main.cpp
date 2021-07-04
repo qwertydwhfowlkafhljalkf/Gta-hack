@@ -4169,7 +4169,7 @@ void Cheat::Main()
 			Cheat::MenuOption("Cheat Settings >", CheatSettingsMenu);
 			if (Cheat::Option("Visit Github Page", ""))
 			{
-				system("start https://github.com/HowYouDoinMate/GrandTheftAutoV-Cheat");
+				system("start https://github.com/HatchesPls/GrandTheftAutoV-Cheat");
 			}
 		}
 		break;
@@ -4422,7 +4422,7 @@ void Cheat::Main()
 DWORD WINAPI InitThread(LPVOID lpParam)
 {
 	Cheat::CheatFunctions::CreateConsole();
-	std::cout << Cheat::CheatFunctions::ReturnDateTimeFormatAsString("[%d-%m-%Y - %H:%M:%S]") << " [Init] " << "Initializing GTAV Cheat" << " | Github Repository: https://github.com/HowYouDoinMate/GrandTheftAutoV-Cheat" << std::endl;
+	std::cout << Cheat::CheatFunctions::ReturnDateTimeFormatAsString("[%d-%m-%Y - %H:%M:%S]") << " [Init] " << "Initializing GTAV Cheat" << " | Github Repository: https://github.com/HatchesPls/GrandTheftAutoV-Cheat" << std::endl;
 	GameHooking::DoGameHooking();
 	//Hooks created - this thread is no longer needed
 	return 0;
