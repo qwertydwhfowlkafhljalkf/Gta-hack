@@ -430,7 +430,7 @@ void Cheat::CheatFeatures::SuperJump()
 bool Cheat::CheatFeatures::PlayerForceFieldBool = false;
 void Cheat::CheatFeatures::PlayerForceField()
 {
-	if(!NoRagdollAndSeatbeltBool) { NoRagdollAndSeatbeltBool = true; Cheat::GameFunctions::MinimapNotification("~o~Enabled No Ragdoll & Seatbelt feature to prevent your character from flying around"); }
+	if(!NoRagdollAndSeatbeltBool) { NoRagdollAndSeatbeltBool = true; Cheat::GameFunctions::MinimapNotification("Enabled No Ragdoll & Seatbelt feature to prevent your character from flying around"); }
 	FIRE::ADD_EXPLOSION(ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 0).x, ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 0).y, ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 0).z, 7, 100.0f, false, true, 0.0f);
 }
 
