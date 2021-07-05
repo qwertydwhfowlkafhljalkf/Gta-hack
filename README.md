@@ -2,4 +2,4 @@
 
 Cheat for Grand Theft Auto V. This source code will continue to be updated for game updates, bug fixes and new features.
 
-![alt text](/cheat_preview.png)
+![alt text](/preview_image.png)

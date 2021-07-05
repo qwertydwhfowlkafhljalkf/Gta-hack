@@ -1107,12 +1107,12 @@ void Cheat::GUI::ChangeControlsState(bool State)
 {
 	if (State)
 	{
-		Cheat::LogFunctions::DebugMessage("Enabled GUI Controls");
+		Cheat::LogFunctions::DebugMessage("Enabled Controls");
 		ControlsDisabled = false;
 	}
 	else
 	{
-		Cheat::LogFunctions::DebugMessage("Disabled GUI Controls");
+		Cheat::LogFunctions::DebugMessage("Disabled Controls");
 		ControlsDisabled = true;
 	}
 }

@@ -23,7 +23,7 @@ std::string Cheat::CheatFunctions::ReturnDateTimeFormatAsString(const char* Date
 	localtime_s(&NewTimeHandle, &CurrentTimeHandle);
 	std::ostringstream TimeDateString;
 	TimeDateString << std::put_time(&NewTimeHandle, DateTimeFormat);
-	return TimeDateString.str();;
+	return TimeDateString.str();
 }
 
 std::string Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath()
