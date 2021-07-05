@@ -6,5 +6,6 @@ Cheat for Grand Theft Auto V. This source code will continue to be updated for g
 
 ### Support this project
 ![](/bitcoin.png)
-Address: 3BwCVtcJaNgUovcYQkDYFjrdy5YydTnjwc
+
+Bitcoin address: 3BwCVtcJaNgUovcYQkDYFjrdy5YydTnjwc
 
