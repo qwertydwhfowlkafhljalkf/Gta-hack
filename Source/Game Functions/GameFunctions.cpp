@@ -482,13 +482,13 @@ void Cheat::GameFunctions::PlayScenarioNearbyPeds(char* Scenario)
 	}
 }
 
-void Cheat::GameFunctions::ShowPlayerInformationBox(char* playerName, Player p) 
+void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 {
 	if (Cheat::CheatFeatures::ShowPlayerInformationPlayerList)
 	{
 		//Definitions & error handling
-		if (!GameFunctions::IsPlayerIDValid(p)) { return; }
-		Ped SelectedPlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(p);
+		if (!GameFunctions::IsPlayerIDValid(PlayerID)) { return; }
+		Ped SelectedPlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerID);
 		RequestNetworkControlOfEntity(SelectedPlayerPed);
 
 		//Draw Title and Background
@@ -507,24 +507,24 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(char* playerName, Player p)
 
 		//Text Entry's
 		Cheat::AddPlayerInfoBoxTextEntry("Name", 1);
-		Cheat::AddPlayerInfoBoxTextEntry(PLAYER::GET_PLAYER_NAME(p), NULL, 1);
+		Cheat::AddPlayerInfoBoxTextEntry(PLAYER::GET_PLAYER_NAME(PlayerID), NULL, 1);
 
 		Cheat::AddPlayerInfoBoxTextEntry("Rank", 2);
 		Cheat::AddPlayerInfoBoxTextEntry("Money", 3);
 		if (NETWORK::NETWORK_IS_SESSION_STARTED()) 
 		{
 			std::ostringstream PlayerRank;
-			PlayerRank << globalHandle(1590535).At(p, 876).At(211).At(6).As<int>();
+			PlayerRank << globalHandle(1590535).At(PlayerID, 876).At(211).At(6).As<int>();
 			Cheat::AddPlayerInfoBoxTextEntry(PlayerRank.str(), NULL, 2);
 
 			std::ostringstream PlayerMoney;
-			PlayerMoney << "$" << globalHandle(1590535).At(p, 876).At(211).At(56).As<__int64>();
+			PlayerMoney << "$" << globalHandle(1590535).At(PlayerID, 876).At(211).At(56).As<__int64>();
 			Cheat::AddPlayerInfoBoxTextEntry(PlayerMoney.str(), NULL, 3);
 		}
 		else
 		{
-			Cheat::AddPlayerInfoBoxTextEntry("Not Available", NULL, 2);
-			Cheat::AddPlayerInfoBoxTextEntry("Not Available", NULL, 3);
+			Cheat::AddPlayerInfoBoxTextEntry("Unavailable", NULL, 2);
+			Cheat::AddPlayerInfoBoxTextEntry("Unavailable", NULL, 3);
 		}
 
 
@@ -546,7 +546,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(char* playerName, Player p)
 
 		//Armor
 		std::ostringstream Armor;
-		int ArmorValue = PED::GET_PED_ARMOUR(SelectedPlayerPed) * 100 / PLAYER::GET_PLAYER_MAX_ARMOUR(p);
+		int ArmorValue = PED::GET_PED_ARMOUR(SelectedPlayerPed) * 100 / PLAYER::GET_PLAYER_MAX_ARMOUR(PlayerID);
 		Cheat::AddPlayerInfoBoxTextEntry("Armor", 5);
 		if (ArmorValue == 99 || ArmorValue == 100) 
 		{ 		
@@ -614,7 +614,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(char* playerName, Player p)
 
 		//Wanted Level
 		std::ostringstream WantedLevel;
-		int PlayerWantedLevel = PLAYER::GET_PLAYER_WANTED_LEVEL(p);
+		int PlayerWantedLevel = PLAYER::GET_PLAYER_WANTED_LEVEL(PlayerID);
 		Cheat::AddPlayerInfoBoxTextEntry("Wanted Level", 9);
 		WantedLevel << PlayerWantedLevel << "/5";
 		Cheat::AddPlayerInfoBoxTextEntry(WantedLevel.str(), NULL, 9);
@@ -642,7 +642,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(char* playerName, Player p)
 
 
 		//Coords
-		Vector3 SelectedPlayerPedCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(p), true);
+		Vector3 SelectedPlayerPedCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerID), true);
 		std::ostringstream CoordX;
 		std::ostringstream CoordY;
 		std::ostringstream CoordZ;
@@ -703,7 +703,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(char* playerName, Player p)
 
 		//Is in interior
 		Cheat::AddPlayerInfoBoxTextEntry("In Interior", NULL, NULL, 3);
-		if (Cheat::GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(p)))
+		if (Cheat::GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerID)))
 		{
 			Cheat::AddPlayerInfoBoxTextEntry("Yes", NULL, NULL, NULL, 3);
 		}
@@ -714,7 +714,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(char* playerName, Player p)
 
 		//Cutscene
 		Cheat::AddPlayerInfoBoxTextEntry("Cutscene", NULL, NULL, 4);
-		if (NETWORK::IS_PLAYER_IN_CUTSCENE(p))
+		if (NETWORK::IS_PLAYER_IN_CUTSCENE(PlayerID))
 		{
 			Cheat::AddPlayerInfoBoxTextEntry("Yes", NULL, NULL, NULL, 4);
 		}
@@ -725,10 +725,10 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(char* playerName, Player p)
 
 		//Rockstar ID
 		Cheat::AddPlayerInfoBoxTextEntry("Rockstar ID", NULL, NULL, 5);
-		Cheat::AddPlayerInfoBoxTextEntry(std::to_string(Cheat::GameFunctions::ReturnPlayerRockstarID(p)), NULL, NULL, NULL, 5);
+		Cheat::AddPlayerInfoBoxTextEntry(std::to_string(Cheat::GameFunctions::ReturnPlayerRockstarID(PlayerID)), NULL, NULL, NULL, 5);
 
 		//IP Address
-		std::string PlayerIPString = Cheat::GameFunctions::ReturnPlayerIPAddressAsString(p);
+		std::string PlayerIPString = Cheat::GameFunctions::ReturnPlayerIPAddressAsString(PlayerID);
 		Cheat::AddPlayerInfoBoxTextEntry("IP Address", NULL, NULL, 6);
 		Cheat::AddPlayerInfoBoxTextEntry(PlayerIPString, NULL, NULL, NULL, 6);
 	}
@@ -1059,7 +1059,7 @@ bool Cheat::GameFunctions::IsCursorAtXYPosition(VECTOR2 const& boxCentre, VECTOR
 bool Cheat::CheatFeatures::CursorGUINavigationEnabled = false;
 void Cheat::GameFunctions::CursorGUINavigationLoop()
 {
-	if (GetAsyncKeyState(GUI::GUINavigationKey) & 1)
+	if (CheatFunctions::IsKeyCurrentlyPressed(GUI::GUINavigationKey, true))
 	{
 		EnableDisableCursorGUINavigation();
 	}
@@ -1088,7 +1088,7 @@ void Cheat::GameFunctions::CursorGUINavigationLoop()
 
 void Cheat::GameFunctions::EnableDisableCursorGUINavigation()
 {
-	if (GUI::menuLevel != 0 && !GUI::GUIControlsDisabled)
+	if (GUI::menuLevel != 0 && !GUI::ControlsDisabled)
 	{
 		if (Cheat::CheatFeatures::CursorGUINavigationEnabled)
 		{

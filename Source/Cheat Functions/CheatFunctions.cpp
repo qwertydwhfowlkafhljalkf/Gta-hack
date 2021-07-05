@@ -66,7 +66,7 @@ Player Cheat::GameFunctions::PlayerID;
 Ped Cheat::GameFunctions::PlayerPedID;
 void Cheat::CheatFunctions::LoopedFunctions()
 {
-	//Player ID's and Ped
+	//Player ID and Player Ped ID
 	Cheat::GameFunctions::PlayerID = PLAYER::PLAYER_ID();
 	Cheat::GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
 
@@ -77,20 +77,18 @@ void Cheat::CheatFunctions::LoopedFunctions()
 	Cheat::GUI::ControlsLoop();
 
 	//Submenu handlers - additional submenu logic is looped here
-	if (Cheat::GUI::currentMenu == SelectedPlayerMenu				||
-		Cheat::GUI::currentMenu == SelectedPlayerFriendlyMenu		||
-		Cheat::GUI::currentMenu == SelectedPlayerRemoteOptions		||
-		Cheat::GUI::currentMenu == SelectedPlayerTeleportMenu		||
-		Cheat::GUI::currentMenu == SelectedPlayerMoneyMenu			||
-		Cheat::GUI::currentMenu == SelectedPlayerAttachmentOptions	||
-		Cheat::GUI::currentMenu == SelectedPlayerTrollMenu			||
+	if (Cheat::GUI::currentMenu == SelectedPlayerMenu ||
+		Cheat::GUI::currentMenu == SelectedPlayerFriendlyMenu ||
+		Cheat::GUI::currentMenu == SelectedPlayerRemoteOptions ||
+		Cheat::GUI::currentMenu == SelectedPlayerTeleportMenu ||
+		Cheat::GUI::currentMenu == SelectedPlayerMoneyMenu ||
+		Cheat::GUI::currentMenu == SelectedPlayerAttachmentOptions ||
+		Cheat::GUI::currentMenu == SelectedPlayerTrollMenu ||
 		Cheat::GUI::currentMenu == SelectedPlayerRemoteOptions)
 	{
 		if (Cheat::GameFunctions::IsPlayerIDValid(Cheat::CheatFeatures::selectedPlayer))
 		{
-			Vector3 SelectedPlayerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), false);
-			GRAPHICS::DRAW_MARKER(21, SelectedPlayerCoords.x, SelectedPlayerCoords.y, SelectedPlayerCoords.z + 1.3f, 0.f, 0.f, 0.f, 0.f, 180.f, 0.f, 0.3f, 0.3f, 0.3f, 0, 0, 255, 255, 1, 1, 1, 0, 0, 0, 0);
-			Cheat::GameFunctions::ShowPlayerInformationBox(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::selectedPlayer), Cheat::CheatFeatures::selectedPlayer);
+			Cheat::GameFunctions::ShowPlayerInformationBox(Cheat::CheatFeatures::selectedPlayer);
 		}
 		else
 		{
@@ -103,9 +101,14 @@ void Cheat::CheatFunctions::LoopedFunctions()
 
 bool Cheat::CheatFunctions::IsGameWindowFocussed()
 {
-	HWND GameWindowHandle = FindWindowA(0, "Grand Theft Auto V");
-	HWND HandleProcessWithKeyboardFocus = GetForegroundWindow();
-	if (GameWindowHandle == HandleProcessWithKeyboardFocus) { return true; } else { return false; }
+	if (FindWindowA("grcWindow", "Grand Theft Auto V") == GetForegroundWindow())
+	{ 
+		return true; 
+	} 
+	else 
+	{ 
+		return false; 
+	}
 }
 
 bool Cheat::CheatFunctions::StringIsInteger(const std::string& s)
@@ -130,7 +133,7 @@ int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 		Cheat::GUI::Drawing::Text("~bold~Press any key, press Escape to cancel", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 0.900f, 0.900f }, true); GameHooking::PauseMainFiber(0, false);
 		for (int i = 1; i < 256; i++)
 		{
-			if (GetAsyncKeyState(i) & 0x8000 && i != VK_RETURN && i != VK_NUMPAD5)
+			if (IsKeyCurrentlyPressed(i) && i != VK_RETURN && i != VK_NUMPAD5)
 			{
 				if (i == VK_ESCAPE)
 				{
@@ -154,7 +157,7 @@ void Cheat::CheatFunctions::SaveOption(std::string OptionName, std::string Optio
 		GUI::CurrentOptionIsSavable = false;
 	}
 
-	if (GetAsyncKeyState(GUI::SaveItemKey) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed() && !GUI::GUIControlsDisabled)
+	if (IsKeyCurrentlyPressed(GUI::SaveItemKey))
 	{
 		if (IsSavable)
 		{
@@ -172,18 +175,17 @@ std::string Cheat::CheatFunctions::GetOptionValueFromConfig(std::string OptionNa
 
 void LoadSettingsThreadFunction()
 {
-	Cheat::GUI::ChangeGUIControlsState(false);
+	Cheat::GUI::ChangeControlsState(false);
 	Cheat::GUI::HideGUIElements = true;
 	for (int SubMenuInt = MainMenu; SubMenuInt != SUBMENUS_END; SubMenuInt++)
 	{
-		SubMenus CurrentSubMenuInt = static_cast<SubMenus>(SubMenuInt);
-		Cheat::GUI::MoveMenu(CurrentSubMenuInt);
+		Cheat::GUI::MoveMenu(static_cast<SubMenus>(SubMenuInt));
 		Sleep(100);
 	}
 	Cheat::GUI::CloseGUI();
 	Cheat::GUI::PreviousMenu = NOMENU;
 	Cheat::GUI::CheatGUIHasBeenOpened = false;
-	Cheat::GUI::ChangeGUIControlsState(true);
+	Cheat::GUI::ChangeControlsState(true);
 	Cheat::GUI::HideGUIElements = false;
 }
 
@@ -424,6 +426,37 @@ bool Cheat::CheatFunctions::StringToBool(std::string String)
 	else if (String == "0")
 	{
 		return false;
+	}
+	return false;
+}
+
+
+bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool PressedOnce)
+{
+	if (Cheat::CheatFunctions::IsGameWindowFocussed() && !Cheat::GUI::ControlsDisabled)
+	{
+		if (PressedOnce)
+		{
+			if (GetAsyncKeyState(vKey) & 1)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			if (GetAsyncKeyState(vKey) & 0x8000)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
 	}
 	return false;
 }

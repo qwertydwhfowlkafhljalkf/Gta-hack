@@ -3758,7 +3758,7 @@ void Cheat::Main()
 						if (Cheat::GameFunctions::PlayerID == i) { PlayernameString.append(" ~g~[You]"); }
 					}
 					Cheat::MenuOptionPlayerList(PlayernameString, SelectedPlayerMenu, i) ? Cheat::CheatFeatures::selectedPlayer = i : NULL;
-					if (Cheat::GUI::currentOption == Cheat::GUI::optionCount) { Cheat::GameFunctions::ShowPlayerInformationBox(PLAYER::GET_PLAYER_NAME(i), i); }
+					if (Cheat::GUI::currentOption == Cheat::GUI::optionCount) { Cheat::GameFunctions::ShowPlayerInformationBox(i); }
 				}
 			}
 		}

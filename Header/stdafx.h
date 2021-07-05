@@ -80,7 +80,7 @@ namespace Cheat
 		extern bool CheatGUIHasBeenOpened;
 		extern bool CurrentOptionIsSavable;
 		extern std::string CurrentTheme;
-		extern bool GUIControlsDisabled;
+		extern bool ControlsDisabled;
 		extern bool selectPressed;
 		extern bool leftPressed;
 		extern bool rightPressed;
@@ -126,7 +126,7 @@ namespace Cheat
 		void BackMenu();
 		void CloseGUI();
 		void End();
-		void ChangeGUIControlsState(bool State);
+		void ChangeControlsState(bool State);
 		void LoadThemeFilesLooped();
 		void LoadTheme(std::string ThemeFileName, bool StartUp);
 		void SaveTheme(std::string ThemeFileName);
@@ -343,6 +343,7 @@ namespace Cheat
 		void WriteBoolToIni(bool b00l, std::string file, std::string app, std::string key);
 		std::string ReturnDateTimeFormatAsString(const char* DateTimeFormat);
 		bool StringToBool(std::string String);
+		bool IsKeyCurrentlyPressed(int vKey, bool PressedOnce = false);
 	}
 	namespace GameFunctions 
 	{
@@ -376,7 +377,7 @@ namespace Cheat
 		char* DisplayKeyboardAndReturnInput(int MaxInput);
 		int DisplayKeyboardAndReturnInputInteger(int MaxInput);
 		void ClearAllAnimations();
-		void ShowPlayerInformationBox(char* playerName, Player p);
+		void ShowPlayerInformationBox(Player PlayerID);
 		float Get3DDistance(Vector3 a, Vector3 b);
 		void ApplyForceToEntity(Entity e, float x, float y, float z);
 		void SpawnVehicle(char* ModelHash);

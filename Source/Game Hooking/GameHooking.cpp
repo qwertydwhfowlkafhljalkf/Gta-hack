@@ -429,7 +429,7 @@ void GameHooking::DoGameHooking()
 	{
 		if (!WaitingGameLoadLogPrinted)
 		{
-			Cheat::LogFunctions::Message("Waiting until the game has finished loading");
+			Cheat::LogFunctions::Message("Waiting for the game to have finished loading");
 			WaitingGameLoadLogPrinted = true;
 		}
 		Sleep(100);

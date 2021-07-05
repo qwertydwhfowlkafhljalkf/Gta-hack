@@ -229,7 +229,7 @@ void Cheat::CheatFeatures::GravityGun()
 	Player tempPed = Cheat::GameFunctions::PlayerID;
 	if (equippedWeapon == 0x5EF9FEC4) //CombatPistol
 	{
-		if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &EntityTarget) && GetAsyncKeyState(0x02))
+		if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &EntityTarget) && CheatFunctions::IsKeyCurrentlyPressed(VK_RBUTTON))
 		{
 			Vector3 EntityTargetPos = ENTITY::GET_ENTITY_COORDS(EntityTarget, 0);
 			PLAYER::DISABLE_PLAYER_FIRING(tempPed, true);
@@ -244,7 +244,7 @@ void Cheat::CheatFeatures::GravityGun()
 
 			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(EntityTarget, spawnPosition.x, spawnPosition.y, spawnPosition.z, 0, 0, 0);
 
-			if (GetAsyncKeyState(0x02) && Cheat::CheatFunctions::IsGameWindowFocussed())
+			if (CheatFunctions::IsKeyCurrentlyPressed(VK_RBUTTON))
 			{
 				ENTITY::SET_ENTITY_HEADING(EntityTarget, ENTITY::GET_ENTITY_HEADING(tempPed));
 				ENTITY::APPLY_FORCE_TO_ENTITY(EntityTarget, 1, dir.x * 10000.0f, dir.y * 10000.0f, dir.z * 10000.0f, 0.0f, 0.0f, 0.0f, 0, 0, 1, 1, 0, 1);
@@ -523,19 +523,19 @@ void Cheat::CheatFeatures::FreeCam(bool toggle)
 		UI::HIDE_HUD_AND_RADAR_THIS_FRAME();
 
 		float speed = .5f;
-		if (GetAsyncKeyState(VK_LSHIFT))
+		if (CheatFunctions::IsKeyCurrentlyPressed(VK_LSHIFT))
 		{
 			speed += .3f;
 		}
 
-		if (GetAsyncKeyState(0x53))
+		if (CheatFunctions::IsKeyCurrentlyPressed(0x53)) //S key
 		{
 			speed /= -1;
 			Vector3 c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(FreeCamHandle), &Cheat::GameFunctions::MultiplyVector(&Cheat::GameFunctions::RotToDirection(&rot), speed));
 			CAM::SET_CAM_COORD(FreeCamHandle, c.x, c.y, c.z);
 		}
 
-		if (GetAsyncKeyState(0x57))
+		if (CheatFunctions::IsKeyCurrentlyPressed(0x57)) //W key
 		{
 			Vector3 c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(FreeCamHandle), &Cheat::GameFunctions::MultiplyVector(&Cheat::GameFunctions::RotToDirection(&rot), speed));
 			CAM::SET_CAM_COORD(FreeCamHandle, c.x, c.y, c.z);
@@ -683,7 +683,7 @@ void Cheat::CheatFeatures::NoClip()
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(currentCar, Pos.x, Pos.y, Pos.z, 0, 0, 0);
 		if (ENTITY::DOES_ENTITY_EXIST(currentCar) && ENTITY::IS_ENTITY_A_VEHICLE(currentCar))
 		{
-			if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed())
+			if (CheatFunctions::IsKeyCurrentlyPressed(0x57)) //W key
 			{
 				ENTITY::SET_ENTITY_COLLISION(currentCar, false, false);
 				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(currentCar, Pos.x + (x * d), Pos.y + (y * d), Pos.z + (z * d), 0, 0, 0);
@@ -698,7 +698,7 @@ void Cheat::CheatFeatures::NoClip()
 		ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, true, true);
 		ENTITY::SET_ENTITY_ROTATION(Cheat::GameFunctions::PlayerPedID, rotation.x, rotation.y, rotation.z, 2, 1);
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Cheat::GameFunctions::PlayerPedID, Pos.x, Pos.y, Pos.z, 0, 0, 0);
-		if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed())
+		if (CheatFunctions::IsKeyCurrentlyPressed(0x57)) //W key
 		{
 			ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, false, false);
 			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Cheat::GameFunctions::PlayerPedID, Pos.x + (x * d), Pos.y + (y * d), Pos.z + (z * d), 0, 0, 0);
@@ -892,8 +892,9 @@ void Cheat::CheatFeatures::UnlimitedRocketBoost()
 		VEHICLE::_SET_VEHICLE_ROCKET_BOOST_PERCENTAGE(veh, 100.0f);
 
 		if (VEHICLE::_IS_VEHICLE_ROCKET_BOOST_ACTIVE(veh)) {
-			Cheat::GameFunctions::SubtitleNotification("~o~PRESS SPACEBAR TO STOP BOOST", 100);
-			if (GetAsyncKeyState(VK_SPACE) && Cheat::CheatFunctions::IsGameWindowFocussed()) {
+			Cheat::GameFunctions::SubtitleNotification("PRESS SPACEBAR TO STOP BOOST", 100);
+			if (CheatFunctions::IsKeyCurrentlyPressed(VK_SPACE))
+			{
 				VEHICLE::_SET_VEHICLE_ROCKET_BOOST_ACTIVE(veh, false);
 			}
 		}
@@ -1075,9 +1076,9 @@ void Cheat::CheatFeatures::SuperMan()
 
 	if (ENTITY::IS_ENTITY_IN_AIR(Cheat::GameFunctions::PlayerPedID) && !PED::IS_PED_RAGDOLL(Cheat::GameFunctions::PlayerPedID))
 	{
-		if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed()) { Cheat::GameFunctions::ApplyForceToEntity(Cheat::GameFunctions::PlayerPedID, 0, 6, 0); }
-		if (GetAsyncKeyState(0x53) && Cheat::CheatFunctions::IsGameWindowFocussed()) { Cheat::GameFunctions::ApplyForceToEntity(Cheat::GameFunctions::PlayerPedID, 0, -6, 0); }
-		if (GetAsyncKeyState(VK_SHIFT) && Cheat::CheatFunctions::IsGameWindowFocussed()) { Cheat::GameFunctions::ApplyForceToEntity(Cheat::GameFunctions::PlayerPedID, 0, 0, 6); }
+		if (CheatFunctions::IsKeyCurrentlyPressed(0x57)) { Cheat::GameFunctions::ApplyForceToEntity(Cheat::GameFunctions::PlayerPedID, 0, 6, 0); }
+		if (CheatFunctions::IsKeyCurrentlyPressed(0x53)) { Cheat::GameFunctions::ApplyForceToEntity(Cheat::GameFunctions::PlayerPedID, 0, -6, 0); }
+		if (CheatFunctions::IsKeyCurrentlyPressed(VK_SHIFT)) { Cheat::GameFunctions::ApplyForceToEntity(Cheat::GameFunctions::PlayerPedID, 0, 0, 6); }
 	}
 }
 
