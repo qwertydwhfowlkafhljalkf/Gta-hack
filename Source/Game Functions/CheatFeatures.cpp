@@ -292,7 +292,7 @@ void Cheat::CheatFeatures::AutoTeleportToWaypoint()
 		if (UI::IS_WAYPOINT_ACTIVE()) 
 		{
 			GameFunctions::TeleportToBlipCoord(SpriteWaypoint); 
-			UI::SET_WAYPOINT_OFF(); 
+			UI::SET_WAYPOINT_OFF();
 		}
 	}
 }
@@ -648,7 +648,7 @@ void Cheat::CheatFeatures::WeaponRapidFire()
 		Vector3 endCoords = Cheat::GameFunctions::AddVector(startCoords, Cheat::GameFunctions::MultiplyVector(gameplayCamDirection, 500.0f));
 		Hash weaponhash;
 		WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &weaponhash, 1);
-		if (CONTROLS::IS_CONTROL_PRESSED(2, 208) || GetKeyState(VK_LBUTTON) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
+		if (CONTROLS::IS_CONTROL_PRESSED(2, 208) || CheatFunctions::IsKeyCurrentlyPressed(VK_LBUTTON))
 		{
 			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(startCoords.x, startCoords.y, startCoords.z, endCoords.x, endCoords.y, endCoords.z, 50, 1, weaponhash, Cheat::GameFunctions::PlayerPedID, 1, 1, 0xbf800000);
 		}
