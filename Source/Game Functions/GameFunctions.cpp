@@ -1165,14 +1165,7 @@ std::string Cheat::GameFunctions::ReturnCurrentGTAOCharacter()
 {
 	int CharacterID;
 	STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_LAST_MP_CHAR"), &CharacterID, -1);
-	if (CharacterID == 0)
-	{
-		return "MP0";
-	}
-	else
-	{
-		return "MP1";
-	}
+	return "MP" + std::to_string(CharacterID);
 }
 
 void Cheat::GameFunctions::PlayFrontendSoundDefault(char* SoundName)

@@ -986,15 +986,15 @@ void Cheat::CheatFeatures::PlayerESP()
 bool Cheat::CheatFeatures::OffRadarBool = false;
 void Cheat::CheatFeatures::OffRadar()
 {
-	globalHandle(2425662).At(1 + (Cheat::GameFunctions::PlayerID * 421)).At(200).As<int>() = 1;
-	globalHandle(2439138).At(70).As<int>() = NETWORK::GET_NETWORK_TIME();
+	globalHandle(2426097).At(1 + (Cheat::GameFunctions::PlayerID * 443)).At(204).As<int>() = 1;
+	globalHandle(2440277).At(70).As<int>() = NETWORK::GET_NETWORK_TIME();
 }
 
 bool Cheat::CheatFeatures::RevealPlayersBool = false;
 void Cheat::CheatFeatures::RevealPlayers()
 {
-	//globalHandle(2424073).At(1 + (Cheat::GameFunctions::PlayerID * 421)).At(203).As<int>() = 1;
-	//globalHandle(2437549).At(71).As<int>() = NETWORK::GET_NETWORK_TIME();
+	globalHandle(2424073).At(1 + (Cheat::GameFunctions::PlayerID * 421)).At(203).As<int>() = 1;
+	globalHandle(2437549).At(71).As<int>() = NETWORK::GET_NETWORK_TIME();
 }
 
 bool Cheat::CheatFeatures::ExplodeLoopSelectedPlayerBool = false;
