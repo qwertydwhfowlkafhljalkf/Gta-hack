@@ -1150,7 +1150,7 @@ std::string Cheat::GameFunctions::ReturnPlayerIPAddressAsString(Player PlayerHan
 	{
 		if (PlayerHandle == Cheat::GameFunctions::PlayerID && Cheat::CheatFeatures::HideOwnIPAddress) { return "Hidden"; }
 		auto InfoLong	 = *reinterpret_cast<std::uintptr_t*>(GameHooking::get_player_address(PlayerHandle) + OFFSET_PLAYER_INFO);
-		auto IPAddress   = reinterpret_cast<std::uint8_t*>(InfoLong + 0x44);
+		auto IPAddress   = reinterpret_cast<std::uint8_t*>(InfoLong + OFFSET_PLAYER_INFO_EXTERNAL_IP);
 		IPAddress ? sprintf_s(IPBuffer, "%i.%i.%i.%i", IPAddress[3], IPAddress[2], IPAddress[1], IPAddress[0]) : sprintf_s(IPBuffer, "Unknown");
 	}
 	else

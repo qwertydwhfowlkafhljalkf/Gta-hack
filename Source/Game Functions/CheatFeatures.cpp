@@ -339,7 +339,7 @@ void Cheat::CheatFeatures::PauseTime(bool toggle)
 bool Cheat::CheatFeatures::ExplosiveMeleeBool = false;
 void Cheat::CheatFeatures::ExplosiveMelee()
 {
-	Memory::set_value<int>({ 0x08, OFFSET_PLAYER_INFO, 0x1F8 }, 0x2000u);
+	Memory::set_value<int>({ OFFSET_PLAYER, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, 0x2000u);
 }
 
 bool Cheat::CheatFeatures::OrbitalCannonCooldownBypassBool = false;
