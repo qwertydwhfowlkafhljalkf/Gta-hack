@@ -40,6 +40,10 @@ void Cheat::Main()
 			Cheat::MenuOption("World Options >", worldmenu);
 			Cheat::MenuOption("Misc Options >", miscmenu);
 			Cheat::MenuOption("Settings >", SettingsMenu);
+			if (Cheat::Option("Throw Test Exception", ""))
+			{
+				RaiseException(EXCEPTION_BREAKPOINT, EXCEPTION_NONCONTINUABLE, NULL, NULL);
+			}
 		}
 		break;
 		case AllPlayersMenu:
@@ -3762,6 +3766,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
+		AddVectoredExceptionHandler(1, Cheat::ExceptionHandler);
 		DisableThreadLibraryCalls(hModule);
 		Cheat::CheatModuleHandle = hModule;
 		//Create 'gtav' directory
@@ -3771,4 +3776,22 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 		break;
 	}
 	return TRUE;
+}
+
+static LONG CALLBACK Cheat::ExceptionHandler(PEXCEPTION_POINTERS exInfo)
+{
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+	std::cout << "\n[Exception Caught]"<<  std::endl;
+	std::cout << "Exception Information: " << exInfo->ExceptionRecord->ExceptionInformation << std::endl;
+	std::cout << "Exception Status Code: " << exInfo->ExceptionRecord->ExceptionCode << std::endl;
+	std::cout << "Exception Address: " << exInfo->ExceptionRecord->ExceptionAddress << std::endl;
+	std::cout << exInfo->ContextRecord->Header << std::endl;
+
+	//Suspend game process
+	std::cout << "Suspending process to prevent it from crashing. Please click this window's closing X to terminate it." << std::endl;
+	typedef LONG(NTAPI* NtSuspendProcess)(IN HANDLE ProcessHandle);
+	HANDLE processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, GetCurrentProcessId());
+	NtSuspendProcess pfnNtSuspendProcess = (NtSuspendProcess)GetProcAddress(GetModuleHandleA("ntdll"), "NtSuspendProcess");
+	pfnNtSuspendProcess(processHandle);
+	return EXCEPTION_EXECUTE_HANDLER;
 }

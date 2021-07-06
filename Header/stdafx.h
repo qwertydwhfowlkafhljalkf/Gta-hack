@@ -56,6 +56,7 @@
 namespace Cheat 
 {
 	extern HMODULE CheatModuleHandle;
+	static LONG CALLBACK ExceptionHandler(PEXCEPTION_POINTERS exInfo);
 	void Main();
 	namespace GUI 
 	{

@@ -324,10 +324,8 @@ void Cheat::CheatFunctions::CreateConsole()
 	GetWindowRect(ConsoleWindowHandle, &CurrentRect);
 	MoveWindow(ConsoleWindowHandle, CurrentRect.left, CurrentRect.top, 1100, 500, TRUE);
 
-	//Disable Close Button Console Window And Set Max Window Size
+	//Set Max Window Size
 	SetWindowLong(ConsoleWindowHandle, GWL_STYLE, GetWindowLong(ConsoleWindowHandle, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
-	HMENU hMenu = GetSystemMenu(ConsoleWindowHandle, FALSE);
-	if (hMenu != NULL) { DeleteMenu(hMenu, SC_CLOSE, MF_BYCOMMAND); }
 
 	//Disable Console Quick Edit Mode
 	HANDLE stdIn = GetStdHandle(STD_INPUT_HANDLE);
