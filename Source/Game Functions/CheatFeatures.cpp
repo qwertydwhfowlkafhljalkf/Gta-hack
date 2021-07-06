@@ -127,7 +127,6 @@ void Cheat::CheatFeatures::Looped()
 	VehicleGunBool ? VehicleGun() : NULL;
 	PlayerESPBool ? PlayerESP() : NULL;
 	OffRadarBool ? OffRadar() : NULL;
-	RevealPlayersBool ? RevealPlayers() : NULL;
 	ExplodeLoopSelectedPlayerBool ? ExplodeLoopSelectedPlayer() : NULL;
 	DriveOnWaterBool ? DriveOnWater() : NULL;
 	SuperManBool ? SuperMan() : NULL;
@@ -990,12 +989,6 @@ void Cheat::CheatFeatures::OffRadar()
 	globalHandle(2440277).At(70).As<int>() = NETWORK::GET_NETWORK_TIME();
 }
 
-bool Cheat::CheatFeatures::RevealPlayersBool = false;
-void Cheat::CheatFeatures::RevealPlayers()
-{
-	globalHandle(2424073).At(1 + (Cheat::GameFunctions::PlayerID * 421)).At(203).As<int>() = 1;
-	globalHandle(2437549).At(71).As<int>() = NETWORK::GET_NETWORK_TIME();
-}
 
 bool Cheat::CheatFeatures::ExplodeLoopSelectedPlayerBool = false;
 void Cheat::CheatFeatures::ExplodeLoopSelectedPlayer()
@@ -1122,9 +1115,9 @@ void Cheat::CheatFeatures::NoIdleKick()
 bool Cheat::CheatFeatures::BribeAuthoritiesBool = false;
 void Cheat::CheatFeatures::BribeAuthorities()
 {
-	globalHandle(2528542).At(4546).As<int>() = 5;
-	globalHandle(2528542).At(4547).As<int>() = 1;
-	globalHandle(2528542).At(4549).As<int>() = NETWORK::GET_NETWORK_TIME();
+	globalHandle(2540612).At(4619).As<int>() = 5;
+	globalHandle(2540612).At(4620).As<int>() = 1;
+	globalHandle(2540612).At(4622).As<int>() = NETWORK::GET_NETWORK_TIME();
 }
 
 int Cheat::CheatFeatures::MoneyDropDelay = 50;

@@ -265,8 +265,6 @@ namespace Cheat
 		void PlayerESP();
 		extern bool OffRadarBool;
 		void OffRadar();
-		extern bool RevealPlayersBool;
-		void RevealPlayers();
 		extern bool ExplodeLoopSelectedPlayerBool;
 		void ExplodeLoopSelectedPlayer();
 		extern bool DriveOnWaterBool;
