@@ -415,7 +415,7 @@ namespace Cheat
 		void CopySelectedPlayerOutfit(Player SelectedPlayer);
 		int ReturnPlayerRockstarID(Player PlayerHandle);
 		std::string ReturnPlayerIPAddressAsString(Player PlayerHandle);
-		bool IsCurrentGTAOCharacterChar0();
+		std::string ReturnCurrentGTAOCharacter();
 		void PlayFrontendSoundDefault(char* SoundName);
 		void PlayScenarioNearbyPeds(char* Scenario);
 		bool IsPlayerIDValid(Player ID);

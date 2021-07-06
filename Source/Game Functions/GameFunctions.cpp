@@ -164,15 +164,7 @@ Vector3 Cheat::GameFunctions::RotationToDirection(Vector3 rot)
 void Cheat::GameFunctions::SetRankRockstarGift(int RPValue)
 {
 	if (RPValue < 0 || RPValue > 8000) { Cheat::GameFunctions::MinimapNotification("Invalid Rank Inputted"); return; }
-
-	if (Cheat::GameFunctions::IsCurrentGTAOCharacterChar0())
-	{ 
-		STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_CHAR_SET_RP_GIFT_ADMIN"), Cheat::GameArrays::RankPointsArray[RPValue - 1], 0);
-	}
-	else
-	{
-		STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP1_CHAR_SET_RP_GIFT_ADMIN"), Cheat::GameArrays::RankPointsArray[RPValue - 1], 0);
-	}
+	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(Cheat::GameFunctions::ReturnCurrentGTAOCharacter() + "_CHAR_SET_RP_GIFT_ADMIN")), Cheat::GameArrays::RankPointsArray[RPValue - 1], 0);
 	Cheat::GameFunctions::MinimapNotification("Join a new GTAO session for the new ranked to be applied");
 }
 
@@ -835,7 +827,7 @@ void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 		VEHICLE::SET_VEHICLE_IS_STOLEN(VehicleHandle, false);
 		VEHICLE::SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(VehicleHandle, true);
 		VEHICLE::SET_VEHICLE_IS_WANTED(VehicleHandle, false);
-		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(VehicleHandle, 1, 1);
+		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(VehicleHandle, true, true);
 		NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK::NET_TO_VEH(VehicleHandle), 1);
 		DECORATOR::DECOR_SET_INT(VehicleHandle, "MPBitset", 0);
 		ENTITY::_SET_ENTITY_SOMETHING(VehicleHandle, true);
@@ -1169,17 +1161,17 @@ std::string Cheat::GameFunctions::ReturnPlayerIPAddressAsString(Player PlayerHan
 	return IPBufferString;
 }
 
-bool Cheat::GameFunctions::IsCurrentGTAOCharacterChar0()
+std::string Cheat::GameFunctions::ReturnCurrentGTAOCharacter()
 {
-	int IntegerVar;
-	STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_LAST_MP_CHAR"), &IntegerVar, -1);
-	if (IntegerVar == 0)
+	int CharacterID;
+	STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_LAST_MP_CHAR"), &CharacterID, -1);
+	if (CharacterID == 0)
 	{
-		return true;
+		return "MP0";
 	}
 	else
 	{
-		return false;
+		return "MP1";
 	}
 }
 

@@ -411,19 +411,11 @@ void Cheat::CheatFunctions::WriteBoolToIni(bool b00l, std::string file, std::str
 bool Cheat::CheatFunctions::StringToBool(std::string String)
 {
 	std::transform(String.begin(), String.end(), String.begin(), tolower);
-	if (String == "true")
+	if (String == "true" || String == "1")
 	{
 		return true;
 	}
-	else if (String == "false")
-	{
-		return false;
-	}
-	else if (String == "1")
-	{
-		return true;
-	}
-	else if (String == "0")
+	else if (String == "false" || String == "0")
 	{
 		return false;
 	}

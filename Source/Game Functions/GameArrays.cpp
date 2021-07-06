@@ -31,8 +31,8 @@ const std::vector<WeaponHashesStruct> Cheat::GameArrays::WeaponsHashList = {
 	{ "Grenade Launcher", 0xA284510B		}, //WeaponGrenadeLauncher
 	{ "Grenade Launcher (Smoke)", 0x4DD2DC56}, //WeaponGrenadeLauncherSmoke
 	{ "RPG", 0xB1CA77B1						}, //WeaponRPG
-	{"Minigun", 0x42BF8A85					}, //WeaponMinigun
-	{"Grenade", 0x93E220BD					}, //WeaponGrenade
+	{ "Minigun", 0x42BF8A85					}, //WeaponMinigun
+	{ "Grenade", 0x93E220BD					}, //WeaponGrenade
 	{ "Sticky Bomb", 0x2C3731D9				}, //WeaponStickyBomb
 	{ "Smoke Grenade", 0xFDBC8A50			}, //WeaponSmokeGrenade
 	{ "BZ Gas", 0xA0973D5E					}, //WeaponBZGas
