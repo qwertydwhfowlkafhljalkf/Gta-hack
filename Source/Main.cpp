@@ -40,10 +40,6 @@ void Cheat::Main()
 			Cheat::MenuOption("World Options >", worldmenu);
 			Cheat::MenuOption("Misc Options >", miscmenu);
 			Cheat::MenuOption("Settings >", SettingsMenu);
-			if (Cheat::Option("Throw Test Exception", ""))
-			{
-				RaiseException(EXCEPTION_ACCESS_VIOLATION, EXCEPTION_NONCONTINUABLE, NULL, NULL);
-			}
 		}
 		break;
 		case AllPlayersMenu:
@@ -154,6 +150,17 @@ void Cheat::Main()
 		{
 			Cheat::Title("Session Chat");
 			Cheat::Toggle("Log Chat Messages", Cheat::CheatFeatures::LogChatMessages, "Chat gets logged to console");
+			if (Cheat::Option("Open Chat Log File", ""))
+			{
+				if (CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnChatLogFilePath()))
+				{
+					ShellExecuteA(NULL, "open", CheatFunctions::StringToChar(Cheat::CheatFunctions::ReturnChatLogFilePath()), NULL, NULL, SW_SHOWNORMAL);
+				}
+				else
+				{
+					GameFunctions::MinimapNotification("~r~Chat log file does not exist");
+				}
+			}
 		}
 		break;
 		case sessiontimemenu:

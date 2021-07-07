@@ -48,6 +48,11 @@ const std::string Cheat::CheatFunctions::ReturnExceptionsLogFilePath()
 	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Logs\\Exceptions.log";
 }
 
+const std::string Cheat::CheatFunctions::ReturnChatLogFilePath()
+{
+	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Logs\\Chats.log";
+}
+
 bool Cheat::CheatFunctions::FileOrDirectoryExists(std::string Path)
 {
 	if (std::filesystem::exists(Path))

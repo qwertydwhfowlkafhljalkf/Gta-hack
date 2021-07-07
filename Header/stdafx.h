@@ -318,6 +318,7 @@ namespace Cheat
 		const std::string ReturnConfigFilePath();
 		const std::string ReturnMainLogFilePath();
 		const std::string ReturnExceptionsLogFilePath();
+		const std::string ReturnChatLogFilePath();
 		void LoadConfig();
 		bool IsOptionRegisteredAsLoaded(std::string OptionName);
 		void LoadConfigOption(std::string OptionName, bool& ReturnedBool);

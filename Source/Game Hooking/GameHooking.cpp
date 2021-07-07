@@ -104,10 +104,9 @@ __int64 GetChatDataHooked(__int64 a1, __int64 a2, __int64 a3, const char* origTe
 
 	if (Cheat::CheatFeatures::LogChatMessages)
 	{
+		Cheat::CheatFunctions::WriteToFile(Cheat::CheatFunctions::ReturnChatLogFilePath(), Cheat::CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] Message: ") + (std::string)origText + "\n", std::ofstream::out | std::ofstream::app);
 		Cheat::LogFunctions::MessageCustomCategory("Chat Logger", "Message: '" + (std::string)origText + "'");
 	}
-
-
 	return GetChatDataOriginal(a1, a2, a3, origText, isTeam);
 }
 
