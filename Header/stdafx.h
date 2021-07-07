@@ -316,6 +316,8 @@ namespace Cheat
 	namespace CheatFunctions 
 	{
 		const std::string ReturnConfigFilePath();
+		const std::string ReturnMainLogFilePath();
+		const std::string ReturnExceptionsLogFilePath();
 		void LoadConfig();
 		bool IsOptionRegisteredAsLoaded(std::string OptionName);
 		void LoadConfigOption(std::string OptionName, bool& ReturnedBool);
@@ -343,6 +345,7 @@ namespace Cheat
 		std::string ReturnDateTimeFormatAsString(const char* DateTimeFormat);
 		bool StringToBool(std::string String);
 		bool IsKeyCurrentlyPressed(int vKey, bool PressedOnce = false);
+		void WriteToFile(std::string FilePath, std::string text, std::ios_base::openmode FileOpenMode);
 	}
 	namespace GameFunctions 
 	{
@@ -421,6 +424,7 @@ namespace Cheat
 	}
 	namespace LogFunctions 
 	{
+		void Init();
 		void Message(char* Message);
 		void MessageCustomCategory(std::string CategoryName, std::string Message);
 		void Error(char* Message, bool ShowMessageBox);

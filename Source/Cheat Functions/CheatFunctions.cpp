@@ -38,6 +38,16 @@ const std::string Cheat::CheatFunctions::ReturnConfigFilePath()
 	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Config.ini";
 }
 
+const std::string Cheat::CheatFunctions::ReturnMainLogFilePath()
+{
+	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Logs\\Main.log";
+}
+
+const std::string Cheat::CheatFunctions::ReturnExceptionsLogFilePath()
+{
+	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Logs\\Exceptions.log";
+}
+
 bool Cheat::CheatFunctions::FileOrDirectoryExists(std::string Path)
 {
 	if (std::filesystem::exists(Path))
@@ -359,9 +369,6 @@ void Cheat::CheatFunctions::CreateConsole()
 	std::cerr.clear();
 	std::wcin.clear();
 	std::cin.clear();
-
-	//Print build info
-	std::cout << "Build: " << CHEAT_BUILD_NUMBER << " | Compile Date & Time: " << __DATE__ << " " << __TIME__ << std::endl;
 }
 
 
@@ -449,4 +456,12 @@ bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool PressedOnce)
 		}
 	}
 	return false;
+}
+
+void Cheat::CheatFunctions::WriteToFile(std::string FilePath, std::string text, std::ios_base::openmode FileOpenMode)
+{
+	std::ofstream FileHandle;
+	FileHandle.open(FilePath, FileOpenMode);
+	FileHandle << text;
+	FileHandle.close();
 }

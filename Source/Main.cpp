@@ -42,7 +42,7 @@ void Cheat::Main()
 			Cheat::MenuOption("Settings >", SettingsMenu);
 			if (Cheat::Option("Throw Test Exception", ""))
 			{
-				RaiseException(EXCEPTION_BREAKPOINT, EXCEPTION_NONCONTINUABLE, NULL, NULL);
+				RaiseException(EXCEPTION_ACCESS_VIOLATION, EXCEPTION_NONCONTINUABLE, NULL, NULL);
 			}
 		}
 		break;
@@ -3754,7 +3754,7 @@ void Cheat::Main()
 DWORD WINAPI InitThread(LPVOID lpParam)
 {
 	Cheat::CheatFunctions::CreateConsole();
-	std::cout << Cheat::CheatFunctions::ReturnDateTimeFormatAsString("[%d-%m-%Y - %H:%M:%S]") << " [Init] " << "Initializing GTAV Cheat" << " | Github Repository: https://github.com/HatchesPls/GrandTheftAutoV-Cheat" << std::endl;
+	Cheat::LogFunctions::Init();
 	GameHooking::DoGameHooking();
 	//Hooks created - this thread is no longer needed
 	return 0;
@@ -3770,7 +3770,11 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 		DisableThreadLibraryCalls(hModule);
 		Cheat::CheatModuleHandle = hModule;
 		//Create 'gtav' directory
-		if (!Cheat::CheatFunctions::FileOrDirectoryExists(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav")) { Cheat::CheatFunctions::CreateNewDirectory(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav"); }
+		std::string GtavDirectoryPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav";
+		if (!Cheat::CheatFunctions::FileOrDirectoryExists(GtavDirectoryPath)) {  Cheat::CheatFunctions::CreateNewDirectory(GtavDirectoryPath); }	
+		//Create 'Logs' directory
+		std::string LogsDirectoryPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Logs";
+		if (!Cheat::CheatFunctions::FileOrDirectoryExists(LogsDirectoryPath)) { Cheat::CheatFunctions::CreateNewDirectory(LogsDirectoryPath); }
 		//Continue cheat loading
 		CreateThread(NULL, NULL, InitThread, hModule, NULL, NULL);
 		break;
@@ -3780,15 +3784,24 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 
 static LONG CALLBACK Cheat::ExceptionHandler(PEXCEPTION_POINTERS exInfo)
 {
+	std::string ExceptionInfo = std::to_string(exInfo->ExceptionRecord->ExceptionInformation[0]);
+	static char UnhandledExMessage[256];
+	sprintf_s(UnhandledExMessage, 256, "Unhandled exception 0x%08x at 0x%08x", exInfo->ExceptionRecord->ExceptionCode, exInfo->ExceptionRecord->ExceptionAddress);
+
+	SetForegroundWindow(GetConsoleWindow());
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-	std::cout << "\n[Exception Caught]"<<  std::endl;
-	std::cout << "Exception Information: " << exInfo->ExceptionRecord->ExceptionInformation << std::endl;
-	std::cout << "Exception Status Code: " << exInfo->ExceptionRecord->ExceptionCode << std::endl;
-	std::cout << "Exception Address: " << exInfo->ExceptionRecord->ExceptionAddress << std::endl;
-	std::cout << exInfo->ContextRecord->Header << std::endl;
+	std::cout << "\nException Caught"<<  std::endl;
+	std::cout << UnhandledExMessage << std::endl;
+	
+	//Write debug information to Exceptions.log
+	CheatFunctions::WriteToFile(CheatFunctions::ReturnExceptionsLogFilePath(),
+		CheatFunctions::ReturnDateTimeFormatAsString("\n\n%d-%m-%Y %H:%M:%S | Exception Caught\n") + (std::string)"\tException Information: "
+		+ UnhandledExMessage, std::ofstream::out | std::ofstream::app);
 
 	//Suspend game process
-	std::cout << "Suspending process to prevent it from crashing. Please click this window's closing X to terminate it." << std::endl;
+	std::cout << "Suspended process to prevent crash. Please click this window's closing X to terminate it." << std::endl;
+	std::cout << "If you believe this exception is the result of a cheat bug, create an Issue on the Github repository" << std::endl;
+	std::cout << "Detailed exception information has been written to '" << CheatFunctions::ReturnExceptionsLogFilePath() << "'" << std::endl;
 	typedef LONG(NTAPI* NtSuspendProcess)(IN HANDLE ProcessHandle);
 	HANDLE processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, GetCurrentProcessId());
 	NtSuspendProcess pfnNtSuspendProcess = (NtSuspendProcess)GetProcAddress(GetModuleHandleA("ntdll"), "NtSuspendProcess");
