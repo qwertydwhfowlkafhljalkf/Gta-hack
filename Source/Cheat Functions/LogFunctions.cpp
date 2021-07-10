@@ -27,7 +27,6 @@ void Cheat::LogFunctions::MessageCustomCategory(std::string CategoryName, std::s
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 	std::string MessageString = CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S]") + " [" + CategoryName + "] " + Message + "\n";
 	std::cout << MessageString;
-	CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), MessageString, std::ofstream::out | std::ofstream::app);
 }
 
 void Cheat::LogFunctions::DebugMessage(std::string Message)

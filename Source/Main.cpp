@@ -154,7 +154,7 @@ void Cheat::Main()
 			{
 				if (CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnChatLogFilePath()))
 				{
-					ShellExecuteA(NULL, "open", CheatFunctions::StringToChar(Cheat::CheatFunctions::ReturnChatLogFilePath()), NULL, NULL, SW_SHOWNORMAL);
+					//ShellExecuteA(NULL, "open", Cheat::CheatFunctions::ReturnChatLogFilePath(), NULL, NULL, SW_SHOWNORMAL); TODO; crashing
 				}
 				else
 				{
