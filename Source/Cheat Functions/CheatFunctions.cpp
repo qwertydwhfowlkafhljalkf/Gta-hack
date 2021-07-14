@@ -557,16 +557,3 @@ std::string Cheat::CheatFunctions::RemoveCharactersFromStringAndReturn(std::stri
 	}
 	return Temp;
 }
-
-void Cheat::CheatFunctions::CopyStringToClipboard(std::string String)
-{
-	OpenClipboard(NULL);
-	EmptyClipboard();
-	HGLOBAL GlobalHandle = GlobalAlloc(GMEM_MOVEABLE, String.size());
-	if (!GlobalHandle) { CloseClipboard(); return; }
-	memcpy(GlobalLock(GlobalHandle), String.c_str(), String.size());
-	GlobalUnlock(GlobalHandle);
-	SetClipboardData(CF_TEXT, GlobalHandle);
-	CloseClipboard();
-	GlobalFree(GlobalHandle);
-}

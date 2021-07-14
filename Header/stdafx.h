@@ -366,7 +366,6 @@ namespace Cheat
 		std::string ReturnLatestCheatBuildNumber();
 		void CheckCheatUpdate();
 		std::string RemoveCharactersFromStringAndReturn(std::string String, char* CharactersToRemove);
-		void CopyStringToClipboard(std::string String);
 	}
 	namespace GameFunctions 
 	{
