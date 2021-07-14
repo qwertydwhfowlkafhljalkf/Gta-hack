@@ -37,6 +37,19 @@
 //mINI
 #include "../ThirdParty/mINI/ini.h"
 
+//Libcurl
+#define CURL_STATICLIB
+#pragma comment(lib, "ThirdParty/libcurl/libcurl_a.lib")
+#pragma comment(lib, "Ws2_32.lib")
+#pragma comment(lib, "Crypt32.lib")
+#pragma comment(lib, "Wldap32.lib")
+#pragma comment(lib, "Normaliz.lib")
+#pragma comment(lib, "advapi32.lib")
+#include "../ThirdParty/libcurl/curl.h"
+
+//JsonCpp
+#include "../ThirdParty/JsonCpp/json.h"
+
 
 //Project Header Files
 #include "../Header/Game Hooking/Memory.h"
@@ -315,6 +328,8 @@ namespace Cheat
 	}
 	namespace CheatFunctions 
 	{
+		extern bool NewerCheatVersionAvailable;
+		extern std::string NewCheatVersionString;
 		const std::string ReturnConfigFilePath();
 		const std::string ReturnMainLogFilePath();
 		const std::string ReturnExceptionsLogFilePath();
@@ -347,6 +362,11 @@ namespace Cheat
 		bool StringToBool(std::string String);
 		bool IsKeyCurrentlyPressed(int vKey, bool PressedOnce = false);
 		void WriteToFile(std::string FilePath, std::string text, std::ios_base::openmode FileOpenMode);
+		Json::Value ReturnOnlineJsonCppDataObject(std::string URL);
+		std::string ReturnLatestCheatBuildNumber();
+		void CheckCheatUpdate();
+		std::string RemoveCharactersFromStringAndReturn(std::string String, char* CharactersToRemove);
+		void CopyStringToClipboard(std::string String);
 	}
 	namespace GameFunctions 
 	{

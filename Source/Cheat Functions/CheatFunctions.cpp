@@ -1,5 +1,8 @@
 #include "../Header/stdafx.h"
 
+bool Cheat::CheatFunctions::NewerCheatVersionAvailable = false;
+std::string Cheat::CheatFunctions::NewCheatVersionString;
+
 
 void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 {
@@ -469,4 +472,101 @@ void Cheat::CheatFunctions::WriteToFile(std::string FilePath, std::string text, 
 	FileHandle.open(FilePath, FileOpenMode);
 	FileHandle << text;
 	FileHandle.close();
+}
+
+std::size_t callback(const char* in, std::size_t size, std::size_t num, std::string* out)
+{
+	const std::size_t totalBytes(size * num);
+	out->append(in, totalBytes);
+	return totalBytes;
+}
+
+Json::Value Cheat::CheatFunctions::ReturnOnlineJsonCppDataObject(std::string URL)
+{
+	int httpCode;
+	CURL* CurlHandle;
+	CURLcode Result;
+	std::string readBuffer;
+	CurlHandle = curl_easy_init();
+	if (CurlHandle)
+	{
+		curl_easy_setopt(CurlHandle, CURLOPT_URL, StringToChar(URL));
+		curl_easy_setopt(CurlHandle, CURLOPT_USERAGENT, "request");
+		curl_easy_setopt(CurlHandle, CURLOPT_WRITEFUNCTION, callback);
+		curl_easy_setopt(CurlHandle, CURLOPT_WRITEDATA, &readBuffer);
+		Result = curl_easy_perform(CurlHandle);
+		curl_easy_getinfo(CurlHandle, CURLINFO_RESPONSE_CODE, &httpCode);
+		curl_easy_cleanup(CurlHandle);
+	}
+
+	if (httpCode == 200)
+	{
+		Json::Reader reader;
+		Json::Value JsonData;
+
+		if (reader.parse(readBuffer, JsonData))
+		{
+			return JsonData;
+		}
+		else
+		{
+			Cheat::LogFunctions::DebugMessage("ReturnOnlineJsonCppDataObject() : failed to parse json data");
+		}
+	}
+	else
+	{
+		Cheat::LogFunctions::DebugMessage("ReturnOnlineJsonCppDataObject() : request failed, received the following HTTP status code: " + std::to_string(httpCode));
+	}
+	return Json::Value();
+}
+
+std::string Cheat::CheatFunctions::ReturnLatestCheatBuildNumber()
+{
+	auto JsonData = ReturnOnlineJsonCppDataObject("https://api.github.com/repos/HatchesPls/GrandTheftAutoV-Cheat/releases/latest");
+	return JsonData["tag_name"].asString();
+}
+
+void Cheat::CheatFunctions::CheckCheatUpdate()
+{
+	Cheat::LogFunctions::Message("Checking for newer cheat version");
+	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(CHEAT_BUILD_NUMBER, ".");
+	std::string LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(ReturnLatestCheatBuildNumber(), "v.");
+
+	int CurrentLocalVersion, LatestOnlineVersion;
+	if (StringIsInteger(CurrentLocalVersionString) && StringIsInteger(LatestOnlineVersionString))
+	{
+		CurrentLocalVersion = std::stoi(CurrentLocalVersionString);
+		LatestOnlineVersion = std::stoi(LatestOnlineVersionString);
+	}
+
+	if (CurrentLocalVersion < LatestOnlineVersion && (CurrentLocalVersion && LatestOnlineVersion != NULL))
+	{
+		NewerCheatVersionAvailable = true;
+		NewCheatVersionString = LatestOnlineVersionString;
+		LogFunctions::DebugMessage("A newer version of the cheat has been released on Github");
+	}
+}
+
+//https://stackoverflow.com/questions/5891610/how-to-remove-certain-characters-from-a-string-in-c
+std::string Cheat::CheatFunctions::RemoveCharactersFromStringAndReturn(std::string String, char* CharactersToRemove)
+{
+	std::string Temp = String;
+	for (unsigned int i = 0; i < strlen(CharactersToRemove); ++i)
+	{
+		Temp.erase(remove(Temp.begin(), Temp.end(), CharactersToRemove[i]), Temp.end());
+	}
+	return Temp;
+}
+
+void Cheat::CheatFunctions::CopyStringToClipboard(std::string String)
+{
+	OpenClipboard(NULL);
+	EmptyClipboard();
+	HGLOBAL GlobalHandle = GlobalAlloc(GMEM_MOVEABLE, String.size());
+	if (!GlobalHandle) { CloseClipboard(); return; }
+	memcpy(GlobalLock(GlobalHandle), String.c_str(), String.size());
+	GlobalUnlock(GlobalHandle);
+	SetClipboardData(CF_TEXT, GlobalHandle);
+	CloseClipboard();
+	GlobalFree(GlobalHandle);
 }

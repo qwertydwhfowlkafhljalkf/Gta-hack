@@ -23,6 +23,9 @@ bool Cheat::CheatFeatures::ShowPlayerInformationPlayerList = true;
 int PostInitBannerNotificationScaleformHandle;
 void Cheat::CheatFeatures::NonLooped()
 {
+	//Check for newer cheat version
+	Cheat::CheatFunctions::CheckCheatUpdate();
+
 	//Initialize Texture File
 	Cheat::GUI::Drawing::InitTextureFile();
 
@@ -52,6 +55,12 @@ void Cheat::CheatFeatures::Looped()
 	if (!GUI::CheatGUIHasBeenOpened)
 	{ 
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(PostInitBannerNotificationScaleformHandle, 255, 255, 255, 255, 0);
+	}
+
+	//New cheat update notification
+	if (CheatFunctions::NewerCheatVersionAvailable)
+	{
+		GUI::Drawing::Text("~bold~A newer cheat version (" + CheatFunctions::NewCheatVersionString + ") is available on Github, which includes new features and bugfixes", { 255, 255, 255, 255, FontChaletLondon }, { 0.01f, 0.01f }, { 0.25f, 0.25f }, false);
 	}
 
 	//New Session Member Notification Feature

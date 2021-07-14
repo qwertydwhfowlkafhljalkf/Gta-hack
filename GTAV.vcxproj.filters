@@ -34,6 +34,15 @@
     <ClCompile Include="Source\Cheat Functions\LogFunctions.cpp">
       <Filter>Source Files\Cheat Functions</Filter>
     </ClCompile>
+    <ClCompile Include="ThirdParty\JsonCpp\json_reader.cpp">
+      <Filter>ThirdParty\JsonCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\JsonCpp\json_value.cpp">
+      <Filter>ThirdParty\JsonCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\JsonCpp\json_writer.cpp">
+      <Filter>ThirdParty\JsonCpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GUI.h">
@@ -103,6 +112,12 @@
     </Filter>
     <Filter Include="Source Files\Cheat Functions">
       <UniqueIdentifier>{f7bf8f26-8357-44d6-9d53-ae30952450c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{00a174fd-3530-433d-ad59-06ff96b440cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\JsonCpp">
+      <UniqueIdentifier>{0b55cbd2-6517-45ca-8e74-11c4db14246b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -50,7 +50,7 @@ void Cheat::Main()
 			Cheat::MenuOption("Troll Options >", allplayers_trolloptionsmenu);
 			if (Cheat::Option("Host Kick All Players", "Kick all players from session - Host only")) 
 			{
-				for (int i = 1; i <= 32; i++) 
+				for (int i = 1; i <= 32; i++)
 				{
 					if (Cheat::GameFunctions::PlayerID != i) { NETWORK::NETWORK_SESSION_KICK_PLAYER(i); }
 				}
@@ -150,17 +150,6 @@ void Cheat::Main()
 		{
 			Cheat::Title("Session Chat");
 			Cheat::Toggle("Log Chat Messages", Cheat::CheatFeatures::LogChatMessages, "Chat gets logged to console");
-			if (Cheat::Option("Open Chat Log File", ""))
-			{
-				if (CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnChatLogFilePath()))
-				{
-					//ShellExecuteA(NULL, "open", Cheat::CheatFunctions::ReturnChatLogFilePath(), NULL, NULL, SW_SHOWNORMAL); TODO; crashing
-				}
-				else
-				{
-					GameFunctions::MinimapNotification("~r~Chat log file does not exist");
-				}
-			}
 		}
 		break;
 		case sessiontimemenu:
@@ -3791,6 +3780,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 
 static LONG CALLBACK Cheat::ExceptionHandler(PEXCEPTION_POINTERS exInfo)
 {
+#pragma warning(disable : 6387 6273 4477 4313)
 	std::string ExceptionInfo = std::to_string(exInfo->ExceptionRecord->ExceptionInformation[0]);
 	static char UnhandledExMessage[256];
 	sprintf_s(UnhandledExMessage, 256, "Unhandled exception 0x%08x at 0x%08x", exInfo->ExceptionRecord->ExceptionCode, exInfo->ExceptionRecord->ExceptionAddress);
