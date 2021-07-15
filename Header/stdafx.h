@@ -330,6 +330,7 @@ namespace Cheat
 	{
 		extern bool NewerCheatVersionAvailable;
 		extern std::string NewCheatVersionString;
+		extern bool NativeHandlerException;
 		const std::string ReturnConfigFilePath();
 		const std::string ReturnMainLogFilePath();
 		const std::string ReturnExceptionsLogFilePath();

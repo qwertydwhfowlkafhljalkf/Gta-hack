@@ -2,7 +2,7 @@
 
 bool Cheat::CheatFunctions::NewerCheatVersionAvailable = false;
 std::string Cheat::CheatFunctions::NewCheatVersionString;
-
+bool Cheat::CheatFunctions::NativeHandlerException = false;
 
 void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 {
@@ -523,7 +523,7 @@ Json::Value Cheat::CheatFunctions::ReturnOnlineJsonCppDataObject(std::string URL
 std::string Cheat::CheatFunctions::ReturnLatestCheatBuildNumber()
 {
 	auto JsonData = ReturnOnlineJsonCppDataObject("https://api.github.com/repos/HatchesPls/GrandTheftAutoV-Cheat/releases/latest");
-	return JsonData["tag_name"].asString();
+	return JsonData["name"].asString();
 }
 
 void Cheat::CheatFunctions::CheckCheatUpdate()

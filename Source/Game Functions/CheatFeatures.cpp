@@ -721,19 +721,19 @@ void Cheat::CheatFeatures::RainbowVehicle()
 	int Red = GameFunctions::ReturnRandomInteger(0, 255);
 	int Green = GameFunctions::ReturnRandomInteger(0, 255);
 	int Blue = GameFunctions::ReturnRandomInteger(0, 255);
-	VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), Red, Green, Blue);
-	VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), Red, Green, Blue);
+	VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), Red, Green, Blue);
+	VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), Red, Green, Blue);
 }
 
 bool Cheat::CheatFeatures::TeleportGunBool = false;
 void Cheat::CheatFeatures::TeleportGun()
 {
-	if (PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
+	if (PED::IS_PED_SHOOTING(GameFunctions::PlayerPedID))
 	{
 		Vector3 iCoord;
-		if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(Cheat::GameFunctions::PlayerPedID, &iCoord))
+		if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(GameFunctions::PlayerPedID, &iCoord))
 		{
-			ENTITY::SET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, iCoord.x, iCoord.y, iCoord.z + 1, 0, 0, 1, 1);
+			ENTITY::SET_ENTITY_COORDS(GameFunctions::PlayerPedID, iCoord.x, iCoord.y, iCoord.z + 1, false, false, true, true);
 			GameHooking::PauseMainFiber(0, false);
 		}
 	}
@@ -799,7 +799,13 @@ void Cheat::CheatFeatures::DeleteGun()
 bool Cheat::CheatFeatures::UnlimitedSpecialAbilityBool = false;
 void Cheat::CheatFeatures::UnlimitedSpecialAbility()
 {
-	if (!NETWORK::NETWORK_IS_SESSION_STARTED()) { PLAYER::SPECIAL_ABILITY_FILL_METER(Cheat::GameFunctions::PlayerID, true); }
+	if (!NETWORK::NETWORK_IS_SESSION_STARTED())
+	{ 
+		if (!PLAYER::IS_SPECIAL_ABILITY_METER_FULL(Cheat::GameFunctions::PlayerID))
+		{
+			PLAYER::SPECIAL_ABILITY_FILL_METER(Cheat::GameFunctions::PlayerID, true);
+		}
+	}
 }
 
 bool Cheat::CheatFeatures::SpectatePlayerBool = false;

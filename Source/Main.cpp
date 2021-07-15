@@ -3781,10 +3781,10 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 static LONG CALLBACK Cheat::ExceptionHandler(PEXCEPTION_POINTERS exInfo)
 {
 #pragma warning(disable : 6387 6273 4477 4313)
-	std::string ExceptionInfo = std::to_string(exInfo->ExceptionRecord->ExceptionInformation[0]);
+	if (Cheat::CheatFunctions::NativeHandlerException) { return EXCEPTION_EXECUTE_HANDLER; }
 	static char UnhandledExMessage[256];
 	sprintf_s(UnhandledExMessage, 256, "Unhandled exception 0x%08x at 0x%08x", exInfo->ExceptionRecord->ExceptionCode, exInfo->ExceptionRecord->ExceptionAddress);
-
+	
 	SetForegroundWindow(GetConsoleWindow());
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
 	std::cout << "\nException Caught"<<  std::endl;
