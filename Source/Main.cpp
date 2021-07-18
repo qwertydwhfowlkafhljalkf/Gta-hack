@@ -76,7 +76,7 @@ void Cheat::FiberMain()
 		case allplayers_trolloptionsmenu:
 		{
 			Cheat::GUI::Title("Troll Options"); 
-			Cheat::GUI::Toggle("Freeze All Players", Cheat::CheatFeatures::FreezeAllPlayersBool, "Freeze all players in session");
+			Cheat::GUI::Toggle("Freeze All Players", Cheat::CheatFeatures::FreezeAllPlayersBool, "Freeze all players in session", false);
 			if (Cheat::GUI::Option("Kick All Out Of Vehicle", "Kick all players from their vehicle"))
 			{
 				for (int i = 0; i < 32; i++)
