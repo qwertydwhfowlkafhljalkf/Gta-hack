@@ -377,6 +377,14 @@ bool Cheat::MenuOption(std::string option, SubMenus newSub)
 {
 	Option(option, "");
 
+	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
+	{
+		GUI::Drawing::Text(">", GUI::optionText, { Cheat::GUI::guiX + 0.09f, GUI::guiY + (GUI::optionCount) * 0.035f - 0.175f }, { 0.35f, 0.35f }, false);
+	}
+	else if (GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions) && GUI::optionCount <= GUI::currentOption)
+	{
+		GUI::Drawing::Text(">", GUI::optionText, { Cheat::GUI::guiX + 0.09f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.175f }, { 0.35f, 0.35f }, false);
+	}
 	if (GUI::optionCount == GUI::currentOption) 
 	{
 		if (GUI::selectPressed) 
@@ -388,11 +396,11 @@ bool Cheat::MenuOption(std::string option, SubMenus newSub)
 	return false;
 }
 
-bool Cheat::MenuOptionPlayerList(std::string option, SubMenus newSub, Player PlayerHandle)
+bool Cheat::MenuOptionPlayerList(std::string PlayerName, SubMenus newSub)
 {
-	Option(option, "");
+	Option(PlayerName, "");
 
-	char* CurrentOnlinePlayerPictureName = Cheat::GameFunctions::ReturnOnlinePlayerPictureString(PlayerHandle);
+	char* CurrentOnlinePlayerPictureName = Cheat::GameFunctions::ReturnOnlinePlayerPictureString(GameFunctions::ReturnPlayerIDFromPlayerName(PlayerName));
 
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
@@ -405,7 +413,7 @@ bool Cheat::MenuOptionPlayerList(std::string option, SubMenus newSub, Player Pla
 
 	if (GUI::optionCount == GUI::currentOption) 
 	{
-		if (GUI::selectPressed) 
+		if (GUI::selectPressed)
 		{
 			GUI::MoveMenu(newSub);
 			return true;
@@ -521,15 +529,15 @@ bool Cheat::Int(std::string option, int & _int, int min, int max, int step, bool
 		}
 		else if (_int < 100)
 		{
-			GUI::Drawing::Text("< " + std::to_string(_int) + " >", GUI::optionText, { Cheat::GUI::guiX + 0.075f, GUI::guiY + GUI::optionCount * 0.035f - 0.175f }, { 0.32f, 0.32f }, false);
+			GUI::Drawing::Text("< " + std::to_string(_int) + "", GUI::optionText, { Cheat::GUI::guiX + 0.075f, GUI::guiY + GUI::optionCount * 0.035f - 0.175f }, { 0.32f, 0.32f }, false);
 		}
 		else if (_int < 999)
 		{
-			GUI::Drawing::Text("< " + std::to_string(_int) + " >", GUI::optionText, { Cheat::GUI::guiX + 0.07f, GUI::guiY + GUI::optionCount * 0.035f - 0.175f }, { 0.32f, 0.32f }, false);
+			GUI::Drawing::Text("< " + std::to_string(_int) + "", GUI::optionText, { Cheat::GUI::guiX + 0.07f, GUI::guiY + GUI::optionCount * 0.035f - 0.175f }, { 0.32f, 0.32f }, false);
 		}
 		else
 		{
-			GUI::Drawing::Text("< " + std::to_string(_int) + " >", GUI::optionText, { Cheat::GUI::guiX + 0.06f, GUI::guiY + GUI::optionCount * 0.035f - 0.175f }, { 0.32f, 0.32f }, false);
+			GUI::Drawing::Text("< " + std::to_string(_int) + "", GUI::optionText, { Cheat::GUI::guiX + 0.06f, GUI::guiY + GUI::optionCount * 0.035f - 0.175f }, { 0.32f, 0.32f }, false);
 		}
 	}
 	else if ((GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions)) && GUI::optionCount <= GUI::currentOption)
@@ -540,15 +548,15 @@ bool Cheat::Int(std::string option, int & _int, int min, int max, int step, bool
 		}
 		else if (_int < 100)
 		{
-			GUI::Drawing::Text("< " + std::to_string(_int) + " >", GUI::optionText, { Cheat::GUI::guiX + 0.075f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.175f }, { 0.32f, 0.32f }, false);
+			GUI::Drawing::Text("< " + std::to_string(_int) + "", GUI::optionText, { Cheat::GUI::guiX + 0.075f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.175f }, { 0.32f, 0.32f }, false);
 		}
 		else if (_int < 999)
 		{
-			GUI::Drawing::Text("< " + std::to_string(_int) + " >", GUI::optionText, { Cheat::GUI::guiX + 0.07f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.175f }, { 0.32f, 0.32f }, false);
+			GUI::Drawing::Text("< " + std::to_string(_int) + "", GUI::optionText, { Cheat::GUI::guiX + 0.07f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.175f }, { 0.32f, 0.32f }, false);
 		}
 		else
 		{
-			GUI::Drawing::Text("< " + std::to_string(_int) + " >", GUI::optionText, { Cheat::GUI::guiX + 0.06f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.175f }, { 0.32f, 0.32f }, false);
+			GUI::Drawing::Text("< " + std::to_string(_int) + "", GUI::optionText, { Cheat::GUI::guiX + 0.06f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.175f }, { 0.32f, 0.32f }, false);
 		}
 	}
 	if (GUI::optionCount == GUI::currentOption)
@@ -712,11 +720,11 @@ bool Cheat::StringVector(std::string option, std::vector<std::string> Vector, in
 
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions) 
 	{
-		GUI::Drawing::Text("< " + (Vector[position]) + " >", GUI::optionText, { Cheat::GUI::guiX + 0.055f, GUI::guiY + GUI::optionCount * 0.035f - 0.175f }, { 0.35f, 0.35f }, true);
+		GUI::Drawing::Text("< " + (Vector[position]) + "", GUI::optionText, { Cheat::GUI::guiX + 0.055f, GUI::guiY + GUI::optionCount * 0.035f - 0.175f }, { 0.35f, 0.35f }, true);
 	}
 	else if (GUI::optionCount > GUI::currentOption - GUI::maxVisOptions && GUI::optionCount <= GUI::currentOption)
 	{
-		GUI::Drawing::Text("< " + (Vector[position]) + " >", GUI::optionText, { Cheat::GUI::guiX + 0.055f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.175f }, { 0.35f, 0.35f }, true);
+		GUI::Drawing::Text("< " + (Vector[position]) + "", GUI::optionText, { Cheat::GUI::guiX + 0.055f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.175f }, { 0.35f, 0.35f }, true);
 	}
 	if (GUI::optionCount == GUI::currentOption)
 	{

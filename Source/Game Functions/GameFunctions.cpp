@@ -1185,3 +1185,14 @@ bool Cheat::GameFunctions::IsPlayerIDValid(Player ID)
 	}
 	return false;
 }
+
+Player Cheat::GameFunctions::ReturnPlayerIDFromPlayerName(std::string PlayerName)
+{
+	for (int i = 0; i < 32; ++i)
+	{
+		if (PLAYER::GET_PLAYER_NAME(i) == PlayerName)
+		{
+			return i;
+		}
+	}
+}

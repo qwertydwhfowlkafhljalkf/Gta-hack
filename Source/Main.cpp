@@ -32,22 +32,22 @@ void Cheat::Main()
 		case MainMenu:
 		{
 			Cheat::Title("Main Menu");
-			Cheat::MenuOption("Self Options >", SelfOptionsMenu);
-			Cheat::MenuOption("Online Options >", OnlineOptionsMenu);
-			Cheat::MenuOption("Weapon Options >", weaponmenu);
-			Cheat::MenuOption("Vehicle Options >", vehiclemenu);
-			Cheat::MenuOption("Teleport Options >", teleportmenu);
-			Cheat::MenuOption("World Options >", worldmenu);
-			Cheat::MenuOption("Misc Options >", miscmenu);
-			Cheat::MenuOption("Settings >", SettingsMenu);
+			Cheat::MenuOption("Self Options", SelfOptionsMenu);
+			Cheat::MenuOption("Online Options", OnlineOptionsMenu);
+			Cheat::MenuOption("Weapon Options", weaponmenu);
+			Cheat::MenuOption("Vehicle Options", vehiclemenu);
+			Cheat::MenuOption("Teleport Options", teleportmenu);
+			Cheat::MenuOption("World Options", worldmenu);
+			Cheat::MenuOption("Misc Options", miscmenu);
+			Cheat::MenuOption("Settings", SettingsMenu);
 		}
 		break;
 		case AllPlayersMenu:
 		{
 			Cheat::Title("All Players");
-			Cheat::MenuOption("ESP >", ESPMenu);
-			Cheat::MenuOption("Weapon Options >", allplayers_weaponoptionsmenu);
-			Cheat::MenuOption("Troll Options >", allplayers_trolloptionsmenu);
+			Cheat::MenuOption("ESP", ESPMenu);
+			Cheat::MenuOption("Weapon Options", allplayers_weaponoptionsmenu);
+			Cheat::MenuOption("Troll Options", allplayers_trolloptionsmenu);
 			if (Cheat::Option("Host Kick All Players", "Kick all players from session - Host only")) 
 			{
 				for (int i = 1; i <= 32; i++)
@@ -127,11 +127,11 @@ void Cheat::Main()
 		case OnlineOptionsMenu:
 		{
 			Cheat::Title("Online Options");
-			Cheat::MenuOption("Player List >", PlayerListMenu);
-			Cheat::MenuOption("All Players >", AllPlayersMenu);
-			Cheat::MenuOption("Protections >", protections);
-			Cheat::MenuOption("Stats Options >", statsoptionsmenu);
-			Cheat::MenuOption("Session Options >", sessionoptionsmenu);
+			Cheat::MenuOption("Player List", PlayerListMenu);
+			Cheat::MenuOption("All Players", AllPlayersMenu);
+			Cheat::MenuOption("Protections", protections);
+			Cheat::MenuOption("Stats Options", statsoptionsmenu);
+			Cheat::MenuOption("Session Options", sessionoptionsmenu);
 			Cheat::Toggle("Off Radar", Cheat::CheatFeatures::OffRadarBool, "Enables Lester Off Radar Feature");
 			Cheat::Toggle("No Idle Kick", Cheat::CheatFeatures::NoIdleKickBool, "Does not work when out of game focus");
 			Cheat::Toggle("Bribe Authorities", Cheat::CheatFeatures::BribeAuthoritiesBool, "Enables Bribe Authorities");
@@ -141,9 +141,9 @@ void Cheat::Main()
 		case sessionoptionsmenu:
 		{
 			Cheat::Title("Session Options");
-			Cheat::MenuOption("Session Weather >", sessionweathermenu);
-			Cheat::MenuOption("Session Time >", sessiontimemenu);
-			Cheat::MenuOption("Chat >", SessionChatMenu);
+			Cheat::MenuOption("Session Weather", sessionweathermenu);
+			Cheat::MenuOption("Session Time", sessiontimemenu);
+			Cheat::MenuOption("Chat", SessionChatMenu);
 		}
 		break;
 		case SessionChatMenu:
@@ -197,10 +197,10 @@ void Cheat::Main()
 		case statsoptionsmenu:
 		{
 			Cheat::Title("Stats Options"); 
-			Cheat::MenuOption("Reports >", reportsmenu_stats);
-			Cheat::MenuOption("Rank >", rankmenu); 
-			Cheat::MenuOption("Unlocks >", unlocksmenu);
-			Cheat::MenuOption("Misc Stats >", miscstatsmenu);
+			Cheat::MenuOption("Reports", reportsmenu_stats);
+			Cheat::MenuOption("Rank", rankmenu); 
+			Cheat::MenuOption("Unlocks", unlocksmenu);
+			Cheat::MenuOption("Misc Stats", miscstatsmenu);
 		}
 		break; 
 		case reportsmenu_stats:
@@ -1014,7 +1014,7 @@ void Cheat::Main()
 		case vehiclespawnermenu:
 		{
 			Cheat::Title("Vehicle Spawner");
-			Cheat::MenuOption("Spawn Settings >", VehicleSpawnSettings);
+			Cheat::MenuOption("Spawn Settings", VehicleSpawnSettings);
 			if (Cheat::Option("Custom Input", "Input custom vehicle model"))
 			{
 				char* KeyboardInput = Cheat::GameFunctions::DisplayKeyboardAndReturnInput(30);
@@ -1023,46 +1023,46 @@ void Cheat::Main()
 			}
 			Cheat::Toggle("Show Vehicle Info & Preview", Cheat::CheatFeatures::ShowVehicleInfoAndPreview, "Shows selected vehicle info & picture");
 			Cheat::Break("Categories", true);
-			Cheat::MenuOption("DLC Vehicles >", DLCVehiclesMenu);
-			Cheat::MenuOption("Super >", Super);
-			Cheat::MenuOption("Sports >", Sports);
-			Cheat::MenuOption("Sport Classic >", SportClassic);
-			Cheat::MenuOption("Offroad >", Offroad);
-			Cheat::MenuOption("Sedans >", Sedans);
-			Cheat::MenuOption("Coupes >", Coupes);
-			Cheat::MenuOption("Muscle >", Muscle);
-			Cheat::MenuOption("Boats >", Boats);
-			Cheat::MenuOption("Commercial >", Commercial);
-			Cheat::MenuOption("Compacts >", Compacts);
-			Cheat::MenuOption("Cycles >", Cycles);
-			Cheat::MenuOption("Emergency >", Emergency);
-			Cheat::MenuOption("Helicopters >", Helicopters);
-			Cheat::MenuOption("Industrial >", Industrial);
-			Cheat::MenuOption("Military >", Military);
-			Cheat::MenuOption("Motorcycles >", Motorcycles);
-			Cheat::MenuOption("Planes >", Planes);
-			Cheat::MenuOption("Service >", Service);
-			Cheat::MenuOption("SUV >", SUV);
-			Cheat::MenuOption("Trailer >", Trailer);
-			Cheat::MenuOption("Trains >", Trains);
-			Cheat::MenuOption("Utility >", Utility);
-			Cheat::MenuOption("Vans >", Vans);
+			Cheat::MenuOption("DLC Vehicles", DLCVehiclesMenu);
+			Cheat::MenuOption("Super", Super);
+			Cheat::MenuOption("Sports", Sports);
+			Cheat::MenuOption("Sport Classic", SportClassic);
+			Cheat::MenuOption("Offroad", Offroad);
+			Cheat::MenuOption("Sedans", Sedans);
+			Cheat::MenuOption("Coupes", Coupes);
+			Cheat::MenuOption("Muscle", Muscle);
+			Cheat::MenuOption("Boats", Boats);
+			Cheat::MenuOption("Commercial", Commercial);
+			Cheat::MenuOption("Compacts", Compacts);
+			Cheat::MenuOption("Cycles", Cycles);
+			Cheat::MenuOption("Emergency", Emergency);
+			Cheat::MenuOption("Helicopters", Helicopters);
+			Cheat::MenuOption("Industrial", Industrial);
+			Cheat::MenuOption("Military", Military);
+			Cheat::MenuOption("Motorcycles", Motorcycles);
+			Cheat::MenuOption("Planes", Planes);
+			Cheat::MenuOption("Service", Service);
+			Cheat::MenuOption("SUV", SUV);
+			Cheat::MenuOption("Trailer", Trailer);
+			Cheat::MenuOption("Trains", Trains);
+			Cheat::MenuOption("Utility", Utility);
+			Cheat::MenuOption("Vans", Vans);
 		}
 		break;
 		case DLCVehiclesMenu:
 		{
 			Cheat::Title("DLC Vehicles");
-			Cheat::MenuOption("The Cayo Perico Heist >", CayoPericoHeistDLCMenu);
-			Cheat::MenuOption("2020 Summer Special >", SummerSpecialDLCMenu);
-			Cheat::MenuOption("The Diamond Casino Heist >", diamondcasinoheist);
-			Cheat::MenuOption("The Diamond Casino & Resort >", casinodlc);
-			Cheat::MenuOption("Arena War >", arenawardlc);
-			Cheat::MenuOption("After Hours >", afterhoursdlc);
-			Cheat::MenuOption("SSASSS >", SSASSSDLC);
-			Cheat::MenuOption("The Doomsday Heist >", doomsdayheistdlc);
-			Cheat::MenuOption("Smuggler's Run >", smugglersrun);
-			Cheat::MenuOption("Gunrunning >", gunrunningdlc);
-			Cheat::MenuOption("Cunning Stunts >", CunningStuntsDLCMenu);
+			Cheat::MenuOption("The Cayo Perico Heist", CayoPericoHeistDLCMenu);
+			Cheat::MenuOption("2020 Summer Special", SummerSpecialDLCMenu);
+			Cheat::MenuOption("The Diamond Casino Heist", diamondcasinoheist);
+			Cheat::MenuOption("The Diamond Casino & Resort", casinodlc);
+			Cheat::MenuOption("Arena War", arenawardlc);
+			Cheat::MenuOption("After Hours", afterhoursdlc);
+			Cheat::MenuOption("SSASSS", SSASSSDLC);
+			Cheat::MenuOption("The Doomsday Heist", doomsdayheistdlc);
+			Cheat::MenuOption("Smuggler's Run", smugglersrun);
+			Cheat::MenuOption("Gunrunning", gunrunningdlc);
+			Cheat::MenuOption("Cunning Stunts", CunningStuntsDLCMenu);
 		}
 		break;
 		case CayoPericoHeistDLCMenu:
@@ -1480,9 +1480,9 @@ void Cheat::Main()
 		case vehiclemenu:
 		{
 			Cheat::Title("Vehicle Options");
-			Cheat::MenuOption("Spawner >", vehiclespawnermenu);
-			Cheat::MenuOption("Vehicle Customizer >", VehicleCustomizerMenu);
-			Cheat::MenuOption("Vehicle Weapons >", vehicleweaponsmenu);
+			Cheat::MenuOption("Spawner", vehiclespawnermenu);
+			Cheat::MenuOption("Vehicle Customizer", VehicleCustomizerMenu);
+			Cheat::MenuOption("Vehicle Weapons", vehicleweaponsmenu);
 			if (Cheat::Option("Delete Current Vehicle", "Delete the current vehicle"))
 			{
 				if (!Cheat::GameFunctions::DeleteVehicle(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID))) 
@@ -1576,10 +1576,10 @@ void Cheat::Main()
 					Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}
-			Cheat::MenuOption("Color Options >", VehicleCustomizerColorMenu);
-			Cheat::MenuOption("Neon Options >", vehicle_lsc_neon_options);
-			Cheat::MenuOption("Multipliers >", vehiclemultipliersmenus);
-			Cheat::MenuOption("Door Options >", vehicledooroptionsmenu);
+			Cheat::MenuOption("Color Options", VehicleCustomizerColorMenu);
+			Cheat::MenuOption("Neon Options", vehicle_lsc_neon_options);
+			Cheat::MenuOption("Multipliers", vehiclemultipliersmenus);
+			Cheat::MenuOption("Door Options", vehicledooroptionsmenu);
 		}
 		break;
 		case VehicleCustomizerColorMenu:
@@ -1629,7 +1629,7 @@ void Cheat::Main()
 					VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(veh, rand() % 255, rand() % 255, rand() % 255);
 				}
 			}
-			Cheat::MenuOption("Custom Color >", VehicleCustomizerColorMenu);
+			Cheat::MenuOption("Custom Color", VehicleCustomizerColorMenu);
 			Cheat::Break("~bold~Color Presets", true);
 			if (Cheat::Option("Chrome", "")) 
 			{
@@ -1931,10 +1931,10 @@ void Cheat::Main()
 		case worldmenu:
 		{
 			Cheat::Title("World Options");
-			Cheat::MenuOption("Time Options >", timemenu);
-			Cheat::MenuOption("Weather Options >", weathermenu);
-			Cheat::MenuOption("Nearby Vehicles >", nearbyvehicles_menu);
-			Cheat::MenuOption("Nearby Peds >", nearbypeds_menu); 
+			Cheat::MenuOption("Time Options", timemenu);
+			Cheat::MenuOption("Weather Options", weathermenu);
+			Cheat::MenuOption("Nearby Vehicles", nearbyvehicles_menu);
+			Cheat::MenuOption("Nearby Peds", nearbypeds_menu); 
 			Cheat::Toggle("Snow (local)", Cheat::CheatFeatures::WorldSnowLocalBool, "GTA Online Only");
 			if (Cheat::Option("Clear Area", "Clear area of vehicles, objects etc")) 
 			{
@@ -2265,8 +2265,8 @@ void Cheat::Main()
 		case miscmenu:
 		{
 			Cheat::Title("Misc Options");
-			Cheat::MenuOption("HUD >", hudmenu); 
-			Cheat::MenuOption("IPL Loader >", iplloader);
+			Cheat::MenuOption("HUD", hudmenu); 
+			Cheat::MenuOption("IPL Loader", iplloader);
 			Cheat::Toggle("Disable Phone", Cheat::CheatFeatures::DisablePhoneBool, "Disable phone controls");
 			Cheat::Toggle("Get 6 Fake Wanted Level Stars", Cheat::CheatFeatures::FakeWantedLevelBool, "");
 			Cheat::Toggle("No-Clip", Cheat::CheatFeatures::NoClipBool, "Use W and mouse to control");
@@ -2697,9 +2697,9 @@ void Cheat::Main()
 				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0xF9D04ADB, 2);
 				WEAPON::SET_PED_WEAPON_TINT_INDEX(Cheat::GameFunctions::PlayerPedID, 0x0A3D4D34, 2);
 			}
-			Cheat::MenuOption("Custom Bullets >", custombulletsmenu);
-			Cheat::MenuOption("Vehicle Gun >", vehiclegunmenu);
-			Cheat::MenuOption("Triggerbot >", aimbotsettingsmenu);		
+			Cheat::MenuOption("Custom Bullets", custombulletsmenu);
+			Cheat::MenuOption("Vehicle Gun", vehiclegunmenu);
+			Cheat::MenuOption("Triggerbot", aimbotsettingsmenu);		
 			Cheat::Toggle("No reload", Cheat::CheatFeatures::NoWeaponReloadBool, "Always have max amount of ammo");
 			Cheat::Toggle("Auto Give All Weapons", Cheat::CheatFeatures::AutoGiveAllWeaponsBool, "Always have all weapons");
 			Cheat::Toggle("Teleport Gun", Cheat::CheatFeatures::TeleportGunBool, "Teleport to where you shoot");
@@ -2779,8 +2779,8 @@ void Cheat::Main()
 				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) { Handle = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0); }
 				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Handle, Coords.x, Coords.y, Coords.z, 0, 0, 1);
 			}
-			Cheat::MenuOption("IPL Teleports >", iplteleports);
-			Cheat::MenuOption("Common Locations >", CommonTeleportLocations);
+			Cheat::MenuOption("IPL Teleports", iplteleports);
+			Cheat::MenuOption("Common Locations", CommonTeleportLocations);
 		}
 		break;
 		case CommonTeleportLocations:
@@ -2922,7 +2922,7 @@ void Cheat::Main()
 		case SelectedPlayerTrollMenu:
 		{
 			Cheat::Title("Troll Options");
-			Cheat::MenuOption("Attachment Options >", SelectedPlayerAttachmentOptions);
+			Cheat::MenuOption("Attachment Options", SelectedPlayerAttachmentOptions);
 			Cheat::Toggle("Explode Loop", Cheat::CheatFeatures::ExplodeLoopSelectedPlayerBool, "Run explode loop on selected player", false);
 			Cheat::Toggle("Freeze Player", Cheat::CheatFeatures::FreezeSelectedPlayerBool, "Freeze character of selected player", false);
 			Cheat::Toggle("Shake Cam", Cheat::CheatFeatures::ShakeCamSelectedPlayerBool, "Shake selected player character camera", false);
@@ -3085,7 +3085,7 @@ void Cheat::Main()
 						if (Cheat::GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) { PlayernameString.append(" ~p~[Interior]"); }
 						if (Cheat::GameFunctions::PlayerID == i) { PlayernameString.append(" ~g~[You]"); }
 					}
-					Cheat::MenuOptionPlayerList(PlayernameString, SelectedPlayerMenu, i) ? Cheat::CheatFeatures::selectedPlayer = i : NULL;
+					Cheat::MenuOptionPlayerList(PlayernameString, SelectedPlayerMenu) ? Cheat::CheatFeatures::selectedPlayer = i : NULL;
 					if (Cheat::GUI::currentOption == Cheat::GUI::optionCount) { Cheat::GameFunctions::ShowPlayerInformationBox(i); }
 				}
 			}
@@ -3101,10 +3101,10 @@ void Cheat::Main()
 				Cheat::GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), false), 
 					                                   false, false);
 			}
-			Cheat::MenuOption("Teleport Options >", SelectedPlayerTeleportMenu);
-			Cheat::MenuOption("Friendly Options >", SelectedPlayerFriendlyMenu);
-			Cheat::MenuOption("Troll Options >", SelectedPlayerTrollMenu);
-			//Cheat::MenuOption("Remote Options >", SelectedPlayerRemoteOptions);
+			Cheat::MenuOption("Teleport Options", SelectedPlayerTeleportMenu);
+			Cheat::MenuOption("Friendly Options", SelectedPlayerFriendlyMenu);
+			Cheat::MenuOption("Troll Options", SelectedPlayerTrollMenu);
+			//Cheat::MenuOption("Remote Options", SelectedPlayerRemoteOptions);
 			if (Cheat::Option("Copy Outfit", "Get Selected Player Outfit")) { Cheat::GameFunctions::CopySelectedPlayerOutfit(Cheat::CheatFeatures::selectedPlayer); }
 			if (Cheat::Option("View Profile", "View Selected Player Social Club Profile")) { int playerHandle; NETWORK::NETWORK_HANDLE_FROM_PLAYER(Cheat::CheatFeatures::selectedPlayer, &playerHandle, 13); NETWORK::NETWORK_SHOW_PROFILE_UI(&playerHandle); }
 		}
@@ -3112,7 +3112,7 @@ void Cheat::Main()
 		case SelectedPlayerFriendlyMenu:
 		{
 			Cheat::Title("Friendly Options");
-			Cheat::MenuOption("Money Options >", SelectedPlayerMoneyMenu);
+			Cheat::MenuOption("Money Options", SelectedPlayerMoneyMenu);
 			if (Cheat::Option("Give All Weapons", "Give all weapons to selected player")) { Cheat::GameFunctions::GiveAllWeaponsToPlayer(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer)); }
 		}
 		break;
@@ -3142,9 +3142,9 @@ void Cheat::Main()
 		case SelfOptionsMenu:
 		{
 			Cheat::Title("Self Options");
-			Cheat::MenuOption("Model Changer >", ModelChangerMenu);
-			Cheat::MenuOption("Animations & Scenarios >", AnimationsAndScenariosMenu);
-			Cheat::MenuOption("Clothing >", clothingmenu);
+			Cheat::MenuOption("Model Changer", ModelChangerMenu);
+			Cheat::MenuOption("Animations & Scenarios", AnimationsAndScenariosMenu);
+			Cheat::MenuOption("Clothing", clothingmenu);
 			Cheat::Toggle("Godmode", Cheat::CheatFeatures::GodmodeBool, "Makes your character invincible");
 			Cheat::Toggle("No Ragdoll & Seatbelt", Cheat::CheatFeatures::NoRagdollAndSeatbeltBool, "Disables ragdoll on your character");
 			Cheat::Toggle("Super Jump", Cheat::CheatFeatures::SuperJumpBool, "Makes your character jump higher");
@@ -3174,8 +3174,8 @@ void Cheat::Main()
 		case clothingmenu:
 		{
 			Cheat::Title("Clothing Options"); 
-			Cheat::MenuOption("Outfits >", outfitsmenu); 
-			Cheat::MenuOption("Components Changer >", componentschangermenu);
+			Cheat::MenuOption("Outfits", outfitsmenu); 
+			Cheat::MenuOption("Components Changer", componentschangermenu);
 		}
 		break; 
 		case componentschangermenu:
@@ -3493,8 +3493,8 @@ void Cheat::Main()
 		case SettingsMenu:
 		{
 			Cheat::Title("Settings");
-			Cheat::MenuOption("GUI Settings >", guisettings);
-			Cheat::MenuOption("Cheat Settings >", CheatSettingsMenu);
+			Cheat::MenuOption("GUI Settings", guisettings);
+			Cheat::MenuOption("Cheat Settings", CheatSettingsMenu);
 			if (Cheat::Option("Visit Github Page", ""))
 			{
 				system("start https://github.com/HatchesPls/GrandTheftAutoV-Cheat");
@@ -3517,10 +3517,10 @@ void Cheat::Main()
 		case guisettings:
 		{
 			Cheat::Title("GUI Settings");
-			Cheat::MenuOption("Theme Loader >", ThemeLoaderMenu);
+			Cheat::MenuOption("Theme Loader", ThemeLoaderMenu);
 			Cheat::Break("Settings", true);
-			Cheat::MenuOption("Colors >", GUIColorsMenu);
-			Cheat::MenuOption("Header Options >", headeroptionsmenu);
+			Cheat::MenuOption("Colors", GUIColorsMenu);
+			Cheat::MenuOption("Header Options", headeroptionsmenu);
 			Cheat::StringVector("Toggles", { "Shop Box", "Circle" }, Cheat::CheatFeatures::BoolOptionVectorPosition, "Select Boolean Toggle", false);
 			Cheat::Int("Max Visible Menu Options", Cheat::GUI::maxVisOptions, 5, 16, 1, false, false);
 			Cheat::Toggle("Restore To Previous Submenu", Cheat::GUI::RestorePreviousSubmenu, "When opening restores previous submenu", false);
@@ -3553,14 +3553,14 @@ void Cheat::Main()
 		case GUIColorsMenu:
 		{
 			Cheat::Title("Colors");
-			Cheat::MenuOption("Title Background >", GUITitleBackgroundColorMenu);
-			Cheat::MenuOption("Header Background >", settingsheaderbackground);
-			Cheat::MenuOption("Menu Background >", settingsmenubackground);
-			Cheat::MenuOption("Menu Bottom Background >", settingsmenubottombackground);
-			Cheat::MenuOption("Small Title Background >", settingssmalltitlebackground);
-			Cheat::MenuOption("Options Scroller >", settingsscroller);
-			Cheat::MenuOption("Option Text >", settingsoptiontext);
-			Cheat::MenuOption("Line And Arrow >", settingsbottomline);
+			Cheat::MenuOption("Title Background", GUITitleBackgroundColorMenu);
+			Cheat::MenuOption("Header Background", settingsheaderbackground);
+			Cheat::MenuOption("Menu Background", settingsmenubackground);
+			Cheat::MenuOption("Menu Bottom Background", settingsmenubottombackground);
+			Cheat::MenuOption("Small Title Background", settingssmalltitlebackground);
+			Cheat::MenuOption("Options Scroller", settingsscroller);
+			Cheat::MenuOption("Option Text", settingsoptiontext);
+			Cheat::MenuOption("Line And Arrow", settingsbottomline);
 		}
 		break;
 		case settingsmenubottombackground:
@@ -3646,7 +3646,7 @@ void Cheat::Main()
 		case ThemeLoaderMenu:
 		{
 			Cheat::Title("Theme Loader");
-			Cheat::MenuOption("Theme Files >", ThemeFilesMenu);
+			Cheat::MenuOption("Theme Files", ThemeFilesMenu);
 			if (!Cheat::GUI::CurrentTheme.empty())
 			{
 				Cheat::Break("Active Theme: ~c~" + Cheat::GUI::CurrentTheme, false);

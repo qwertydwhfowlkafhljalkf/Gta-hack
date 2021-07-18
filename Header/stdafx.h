@@ -442,6 +442,7 @@ namespace Cheat
 		void PlayFrontendSoundDefault(char* SoundName);
 		void PlayScenarioNearbyPeds(char* Scenario);
 		bool IsPlayerIDValid(Player ID);
+		Player ReturnPlayerIDFromPlayerName(std::string PlayerName);
 	}
 	namespace LogFunctions 
 	{
@@ -498,7 +499,7 @@ namespace Cheat
 	bool Option(std::string option, std::string InformationText);
 	bool VehicleOption(std::string option, std::string ModelName);
 	bool MenuOption(std::string option, SubMenus newSub);
-	bool MenuOptionPlayerList(std::string option, SubMenus newSub, Player PlayerHandle);
+	bool MenuOptionPlayerList(std::string PlayerName, SubMenus newSub);
 	bool Toggle(std::string option, bool& b00l, std::string InformationText, bool IsSavable = true);
 	bool Int(std::string option, int& _int, int min, int max, int step, bool DisableControl = false, bool IsSavable = true, std::string InformationText = "Select to change");
 	bool Float(std::string option, float& _float, float min, float max, float steps, bool ReturnTrueWithValueChange, bool IsSavable = true, std::string InformationText = "");
