@@ -1,4 +1,4 @@
-#include "../Header/stdafx.h"
+#include "../Header/Main.h"
 std::unordered_map<uint64_t, uint64_t> nativeHashMap;
 
 //https://www.unknowncheats.me/forum/3008857-post9618.html

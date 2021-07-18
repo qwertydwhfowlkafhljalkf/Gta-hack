@@ -48,7 +48,7 @@
     <ClInclude Include="Header\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header\stdafx.h">
+    <ClInclude Include="Header\Main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header\Game Hooking\CrossMapping.h">
@@ -84,6 +84,18 @@
     <ClInclude Include="Header\GUI\GUI.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Game Functions\CheatFeatures.h">
+      <Filter>Header Files\Game Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Cheat Functions\CheatFunctions.h">
+      <Filter>Header Files\Cheat Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Game Functions\GameFunctions.h">
+      <Filter>Header Files\Game Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Cheat Functions\LogFunctions.h">
+      <Filter>Header Files\Cheat Functions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -118,6 +130,9 @@
     </Filter>
     <Filter Include="ThirdParty\JsonCpp">
       <UniqueIdentifier>{0b55cbd2-6517-45ca-8e74-11c4db14246b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cheat Functions">
+      <UniqueIdentifier>{b3aed617-ec49-41e1-bcbd-c8209c8c4525}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

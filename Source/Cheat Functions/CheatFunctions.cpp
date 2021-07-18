@@ -1,8 +1,10 @@
-#include "../Header/stdafx.h"
+#include "../Header/Main.h"
 
 bool Cheat::CheatFunctions::NewerCheatVersionAvailable = false;
 std::string Cheat::CheatFunctions::NewCheatVersionString;
 bool Cheat::CheatFunctions::NativeHandlerException = false;
+bool Cheat::CheatFunctions::LoadConfigThreadFunctionCompleted = false;
+std::vector <std::string> Cheat::CheatFunctions::LoadedOptionsVector;
 
 void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 {
@@ -115,6 +117,25 @@ void Cheat::CheatFunctions::LoopedFunctions()
 			Cheat::GameFunctions::MinimapNotification("~r~Invalid Player ID");
 		}
 	}
+	if (Cheat::GUI::currentMenu == ThemeFilesMenu)
+	{
+		Cheat::GUI::ThemeFilesVector.clear();
+		std::string ThemeFolderPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
+		if (!Cheat::CheatFunctions::FileOrDirectoryExists(ThemeFolderPath)) { Cheat::CheatFunctions::CreateNewDirectory(ThemeFolderPath); }
+		for (const auto& file : std::filesystem::directory_iterator(ThemeFolderPath.c_str()))
+		{
+			if (file.path().extension() == ".ini")
+			{
+				Cheat::GUI::ThemeFilesVector.push_back(file.path().stem().string());
+			}
+		}
+	}
+
+	//Show subtitle message in-game while config file is loading
+	if (!Cheat::CheatFunctions::LoadConfigThreadFunctionCompleted)
+	{
+		GameFunctions::SubtitleNotification("Loading configuration file, one moment please", 1);
+	}
 }
 
 bool Cheat::CheatFunctions::IsGameWindowFocussed()
@@ -156,6 +177,7 @@ int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 				if (i == VK_ESCAPE)
 				{
 					Cheat::GameFunctions::MinimapNotification("Canceled Key Selection");
+					UI::SET_PAUSE_MENU_ACTIVE(false);
 					return 0;
 				}
 				return i;
@@ -166,15 +188,7 @@ int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 
 void Cheat::CheatFunctions::SaveOption(std::string OptionName, std::string OptionValue, bool IsSavable)
 {
-	if (IsSavable) 
-	{
-		GUI::CurrentOptionIsSavable = true;
-	}
-	else 
-	{
-		GUI::CurrentOptionIsSavable = false;
-	}
-
+	GUI::CurrentOptionIsSavable = IsSavable;
 	if (IsKeyCurrentlyPressed(GUI::SaveItemKey))
 	{
 		if (IsSavable)
@@ -191,34 +205,35 @@ std::string Cheat::CheatFunctions::GetOptionValueFromConfig(std::string OptionNa
 	return IniFileReturnKeyValueAsString(ReturnConfigFilePath(), "SETTINGS", OptionName);
 }
 
-void LoadSettingsThreadFunction()
+void LoadConfigThreadFunction()
 {
 	Cheat::GUI::ChangeControlsState(false);
 	Cheat::GUI::HideGUIElements = true;
 	for (int SubMenuInt = MainMenu; SubMenuInt != SUBMENUS_END; SubMenuInt++)
 	{
 		Cheat::GUI::MoveMenu(static_cast<SubMenus>(SubMenuInt));
-		Sleep(100);
+		Sleep(150);
 	}
 	Cheat::GUI::CloseGUI();
 	Cheat::GUI::PreviousMenu = NOMENU;
-	Cheat::GUI::CheatGUIHasBeenOpened = false;
 	Cheat::GUI::ChangeControlsState(true);
 	Cheat::GUI::HideGUIElements = false;
+	Cheat::CheatFunctions::LoadConfigThreadFunctionCompleted = true;
 }
 
 void Cheat::CheatFunctions::LoadConfig()
 {
 	Cheat::LogFunctions::Message("Loading Config");
-	std::thread LoadSettingsThreadHandle(LoadSettingsThreadFunction);
-	LoadSettingsThreadHandle.detach();
+
+	GameFunctions::SubtitleNotification("Loading configuration file, one moment please", 100);
+	std::thread LoadConfigThreadHandle(LoadConfigThreadFunction);
+	LoadConfigThreadHandle.detach();
 
 	//Load Active Theme Name
 	std::string ActiveThemeSetting = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(Cheat::CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "active_theme");
 	if (ActiveThemeSetting != "NOT_FOUND") { Cheat::GUI::LoadTheme(CheatFunctions::StringToChar(ActiveThemeSetting), true); }
 }
 
-std::vector <std::string> LoadedOptionsVector;
 bool Cheat::CheatFunctions::IsOptionRegisteredAsLoaded(std::string OptionName)
 {
 	for (auto const& i : LoadedOptionsVector)
@@ -229,76 +244,6 @@ bool Cheat::CheatFunctions::IsOptionRegisteredAsLoaded(std::string OptionName)
 		}
 	}
 	return false;
-}
-
-/*
-Description: loads the specified configuration option
-Note(s): Data is read from config.ini
-		 Function overloading is used for each data type (boolean, integer & float)
-*/
-
-//Bool
-void Cheat::CheatFunctions::LoadConfigOption(std::string OptionName, bool& ReturnedBool)
-{
-	if (!CheatFunctions::IsOptionRegisteredAsLoaded(OptionName))
-	{
-		try
-		{
-			std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
-			if (ConfigFileValue != "NOT_FOUND")
-			{
-				ReturnedBool = CheatFunctions::StringToBool(CheatFunctions::GetOptionValueFromConfig(OptionName));
-				Cheat::LogFunctions::DebugMessage("Loaded savable option (Boolean) '" + OptionName + "'");
-			}
-			LoadedOptionsVector.push_back(OptionName);
-		}
-		catch (...)
-		{
-			Cheat::LogFunctions::DebugMessage("Failed to load savable option (Boolean) '" + OptionName + "'");
-		}
-	}
-}
-//Integer
-void Cheat::CheatFunctions::LoadConfigOption(std::string OptionName, int& ReturnedInt)
-{
-	if (!CheatFunctions::IsOptionRegisteredAsLoaded(OptionName))
-	{
-		try
-		{
-			std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
-			if (ConfigFileValue != "NOT_FOUND")
-			{
-				ReturnedInt = std::stoi(CheatFunctions::GetOptionValueFromConfig(OptionName));
-				Cheat::LogFunctions::DebugMessage("Loaded savable option (Integer) '" + OptionName + "'");
-			}
-			LoadedOptionsVector.push_back(OptionName);
-		}
-		catch (...)
-		{
-			Cheat::LogFunctions::DebugMessage("Failed to load savable option (Integer) '" + OptionName + "'");
-		}
-	}
-}
-//Float
-void Cheat::CheatFunctions::LoadConfigOption(std::string OptionName, float& ReturnedFloat)
-{
-	if (!CheatFunctions::IsOptionRegisteredAsLoaded(OptionName))
-	{
-		try
-		{
-			std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
-			if (ConfigFileValue != "NOT_FOUND")
-			{
-				ReturnedFloat = std::stof(CheatFunctions::GetOptionValueFromConfig(OptionName));
-				Cheat::LogFunctions::DebugMessage("Loaded savable option (Float) '" + OptionName + "'");
-			}
-			LoadedOptionsVector.push_back(OptionName);
-		}
-		catch (...)
-		{
-			Cheat::LogFunctions::DebugMessage("Failed to load savable option (Float) '" + OptionName + "'");
-		}
-	}
 }
 
 char* Cheat::CheatFunctions::StringToChar(std::string string)
@@ -403,10 +348,6 @@ void Cheat::CheatFunctions::IniFileWriteString(std::string string, std::string F
 	File.write(IniStruct);
 }
 
-/*
-Description: returns the value for the provided initialization file section and key
-Note(s):
-*/
 std::string Cheat::CheatFunctions::IniFileReturnKeyValueAsString(std::string FilePath, std::string Section, std::string Key)
 {
 	mINI::INIFile File(FilePath);
@@ -543,7 +484,7 @@ void Cheat::CheatFunctions::CheckCheatUpdate()
 	{
 		NewerCheatVersionAvailable = true;
 		NewCheatVersionString = LatestOnlineVersionString;
-		LogFunctions::DebugMessage("A newer version of the cheat has been released on Github");
+		LogFunctions::DebugMessage("A newer version of the cheat is available on Github");
 	}
 }
 

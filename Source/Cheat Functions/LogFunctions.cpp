@@ -1,4 +1,4 @@
-#include "../Header/stdafx.h"
+#include "../Header/Main.h"
 
 void Cheat::LogFunctions::Init()
 {

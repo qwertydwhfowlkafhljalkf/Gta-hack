@@ -1,4 +1,4 @@
-#include "../Header/stdafx.h"
+#include "../Header/Main.h"
 
 HANDLE MainFiber;
 uint64_t*															GameHooking::m_frameCount;
@@ -113,7 +113,7 @@ __int64 GetChatDataHooked(__int64 a1, __int64 a2, __int64 a3, const char* origTe
 void ScriptFunction(LPVOID lpParameter)
 {
 	srand(GetTickCount64());
-	Cheat::Main();
+	Cheat::FiberMain();
 }
 
 DWORD WakeTime;

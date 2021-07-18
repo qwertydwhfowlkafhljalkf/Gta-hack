@@ -1,4 +1,4 @@
-#include "../Header/stdafx.h"
+#include "../Header/Main.h"
 
 int Cheat::CheatFeatures::BoolOptionVectorPosition = 0; //0: Shop Box. 1: Circle
 int Cheat::CheatFeatures::SpeedometerVectorPosition = 0;
@@ -52,7 +52,7 @@ void Cheat::CheatFeatures::NonLooped()
 void Cheat::CheatFeatures::Looped()
 {
 	//Post Init Scaleform Banner Notification
-	if (!GUI::CheatGUIHasBeenOpened)
+	if (!GUI::CheatGUIHasBeenOpened && CheatFunctions::LoadConfigThreadFunctionCompleted)
 	{ 
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(PostInitBannerNotificationScaleformHandle, 255, 255, 255, 255, 0);
 	}
@@ -1245,7 +1245,7 @@ void Cheat::CheatFeatures::SuperRun()
 	{
 		Ped ped = Cheat::GameFunctions::PlayerPedID;
 		Vector3 offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ped, 0.f, 0.6f, 0.f);
-		ENTITY::APPLY_FORCE_TO_ENTITY(ped, 1, 0.0f, 1.3f, 0.f, 0.0f, 0.0f, 0.0f, 0, 1, 1, 1, 0, 1.f);
+		ENTITY::APPLY_FORCE_TO_ENTITY(ped, 1, 0.0f, 1.3f, 0.f, 0.0f, 0.0f, 0.0f, 0, true, true, true, false, true);
 		PLAYER::SET_PLAYER_SPRINT(Cheat::GameFunctions::PlayerID, true);
 		PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(Cheat::GameFunctions::PlayerID, 1.59f);
 	}

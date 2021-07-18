@@ -1,4 +1,4 @@
-#include "../Header/stdafx.h"
+#include "../Header/Main.h"
 
 static std::multimap<uint64_t, uintptr_t> g_hints;
 

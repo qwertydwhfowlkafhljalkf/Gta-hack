@@ -81,7 +81,11 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Header\Cheat Functions\CheatFunctions.h" />
+    <ClInclude Include="Header\Cheat Functions\LogFunctions.h" />
+    <ClInclude Include="Header\Game Functions\CheatFeatures.h" />
     <ClInclude Include="Header\Game Functions\GameArrays.h" />
+    <ClInclude Include="Header\Game Functions\GameFunctions.h" />
     <ClInclude Include="Header\Game Hooking\CrossMapping.h" />
     <ClInclude Include="Header\Game Hooking\enums.h" />
     <ClInclude Include="Header\Game Hooking\GameHooking.h" />
@@ -93,7 +97,7 @@
     <ClInclude Include="Header\Game Hooking\types.h" />
     <ClInclude Include="Header\GUI\GUI.h" />
     <ClInclude Include="Header\resource.h" />
-    <ClInclude Include="Header\stdafx.h" />
+    <ClInclude Include="Header\Main.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Cheat Functions\CheatFunctions.cpp" />
