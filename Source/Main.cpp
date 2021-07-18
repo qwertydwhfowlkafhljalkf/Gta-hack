@@ -40,6 +40,10 @@ void Cheat::FiberMain()
 			Cheat::GUI::MenuOption("World Options", worldmenu);
 			Cheat::GUI::MenuOption("Misc Options", miscmenu);
 			Cheat::GUI::MenuOption("Settings", SettingsMenu);
+			if (Cheat::GUI::Option("Throw Test", ""))
+			{
+				throw std::out_of_range("Out of range");
+			}
 		}
 		break;
 		case AllPlayersMenu:
@@ -3153,7 +3157,7 @@ void Cheat::FiberMain()
 			Cheat::GUI::Toggle("Unlimited Special Ability", Cheat::CheatFeatures::UnlimitedSpecialAbilityBool, "Always 100% Special Ability");
 			Cheat::GUI::Toggle("Ignored By Everyone", Cheat::CheatFeatures::PlayerIgnoredBool, "NPC's will (mostly) ignore you");
 			Cheat::GUI::Toggle("Never Wanted", Cheat::CheatFeatures::NeverWantedBool, "Never get a wanted level");
-			if (Cheat::GUI::Int("Wanted Level", PlayerWantedLevelInteger, 0, 5, 1, false, "Set Wanted Level", true)) { Cheat::CheatFeatures::NeverWantedBool = false; PLAYER::SET_PLAYER_WANTED_LEVEL(Cheat::GameFunctions::PlayerID, PlayerWantedLevelInteger, false); PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(Cheat::GameFunctions::PlayerID, false); }
+			if (Cheat::GUI::Int("Wanted Level", PlayerWantedLevelInteger, 0, 5, 1, false, "Set Wanted Level")) { Cheat::CheatFeatures::NeverWantedBool = false; PLAYER::SET_PLAYER_WANTED_LEVEL(Cheat::GameFunctions::PlayerID, PlayerWantedLevelInteger, false); PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(Cheat::GameFunctions::PlayerID, false); }
 			Cheat::GUI::Toggle("Invisible", Cheat::CheatFeatures::PlayerInvisibleBool, "Makes your character invisible");
 			Cheat::GUI::Toggle("Explosive Melee", Cheat::CheatFeatures::ExplosiveMeleeBool, "Objects you hit with melee explode");
 			Cheat::GUI::Toggle("Tiny Player", Cheat::CheatFeatures::TinyPlayerBool, "Lowers your character's scaling");

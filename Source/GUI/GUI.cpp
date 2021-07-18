@@ -827,39 +827,39 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 	std::string MenuBottomBackgroundOpacity = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "menu_bottom_background_opacity");
 
 	
-	if (SmallTitleBackgroundRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SmallTitleBackgroundRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(SmallTitleBackgroundRed))) { Cheat::GUI::titleRect.r = std::stoi(SmallTitleBackgroundRed); } } }
-	if (SmallTitleBackgroundGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SmallTitleBackgroundGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(SmallTitleBackgroundGreen))) { Cheat::GUI::titleRect.g = std::stoi(SmallTitleBackgroundGreen); } } }
-	if (SmallTitleBackgroundBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SmallTitleBackgroundBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(SmallTitleBackgroundBlue))) { Cheat::GUI::titleRect.b = std::stoi(SmallTitleBackgroundBlue); } } }
-	if (SmallTitleBackgroundOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SmallTitleBackgroundOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(SmallTitleBackgroundOpacity))) { Cheat::GUI::titleRect.a = std::stoi(SmallTitleBackgroundOpacity); } } }
-	if (HeaderBackgroundRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(HeaderBackgroundRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(HeaderBackgroundRed))) { Cheat::GUI::headerRect.r = std::stoi(HeaderBackgroundRed); } } }
-	if (HeaderBackgroundGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(HeaderBackgroundGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(HeaderBackgroundGreen))) { Cheat::GUI::headerRect.g = std::stoi(HeaderBackgroundGreen); } } }
-	if (HeaderBackgroundBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(HeaderBackgroundBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(HeaderBackgroundBlue))) { Cheat::GUI::headerRect.b = std::stoi(HeaderBackgroundBlue); } } }
-	if (HeaderBackgroundOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(HeaderBackgroundOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(HeaderBackgroundOpacity))) { Cheat::GUI::headerRect.a = std::stoi(HeaderBackgroundOpacity); } } }
-	if (BottomLineRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(BottomLineRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(BottomLineRed))) { Cheat::GUI::TopAndBottomLine.r = std::stoi(BottomLineRed); } } }
-	if (BottomLineGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(BottomLineGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(BottomLineGreen))) { Cheat::GUI::TopAndBottomLine.g = std::stoi(BottomLineGreen); } } }
-	if (BottomLineBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(BottomLineBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(BottomLineBlue))) { Cheat::GUI::TopAndBottomLine.b = std::stoi(BottomLineBlue); } } }
-	if (BottomLineOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(BottomLineOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(BottomLineOpacity))) { Cheat::GUI::TopAndBottomLine.a = std::stoi(BottomLineOpacity); } } }
-	if (TitleBackgroundRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(TitleBackgroundRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(TitleBackgroundRed))) { Cheat::GUI::MainTitleRect.r = std::stoi(TitleBackgroundRed); } } }
-	if (TitleBackgroundGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(TitleBackgroundGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(TitleBackgroundGreen))) { Cheat::GUI::MainTitleRect.g = std::stoi(TitleBackgroundGreen); } } }
-	if (TitleBackgroundBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(TitleBackgroundBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(TitleBackgroundBlue))) { Cheat::GUI::MainTitleRect.b = std::stoi(TitleBackgroundBlue); } } }
-	if (TitleBackgroundOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(TitleBackgroundOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(TitleBackgroundOpacity))) { Cheat::GUI::MainTitleRect.a = std::stoi(TitleBackgroundOpacity); } } }
-	if (OptionTextRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(OptionTextRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(OptionTextRed))) { Cheat::GUI::optionText.r = std::stoi(OptionTextRed); } } }
-	if (OptionTextGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(OptionTextGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(OptionTextGreen))) { Cheat::GUI::optionText.g = std::stoi(OptionTextGreen); } } }
-	if (OptionTextBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(OptionTextBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(OptionTextBlue))) { Cheat::GUI::optionText.b = std::stoi(OptionTextBlue); } } }
-	if (OptionTextOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(OptionTextOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(OptionTextOpacity))) { Cheat::GUI::optionText.a = std::stoi(OptionTextOpacity); } } }
-	if (TitleBackgroundOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(TitleBackgroundOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(TitleBackgroundOpacity))) { Cheat::GUI::MainTitleRect.a = std::stoi(TitleBackgroundOpacity); } } }
-	if (SelectionBoxRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(SelectionBoxRed))) { Cheat::GUI::scroller.r = std::stoi(SelectionBoxRed); } } }
-	if (SelectionBoxGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(SelectionBoxGreen))) { Cheat::GUI::scroller.g = std::stoi(SelectionBoxGreen); } } }
-	if (SelectionBoxBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(SelectionBoxBlue))) { Cheat::GUI::scroller.b = std::stoi(SelectionBoxBlue); } } }
-	if (SelectionBoxOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(SelectionBoxOpacity))) { Cheat::GUI::scroller.a = std::stoi(SelectionBoxOpacity); } } }
-	if (SelectionBoxBackgroundRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxBackgroundRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(SelectionBoxBackgroundRed))) { Cheat::GUI::MenuBackgroundRect.r = std::stoi(SelectionBoxBackgroundRed); } } }
-	if (SelectionBoxBackgroundGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxBackgroundGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(SelectionBoxBackgroundGreen))) { Cheat::GUI::MenuBackgroundRect.g = std::stoi(SelectionBoxBackgroundGreen); } } }
-	if (SelectionBoxBackgroundBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxBackgroundBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(SelectionBoxBackgroundBlue))) { Cheat::GUI::MenuBackgroundRect.b = std::stoi(SelectionBoxBackgroundBlue); } } }
-	if (SelectionBoxBackgroundOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxBackgroundOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(SelectionBoxBackgroundOpacity))) { Cheat::GUI::MenuBackgroundRect.a = std::stoi(SelectionBoxBackgroundOpacity); } } }
-	if (MenuBottomBackgroundRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(MenuBottomBackgroundRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(MenuBottomBackgroundRed))) { Cheat::GUI::MenuBottomRect.r = std::stoi(MenuBottomBackgroundRed); } } }
-	if (MenuBottomBackgroundGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(MenuBottomBackgroundGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(MenuBottomBackgroundGreen))) { Cheat::GUI::MenuBottomRect.g = std::stoi(MenuBottomBackgroundGreen); } } }
-	if (MenuBottomBackgroundBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(MenuBottomBackgroundBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(MenuBottomBackgroundBlue))) { Cheat::GUI::MenuBottomRect.b = std::stoi(MenuBottomBackgroundBlue); } } }
-	if (MenuBottomBackgroundOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(MenuBottomBackgroundOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, std::stoi(MenuBottomBackgroundOpacity))) { Cheat::GUI::MenuBottomRect.a = std::stoi(MenuBottomBackgroundOpacity); } } }
+	if (SmallTitleBackgroundRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SmallTitleBackgroundRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(SmallTitleBackgroundRed))) { Cheat::GUI::titleRect.r = CheatFunctions::StringToInt(SmallTitleBackgroundRed); } } }
+	if (SmallTitleBackgroundGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SmallTitleBackgroundGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(SmallTitleBackgroundGreen))) { Cheat::GUI::titleRect.g = CheatFunctions::StringToInt(SmallTitleBackgroundGreen); } } }
+	if (SmallTitleBackgroundBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SmallTitleBackgroundBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(SmallTitleBackgroundBlue))) { Cheat::GUI::titleRect.b = CheatFunctions::StringToInt(SmallTitleBackgroundBlue); } } }
+	if (SmallTitleBackgroundOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SmallTitleBackgroundOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(SmallTitleBackgroundOpacity))) { Cheat::GUI::titleRect.a = CheatFunctions::StringToInt(SmallTitleBackgroundOpacity); } } }
+	if (HeaderBackgroundRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(HeaderBackgroundRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(HeaderBackgroundRed))) { Cheat::GUI::headerRect.r = CheatFunctions::StringToInt(HeaderBackgroundRed); } } }
+	if (HeaderBackgroundGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(HeaderBackgroundGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(HeaderBackgroundGreen))) { Cheat::GUI::headerRect.g = CheatFunctions::StringToInt(HeaderBackgroundGreen); } } }
+	if (HeaderBackgroundBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(HeaderBackgroundBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(HeaderBackgroundBlue))) { Cheat::GUI::headerRect.b = CheatFunctions::StringToInt(HeaderBackgroundBlue); } } }
+	if (HeaderBackgroundOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(HeaderBackgroundOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(HeaderBackgroundOpacity))) { Cheat::GUI::headerRect.a = CheatFunctions::StringToInt(HeaderBackgroundOpacity); } } }
+	if (BottomLineRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(BottomLineRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(BottomLineRed))) { Cheat::GUI::TopAndBottomLine.r = CheatFunctions::StringToInt(BottomLineRed); } } }
+	if (BottomLineGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(BottomLineGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(BottomLineGreen))) { Cheat::GUI::TopAndBottomLine.g = CheatFunctions::StringToInt(BottomLineGreen); } } }
+	if (BottomLineBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(BottomLineBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(BottomLineBlue))) { Cheat::GUI::TopAndBottomLine.b = CheatFunctions::StringToInt(BottomLineBlue); } } }
+	if (BottomLineOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(BottomLineOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(BottomLineOpacity))) { Cheat::GUI::TopAndBottomLine.a = CheatFunctions::StringToInt(BottomLineOpacity); } } }
+	if (TitleBackgroundRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(TitleBackgroundRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(TitleBackgroundRed))) { Cheat::GUI::MainTitleRect.r = CheatFunctions::StringToInt(TitleBackgroundRed); } } }
+	if (TitleBackgroundGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(TitleBackgroundGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(TitleBackgroundGreen))) { Cheat::GUI::MainTitleRect.g = CheatFunctions::StringToInt(TitleBackgroundGreen); } } }
+	if (TitleBackgroundBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(TitleBackgroundBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(TitleBackgroundBlue))) { Cheat::GUI::MainTitleRect.b = CheatFunctions::StringToInt(TitleBackgroundBlue); } } }
+	if (TitleBackgroundOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(TitleBackgroundOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(TitleBackgroundOpacity))) { Cheat::GUI::MainTitleRect.a = CheatFunctions::StringToInt(TitleBackgroundOpacity); } } }
+	if (OptionTextRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(OptionTextRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(OptionTextRed))) { Cheat::GUI::optionText.r = CheatFunctions::StringToInt(OptionTextRed); } } }
+	if (OptionTextGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(OptionTextGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(OptionTextGreen))) { Cheat::GUI::optionText.g = CheatFunctions::StringToInt(OptionTextGreen); } } }
+	if (OptionTextBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(OptionTextBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(OptionTextBlue))) { Cheat::GUI::optionText.b = CheatFunctions::StringToInt(OptionTextBlue); } } }
+	if (OptionTextOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(OptionTextOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(OptionTextOpacity))) { Cheat::GUI::optionText.a = CheatFunctions::StringToInt(OptionTextOpacity); } } }
+	if (TitleBackgroundOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(TitleBackgroundOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(TitleBackgroundOpacity))) { Cheat::GUI::MainTitleRect.a = CheatFunctions::StringToInt(TitleBackgroundOpacity); } } }
+	if (SelectionBoxRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(SelectionBoxRed))) { Cheat::GUI::scroller.r = CheatFunctions::StringToInt(SelectionBoxRed); } } }
+	if (SelectionBoxGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(SelectionBoxGreen))) { Cheat::GUI::scroller.g = CheatFunctions::StringToInt(SelectionBoxGreen); } } }
+	if (SelectionBoxBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(SelectionBoxBlue))) { Cheat::GUI::scroller.b = CheatFunctions::StringToInt(SelectionBoxBlue); } } }
+	if (SelectionBoxOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(SelectionBoxOpacity))) { Cheat::GUI::scroller.a = CheatFunctions::StringToInt(SelectionBoxOpacity); } } }
+	if (SelectionBoxBackgroundRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxBackgroundRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(SelectionBoxBackgroundRed))) { Cheat::GUI::MenuBackgroundRect.r = CheatFunctions::StringToInt(SelectionBoxBackgroundRed); } } }
+	if (SelectionBoxBackgroundGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxBackgroundGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(SelectionBoxBackgroundGreen))) { Cheat::GUI::MenuBackgroundRect.g = CheatFunctions::StringToInt(SelectionBoxBackgroundGreen); } } }
+	if (SelectionBoxBackgroundBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxBackgroundBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(SelectionBoxBackgroundBlue))) { Cheat::GUI::MenuBackgroundRect.b = CheatFunctions::StringToInt(SelectionBoxBackgroundBlue); } } }
+	if (SelectionBoxBackgroundOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(SelectionBoxBackgroundOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(SelectionBoxBackgroundOpacity))) { Cheat::GUI::MenuBackgroundRect.a = CheatFunctions::StringToInt(SelectionBoxBackgroundOpacity); } } }
+	if (MenuBottomBackgroundRed != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(MenuBottomBackgroundRed)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(MenuBottomBackgroundRed))) { Cheat::GUI::MenuBottomRect.r = CheatFunctions::StringToInt(MenuBottomBackgroundRed); } } }
+	if (MenuBottomBackgroundGreen != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(MenuBottomBackgroundGreen)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(MenuBottomBackgroundGreen))) { Cheat::GUI::MenuBottomRect.g = CheatFunctions::StringToInt(MenuBottomBackgroundGreen); } } }
+	if (MenuBottomBackgroundBlue != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(MenuBottomBackgroundBlue)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(MenuBottomBackgroundBlue))) { Cheat::GUI::MenuBottomRect.b = CheatFunctions::StringToInt(MenuBottomBackgroundBlue); } } }
+	if (MenuBottomBackgroundOpacity != "NOT_FOUND") { if (Cheat::CheatFunctions::StringIsInteger(MenuBottomBackgroundOpacity)) { if (Cheat::CheatFunctions::IsIntegerInRange(0, 255, CheatFunctions::StringToInt(MenuBottomBackgroundOpacity))) { Cheat::GUI::MenuBottomRect.a = CheatFunctions::StringToInt(MenuBottomBackgroundOpacity); } } }
 
 	if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "show_header_background") == "true") { Cheat::GUI::ShowHeaderBackground = true; }
 	if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "show_header_gui") == "true") { Cheat::GUI::ShowHeaderGUI = true; } else { Cheat::GUI::ShowHeaderGUI = false; }
@@ -868,36 +868,36 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 
 	try
 	{ 
-		float X			= std::stod(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_x"));
-		float Y			= std::stod(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_y"));
-		float Width		= std::stod(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_width"));
+		float X			= std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_x"));
+		float Y			= std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_y"));
+		float Width		= std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_width"));
 
-		Cheat::GUI::keyPressDelay = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "key_press_delay"));
-		Cheat::CheatFeatures::BoolOptionVectorPosition = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "boolean_toggle"));
+		Cheat::GUI::keyPressDelay = CheatFunctions::StringToInt(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "key_press_delay"));
+		Cheat::CheatFeatures::BoolOptionVectorPosition = CheatFunctions::StringToInt(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "boolean_toggle"));
 
 		if (Cheat::CheatFunctions::IsIntegerInRange(0.110000, 0.86000, X))
 		{
-			Cheat::GUI::guiX = std::stod(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_x"));
+			Cheat::GUI::guiX = std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_x"));
 		}
 
 		if (Cheat::CheatFunctions::IsIntegerInRange(0.100000, 0.80000, Y))
 		{
-			Cheat::GUI::guiY = std::stod(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_y"));
+			Cheat::GUI::guiY = std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_y"));
 		}
 
 		if (Cheat::CheatFunctions::IsIntegerInRange(0.210000, 0.31000, Width))
 		{
-			Cheat::GUI::guiWidth = std::stod(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_width"));
+			Cheat::GUI::guiWidth = std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_width"));
 		}
 
-		Cheat::GUI::maxVisOptions = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "max_vis_options"));
+		Cheat::GUI::maxVisOptions = CheatFunctions::StringToInt(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "max_vis_options"));
 		if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "open_key") != "NOT_FOUND")
 		{
-			Cheat::GUI::OpenGUIKey = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "open_key"));
+			Cheat::GUI::OpenGUIKey = CheatFunctions::StringToInt(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "open_key"));
 		}
 		if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "cursor_navigation_toggle_key") != "NOT_FOUND")
 		{
-			Cheat::GUI::GUINavigationKey = std::stoi(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "cursor_navigation_toggle_key"));
+			Cheat::GUI::GUINavigationKey = CheatFunctions::StringToInt(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "cursor_navigation_toggle_key"));
 		}
 	}
 	catch (...) {}

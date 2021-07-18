@@ -476,8 +476,8 @@ void Cheat::CheatFunctions::CheckCheatUpdate()
 	int CurrentLocalVersion, LatestOnlineVersion;
 	if (StringIsInteger(CurrentLocalVersionString) && StringIsInteger(LatestOnlineVersionString))
 	{
-		CurrentLocalVersion = std::stoi(CurrentLocalVersionString);
-		LatestOnlineVersion = std::stoi(LatestOnlineVersionString);
+		CurrentLocalVersion = StringToInt(CurrentLocalVersionString);
+		LatestOnlineVersion = StringToInt(LatestOnlineVersionString);
 	}
 
 	if (CurrentLocalVersion < LatestOnlineVersion && (CurrentLocalVersion && LatestOnlineVersion != NULL))
@@ -497,4 +497,38 @@ std::string Cheat::CheatFunctions::RemoveCharactersFromStringAndReturn(std::stri
 		Temp.erase(remove(Temp.begin(), Temp.end(), CharactersToRemove[i]), Temp.end());
 	}
 	return Temp;
+}
+
+//https://www.geeksforgeeks.org/write-your-own-atoi/
+int Cheat::CheatFunctions::StringToInt(std::string String)
+{
+	int sign = 1, base = 0, i = 0;
+	while (String[i] == ' ')
+	{
+		i++;
+	}
+
+	if (String[i] == '-' || String[i] == '+')
+	{
+		sign = 1 - 2 * (String[i++] == '-');
+	}
+
+	while (String[i] >= '0' && String[i] <= '9')
+	{
+		if (base > INT_MAX / 10
+			|| (base == INT_MAX / 10
+				&& String[i] - '0' > 7))
+		{
+			if (sign == 1)
+			{
+				return INT_MAX;
+			}
+			else
+			{
+				return INT_MIN;
+			}
+		}
+		base = 10 * base + (String[i++] - '0');
+	}
+	return base * sign;
 }

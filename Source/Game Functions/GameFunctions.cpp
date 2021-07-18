@@ -381,14 +381,7 @@ char* Cheat::GameFunctions::DisplayKeyboardAndReturnInput(int MaxInput)
 
 int Cheat::GameFunctions::DisplayKeyboardAndReturnInputInteger(int MaxInput)
 {	
-	try
-	{
-		return std::stoi(DisplayKeyboardAndReturnInput(MaxInput));
-	}
-	catch (...)
-	{
-		return 0;
-	}
+	return CheatFunctions::StringToInt(DisplayKeyboardAndReturnInput(MaxInput));
 }
 
 void Cheat::GameFunctions::ClearAllAnimations()
@@ -1136,11 +1129,7 @@ int Cheat::GameFunctions::ReturnPlayerRockstarID(Player PlayerHandle)
 		RockstarIDBuffer = NETWORK::NETWORK_MEMBER_ID_FROM_GAMER_HANDLE(&NETWORK_HANDLE[0]);
 	}
 	else  { RockstarIDBuffer = "0"; }
-	try
-	{
-		return std::stoi(RockstarIDBuffer);
-	}
-	catch (...) { return 0; }
+	return CheatFunctions::StringToInt(RockstarIDBuffer);
 }
 
 std::string Cheat::GameFunctions::ReturnPlayerIPAddressAsString(Player PlayerHandle)

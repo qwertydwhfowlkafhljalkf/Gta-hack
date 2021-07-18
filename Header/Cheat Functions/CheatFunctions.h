@@ -23,54 +23,33 @@ namespace Cheat
 
 				if (TypeName == "bool")
 				{
-					try
+					std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
+					if (ConfigFileValue != "NOT_FOUND")
 					{
-						std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
-						if (ConfigFileValue != "NOT_FOUND")
-						{
-							ReturnedVariable = CheatFunctions::StringToBool(CheatFunctions::GetOptionValueFromConfig(OptionName));
-							Cheat::LogFunctions::DebugMessage("Loaded savable option (Boolean) '" + OptionName + "'");
-						}
-						LoadedOptionsVector.push_back(OptionName);
+						ReturnedVariable = CheatFunctions::StringToBool(CheatFunctions::GetOptionValueFromConfig(OptionName));
+						Cheat::LogFunctions::DebugMessage("Loaded savable option (Boolean) '" + OptionName + "'");
 					}
-					catch (...)
-					{
-						Cheat::LogFunctions::DebugMessage("Failed to load savable option (Boolean) '" + OptionName + "'");
-					}
+					LoadedOptionsVector.push_back(OptionName);
 				}
 				else if (TypeName == "int")
 				{
-					try
+					std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
+					if (ConfigFileValue != "NOT_FOUND")
 					{
-						std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
-						if (ConfigFileValue != "NOT_FOUND")
-						{
-							ReturnedVariable = std::stoi(CheatFunctions::GetOptionValueFromConfig(OptionName));
-							Cheat::LogFunctions::DebugMessage("Loaded savable option (Integer) '" + OptionName + "'");
-						}
-						LoadedOptionsVector.push_back(OptionName);
+						ReturnedVariable = CheatFunctions::StringToInt(CheatFunctions::GetOptionValueFromConfig(OptionName));
+						Cheat::LogFunctions::DebugMessage("Loaded savable option (Integer) '" + OptionName + "'");
 					}
-					catch (...)
-					{
-						Cheat::LogFunctions::DebugMessage("Failed to load savable option (Integer) '" + OptionName + "'");
-					}
+					LoadedOptionsVector.push_back(OptionName);
 				}
 				else if (TypeName == "float")
 				{
-					try
+					std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
+					if (ConfigFileValue != "NOT_FOUND")
 					{
-						std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
-						if (ConfigFileValue != "NOT_FOUND")
-						{
-							ReturnedVariable = std::stof(CheatFunctions::GetOptionValueFromConfig(OptionName));
-							Cheat::LogFunctions::DebugMessage("Loaded savable option (Float) '" + OptionName + "'");
-						}
-						LoadedOptionsVector.push_back(OptionName);
+						ReturnedVariable = std::stof(CheatFunctions::GetOptionValueFromConfig(OptionName));
+						Cheat::LogFunctions::DebugMessage("Loaded savable option (Float) '" + OptionName + "'");
 					}
-					catch (...)
-					{
-						Cheat::LogFunctions::DebugMessage("Failed to load savable option (Float) '" + OptionName + "'");
-					}
+					LoadedOptionsVector.push_back(OptionName);
 				}
 			}
 		}
@@ -101,5 +80,6 @@ namespace Cheat
 		std::string ReturnLatestCheatBuildNumber();
 		void CheckCheatUpdate();
 		std::string RemoveCharactersFromStringAndReturn(std::string String, char* CharactersToRemove);
+		int StringToInt(std::string String);
 	}
 }
