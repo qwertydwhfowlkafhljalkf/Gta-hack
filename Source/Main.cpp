@@ -40,10 +40,6 @@ void Cheat::FiberMain()
 			Cheat::GUI::MenuOption("World Options", worldmenu);
 			Cheat::GUI::MenuOption("Misc Options", miscmenu);
 			Cheat::GUI::MenuOption("Settings", SettingsMenu);
-			if (Cheat::GUI::Option("Throw Test", ""))
-			{
-				throw std::out_of_range("Out of range");
-			}
 		}
 		break;
 		case AllPlayersMenu:
@@ -3765,7 +3761,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		AddVectoredExceptionHandler(1, Cheat::ExceptionHandler);
 		DisableThreadLibraryCalls(hModule);
 		Cheat::CheatModuleHandle = hModule;
 		//Create 'gtav' directory
@@ -3779,32 +3774,4 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 		break;
 	}
 	return TRUE;
-}
-
-static LONG CALLBACK Cheat::ExceptionHandler(PEXCEPTION_POINTERS exInfo)
-{
-#pragma warning(disable : 6387 6273 4477 4313)
-	if (Cheat::CheatFunctions::NativeHandlerException) { return EXCEPTION_EXECUTE_HANDLER; }
-	static char UnhandledExMessage[256];
-	sprintf_s(UnhandledExMessage, 256, "Unhandled exception 0x%08x at 0x%08x", exInfo->ExceptionRecord->ExceptionCode, exInfo->ExceptionRecord->ExceptionAddress);
-	
-	SetForegroundWindow(GetConsoleWindow());
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-	std::cout << "\nException Caught"<<  std::endl;
-	std::cout << UnhandledExMessage << std::endl;
-	
-	//Write debug information to Exceptions.log
-	CheatFunctions::WriteToFile(CheatFunctions::ReturnExceptionsLogFilePath(),
-		CheatFunctions::ReturnDateTimeFormatAsString("\n\n%d-%m-%Y %H:%M:%S | Exception Caught\n") + (std::string)"\tException Information: "
-		+ UnhandledExMessage, std::ofstream::out | std::ofstream::app);
-
-	//Suspend game process
-	std::cout << "Suspended process to prevent crash. Please click this window's closing X to terminate it." << std::endl;
-	std::cout << "If you believe this exception is the result of a cheat bug, create an Issue on the Github repository" << std::endl;
-	std::cout << "Detailed exception information has been written to '" << CheatFunctions::ReturnExceptionsLogFilePath() << "'" << std::endl;
-	typedef LONG(NTAPI* NtSuspendProcess)(IN HANDLE ProcessHandle);
-	HANDLE processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, GetCurrentProcessId());
-	NtSuspendProcess pfnNtSuspendProcess = (NtSuspendProcess)GetProcAddress(GetModuleHandleA("ntdll"), "NtSuspendProcess");
-	pfnNtSuspendProcess(processHandle);
-	return EXCEPTION_EXECUTE_HANDLER;
 }

@@ -2,7 +2,6 @@
 
 bool Cheat::CheatFunctions::NewerCheatVersionAvailable = false;
 std::string Cheat::CheatFunctions::NewCheatVersionString;
-bool Cheat::CheatFunctions::NativeHandlerException = false;
 bool Cheat::CheatFunctions::LoadConfigThreadFunctionCompleted = false;
 std::vector <std::string> Cheat::CheatFunctions::LoadedOptionsVector;
 
@@ -46,11 +45,6 @@ const std::string Cheat::CheatFunctions::ReturnConfigFilePath()
 const std::string Cheat::CheatFunctions::ReturnMainLogFilePath()
 {
 	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Logs\\Main.log";
-}
-
-const std::string Cheat::CheatFunctions::ReturnExceptionsLogFilePath()
-{
-	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Logs\\Exceptions.log";
 }
 
 const std::string Cheat::CheatFunctions::ReturnChatLogFilePath()

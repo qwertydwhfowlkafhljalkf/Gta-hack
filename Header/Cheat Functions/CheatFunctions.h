@@ -6,12 +6,10 @@ namespace Cheat
 	{
 		extern bool NewerCheatVersionAvailable;
 		extern std::string NewCheatVersionString;
-		extern bool NativeHandlerException;
 		extern bool LoadConfigThreadFunctionCompleted;
 		extern std::vector <std::string> LoadedOptionsVector;
 		const std::string ReturnConfigFilePath();
 		const std::string ReturnMainLogFilePath();
-		const std::string ReturnExceptionsLogFilePath();
 		const std::string ReturnChatLogFilePath();
 		void LoadConfig();
 		bool IsOptionRegisteredAsLoaded(std::string OptionName);

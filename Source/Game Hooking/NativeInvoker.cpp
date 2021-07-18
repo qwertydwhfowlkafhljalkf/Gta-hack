@@ -23,7 +23,6 @@ uint64_t * nativeCall()
 		static void* exceptionAddress;
 		__try
 		{
-			Cheat::CheatFunctions::NativeHandlerException = true;
 			fn(&g_context);
 			scrNativeCallContext::SetVectorResults(&g_context);
 		}
@@ -33,7 +32,6 @@ uint64_t * nativeCall()
 			sprintf_s(Message, 256, "Failed to execute native 0x%016llx at address %p", g_hash, exceptionAddress);
 			Cheat::LogFunctions::Error(Message, false);
 		}
-		Cheat::CheatFunctions::NativeHandlerException = false;
 	}
 	return reinterpret_cast<uint64_t*>(g_context.GetResultPointer());
 }
