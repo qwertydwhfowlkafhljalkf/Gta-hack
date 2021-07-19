@@ -223,22 +223,22 @@ void Cheat::FiberMain()
 			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_BAD_CREW_STATUS"),	&BADCREWSTATUS,		-1);
 			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_BAD_CREW_EMBLEM"),	&BADCREWEMBLEM,		-1);
 			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_ISPUNISHED"),			&ISPUNISHED,		-1);
-			Cheat::GUI::Int("Report Strength", REPORTSTRENGTH, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Game Exploits", intexploits, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Offensive Language", intoffensive, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Offensive Tagplate", OFFENSIVETAGPLATE, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Offensive UGC", OFFENSIVEUGC, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Exploits", EXPLOITS, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Griefing", GRIEFING, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Friendly", FRIENDLY, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Helpful", HELPFUL, 0, 100, 0, true, "");
-			Cheat::GUI::Int("VC Annoying Me", VCANNOYINGME, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Vchate", VCHATE, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Bad Crew Name", BADCREWNAME, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Bad Crew Motto", BADCREWMOTTO, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Bad Crew Status", BADCREWSTATUS, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Bad Crew Emblem", BADCREWEMBLEM, 0, 100, 0, true, "");
-			Cheat::GUI::Int("Is Punished", ISPUNISHED, 0, 100, 0, true, "");
+			Cheat::GUI::Option("Report Strength: " + std::to_string(REPORTSTRENGTH), "");
+			Cheat::GUI::Option("Game Exploits: " + std::to_string(intexploits), "");
+			Cheat::GUI::Option("Offensive Language: " + std::to_string(intoffensive), "");
+			Cheat::GUI::Option("Offensive Tagplate: " + std::to_string(OFFENSIVETAGPLATE), "");
+			Cheat::GUI::Option("Offensive UGC: " + std::to_string(OFFENSIVEUGC), "");
+			Cheat::GUI::Option("Exploits: " + std::to_string(EXPLOITS), "");
+			Cheat::GUI::Option("Griefing: " + std::to_string(GRIEFING), "");
+			Cheat::GUI::Option("Friendly: " + std::to_string(FRIENDLY), "");
+			Cheat::GUI::Option("Helpful: " + std::to_string(HELPFUL), "");
+			Cheat::GUI::Option("VC Annoying Me: " + std::to_string(VCANNOYINGME), "");
+			Cheat::GUI::Option("Vchate: " + std::to_string(VCHATE), "");
+			Cheat::GUI::Option("Bad Crew Name: " + std::to_string(BADCREWNAME), "");
+			Cheat::GUI::Option("Bad Crew Motto: " + std::to_string(BADCREWMOTTO), "");
+			Cheat::GUI::Option("Bad Crew Status: " + std::to_string(BADCREWSTATUS), "");
+			Cheat::GUI::Option("Bad Crew Emblem: " + std::to_string(BADCREWEMBLEM), "");
+			Cheat::GUI::Option("Is Punished: " + std::to_string(ISPUNISHED), "");
 		}
 		break; 
 		case unlocksmenu:
