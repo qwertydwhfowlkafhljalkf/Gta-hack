@@ -47,7 +47,6 @@ namespace Cheat
 		void InstructionalKeysInit();
 		void InstructionsAdd(char* text, int button);
 		void InstructionsEnd();
-		void SetSessionTime(int h, int m, int s);
 		void ClearNearbyPedAnimations();
 		void DoNearbyPedsAnimation(char* AnimationName, char* AnimationID);
 		void DoLocalPedAnimation(char* AnimationName, char* AnimationID);

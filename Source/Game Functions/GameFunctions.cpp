@@ -941,12 +941,6 @@ void Cheat::GameFunctions::InstructionsEnd()
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 }
 
-void Cheat::GameFunctions::SetSessionTime(int h, int m, int s) 
-{
-	NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(h, m, s);
-	GameHooking::set_session_time_info(1, 0);
-}
-
 void Cheat::GameFunctions::AddBlipToVehicle(Vehicle Vehicle)
 {
 	RequestNetworkControlOfEntity(Vehicle);

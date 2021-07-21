@@ -1,10 +1,8 @@
 #pragma once
 
 typedef bool(__cdecl* IsDLCPresent)							(std::uint32_t dlcHash);
-typedef char* (__cdecl* SetSessionWeather)					(bool visibleToEveryone, int weatherId, int arg3, int arg4);
 typedef uint32_t*(__cdecl* fpFileRegister)					(int*, const char*, bool, const char*, bool);
 typedef BOOL(__cdecl* GetEventData)							(int eventGroup, int eventIndex, uint64_t* argStruct, int argStructSize);
-typedef void (__cdecl* SetSessionTime)						(int, int);
 using GetScriptHandlerIfNetworked							= void* (*) ();
 using GetScriptHandler										= void* (*) ();
 using GetLabelText = const char* (*)						(void* this_, const char* label);
@@ -16,13 +14,11 @@ class GameHooking
 public:
 	static uint64_t*						m_frameCount;
 	static IsDLCPresent					    is_dlc_present;
-	static SetSessionWeather				session_weather;
 	static fpFileRegister					m_fileregister;
 	static GetEventData						get_event_data;
 	static GetScriptHandlerIfNetworked		get_script_handler_if_networked;
 	static GetScriptHandler				    get_script_handler;
 	static GetLabelText						get_label_text;
-	static SetSessionTime					set_session_time_info;
 	static GetPlayerAddress					get_player_address;
 	static GetChatData					    get_chat_data;
 

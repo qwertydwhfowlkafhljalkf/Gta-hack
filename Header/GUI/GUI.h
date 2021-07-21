@@ -84,8 +84,6 @@ enum SubMenus
 	componentschangermenu,
 	SelectedPlayerMoneyMenu,
 	SelectedPlayerRemoteOptions,
-	sessionweathermenu,
-	sessiontimemenu,
 	SessionChatMenu,
 	vehicleweaponsmenu,
 	allplayers_trolloptionsmenu,

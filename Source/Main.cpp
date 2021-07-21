@@ -3,7 +3,6 @@ int Cheat::CheatFeatures::selectedPlayer;
 float TeleportFoward = 1.f;																					//Used by Teleport Forward option
 int engine_multiplier, torque_multiplier;																	//Used by Vehicle Multipliers options
 int SetTimeHour = 0, SetTimeMinutes = 0, SetTimeSeconds = 0;												//Used by World Time options	
-int SessionTimeHour, SessionTimeMinutes, SessionTimeSeconds;												//Used by Session Time option
 int VehiclePrimaryColorRed, VehiclePrimaryColorGreen, VehiclePrimaryColorBlue;								//Used by Vehicle Color features
 int VehicleSecondaryColorRed, VehicleSecondaryColorGreen, VehicleSecondaryColorBlue;						//Used by Vehicle Color features	
 int VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue;										//Used by Vehicle Color features	
@@ -141,8 +140,6 @@ void Cheat::FiberMain()
 		case sessionoptionsmenu:
 		{
 			Cheat::GUI::Title("Session Options");
-			Cheat::GUI::MenuOption("Session Weather", sessionweathermenu);
-			Cheat::GUI::MenuOption("Session Time", sessiontimemenu);
 			Cheat::GUI::MenuOption("Chat", SessionChatMenu);
 		}
 		break;
@@ -150,48 +147,6 @@ void Cheat::FiberMain()
 		{
 			Cheat::GUI::Title("Session Chat");
 			Cheat::GUI::Toggle("Log Chat Messages", Cheat::CheatFeatures::LogChatMessages, "Chat gets logged to console");
-		}
-		break;
-		case sessiontimemenu:
-		{
-			Cheat::GUI::Title("Session Time");
-			Cheat::GUI::Int("Hour", SessionTimeHour, 0, 23, 1, false);
-			Cheat::GUI::Int("Minutes", SessionTimeMinutes, 0, 59, 1, false);
-			Cheat::GUI::Int("Seconds", SessionTimeSeconds, 0, 59, 1, false);
-			if (Cheat::GUI::Option("Set Time", ""))
-			{
-				if (NETWORK::NETWORK_IS_SESSION_STARTED())
-				{
-					Cheat::GameFunctions::SetSessionTime(SessionTimeHour, SessionTimeMinutes, SessionTimeSeconds);
-				}
-			}
-		}
-		break;
-		case sessionweathermenu:
-		{
-			Cheat::GUI::Title("Session Weather");
-			if (NETWORK::NETWORK_IS_SESSION_STARTED())
-			{
-				if (Cheat::GUI::Option("Extra Sunny", "")) { GameHooking::session_weather(true, 0, 76, 0); }
-				if (Cheat::GUI::Option("Clear", "")) { GameHooking::session_weather(true, 1, 76, 0); }
-				if (Cheat::GUI::Option("Clouds", "")) { GameHooking::session_weather(true, 2, 76, 0); }
-				if (Cheat::GUI::Option("Smog", "")) { GameHooking::session_weather(true, 3, 76, 0); }
-				if (Cheat::GUI::Option("Foggy", "")) { GameHooking::session_weather(true, 4, 76, 0); }
-				if (Cheat::GUI::Option("Overcast", "")) { GameHooking::session_weather(true, 5, 76, 0); }
-				if (Cheat::GUI::Option("Rain", "")) { GameHooking::session_weather(true, 6, 76, 0); }
-				if (Cheat::GUI::Option("Thunder", "")) { GameHooking::session_weather(true, 7, 76, 0); }
-				if (Cheat::GUI::Option("Clearing", "")) { GameHooking::session_weather(true, 8, 76, 0); }
-				if (Cheat::GUI::Option("Neutral", "")) { GameHooking::session_weather(true, 9, 76, 0); }
-				if (Cheat::GUI::Option("Snow", "")) { GameHooking::session_weather(true, 10, 76, 0); }
-				if (Cheat::GUI::Option("Blizzard", "")) { GameHooking::session_weather(true, 11, 76, 0); }
-				if (Cheat::GUI::Option("Snowlight", "")) { GameHooking::session_weather(true, 12, 76, 0); }
-				if (Cheat::GUI::Option("Xmas", "")) { GameHooking::session_weather(true, 13, 76, 0); }
-				if (Cheat::GUI::Option("Halloween", "")) { GameHooking::session_weather(true, 14, 76, 0); }
-			}
-			else
-			{
-				Cheat::GUI::Break("GTA Online Only", false);
-			}
 		}
 		break; 
 		case statsoptionsmenu:
@@ -2285,11 +2240,12 @@ void Cheat::FiberMain()
 				int WaypointHandle = UI::GET_FIRST_BLIP_INFO_ID(8);
 				if (UI::DOES_BLIP_EXIST(WaypointHandle))
 				{
+					std::string VehicleName = "marshall";
 					Vector3 waypoint1 = UI::GET_BLIP_COORDS(UI::GET_FIRST_BLIP_INFO_ID(8));
-					STREAMING::REQUEST_MODEL(GAMEPLAY::GET_HASH_KEY("marshall"));
-					while (!STREAMING::HAS_MODEL_LOADED(GAMEPLAY::GET_HASH_KEY("marshall"))) GameHooking::PauseMainFiber(0);
+					STREAMING::REQUEST_MODEL(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleName)));
+					while (!STREAMING::HAS_MODEL_LOADED(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleName)))) { GameHooking::PauseMainFiber(0); }
 					Vector3 pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(Cheat::GameFunctions::PlayerPedID, 0.0, 5.0, 0);
-					Vehicle veh = VEHICLE::CREATE_VEHICLE(GAMEPLAY::GET_HASH_KEY("marshall"), pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(Cheat::GameFunctions::PlayerPedID), 1, 1);
+					Vehicle veh = VEHICLE::CREATE_VEHICLE(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleName)), pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(Cheat::GameFunctions::PlayerPedID), 1, 1);
 					if (veh != 0)
 					{
 						Ped Driver = PED::CREATE_RANDOM_PED_AS_DRIVER(veh, false);
@@ -3281,9 +3237,7 @@ void Cheat::FiberMain()
 			if (Cheat::GUI::Option("Enable All", "Enable all protection options")) {
 				Cheat::CheatFeatures::ProtectionVoteKickBool = true;
 				Cheat::CheatFeatures::ProtectionFreezeBool = true;
-				Cheat::CheatFeatures::ProtectionSessionWeatherBool = true;
 				Cheat::CheatFeatures::ProtectionGiveRemoveWeaponsBool = true;
-				Cheat::CheatFeatures::ProtectionSessionTimeBool = true;
 				Cheat::CheatFeatures::ProtectionWorldEventsBool = true;
 				Cheat::CheatFeatures::ProtectionAlterWantedLevelBool = true;
 				Cheat::CheatFeatures::ProtectionVehicleBool = true;
@@ -3292,9 +3246,7 @@ void Cheat::FiberMain()
 			if (Cheat::GUI::Option("Disable All", "Disable all protection options")) {
 				Cheat::CheatFeatures::ProtectionVoteKickBool = false;
 				Cheat::CheatFeatures::ProtectionFreezeBool = false;
-				Cheat::CheatFeatures::ProtectionSessionWeatherBool = false;
 				Cheat::CheatFeatures::ProtectionGiveRemoveWeaponsBool = false;
-				Cheat::CheatFeatures::ProtectionSessionTimeBool = false;
 				Cheat::CheatFeatures::ProtectionWorldEventsBool = false;
 				Cheat::CheatFeatures::ProtectionAlterWantedLevelBool = false;
 				Cheat::CheatFeatures::ProtectionVehicleBool = false;
@@ -3304,8 +3256,6 @@ void Cheat::FiberMain()
 			Cheat::GUI::Toggle("Remote Events -> Block All", Cheat::CheatFeatures::BlockAllScriptEvents, "Join GTAO before enabling", false);
 			Cheat::GUI::Toggle("Vote Kick", Cheat::CheatFeatures::ProtectionVoteKickBool, "");
 			Cheat::GUI::Toggle("Freeze", Cheat::CheatFeatures::ProtectionFreezeBool, "");
-			Cheat::GUI::Toggle("Session Weather", Cheat::CheatFeatures::ProtectionSessionWeatherBool, "");
-			Cheat::GUI::Toggle("Session Time", Cheat::CheatFeatures::ProtectionSessionTimeBool, "");
 			Cheat::GUI::Toggle("Give/Remove Weapons", Cheat::CheatFeatures::ProtectionGiveRemoveWeaponsBool, "");
 			Cheat::GUI::Toggle("Alter Wanted Level", Cheat::CheatFeatures::ProtectionAlterWantedLevelBool, "");
 			Cheat::GUI::Toggle("World Events", Cheat::CheatFeatures::ProtectionWorldEventsBool, "Fire, explosions and more");

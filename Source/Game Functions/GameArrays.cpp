@@ -676,8 +676,6 @@ const std::vector<std::string> Cheat::GameArrays::PedModels = {
 	"U_M_Y_Ushi"
 };
 
-
-
 const std::vector<std::string> Cheat::GameArrays::BoatModels = {
 	"DINGHY", "DINGHY2", "DINGHY3", "DINGHY4", "JETMAX",
 	"MARQUIS", "PREDATOR", "SEASHARK", "SEASHARK2", "SEASHARK3",

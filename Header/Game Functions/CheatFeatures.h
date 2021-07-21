@@ -66,12 +66,8 @@ namespace Cheat
 		void ProtectionVehicle(bool toggle);
 		extern bool ProtectionAlterWantedLevelBool;
 		void ProtectionAlterWantedLevel(bool toggle);
-		extern bool ProtectionSessionTimeBool;
-		void ProtectionSessionTime(bool toggle);
 		extern bool ProtectionGiveRemoveWeaponsBool;
 		void ProtectionGiveRemoveWeapons(bool toggle);
-		extern bool ProtectionSessionWeatherBool;
-		void ProtectionSessionWeather(bool toggle);
 		extern bool SuperJumpBool;
 		void SuperJump();
 		extern bool PlayerForceFieldBool;

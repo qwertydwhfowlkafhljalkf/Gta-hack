@@ -3,9 +3,7 @@
 HANDLE MainFiber;
 uint64_t*															GameHooking::m_frameCount;
 IsDLCPresent														GameHooking::is_dlc_present;
-SetSessionWeather													GameHooking::session_weather;
 GetEventData														GameHooking::get_event_data;
-SetSessionTime														GameHooking::set_session_time_info;
 GetLabelText														GameHooking::get_label_text = nullptr;
 GetScriptHandlerIfNetworked											GameHooking::get_script_handler_if_networked = nullptr;
 GetScriptHandler													GameHooking::get_script_handler = nullptr;
@@ -99,9 +97,6 @@ bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argS
 GetChatData GetChatDataOriginal = nullptr;
 __int64 GetChatDataHooked(__int64 a1, __int64 a2, __int64 a3, const char* origText, BOOL isTeam)
 {
-	//__int8 ChatMessageCheat::GameFunctions::PlayerID = *(std::int8_t*)((a3, a2, a3) + 0x2D); //TODO: Invalid Player ID Offset?
-	//std::string ChatMessagePlayerName = PLAYER::GET_PLAYER_NAME(ChatMessageCheat::GameFunctions::PlayerID);
-
 	if (Cheat::CheatFeatures::LogChatMessages)
 	{
 		Cheat::CheatFunctions::WriteToFile(Cheat::CheatFunctions::ReturnChatLogFilePath(), Cheat::CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] Message: ") + (std::string)origText + "\n", std::ofstream::out | std::ofstream::app);
@@ -342,19 +337,16 @@ void GameHooking::DoGameHooking()
 	//Set Patterns
 	setPat<uint64_t>("frame_count", "\x8B\x15\x00\x00\x00\x00\x41\xFF\xCF", "xx????xxx", &GameHooking::m_frameCount, true, 2); 
 	setFn<IsDLCPresent>("is_dlc_present", "\x48\x89\x5C\x24\x00\x57\x48\x83\xEC\x20\x81\xF9\x00\x00\x00\x00", "xxxx?xxxxxxx????", &GameHooking::is_dlc_present);
-	setFn<SetSessionWeather>("session_weather", "\x48\x89\x5C\x24\x00\x48\x89\x6C\x24\x00\x48\x89\x74\x24\x00\x57\x48\x83\xEC\x30\x40\x8A\xE9", "xxxx?xxxx?xxxx?xxxxxxxx", &GameHooking::session_weather);
 	setFn<GetEventData>("get_event_data", "\x48\x89\x5C\x24\x00\x57\x48\x83\xEC\x20\x49\x8B\xF8\x4C\x8D\x05\x00\x00\x00\x00\x41\x8B\xD9\xE8\x00\x00\x00\x00\x48\x85\xC0\x74\x14\x4C\x8B\x10\x44\x8B\xC3\x48\x8B\xD7\x41\xC1\xE0\x03\x48\x8B\xC8\x41\xFF\x52\x30\x48\x8B\x5C\x24\x00", "xxxx?xxxxxxxxxxx????xxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxx?", &GameHooking::get_event_data);
-	setFn<SetSessionTime>("session_time_set", "\x48\x89\x5C\x24\x08\x57\x48\x83\xEC\x20\x8B\xF9\x48\x8B\x0D\x00\x00\x00\x00\x48\x8B\xDA\x33\xD2\xE9\x00\x00\x00\x00", "xxxxxxxxxxxxxxx????xxxxxx????", &GameHooking::set_session_time_info);
 	setFn<GetPlayerAddress>("get_player_address", "\x40\x53\x48\x83\xEC\x20\x33\xDB\x38\x1D\x00\x00\x00\x00\x74\x1C", "xxxxxxxxxx????xx", &GameHooking::get_player_address);
 	setFn<GetChatData>("get_chat_data", "\x4D\x85\xC9\x0F\x84\x00\x00\x00\x00\x48\x8B\xC4\x48\x89\x58\x08\x48\x89\x70\x10\x48\x89\x78\x18\x4C\x89\x48\x20\x55\x41\x54\x41\x55\x41\x56\x41\x57\x48\x8D\xA8", "xxxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", &get_chat_data);
 
-
 	//Hook GameState
-	Cheat::LogFunctions::DebugMessage("Load 'GameState'");
+	//Cheat::LogFunctions::DebugMessage("Load 'GameState'");
 	char* c_location = nullptr;
 	void* v_location = nullptr;
-	c_location = Memory::pattern("83 3D ? ? ? ? ? 8A D9 74 0A").count(1).get(0).get<char>(2);
-	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook GameState", true) : m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5);
+	//c_location = Memory::pattern("48 85 C9 74 4B 83 3D").count(1).get(0).get<char>(2);
+	//c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook GameState", true) : m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5);
 	
 	//Hook Vector3 Bypass
 	Cheat::LogFunctions::DebugMessage("Load 'Vector3 Bypass'");
@@ -423,6 +415,7 @@ void GameHooking::DoGameHooking()
 	Cheat::LogFunctions::DebugMessage("Initialized MinHook");
 	if (MH_Initialize() != MH_OK) { Cheat::LogFunctions::Error("Failed to initialize MinHook", true); std::exit(EXIT_SUCCESS); }
 
+	/*
 	bool WaitingGameLoadLogPrinted = false;
 	while (*m_gameState != GameStatePlaying)
 	{
@@ -433,6 +426,7 @@ void GameHooking::DoGameHooking()
 		}
 		Sleep(100);
 	}
+	*/
 
 	Cheat::LogFunctions::Message("Game Completed Loading");
 

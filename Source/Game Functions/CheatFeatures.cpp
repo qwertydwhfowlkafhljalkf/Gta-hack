@@ -104,9 +104,7 @@ void Cheat::CheatFeatures::Looped()
 	ProtectionWorldEventsBool ? ProtectionWorldEvents(true) : ProtectionWorldEvents(false);
 	ProtectionVehicleBool ? ProtectionVehicle(true) : ProtectionVehicle(false);
 	ProtectionAlterWantedLevelBool ? ProtectionAlterWantedLevel(true) : ProtectionAlterWantedLevel(false);
-	ProtectionSessionTimeBool ? ProtectionSessionTime(true) : ProtectionSessionTime(false);
 	ProtectionGiveRemoveWeaponsBool ? ProtectionGiveRemoveWeapons(true) : ProtectionGiveRemoveWeapons(false);
-	ProtectionSessionWeatherBool ? ProtectionSessionWeather(true) : ProtectionSessionWeather(false);
 	SuperJumpBool ? SuperJump() : NULL;
 	PlayerForceFieldBool ? PlayerForceField() : NULL;
 	FastRunBool ? FastRun(true) : FastRun(false);
@@ -409,24 +407,12 @@ void Cheat::CheatFeatures::ProtectionAlterWantedLevel(bool toggle)
 	GameHooking::defuseEvent(ALTER_WANTED_LEVEL_EVENT, toggle);
 }
 
-bool Cheat::CheatFeatures::ProtectionSessionTimeBool = false;
-void Cheat::CheatFeatures::ProtectionSessionTime(bool toggle)
-{
-	GameHooking::defuseEvent(GAME_CLOCK_EVENT, toggle);
-}
-
 bool Cheat::CheatFeatures::ProtectionGiveRemoveWeaponsBool = false;
 void Cheat::CheatFeatures::ProtectionGiveRemoveWeapons(bool toggle)
 {
 	GameHooking::defuseEvent(GIVE_WEAPON_EVENT, toggle);
 	GameHooking::defuseEvent(REMOVE_WEAPON_EVENT, toggle);
 	GameHooking::defuseEvent(REMOVE_ALL_WEAPONS_EVENT, toggle);
-}
-
-bool Cheat::CheatFeatures::ProtectionSessionWeatherBool = false;
-void Cheat::CheatFeatures::ProtectionSessionWeather(bool toggle)
-{
-	GameHooking::defuseEvent(GAME_WEATHER_EVENT, toggle);
 }
 
 bool Cheat::CheatFeatures::SuperJumpBool = false;
@@ -801,7 +787,7 @@ void Cheat::CheatFeatures::UnlimitedSpecialAbility()
 {
 	if (!NETWORK::NETWORK_IS_SESSION_STARTED())
 	{ 
-		if (!PLAYER::IS_SPECIAL_ABILITY_METER_FULL(Cheat::GameFunctions::PlayerID))
+		if (PLAYER::IS_SPECIAL_ABILITY_ENABLED(Cheat::GameFunctions::PlayerID))
 		{
 			PLAYER::SPECIAL_ABILITY_FILL_METER(Cheat::GameFunctions::PlayerID, true);
 		}
