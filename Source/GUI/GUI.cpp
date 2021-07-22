@@ -220,13 +220,13 @@ bool Cheat::GUI::Break(std::string option, bool TextCentered)
 
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
-		if (TextCentered) { GUI::Drawing::Text(option, GUI::breakText, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount) * 0.035f - 0.175f }, { 0.35f, 0.35f }, TextCentered); }
+		if (TextCentered) { GUI::Drawing::Text("[" + option + "]", GUI::breakText, {Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount) * 0.035f - 0.175f}, {0.35f, 0.35f}, TextCentered); }
 		else { GUI::Drawing::Text(option, GUI::breakText, { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount) * 0.035f - 0.175f }, { 0.35f, 0.35f }, TextCentered); }
 		GUI::Drawing::Rect(GUI::MenuBackgroundRect, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount) * 0.035f - 0.1585f }, { Cheat::GUI::guiWidth, 0.035f });
 	}
 	else if (GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions) && GUI::optionCount <= GUI::currentOption)
 	{
-		if (TextCentered) { GUI::Drawing::Text(option, GUI::breakText, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.175f }, { 0.35f, 0.35f }, TextCentered); }
+		if (TextCentered) { GUI::Drawing::Text("[" + option + "]", GUI::breakText, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.175f }, { 0.35f, 0.35f }, TextCentered); }
 		else { GUI::Drawing::Text(option, GUI::breakText, { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.175f }, { 0.35f, 0.35f }, TextCentered); }
 		GUI::Drawing::Rect(GUI::MenuBackgroundRect, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions))*0.035f - 0.1585f }, { Cheat::GUI::guiWidth, 0.035f });
 	}
@@ -358,7 +358,7 @@ bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step,
 
 	if (Option(option, InformationText, Disabled))
 	{
-		int KeyBoardInput = Cheat::GameFunctions::DisplayKeyboardAndReturnInputInteger(CheatFunctions::ReturnNumberOfDigitsInValue(max));
+		int KeyBoardInput = Cheat::GameFunctions::DisplayKeyboardAndReturnInputInteger(CheatFunctions::ReturnNumberOfDigitsInValue(max), "Enter custom number");
 		if (KeyBoardInput >= min && KeyBoardInput <= max)
 		{
 			_int = KeyBoardInput;

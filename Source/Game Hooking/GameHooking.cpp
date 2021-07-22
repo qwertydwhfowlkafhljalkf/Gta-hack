@@ -56,6 +56,10 @@ const char* GetLabelTextHooked(void* this_, const char* label)
 	if (std::strcmp(label, "PM_GO") == 0)			{ return "Go Online with GTAV Cheat"; }
 	if (std::strcmp(label, "PM_FRIEND_FM") == 0)	{ return "Join Friend with GTAV Cheat"; }
 	if (std::strcmp(label, "PM_FIND_SESS") == 0)	{ return "Find New Session with GTAV Cheat"; }
+	if (!Cheat::GameFunctions::InGameKeyboardWindowTitle.empty())
+	{
+		if (std::strcmp(label, "FMMC_KEY_TIP8") == 0) { return Cheat::CheatFunctions::StringToChar(Cheat::GameFunctions::InGameKeyboardWindowTitle); }
+	}
 	return GetLabelTextOriginal(this_, label);
 }
 
@@ -347,7 +351,7 @@ void GameHooking::DoGameHooking()
 	c_location = Memory::pattern("83 3D ? ? ? ? ? 75 17 8B 43 20 25").count(1).get(0).get<char>(2);
 	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook GameState", true) : m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5);
 	
-	//Hook Vector3 Bypass
+	//Hook Vector3 Result Fix
 	Cheat::LogFunctions::DebugMessage("Load 'Vector3 Bypass'");
 	v_location = Memory::pattern("83 79 18 00 48 8B D1 74 4A FF 4A 18").count(1).get(0).get<void>(0);
 	if (v_location != nullptr) scrNativeCallContext::SetVectorResults = (void(*)(scrNativeCallContext*))(v_location);
@@ -363,9 +367,9 @@ void GameHooking::DoGameHooking()
 	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook World Pointer", true) : m_worldPtr = reinterpret_cast<uint64_t>(c_location) + *reinterpret_cast<int*>(reinterpret_cast<uint64_t>(c_location) + 3) + 7;
 
 	//Hook Game Blip List
-	Cheat::LogFunctions::DebugMessage("Load 'Blip List'");
-	c_location = Memory::pattern("4C 8D 05 ? ? ? ? 0F B7 C1").count(1).get(0).get<char>(0);
-	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook Blip List", true) : m_blipList = (BlipList*)(c_location + *reinterpret_cast<int*>(c_location + 3) + 7);
+	//Cheat::LogFunctions::DebugMessage("Load 'Blip List'");
+	//c_location = Memory::pattern("4C 8D 05 ? ? ? ? 0F B7 C1").count(1).get(0).get<char>(0);
+	//c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook Blip List", true) : m_blipList = (BlipList*)(c_location + *reinterpret_cast<int*>(c_location + 3) + 7);
 
 	//Hook Active Game Thread
 	Cheat::LogFunctions::DebugMessage("Load 'Active Game Thread'");

@@ -6,6 +6,7 @@ namespace Cheat
 	{
 		extern Player PlayerID;
 		extern Ped PlayerPedID;
+		extern std::string InGameKeyboardWindowTitle;
 		void GiveAllWeaponsToPlayer(Ped Player);
 		void RepairAndCleanVehicle();
 		void SubtitleNotification(char* Message, int ShowDuration = 4000);
@@ -31,8 +32,8 @@ namespace Cheat
 		void GetCameraDirection(float* dirX, float* dirY, float* dirZ);
 		void RequestNetworkControlOfEntity(Entity entity);
 		void ClonePed(Ped ped);
-		char* DisplayKeyboardAndReturnInput(int MaxInput);
-		int DisplayKeyboardAndReturnInputInteger(int MaxInput);
+		char* DisplayKeyboardAndReturnInput(int MaxInput, std::string Title);
+		int DisplayKeyboardAndReturnInputInteger(int MaxInput, std::string Title);
 		void ClearAllAnimations();
 		void ShowPlayerInformationBox(Player PlayerID);
 		float Get3DDistance(Vector3 a, Vector3 b);
