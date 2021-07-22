@@ -333,7 +333,6 @@ void GameHooking::DoGameHooking()
 	GameHooking::get_script_handler_if_networked = static_cast<GetScriptHandlerIfNetworked>(Memory::pattern("40 53 48 83 EC 20 E8 ? ? ? ? 48 8B D8 48 85 C0 74 12 48 8B 10 48 8B C8").count(1).get(0).get<void>(0));
 	GameHooking::get_script_handler				 = static_cast<GetScriptHandler>(Memory::pattern("48 83 EC 28 E8 ? ? ? ? 33 C9 48 85 C0 74 0C E8 ? ? ? ? 48 8B 88 ? ? ? ?").count(1).get(0).get<void>(0));
 
-
 	//Set Patterns
 	setPat<uint64_t>("frame_count", "\x8B\x15\x00\x00\x00\x00\x41\xFF\xCF", "xx????xxx", &GameHooking::m_frameCount, true, 2); 
 	setFn<IsDLCPresent>("is_dlc_present", "\x48\x89\x5C\x24\x00\x57\x48\x83\xEC\x20\x81\xF9\x00\x00\x00\x00", "xxxx?xxxxxxx????", &GameHooking::is_dlc_present);
@@ -342,11 +341,11 @@ void GameHooking::DoGameHooking()
 	setFn<GetChatData>("get_chat_data", "\x4D\x85\xC9\x0F\x84\x00\x00\x00\x00\x48\x8B\xC4\x48\x89\x58\x08\x48\x89\x70\x10\x48\x89\x78\x18\x4C\x89\x48\x20\x55\x41\x54\x41\x55\x41\x56\x41\x57\x48\x8D\xA8", "xxxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", &get_chat_data);
 
 	//Hook GameState
-	//Cheat::LogFunctions::DebugMessage("Load 'GameState'");
+	Cheat::LogFunctions::DebugMessage("Load 'GameState'");
 	char* c_location = nullptr;
 	void* v_location = nullptr;
-	//c_location = Memory::pattern("48 85 C9 74 4B 83 3D").count(1).get(0).get<char>(2);
-	//c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook GameState", true) : m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5);
+	c_location = Memory::pattern("83 3D ? ? ? ? ? 75 17 8B 43 20 25").count(1).get(0).get<char>(2);
+	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook GameState", true) : m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5);
 	
 	//Hook Vector3 Bypass
 	Cheat::LogFunctions::DebugMessage("Load 'Vector3 Bypass'");
@@ -415,7 +414,6 @@ void GameHooking::DoGameHooking()
 	Cheat::LogFunctions::DebugMessage("Initialized MinHook");
 	if (MH_Initialize() != MH_OK) { Cheat::LogFunctions::Error("Failed to initialize MinHook", true); std::exit(EXIT_SUCCESS); }
 
-	/*
 	bool WaitingGameLoadLogPrinted = false;
 	while (*m_gameState != GameStatePlaying)
 	{
@@ -426,7 +424,6 @@ void GameHooking::DoGameHooking()
 		}
 		Sleep(100);
 	}
-	*/
 
 	Cheat::LogFunctions::Message("Game Completed Loading");
 
