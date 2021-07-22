@@ -3116,7 +3116,7 @@ void Cheat::FiberMain()
 			Cheat::GUI::Toggle("Super Man", Cheat::CheatFeatures::SuperManBool, "Fly around like a superman!");
 			if (Cheat::GUI::Int("Player Opacity", Cheat::CheatFeatures::PlayerOpacityInt, 50, 250, 50, false, "Changes local player opacity")) { ENTITY::SET_ENTITY_ALPHA(Cheat::GameFunctions::PlayerPedID, (Cheat::CheatFeatures::PlayerOpacityInt), false); }
 			if (Cheat::GUI::Option("Suicide", "Kill your character")) { PED::APPLY_DAMAGE_TO_PED(Cheat::GameFunctions::PlayerPedID, 300, true); }
-			if (Cheat::GUI::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(2540384).At(4620).As<int>() = 1; }
+			if (Cheat::GUI::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(2441237).At(4013).As<int>() = 1; }
 			if (Cheat::GUI::Option("Clean Player", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(Cheat::GameFunctions::PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(Cheat::GameFunctions::PlayerPedID); Cheat::GameFunctions::MinimapNotification("Player Cleaned"); }	
 		}
 		break;

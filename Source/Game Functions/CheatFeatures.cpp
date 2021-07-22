@@ -46,7 +46,7 @@ void Cheat::CheatFeatures::NonLooped()
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 
 	//Load MP vehicles in SP bypass
-	globalHandle(4269479).As<BOOL>() = true;
+	globalHandle(4270934).As<BOOL>() = true;
 }
 
 void Cheat::CheatFeatures::Looped()
@@ -982,14 +982,12 @@ void Cheat::CheatFeatures::PlayerESP()
 	}
 }
 
-
 bool Cheat::CheatFeatures::OffRadarBool = false;
 void Cheat::CheatFeatures::OffRadar()
 {
-	globalHandle(2426097).At(1 + (Cheat::GameFunctions::PlayerID * 443)).At(204).As<int>() = 1;
-	globalHandle(2440277).At(70).As<int>() = NETWORK::GET_NETWORK_TIME();
+	globalHandle(2426865).At(1 + (Cheat::GameFunctions::PlayerID * 449)).At(209).As<int>() = 1;
+	globalHandle(2441237).At(70).As<int>() = NETWORK::GET_NETWORK_TIME();
 }
-
 
 bool Cheat::CheatFeatures::ExplodeLoopSelectedPlayerBool = false;
 void Cheat::CheatFeatures::ExplodeLoopSelectedPlayer()
@@ -997,7 +995,6 @@ void Cheat::CheatFeatures::ExplodeLoopSelectedPlayer()
 	Vector3 SelectedPlayerPedCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer), false);
 	FIRE::ADD_EXPLOSION(SelectedPlayerPedCoords.x, SelectedPlayerPedCoords.y, SelectedPlayerPedCoords.z, 0, 0.0f, true, false, 10.0f);
 }
-
 
 bool Cheat::CheatFeatures::DriveOnWaterBool = false;
 void Cheat::CheatFeatures::DriveOnWater()
@@ -1116,9 +1113,9 @@ void Cheat::CheatFeatures::NoIdleKick()
 bool Cheat::CheatFeatures::BribeAuthoritiesBool = false;
 void Cheat::CheatFeatures::BribeAuthorities()
 {
-	globalHandle(2540612).At(4619).As<int>() = 5;
-	globalHandle(2540612).At(4620).As<int>() = 1;
-	globalHandle(2540612).At(4622).As<int>() = NETWORK::GET_NETWORK_TIME();
+	globalHandle(2544210).At(4622).As<int>() = 5;
+	globalHandle(2544210).At(4623).As<int>() = 1;
+	globalHandle(2544210).At(4625).As<int>() = NETWORK::GET_NETWORK_TIME();
 }
 
 int Cheat::CheatFeatures::MoneyDropDelay = 50;

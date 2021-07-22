@@ -503,7 +503,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 			Cheat::GUI::AddPlayerInfoBoxTextEntry(PlayerRank.str(), NULL, 2);
 
 			std::ostringstream PlayerMoney;
-			PlayerMoney << "$" << globalHandle(1590535).At(PlayerID, 876).At(211).At(56).As<__int64>();
+			PlayerMoney << "$" << globalHandle(1590908).At(PlayerID, 874).At(205).At(56).As<__int64>();
 			Cheat::GUI::AddPlayerInfoBoxTextEntry(PlayerMoney.str(), NULL, 3);
 		}
 		else
