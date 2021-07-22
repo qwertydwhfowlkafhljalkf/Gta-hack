@@ -1,7 +1,6 @@
 #include "../Header/Main.h"
 
 HANDLE MainFiber;
-uint64_t*															GameHooking::m_frameCount;
 IsDLCPresent														GameHooking::is_dlc_present;
 GetEventData														GameHooking::get_event_data;
 GetLabelText														GameHooking::get_label_text = nullptr;
@@ -11,7 +10,6 @@ GetPlayerAddress													GameHooking::get_player_address;
 GetChatData														    GameHooking::get_chat_data;
 static eGameState* 													m_gameState;
 static uint64_t														m_worldPtr;
-static BlipList*													m_blipList;
 static GameHooking::NativeRegistrationNew**							m_registrationTable;
 static std::unordered_map<uint64_t, GameHooking::NativeHandler>		m_handlerCache;
 static __int64**													m_globalPtr;
@@ -28,10 +26,10 @@ IsDLCPresent IsDLCPresentOriginal = nullptr;
 bool IsDLCPresentHooked(std::uint32_t DLCHash)
 {
 	static uint64_t	Last = 0;
-	uint64_t cur = *GameHooking::m_frameCount;
-	if (Last != cur)
+	uint64_t Current = GAMEPLAY::GET_FRAME_COUNT();
+	if (Last != Current)
 	{
-		Last = cur;
+		Last = Current;
 		GameHooking::onTickInit();
 	}
 	if (DLCHash == 2532323046 && Cheat::CheatFeatures::GTAODeveloperMode) { return true; }
@@ -338,7 +336,6 @@ void GameHooking::DoGameHooking()
 	GameHooking::get_script_handler				 = static_cast<GetScriptHandler>(Memory::pattern("48 83 EC 28 E8 ? ? ? ? 33 C9 48 85 C0 74 0C E8 ? ? ? ? 48 8B 88 ? ? ? ?").count(1).get(0).get<void>(0));
 
 	//Set Patterns
-	setPat<uint64_t>("frame_count", "\x8B\x15\x00\x00\x00\x00\x41\xFF\xCF", "xx????xxx", &GameHooking::m_frameCount, true, 2); 
 	setFn<IsDLCPresent>("is_dlc_present", "\x48\x89\x5C\x24\x00\x57\x48\x83\xEC\x20\x81\xF9\x00\x00\x00\x00", "xxxx?xxxxxxx????", &GameHooking::is_dlc_present);
 	setFn<GetEventData>("get_event_data", "\x48\x89\x5C\x24\x00\x57\x48\x83\xEC\x20\x49\x8B\xF8\x4C\x8D\x05\x00\x00\x00\x00\x41\x8B\xD9\xE8\x00\x00\x00\x00\x48\x85\xC0\x74\x14\x4C\x8B\x10\x44\x8B\xC3\x48\x8B\xD7\x41\xC1\xE0\x03\x48\x8B\xC8\x41\xFF\x52\x30\x48\x8B\x5C\x24\x00", "xxxx?xxxxxxxxxxx????xxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxx?", &GameHooking::get_event_data);
 	setFn<GetPlayerAddress>("get_player_address", "\x40\x53\x48\x83\xEC\x20\x33\xDB\x38\x1D\x00\x00\x00\x00\x74\x1C", "xxxxxxxxxx????xx", &GameHooking::get_player_address);
@@ -352,7 +349,7 @@ void GameHooking::DoGameHooking()
 	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook GameState", true) : m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5);
 	
 	//Hook Vector3 Result Fix
-	Cheat::LogFunctions::DebugMessage("Load 'Vector3 Bypass'");
+	Cheat::LogFunctions::DebugMessage("Load 'Vector3 Result Fix'");
 	v_location = Memory::pattern("83 79 18 00 48 8B D1 74 4A FF 4A 18").count(1).get(0).get<void>(0);
 	if (v_location != nullptr) scrNativeCallContext::SetVectorResults = (void(*)(scrNativeCallContext*))(v_location);
 
@@ -365,11 +362,6 @@ void GameHooking::DoGameHooking()
 	Cheat::LogFunctions::DebugMessage("Load 'World Pointer'");
 	c_location = Memory::pattern("48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07").count(1).get(0).get<char>(0);
 	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook World Pointer", true) : m_worldPtr = reinterpret_cast<uint64_t>(c_location) + *reinterpret_cast<int*>(reinterpret_cast<uint64_t>(c_location) + 3) + 7;
-
-	//Hook Game Blip List
-	//Cheat::LogFunctions::DebugMessage("Load 'Blip List'");
-	//c_location = Memory::pattern("4C 8D 05 ? ? ? ? 0F B7 C1").count(1).get(0).get<char>(0);
-	//c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook Blip List", true) : m_blipList = (BlipList*)(c_location + *reinterpret_cast<int*>(c_location + 3) + 7);
 
 	//Hook Active Game Thread
 	Cheat::LogFunctions::DebugMessage("Load 'Active Game Thread'");

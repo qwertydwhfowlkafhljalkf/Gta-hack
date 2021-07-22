@@ -72,9 +72,3 @@ public:
 	BYTE bDisplay;
 	BYTE bAlpha;
 };
-
-struct BlipList {
-public:
-	Blip_t* m_Blips[1500];
-
-};

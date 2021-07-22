@@ -12,7 +12,6 @@ typedef __int64(__cdecl* GetChatData)						(__int64 a1, __int64 a2, __int64 a3, 
 class GameHooking
 {
 public:
-	static uint64_t*						m_frameCount;
 	static IsDLCPresent					    is_dlc_present;
 	static fpFileRegister					m_fileregister;
 	static GetEventData						get_event_data;
