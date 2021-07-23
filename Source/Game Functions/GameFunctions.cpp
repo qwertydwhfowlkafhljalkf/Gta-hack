@@ -472,7 +472,7 @@ void Cheat::GameFunctions::PlayScenarioNearbyPeds(char* Scenario)
 
 void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 {
-	if (Cheat::CheatFeatures::ShowPlayerInformationPlayerList && GameFunctions::IsPlayerIDValid(PlayerID))
+	if (!Cheat::CheatFeatures::HidePlayerInformationBox && GameFunctions::IsPlayerIDValid(PlayerID))
 	{
 		//Definitions & error handling
 		Ped SelectedPlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerID);
@@ -801,6 +801,7 @@ void Cheat::GameFunctions::AttachObjectToPed(Ped Ped, char* ObjectName)
 	}
 }
 
+std::vector<Vehicle> Cheat::GameArrays::SpawnedVehicles;
 void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 {
 	Hash model = GAMEPLAY::GET_HASH_KEY(ModelHash);
@@ -827,6 +828,7 @@ void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 		DECORATOR::DECOR_SET_INT(VehicleHandle, "MPBitset", 0);
 		ENTITY::_SET_ENTITY_SOMETHING(VehicleHandle, true);
 		Cheat::GameFunctions::MinimapNotification("Vehicle Spawned");
+		GameArrays::SpawnedVehicles.push_back(VehicleHandle);
 	}
 }
 

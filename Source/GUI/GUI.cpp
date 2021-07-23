@@ -1,5 +1,10 @@
 #include "../Header/Main.h"
 
+const float Cheat::GUI::guiX_Default		= 0.11f;
+const float Cheat::GUI::guiY_Default		= 0.30f;
+const float Cheat::GUI::guiWidth_Default	= 0.21f;
+const float Cheat::GUI::SelectableInfoBoxX_Default = 0.50f;
+const float Cheat::GUI::SelectableInfoBoxY_Default = 0.840f;
 float Cheat::GUI::guiX					= 0.11f;
 float Cheat::GUI::guiY					= 0.30f;
 float Cheat::GUI::guiWidth				= 0.21f;
@@ -108,10 +113,13 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, bool Di
 	if (OnCurrent)
 	{
 		//Selectable Information Box
-		GUI::Drawing::Rect({ 0, 0, 255, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY + 0.042f }, { 0.25f, 0.005f });
-		GUI::Drawing::Rect({ 0, 0, 0, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY }, { 0.25f, 0.080f });
-		GUI::Drawing::Text(OptionInformationText != "" ? CheatFunctions::TextWrap(OptionInformationText, 30) : option, GUI::count, { SelectableInfoBoxX - 0.12f, SelectableInfoBoxY - 0.033f}, { 0.30f, 0.30f }, false);
-		if (GUI::CurrentOptionIsSavable) { GUI::Drawing::Text("Save Option: " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::SaveItemKey), GUI::count, { SelectableInfoBoxX + 0.04f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false); }
+		if (!CheatFeatures::HideSelectableInformationBox)
+		{
+			GUI::Drawing::Rect({ 0, 0, 255, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY + 0.042f }, { 0.25f, 0.005f });
+			GUI::Drawing::Rect({ 0, 0, 0, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY }, { 0.25f, 0.080f });
+			GUI::Drawing::Text(OptionInformationText != "" ? CheatFunctions::TextWrap(OptionInformationText, 30) : option, GUI::count, { SelectableInfoBoxX - 0.12f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false);
+			if (GUI::CurrentOptionIsSavable) { GUI::Drawing::Text("Save Option: " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::SaveItemKey), GUI::count, { SelectableInfoBoxX + 0.04f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false); }
+		}
 		
 		GUI::currentOptionVisible = GUI::optionCount - (GUI::optionCount - GUI::optionCountVisible);
 		GUI::CurrentOptionIsSavable = false;

@@ -55,5 +55,6 @@ namespace Cheat
 		extern const std::vector<std::string> CommercialModels;
 		extern const std::vector<VehicleModelPicturesStruct> VehicleModelPictures;
 		extern const std::vector<WeaponHashesStruct> WeaponsHashList;
+		extern std::vector<Vehicle> SpawnedVehicles;
 	}
 }

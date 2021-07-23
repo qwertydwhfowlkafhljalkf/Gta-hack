@@ -6,7 +6,6 @@ bool Cheat::CheatFeatures::UseKMH = true;
 bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
 bool Cheat::CheatFeatures::ShowBlockedScriptEventNotifications = true;
-bool Cheat::CheatFeatures::ShowPlayerTagsPlayerList = true;
 bool Cheat::CheatFeatures::HideOwnIPAddress = true;
 bool Cheat::CheatFeatures::ShowVehicleInfoAndPreview = true;
 bool Cheat::CheatFeatures::ShowJoiningPlayersNotification = true;
@@ -17,7 +16,8 @@ bool Cheat::CheatFeatures::VehicleSpawnerDeleteOldVehicle = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnWithBlip = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnWithGodmode = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnMaxUpgraded = false;
-bool Cheat::CheatFeatures::ShowPlayerInformationPlayerList = true;
+bool Cheat::CheatFeatures::HidePlayerInformationBox = true;
+bool Cheat::CheatFeatures::HideSelectableInformationBox = false;
 
 int PostInitBannerNotificationScaleformHandle;
 void Cheat::CheatFeatures::NonLooped()
@@ -121,7 +121,6 @@ void Cheat::CheatFeatures::Looped()
 	RainbowVehicleBool ? RainbowVehicle() : NULL;
 	TeleportGunBool ? TeleportGun() : NULL;
 	DeleteGunBool ? DeleteGun() : NULL;
-	UnlimitedSpecialAbilityBool ? UnlimitedSpecialAbility() : NULL;
 	SpectatePlayerBool ? SpectatePlayer(true) : SpectatePlayer(false);
 	NoRagdollAndSeatbeltBool ? NoRagdollAndSeatbelt(true) : NoRagdollAndSeatbelt(false);
 	FreezeSelectedPlayerBool ? FreezeSelectedPlayer() : NULL;
@@ -780,15 +779,6 @@ void Cheat::CheatFeatures::DeleteGun()
 				ENTITY::DELETE_ENTITY(&AimedAtEntity);
 			}
 		}
-	}
-}
-
-bool Cheat::CheatFeatures::UnlimitedSpecialAbilityBool = false;
-void Cheat::CheatFeatures::UnlimitedSpecialAbility()
-{
-	if (!NETWORK::NETWORK_IS_SESSION_STARTED())
-	{ 
-		PLAYER::SPECIAL_ABILITY_FILL_METER(Cheat::GameFunctions::PlayerID, true);
 	}
 }
 

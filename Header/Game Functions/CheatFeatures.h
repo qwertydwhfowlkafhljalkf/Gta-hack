@@ -11,7 +11,6 @@ namespace Cheat
 		extern bool BlockMaliciousScriptEvents;
 		extern bool BlockAllScriptEvents;
 		extern bool ShowBlockedScriptEventNotifications;
-		extern bool ShowPlayerTagsPlayerList;
 		extern bool HideOwnIPAddress;
 		extern bool ShowVehicleInfoAndPreview;
 		extern bool CursorGUINavigationEnabled;
@@ -23,7 +22,8 @@ namespace Cheat
 		extern bool VehicleSpawnerSpawnWithBlip;
 		extern bool VehicleSpawnerSpawnWithGodmode;
 		extern bool VehicleSpawnerSpawnMaxUpgraded;
-		extern bool ShowPlayerInformationPlayerList;
+		extern bool HidePlayerInformationBox;
+		extern bool HideSelectableInformationBox;
 
 		void NonLooped();
 		void Looped();
@@ -104,8 +104,6 @@ namespace Cheat
 		void DeleteGun();
 		extern bool EntityInformationGunBool;
 		void EntityInformationGun();
-		extern bool UnlimitedSpecialAbilityBool;
-		void UnlimitedSpecialAbility();
 		extern bool SpectatePlayerBool;
 		void SpectatePlayer(bool toggle);
 		extern bool NoRagdollAndSeatbeltBool;

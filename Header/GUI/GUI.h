@@ -6,7 +6,7 @@ enum SubMenus
 	MainMenu,
 	SelfOptionsMenu,
 	SettingsMenu,
-	GUIColorsMenu,
+	GUIVisualsMenu,
 	ThemeLoaderMenu,
 	ThemeFilesMenu,
 	GUITitleBackgroundColorMenu,
@@ -33,6 +33,7 @@ enum SubMenus
 	iplteleports,
 	weathermenu,
 	VehicleSpawnSettings,
+	SpawnedVehiclesMenu,
 	AllPlayersMenu,
 	ModelChangerMenu,
 	vehiclespawnermenu,
@@ -95,12 +96,11 @@ enum SubMenus
 	custombulletsmenu,
 	vehiclegunmenu,
 	aimbotsettingsmenu,
-	rankmenu,
-	miscstatsmenu,
 	SelectedPlayerTeleportMenu,
 	sessionoptionsmenu,
 	hudmenu,
 	guisettings,
+	HideElementsMenu,
 	CheatSettingsMenu,
 	unlocksmenu,
 	reportsmenu_stats,
@@ -130,6 +130,12 @@ namespace Cheat
 		}
 
 		extern void ControlsLoop();
+
+		extern const float SelectableInfoBoxY_Default;
+		extern const float SelectableInfoBoxX_Default;
+		extern const float guiWidth_Default;
+		extern const float guiY_Default;
+		extern const float guiX_Default;
 		extern float guiX;
 		extern float guiY;
 		extern float guiWidth;

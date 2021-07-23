@@ -129,12 +129,11 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Player List", PlayerListMenu);
 			GUI::MenuOption("All Players", AllPlayersMenu);
 			GUI::MenuOption("Protections", protections);
-			GUI::MenuOption("Stats", statsoptionsmenu);
+			GUI::MenuOption("Recovery", statsoptionsmenu);
 			GUI::MenuOption("Session", sessionoptionsmenu);
 			GUI::Toggle("Off Radar", CheatFeatures::OffRadarBool, "Enables Lester Off Radar Feature");
 			GUI::Toggle("No Idle Kick", CheatFeatures::NoIdleKickBool, "Does not work when out of game focus");
 			GUI::Toggle("Bribe Authorities", CheatFeatures::BribeAuthoritiesBool, "Enables Bribe Authorities");
-			if (GUI::Option("Get Empty Session", "Get Empty (Public) Session")) { Sleep(10000); }
 		}
 		break; 
 		case sessionoptionsmenu:
@@ -151,11 +150,39 @@ void Cheat::FiberMain()
 		break; 
 		case statsoptionsmenu:
 		{
-			GUI::Title("Stats"); 
+			GUI::Title("Recovery"); 
 			GUI::MenuOption("Reports", reportsmenu_stats);
-			GUI::MenuOption("Rank", rankmenu); 
+			GUI::Break("Rank", true);
+			if (GUI::Option("Set Custom Rank", "Input a custom Rank"))
+			{
+				GameFunctions::SetRankRockstarGift(GameFunctions::DisplayKeyboardAndReturnInputInteger(4, "Enter desired rank (as single digit)"));
+			}
 			GUI::MenuOption("Unlocks", unlocksmenu);
-			GUI::MenuOption("Misc Stats", miscstatsmenu);
+			GUI::Break("Miscellaneous", true);
+			if (GUI::Option("Set Max Nightclub Popularity", "Set NightClub Popularity to 100%"))
+			{
+				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CLUB_POPULARITY")), 9999, false);
+				GameFunctions::MinimapNotification("Maxed out Nightclub Popularity");
+			}
+			if (GUI::Option("Redesign Character Prompt", ""))
+			{
+				STATS::STAT_SET_BOOL(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_FM_CHANGECHAR_ASKED")), false, true);
+				GameFunctions::MinimapNotification("Leave GTAO and rejoin to receive the notification");
+			}
+			if (GUI::Option("Clear Badsport", "Clears Badsport status"))
+			{
+				DWORD date[12];
+				STATS::STAT_SET_BOOL(GAMEPLAY::GET_HASH_KEY("MPPLY_CHAR_IS_BADSPORT "), 0, 1);
+				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_BAD_SPORT_BITSET"), 0, 1);
+				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP1_BAD_SPORT_BITSET"), 0, 1);
+				STATS::STAT_SET_DATE(GAMEPLAY::GET_HASH_KEY("MPPLY_BECAME_BADSPORT_DT"), &date[0], 7, 1);
+				GameFunctions::MinimapNotification("Cleared Badsport Status");
+			}
+			if (GUI::Option("Clear Mental State", "Clear current mental state"))
+			{
+				STATS::STAT_SET_FLOAT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PLAYER_MENTAL_STATE")), 0.0, true);
+				GameFunctions::MinimapNotification("Mental State Reset");
+			}
 		}
 		break; 
 		case reportsmenu_stats:
@@ -845,100 +872,6 @@ void Cheat::FiberMain()
 			}
 		}
 		break;
-		case miscstatsmenu:
-		{
-			GUI::Title("Misc Stats");
-			if (GUI::Option("Set Max Nightclub Popularity", "Set NightClub Popularity to 100%"))
-			{
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CLUB_POPULARITY")), 9999, false);
-				GameFunctions::MinimapNotification("Maxed out Nightclub Popularity");
-			}
-			if (GUI::Option("Redesign Character Prompt", "")) 
-			{
-				STATS::STAT_SET_BOOL(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_FM_CHANGECHAR_ASKED")), false, true);
-				GameFunctions::MinimapNotification("Leave GTAO and rejoin to receive the notification");
-			}
-			if (GUI::Option("Clear Badsport", "Clears Badsport status")) 
-			{
-				DWORD date[12];
-				STATS::STAT_SET_BOOL(GAMEPLAY::GET_HASH_KEY("MPPLY_CHAR_IS_BADSPORT "), 0, 1);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_BAD_SPORT_BITSET"), 0, 1);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP1_BAD_SPORT_BITSET"), 0, 1);
-				STATS::STAT_SET_DATE(GAMEPLAY::GET_HASH_KEY("MPPLY_BECAME_BADSPORT_DT"), &date[0], 7, 1);
-				GameFunctions::MinimapNotification("Cleared Badsport Status");
-			}
-			if (GUI::Option("Clear Mental State", "Clear current mental state"))
-			{
-				STATS::STAT_SET_FLOAT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PLAYER_MENTAL_STATE")), 0.0, true);
-				GameFunctions::MinimapNotification("Mental State Reset");
-			}
-		}
-		break; 
-		case rankmenu:
-		{
-			GUI::Title("Rank");
-			if (GUI::Option("Custom Rank", "Input a custom Rank")) 
-			{
-				GameFunctions::SetRankRockstarGift(GameFunctions::DisplayKeyboardAndReturnInputInteger(4, "Enter desired rank (as single digit)"));
-			}
-			if (GUI::Option("Rank 1",""))
-			{
-				GameFunctions::SetRankRockstarGift(1);
-			}
-			if (GUI::Option("Rank 25", ""))
-			{
-				GameFunctions::SetRankRockstarGift(25);
-			}
-			if (GUI::Option("Rank 50", ""))
-			{
-				GameFunctions::SetRankRockstarGift(50);
-			}
-			if (GUI::Option("Rank 100", ""))
-			{
-				GameFunctions::SetRankRockstarGift(100);
-			}
-			if (GUI::Option("Rank 120", ""))
-			{
-				GameFunctions::SetRankRockstarGift(120);
-			}
-			if (GUI::Option("Rank 135", ""))
-			{
-				GameFunctions::SetRankRockstarGift(135);
-			}
-			if (GUI::Option("Rank 200", ""))
-			{
-				GameFunctions::SetRankRockstarGift(200);
-			}
-			if (GUI::Option("Rank 300", ""))
-			{
-				GameFunctions::SetRankRockstarGift(300);
-			}
-			if (GUI::Option("Rank 500", ""))
-			{
-				GameFunctions::SetRankRockstarGift(500);
-			}
-			if (GUI::Option("Rank 750", ""))
-			{
-				GameFunctions::SetRankRockstarGift(750);
-			}
-			if (GUI::Option("Rank 1000", ""))
-			{
-				GameFunctions::SetRankRockstarGift(1000);
-			}
-			if (GUI::Option("Rank 2000", ""))
-			{
-				GameFunctions::SetRankRockstarGift(2000);
-			}
-			if (GUI::Option("Rank 5000", ""))
-			{	
-				GameFunctions::SetRankRockstarGift(5000);
-			}
-			if (GUI::Option("Rank 8000", "Seems legit :-)"))
-			{
-				GameFunctions::SetRankRockstarGift(8000);
-			}
-		}
-		break; 	
 		case ModelChangerMenu:
 		{
 			GUI::Title("Model Changer");
@@ -966,11 +899,41 @@ void Cheat::FiberMain()
 			}
 		}
 		break;
+		case SpawnedVehiclesMenu:
+		{
+			GUI::Title("Spawned Vehicles");
+			if (!GameArrays::SpawnedVehicles.empty())
+			{
+				for (Vehicle i : GameArrays::SpawnedVehicles)
+				{
+					if (!ENTITY::DOES_ENTITY_EXIST(i)) { GameArrays::SpawnedVehicles.erase(std::remove(GameArrays::SpawnedVehicles.begin(), GameArrays::SpawnedVehicles.end(), i), GameArrays::SpawnedVehicles.end()); }			
+					GUI::Break(std::to_string(i), true);
+					if (GUI::Option("Teleport To", ""))
+					{
+						GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, GameFunctions::GetEntityCoords(i), false, false);
+					}
+					if (GUI::Option("Teleport Into Vehicle", ""))
+					{
+						PED::SET_PED_INTO_VEHICLE(GameFunctions::PlayerPedID, i, -1);
+					}
+					if (GUI::Option("Delete", ""))
+					{
+						ENTITY::SET_ENTITY_AS_MISSION_ENTITY(i, true, true);
+						VEHICLE::DELETE_VEHICLE(&i);
+					}
+				}
+			}
+			else
+			{
+				GUI::Break("No Vehicles Were Spawned Yet", false);
+			}
+		}
+		break;
 		case vehiclespawnermenu:
 		{
-			GUI::Title("Vehicle Spawner");
+			GUI::Title("Vehicle Spawn");
 			GUI::MenuOption("Spawn Settings", VehicleSpawnSettings);
-
+			GUI::MenuOption("Spawned Vehicles", SpawnedVehiclesMenu);
 			if (GUI::Option("Custom Input", "Input custom vehicle model name"))
 			{
 				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter custom vehicle model name");
@@ -1448,7 +1411,7 @@ void Cheat::FiberMain()
 		case vehiclemenu:
 		{
 			GUI::Title("Vehicle");
-			GUI::MenuOption("Spawner", vehiclespawnermenu);
+			GUI::MenuOption("Spawn", vehiclespawnermenu);
 			GUI::MenuOption("Los Santos Customs", VehicleCustomizerMenu);
 			GUI::MenuOption("Vehicle Weapons", vehicleweaponsmenu);
 			if (GUI::Option("Delete Vehicle", "Delete the current vehicle"))
@@ -2272,6 +2235,8 @@ void Cheat::FiberMain()
 				}
 				else { GameFunctions::MinimapNotification("Please set a waypoint first to use this feature"); }
 			}		
+			if (GUI::Option("Get Empty Session", "Get Empty (Public) Session")) { Sleep(10000); }
+			if (GUI::Option("Exit to Single Player", "")) { NETWORK::SHUTDOWN_AND_LAUNCH_SINGLE_PLAYER_GAME(); }
 		}
 		break;
 		case hudmenu:
@@ -2625,7 +2590,7 @@ void Cheat::FiberMain()
 			CanceledCustomTeleport:
 				GameFunctions::MinimapNotification("Canceled custom coordinate teleporting");
 			} 
-			if (GUI::Option("Teleport Into Last Used Vehicle", "")) 
+			if (GUI::Option("Teleport Into Last Used Vehicle", ""))
 			{
 				PED::SET_PED_INTO_VEHICLE(GameFunctions::PlayerPedID, VEHICLE::GET_LAST_DRIVEN_VEHICLE(), -1);
 			}
@@ -2935,13 +2900,10 @@ void Cheat::FiberMain()
 				std::string PlayernameString = PLAYER::GET_PLAYER_NAME(i);
 				if (GameFunctions::IsPlayerIDValid(i))
 				{
-					if (CheatFeatures::ShowPlayerTagsPlayerList)
-					{
-						if (GameFunctions::PlayerIsFreemodeScriptHost(i)) { PlayernameString.append(" ~o~[Host]"); }
-						if (GameFunctions::IsPlayerFriend(i)) { PlayernameString.append(" ~b~[Friend]"); }
-						if (GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) { PlayernameString.append(" ~p~[Interior]"); }
-						if (GameFunctions::PlayerID == i) { PlayernameString.append(" ~g~[You]"); }
-					}
+					if (GameFunctions::PlayerIsFreemodeScriptHost(i)) { PlayernameString.append(" ~o~[Host]"); }
+					if (GameFunctions::IsPlayerFriend(i)) { PlayernameString.append(" ~b~[Friend]"); }
+					if (GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) { PlayernameString.append(" ~p~[Interior]"); }
+					if (GameFunctions::PlayerID == i) { PlayernameString.append(" ~g~[You]"); }
 					GUI::MenuOptionPlayerList(PlayernameString, SelectedPlayerMenu) ? CheatFeatures::selectedPlayer = i : NULL;
 					if (GUI::currentOption == GUI::optionCount) { GameFunctions::ShowPlayerInformationBox(i); }
 				}
@@ -3007,7 +2969,6 @@ void Cheat::FiberMain()
 			GUI::Toggle("Super Jump", CheatFeatures::SuperJumpBool, "Makes your character jump higher");
 			GUI::Toggle("Super Run", CheatFeatures::SuperRunBool, "Run very fast");
 			GUI::Toggle("Fast Run", CheatFeatures::FastRunBool, "Multiplies run speed");
-			GUI::Toggle("Unlimited Special Ability", CheatFeatures::UnlimitedSpecialAbilityBool, "Always 100% Special Ability");
 			GUI::Toggle("Ignored By Everyone", CheatFeatures::PlayerIgnoredBool, "NPC's will (mostly) ignore you");
 			GUI::Toggle("Never Wanted", CheatFeatures::NeverWantedBool, "Never get a wanted level");
 			if (GUI::Int("Wanted Level", PlayerWantedLevelInteger, 0, 5, 1, false, "Set Wanted Level")) { CheatFeatures::NeverWantedBool = false; PLAYER::SET_PLAYER_WANTED_LEVEL(GameFunctions::PlayerID, PlayerWantedLevelInteger, false); PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(GameFunctions::PlayerID, false); }
@@ -3344,21 +3305,26 @@ void Cheat::FiberMain()
 		case SettingsMenu:
 		{
 			GUI::Title("Settings");
-			GUI::MenuOption("GUI Settings", guisettings);
-			GUI::MenuOption("Cheat Settings", CheatSettingsMenu);
+			GUI::MenuOption("GUI", guisettings);
+			GUI::MenuOption("Hide Elements", HideElementsMenu);
+			GUI::MenuOption("Cheat", CheatSettingsMenu);
 			if (GUI::Option("Visit Github Page", ""))
 			{
 				system("start https://github.com/HatchesPls/GrandTheftAutoV-Cheat");
 			}
 		}
 		break;
+		case HideElementsMenu:
+		{
+			GUI::Title("Hide Elements");
+			GUI::Toggle("Hide Selectable Information Box", Cheat::CheatFeatures::HideSelectableInformationBox, "");
+			GUI::Toggle("Hide Player Information Box", CheatFeatures::HidePlayerInformationBox, "");
+			GUI::Toggle("Hide Own IP Address", CheatFeatures::HideOwnIPAddress, "Hiddes Local IP Address from Player Information Box");
+		}
+		break;
 		case CheatSettingsMenu:
 		{
-			GUI::Title("Cheat Settings");
-			GUI::Break("Player List", true);
-			GUI::Toggle("Show Player Information", CheatFeatures::ShowPlayerInformationPlayerList, "Toggle Player Information Box");
-			GUI::Toggle("Show Player Tags", CheatFeatures::ShowPlayerTagsPlayerList, "Toggle Player Tags");
-			GUI::Toggle("Hide Own IP Address", CheatFeatures::HideOwnIPAddress, "Hiddes Local IP Address");
+			GUI::Title("Cheat");
 			GUI::Break("Speed", true);
 			GUI::Toggle("Use KM/H", CheatFeatures::UseKMH, "If disabled MP/H is used");
 			GUI::Break("Protection", true);
@@ -3367,10 +3333,10 @@ void Cheat::FiberMain()
 		break;
 		case guisettings:
 		{
-			GUI::Title("GUI Settings");
+			GUI::Title("GUI");
 			GUI::MenuOption("Theme Loader", ThemeLoaderMenu);
-			GUI::Break("Settings", true);
-			GUI::MenuOption("Colors", GUIColorsMenu);
+			GUI::Break("General", true);
+			GUI::MenuOption("Visuals", GUIVisualsMenu);
 			GUI::MenuOption("Header", headeroptionsmenu);
 			GUI::Int("Max Visible Menu Options", GUI::maxVisOptions, 5, 16, 1, false);
 			GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu", false);
@@ -3389,6 +3355,17 @@ void Cheat::FiberMain()
 				if (PressedKey != 0) { GUI::GUINavigationKey = PressedKey; GameFunctions::MinimapNotification("Cursor Navigation Key has been set"); }
 			}
 			GUI::Int("Key Press Delay", GUI::keyPressDelay, 1, 250, 1, false);
+			if (GUI::Option("Reset Position", ""))
+			{
+				GUI::guiX = GUI::guiX_Default;
+				GUI::guiY = GUI::guiY_Default;
+			}
+			GUI::Break("Player Information Box", true);
+			if (GUI::Option("Reset Position", ""))
+			{
+				GUI::SelectableInfoBoxX = GUI::SelectableInfoBoxX_Default;
+				GUI::SelectableInfoBoxY = GUI::SelectableInfoBoxY_Default;
+			}
 		}
 		break; 
 		case headeroptionsmenu:
@@ -3398,9 +3375,10 @@ void Cheat::FiberMain()
 			GUI::Toggle("Show Header Background", GUI::ShowHeaderBackground, "Toggle Header Background", false);
 		}
 		break;
-		case GUIColorsMenu:
+		case GUIVisualsMenu:
 		{
-			GUI::Title("Colors");
+			GUI::Title("Visuals");
+			GUI::Break("Colors - [PENDING REWORK]", true);
 			GUI::MenuOption("Title Background", GUITitleBackgroundColorMenu);
 			GUI::MenuOption("Header Background", settingsheaderbackground);
 			GUI::MenuOption("Menu Background", settingsmenubackground);
@@ -3408,6 +3386,8 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Small Title Background", settingssmalltitlebackground);
 			GUI::MenuOption("Options Scroller", settingsscroller);
 			GUI::MenuOption("Option Text", settingsoptiontext);
+			GUI::Break("Font - WIP", true);
+			//GUI::StringVector("Font", { "Chalet London", "House Script", "Monospace", "WingDings", "Chalet Comprime Cologne", "Pricedown" }, CheatFeatures::SpeedometerVectorPosition, "");
 		}
 		break;
 		case settingsmenubottombackground:
