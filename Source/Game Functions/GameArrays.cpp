@@ -928,7 +928,16 @@ const std::vector<std::string> Cheat::GameArrays::CayoPericoHeistModels = {
 	"LONGFIN", "MANCHEZ2",  "PATROLBOAT",
 	"SEASPARROW2", "seasparrow3", "SQUADDIE",
 	"SLAMTRUCK", "TOREADOR", "VERUS",
-	"VETIR", "WINKY","WEEVIL", "VETO",	
+	"VETIR", "WINKY","WEEVIL", "VETO"
+};
+
+const std::vector<std::string> Cheat::GameArrays::LosSantosTunersModels = {
+	"CALICO", "COMET6", "CYPHER",
+	"DOMINATOR7", "DOMINATOR8", "EUROS", "FREIGHTCAR2",
+	"FUTO2", "GROWLER", "JESTER4",
+	"PREVION", "REMUS",  "RT3000",
+	"SULTAN3", "TAILGATER2", "VECTRE",
+	"WARRENER", "WARRENER2", "ZR350"
 };
 
 const std::vector<VehicleModelPicturesStruct> Cheat::GameArrays::VehicleModelPictures = {
@@ -1461,5 +1470,22 @@ const std::vector<VehicleModelPicturesStruct> Cheat::GameArrays::VehicleModelPic
 {"sssa_default","rocoto"},
 {"sssa_dlc_battle","serrano"},
 {"lgm_dlc_arena","toros"},
-{"lgm_dlc_executive1","xls"}
+{"lgm_dlc_executive1","xls"},
+{ "lgm_dlc_tuner","zr350" },
+{ "lgm_dlc_tuner","growler" },
+{ "lgm_dlc_tuner","cypher" },
+{ "lgm_dlc_tuner","comet6" },
+{ "lgm_dlc_tuner","jester4" },
+{ "lgm_dlc_tuner","tailgater2" },
+{ "lgm_dlc_tuner","vectre" },
+{ "lgm_dlc_tuner","euros" },
+{ "sssa_dlc_tuner","calico" },
+{ "sssa_dlc_tuner","dominator7" },
+{ "sssa_dlc_tuner","dominator8" },
+{ "sssa_dlc_tuner","futo2" },
+{ "sssa_dlc_tuner","previon" },
+{ "sssa_dlc_tuner","remus" },
+{ "sssa_dlc_tuner","rt3000" },
+{ "sssa_dlc_tuner","sultan3" },
+{ "sssa_dlc_tuner","warrener2" }
 };

@@ -7,6 +7,7 @@ namespace Cheat
 		extern Player PlayerID;
 		extern Ped PlayerPedID;
 		extern std::string InGameKeyboardWindowTitle;
+		extern std::string InGameHelpTextMessage;
 		void GiveAllWeaponsToPlayer(Ped Player);
 		void RepairAndCleanVehicle();
 		void SubtitleNotification(char* Message, int ShowDuration = 4000);
@@ -45,9 +46,6 @@ namespace Cheat
 		void EnableDisableAntiCrashCamera();
 		void CheckNewSessionMembersLoop();
 		bool IsEntityInInterior(Entity Entity);
-		void InstructionalKeysInit();
-		void InstructionsAdd(char* text, int button);
-		void InstructionsEnd();
 		void ClearNearbyPedAnimations();
 		void DoNearbyPedsAnimation(char* AnimationName, char* AnimationID);
 		void DoLocalPedAnimation(char* AnimationName, char* AnimationID);
@@ -64,7 +62,6 @@ namespace Cheat
 		void ChangeEntityInvincibilityState(Entity EntityHandle, bool Enable);
 		char* ReturnOnlinePlayerPictureString(Player PlayerHandle);
 		VECTOR2 ReturnCursorYXCoords();
-		void CursorGUINavigationLoop();
 		void EnableDisableCursorGUINavigation();
 		bool IsCursorAtXYPosition(VECTOR2 const& boxCentre, VECTOR2 const& boxSize);
 		void ChangePedModelLocalPlayer(Hash PedModel);
@@ -77,5 +74,6 @@ namespace Cheat
 		void PlayScenarioNearbyPeds(char* Scenario);
 		bool IsPlayerIDValid(Player ID);
 		Player ReturnPlayerIDFromPlayerName(std::string PlayerName);
+		void MaxUpgradeAllWeapons();
 	}
 }

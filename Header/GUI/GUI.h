@@ -15,7 +15,6 @@ enum SubMenus
 	settingsscroller,
 	settingsmenubackground,
 	settingsoptiontext,
-	settingsbottomline,
 	settingsmenubottombackground,
 	PlayerListMenu,
 	SelectedPlayerMenu,
@@ -71,6 +70,7 @@ enum SubMenus
 	diamondcasinoheist,
 	SummerSpecialDLCMenu,
 	CayoPericoHeistDLCMenu,
+	LosSantosTunersDLCMenu,
 	OnlineOptionsMenu,
 	timemenu,
 	CommonTeleportLocations,
@@ -121,11 +121,10 @@ namespace Cheat
 	{
 		namespace Drawing
 		{
-			void Text(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center);
+			void Text(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center, bool Outline = false);
 			void Rect(RGBA rgba, VECTOR2 position, VECTOR2_2 size);
 			void Spriter(std::string Streamedtexture, std::string textureName, float x, float y, float width, float height, float rotation, int r, int g, int b, int a);
 			void InitTextureFile();
-			void DrawScaleform(const float x, const float y, const float sx, const float sy, const int r, const int g, const int b);
 		}
 
 		extern void ControlsLoop();
@@ -135,7 +134,6 @@ namespace Cheat
 		extern std::vector <std::string> ThemeFilesVector;
 		extern bool ShowHeaderBackground;
 		extern bool ShowHeaderGUI;
-		extern bool ShowHeaderGlare;
 		extern bool HideGUIElements;
 		extern bool CheatGUIHasBeenOpened;
 		extern bool CurrentOptionIsSavable;
@@ -148,10 +146,10 @@ namespace Cheat
 		extern bool RestorePreviousSubmenu;
 		extern int maxVisOptions;
 		extern int currentOption;
-		extern int currentOptionMenuBottom;
+		extern int currentOptionVisible;
 		extern int previousOption;
 		extern int optionCount;
-		extern int optionCountMenuBottom;
+		extern int optionCountVisible;
 		extern int TotalOptionsCount;
 		extern SubMenus currentMenu;
 		extern int menuLevel;
@@ -173,7 +171,6 @@ namespace Cheat
 		extern RGBA MenuBackgroundRect;
 		extern RGBA MenuBottomRect;
 		extern RGBA scroller;
-		extern RGBA TopAndBottomLine;
 		extern RGBA primary;
 		extern RGBA secondary;
 		extern int keyPressDelay;
@@ -191,7 +188,7 @@ namespace Cheat
 		void SaveTheme(std::string ThemeFileName);
 		extern bool SelectableHandler(bool DisabledState);
 
-		void Title(std::string title);
+		void Title(std::string TitleName);
 		void AddPlayerInfoBoxTextEntry(std::string text, int Row1 = NULL, int Row2 = NULL, int Row3 = NULL, int Row4 = NULL);
 		bool Break(std::string option, bool TextCentered);
 		bool Option(std::string option, std::string InformationText, bool Disabled = false);

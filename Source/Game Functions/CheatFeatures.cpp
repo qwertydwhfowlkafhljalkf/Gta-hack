@@ -36,11 +36,11 @@ void Cheat::CheatFeatures::NonLooped()
 	Cheat::LogFunctions::Message("GTAV Cheat Initialization Completed");
 
 	//Init Scaleform Banner Notification
-	std::string OpenGUIString = "Cheat has been successfully initialized. Have fun!\nPress " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::OpenGUIKey) + " to open GUI";
+	std::string OpenGUIString = "Welcome " + (std::string)PLAYER::GET_PLAYER_NAME(GameFunctions::PlayerID) + ". Have fun!";
 	PostInitBannerNotificationScaleformHandle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("mp_big_message_freemode");
 	while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(PostInitBannerNotificationScaleformHandle)) { GameHooking::PauseMainFiber(0, false); }
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "SHOW_SHARD_WASTED_MP_MESSAGE");
-	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING("<FONT FACE='$Font2'>GTAV Cheat");
+	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING("<FONT FACE='$RockstarTAG'><FONT FACE='$gtaCash'>GTAV Cheat");
 	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING(CheatFunctions::StringToChar(OpenGUIString));
 	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(5);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
@@ -54,8 +54,11 @@ void Cheat::CheatFeatures::Looped()
 	//Post Init Scaleform Banner Notification
 	if (!GUI::CheatGUIHasBeenOpened && CheatFunctions::LoadConfigThreadFunctionCompleted)
 	{ 
+		GameFunctions::InGameHelpTextMessage = "Press " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::OpenGUIKey) + " to open cheat GUI";
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(PostInitBannerNotificationScaleformHandle, 255, 255, 255, 255, 0);
+		UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
 	}
+	GameFunctions::InGameKeyboardWindowTitle.clear();
 
 	//New cheat update notification
 	if (CheatFunctions::NewerCheatVersionAvailable)
@@ -65,9 +68,6 @@ void Cheat::CheatFeatures::Looped()
 
 	//New Session Member Notification Feature
 	Cheat::GameFunctions::CheckNewSessionMembersLoop();
-
-	//Cursor GUI Navigation Feature
-	Cheat::GameFunctions::CursorGUINavigationLoop();
 
 	//Speedometer
 	if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) 
@@ -150,6 +150,7 @@ void Cheat::CheatFeatures::Looped()
 	CustomWeaponBulletsBool ? CustomWeaponBullets() : NULL;
 	ShowSessionInformationBool ? ShowSessionInformation() : NULL;
 	AutoGiveAllWeaponsBool ? AutoGiveAllWeapons() : NULL;
+	AutoGiveAllWeaponUpgradesBool ? AutoGiveAllWeaponUpgrades() : NULL;
 	FreeCamBool ? FreeCam(true) : FreeCam(false);
 	CartoonGunBool ? CartoonGun() : NULL;
 	EntityInformationGunBool ? EntityInformationGun() : NULL;
@@ -1102,12 +1103,11 @@ void Cheat::CheatFeatures::DisablePhone()
 	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_PHONE, true);
 }
 
-
 bool Cheat::CheatFeatures::NoIdleKickBool = false;
 void Cheat::CheatFeatures::NoIdleKick()
 {
-	globalHandle(1377236).At(1165).As<int>() = -1;
-	globalHandle(1377236).At(1149).As<int>() = -1;
+	globalHandle(1379108).At(1165).As<int>() = -1;
+	globalHandle(1379108).At(1149).As<int>() = -1;
 }
 
 bool Cheat::CheatFeatures::BribeAuthoritiesBool = false;
@@ -1138,7 +1138,6 @@ void Cheat::CheatFeatures::MoneyDrop()
 	}
 }
 
-
 bool Cheat::CheatFeatures::MoneyGunBool = false;
 void Cheat::CheatFeatures::MoneyGun()
 {
@@ -1154,7 +1153,6 @@ void Cheat::CheatFeatures::MoneyGun()
 		}	
 	}
 }
-
 
 DWORD VehicleWeapons_LastTick = 0;
 bool Cheat::CheatFeatures::VehicleWeapons_TankRounds = true;
@@ -1300,15 +1298,24 @@ void Cheat::CheatFeatures::ShowSessionInformation()
 bool Cheat::CheatFeatures::AutoGiveAllWeaponsBool = false;
 void Cheat::CheatFeatures::AutoGiveAllWeapons()
 {
-	if (PLAYER::IS_PLAYER_PLAYING(Cheat::GameFunctions::PlayerID)) 
+	if (PLAYER::IS_PLAYER_PLAYING(GameFunctions::PlayerID)) 
 	{ 
-		for (int i = 0; i < Cheat::GameArrays::WeaponsHashList.size(); i++)
+		for (int i = 0; i < GameArrays::WeaponsHashList.size(); i++)
 		{
-			Hash CurrentHash = Cheat::GameArrays::WeaponsHashList[i].WeaponHash;
-			if (!WEAPON::HAS_PED_GOT_WEAPON(Cheat::GameFunctions::PlayerPedID, CurrentHash, false))
+			Hash CurrentHash = GameArrays::WeaponsHashList[i].WeaponHash;
+			if (!WEAPON::HAS_PED_GOT_WEAPON(GameFunctions::PlayerPedID, CurrentHash, false))
 			{
-				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(Cheat::GameFunctions::PlayerPedID, CurrentHash, 9999, false);
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(GameFunctions::PlayerPedID, CurrentHash, 9999, false);
 			}
 		}
+	}
+}
+
+bool Cheat::CheatFeatures::AutoGiveAllWeaponUpgradesBool = false;
+void Cheat::CheatFeatures::AutoGiveAllWeaponUpgrades()
+{
+	if (PLAYER::IS_PLAYER_PLAYING(GameFunctions::PlayerID))
+	{
+		GameFunctions::MaxUpgradeAllWeapons();
 	}
 }

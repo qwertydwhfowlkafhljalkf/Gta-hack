@@ -174,6 +174,8 @@ namespace Cheat
 		void ShowSessionInformation();
 		extern bool AutoGiveAllWeaponsBool;
 		void AutoGiveAllWeapons();
+		extern bool AutoGiveAllWeaponUpgradesBool;
+		void AutoGiveAllWeaponUpgrades();
 		extern bool FreeCamBool;
 		void FreeCam(bool toggle);
 		extern bool CartoonGunBool;

@@ -30,14 +30,14 @@ void Cheat::FiberMain()
 		switch (GUI::currentMenu) {
 		case MainMenu:
 		{
-			GUI::Title("Main Menu");
-			GUI::MenuOption("Self Options", SelfOptionsMenu);
-			GUI::MenuOption("Online Options", OnlineOptionsMenu);
-			GUI::MenuOption("Weapon Options", weaponmenu);
-			GUI::MenuOption("Vehicle Options", vehiclemenu);
-			GUI::MenuOption("Teleport Options", teleportmenu);
-			GUI::MenuOption("World Options", worldmenu);
-			GUI::MenuOption("Misc Options", miscmenu);
+			GUI::Title("Home");
+			GUI::MenuOption("Self", SelfOptionsMenu);
+			GUI::MenuOption("Online", OnlineOptionsMenu);
+			GUI::MenuOption("Weapon", weaponmenu);
+			GUI::MenuOption("Vehicle", vehiclemenu);
+			GUI::MenuOption("Teleport", teleportmenu);
+			GUI::MenuOption("World", worldmenu);
+			GUI::MenuOption("Miscellaneous", miscmenu);
 			GUI::MenuOption("Settings", SettingsMenu);
 		}
 		break;
@@ -45,8 +45,8 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("All Players");
 			GUI::MenuOption("ESP", ESPMenu);
-			GUI::MenuOption("Weapon Options", allplayers_weaponoptionsmenu);
-			GUI::MenuOption("Troll Options", allplayers_trolloptionsmenu);
+			GUI::MenuOption("Weapon", allplayers_weaponoptionsmenu);
+			GUI::MenuOption("Trolling", allplayers_trolloptionsmenu);
 			if (GUI::Option("Host Kick All Players", "Kick all players from session - Host only")) 
 			{
 				for (int i = 1; i <= 32; i++)
@@ -58,10 +58,10 @@ void Cheat::FiberMain()
 		break;
 		case allplayers_weaponoptionsmenu:
 		{
-			GUI::Title("Weapon Options");
+			GUI::Title("All Players -> Weapon");
 			if (GUI::Option("Give All Weapons", "Give all players all weapons"))
 			{
-				for (int i = 0; i < 32; i++) 
+				for (int i = 0; i < 32; i++)
 				{
 					if (GameFunctions::PlayerID != i) 
 					{
@@ -74,7 +74,7 @@ void Cheat::FiberMain()
 		break; 
 		case allplayers_trolloptionsmenu:
 		{
-			GUI::Title("Troll Options"); 
+			GUI::Title("Trolling"); 
 			GUI::Toggle("Freeze All Players", CheatFeatures::FreezeAllPlayersBool, "Freeze all players in session", false);
 			if (GUI::Option("Kick All Out Of Vehicle", "Kick all players from their vehicle"))
 			{
@@ -125,12 +125,12 @@ void Cheat::FiberMain()
 		break;
 		case OnlineOptionsMenu:
 		{
-			GUI::Title("Online Options");
+			GUI::Title("Online");
 			GUI::MenuOption("Player List", PlayerListMenu);
 			GUI::MenuOption("All Players", AllPlayersMenu);
 			GUI::MenuOption("Protections", protections);
-			GUI::MenuOption("Stats Options", statsoptionsmenu);
-			GUI::MenuOption("Session Options", sessionoptionsmenu);
+			GUI::MenuOption("Stats", statsoptionsmenu);
+			GUI::MenuOption("Session", sessionoptionsmenu);
 			GUI::Toggle("Off Radar", CheatFeatures::OffRadarBool, "Enables Lester Off Radar Feature");
 			GUI::Toggle("No Idle Kick", CheatFeatures::NoIdleKickBool, "Does not work when out of game focus");
 			GUI::Toggle("Bribe Authorities", CheatFeatures::BribeAuthoritiesBool, "Enables Bribe Authorities");
@@ -139,7 +139,7 @@ void Cheat::FiberMain()
 		break; 
 		case sessionoptionsmenu:
 		{
-			GUI::Title("Session Options");
+			GUI::Title("Session");
 			GUI::MenuOption("Chat", SessionChatMenu);
 		}
 		break;
@@ -151,7 +151,7 @@ void Cheat::FiberMain()
 		break; 
 		case statsoptionsmenu:
 		{
-			GUI::Title("Stats Options"); 
+			GUI::Title("Stats"); 
 			GUI::MenuOption("Reports", reportsmenu_stats);
 			GUI::MenuOption("Rank", rankmenu); 
 			GUI::MenuOption("Unlocks", unlocksmenu);
@@ -970,7 +970,8 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("Vehicle Spawner");
 			GUI::MenuOption("Spawn Settings", VehicleSpawnSettings);
-			if (GUI::Option("Custom Input", "Input custom vehicle model"))
+
+			if (GUI::Option("Custom Input", "Input custom vehicle model name"))
 			{
 				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter custom vehicle model name");
 				if (KeyboardInput == "0") { break; }
@@ -1007,6 +1008,7 @@ void Cheat::FiberMain()
 		case DLCVehiclesMenu:
 		{
 			GUI::Title("DLC Vehicles");
+			GUI::MenuOption("Los Santos Tuners", LosSantosTunersDLCMenu);
 			GUI::MenuOption("The Cayo Perico Heist", CayoPericoHeistDLCMenu);
 			GUI::MenuOption("2020 Summer Special", SummerSpecialDLCMenu);
 			GUI::MenuOption("The Diamond Casino Heist", diamondcasinoheist);
@@ -1018,6 +1020,18 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Smuggler's Run", smugglersrun);
 			GUI::MenuOption("Gunrunning", gunrunningdlc);
 			GUI::MenuOption("Cunning Stunts", CunningStuntsDLCMenu);
+		}
+		break;
+		case LosSantosTunersDLCMenu:
+		{
+			GUI::Title("Los Santos Tuners");
+			for (auto const& i : GameArrays::LosSantosTunersModels)
+			{
+				if (GUI::VehicleOption(UI::_GET_LABEL_TEXT(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(i)))), i))
+				{
+					GameFunctions::SpawnVehicle(CheatFunctions::StringToChar(i));
+				}
+			}
 		}
 		break;
 		case CayoPericoHeistDLCMenu:
@@ -1431,14 +1445,13 @@ void Cheat::FiberMain()
 			}
 		}
 		break;
-		break; 
 		case vehiclemenu:
 		{
-			GUI::Title("Vehicle Options");
+			GUI::Title("Vehicle");
 			GUI::MenuOption("Spawner", vehiclespawnermenu);
 			GUI::MenuOption("Vehicle Customizer", VehicleCustomizerMenu);
 			GUI::MenuOption("Vehicle Weapons", vehicleweaponsmenu);
-			if (GUI::Option("Delete Current Vehicle", "Delete the current vehicle"))
+			if (GUI::Option("Delete Vehicle", "Delete the current vehicle"))
 			{
 				if (!GameFunctions::DeleteVehicle(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID))) 
 				{
@@ -1451,8 +1464,9 @@ void Cheat::FiberMain()
 				if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false)) 
 				{
 					int MaxSpeedInput = GameFunctions::DisplayKeyboardAndReturnInputInteger(3, "Enter the desired max speed");
+					if (MaxSpeedInput == 0) { GameFunctions::MinimapNotification("Canceled setting Max Vehicle Speed"); break; }
 					Vehicle VehicleHandle = PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID);
-					if (CheatFeatures::UseKMH) 
+					if (CheatFeatures::UseKMH)
 					{
 						ENTITY::SET_ENTITY_MAX_SPEED(VehicleHandle, GameFunctions::KMHToMS(MaxSpeedInput));
 						GameFunctions::MinimapNotification("Max Speed Set (KM/H)");
@@ -1467,7 +1481,7 @@ void Cheat::FiberMain()
 				{
 					GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
-			}		
+			}	
 			GUI::Toggle("Vehicle Godmode", CheatFeatures::VehicleGodmodeBool, "Makes current vehicle invincible");
 			GUI::Toggle("Vehicle Invisible", CheatFeatures::VehicleInvisibleBool, "Makes current vehicle invisible");
 			GUI::Toggle("Vehicle Horn Boost", CheatFeatures::VehicleHornBoostBool, "Press horn button to use");
@@ -1531,10 +1545,10 @@ void Cheat::FiberMain()
 					GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}
-			GUI::MenuOption("Color Options", VehicleCustomizerColorMenu);
-			GUI::MenuOption("Neon Options", vehicle_lsc_neon_options);
+			GUI::MenuOption("Color", VehicleCustomizerColorMenu);
+			GUI::MenuOption("Neon", vehicle_lsc_neon_options);
 			GUI::MenuOption("Multipliers", vehiclemultipliersmenus);
-			GUI::MenuOption("Door Options", vehicledooroptionsmenu);
+			GUI::MenuOption("Door", vehicledooroptionsmenu);
 		}
 		break;
 		case VehicleCustomizerColorMenu:
@@ -1574,7 +1588,7 @@ void Cheat::FiberMain()
 		break;
 		case vehicle_lsc_color_options:
 		{
-			GUI::Title("Color Options");
+			GUI::Title("Color");
 			if (GUI::Option("Random", "Get random color")) 
 			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0);
@@ -1696,7 +1710,7 @@ void Cheat::FiberMain()
 		break;
 		case vehicle_lsc_neon_options:
 		{
-			GUI::Title("Neon Options");
+			GUI::Title("Neon");
 			if (GUI::Option("Enable Neons", "Enable Vehicle Neons")) 
 			{
 				for (int i = 0; i <= 7; i++)
@@ -1823,7 +1837,7 @@ void Cheat::FiberMain()
 		break;
 		case vehicledooroptionsmenu:
 		{
-			GUI::Title("Door Options");
+			GUI::Title("Door");
 			if (GUI::Option("Open All Doors", "Open All Vehicle Doors"))
 			{
 				for (int CurrentDoorIndex = 0; CurrentDoorIndex < 8; CurrentDoorIndex++)
@@ -1885,9 +1899,9 @@ void Cheat::FiberMain()
 		break; 
 		case worldmenu:
 		{
-			GUI::Title("World Options");
-			GUI::MenuOption("Time Options", timemenu);
-			GUI::MenuOption("Weather Options", weathermenu);
+			GUI::Title("World");
+			GUI::MenuOption("Time", timemenu);
+			GUI::MenuOption("Weather", weathermenu);
 			GUI::MenuOption("Nearby Vehicles", nearbyvehicles_menu);
 			GUI::MenuOption("Nearby Peds", nearbypeds_menu); 
 			GUI::Toggle("Snow (local)", CheatFeatures::WorldSnowLocalBool, "GTA Online Only");
@@ -2188,7 +2202,7 @@ void Cheat::FiberMain()
 		break;
 		case timemenu:
 		{
-			GUI::Title("Time Options");
+			GUI::Title("Time");
 			if (GUI::Int("Hour", SetTimeHour, 0, 23, 1, false)) { NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(SetTimeHour, TIME::GET_CLOCK_MINUTES(), TIME::GET_CLOCK_SECONDS()); }
 			if (GUI::Int("Minutes", SetTimeMinutes, 0, 59, 1, false)) { NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(TIME::GET_CLOCK_HOURS(), SetTimeMinutes, TIME::GET_CLOCK_SECONDS()); }
 			if (GUI::Int("Seconds", SetTimeSeconds, 0, 59, 1, false)) { NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(TIME::GET_CLOCK_HOURS(), TIME::GET_CLOCK_MINUTES(), SetTimeSeconds); }
@@ -2204,7 +2218,7 @@ void Cheat::FiberMain()
 		break;
 		case weathermenu:
 		{
-			GUI::Title("Weather Options");
+			GUI::Title("Weather");
 			if (GUI::Option("Extra Sunny", "")) { GAMEPLAY::SET_OVERRIDE_WEATHER("EXTRASUNNY"); }
 			if (GUI::Option("Sunny", "")) { GAMEPLAY::SET_OVERRIDE_WEATHER("CLEAR"); }
 			if (GUI::Option("Cloudy", "")) { GAMEPLAY::SET_OVERRIDE_WEATHER("CLOUDS"); }
@@ -2219,7 +2233,7 @@ void Cheat::FiberMain()
 		break;
 		case miscmenu:
 		{
-			GUI::Title("Misc Options");
+			GUI::Title("Miscellaneous");
 			GUI::MenuOption("HUD", hudmenu); 
 			GUI::MenuOption("IPL Loader", iplloader);
 			GUI::Toggle("Disable Phone", CheatFeatures::DisablePhoneBool, "Disable phone controls");
@@ -2262,7 +2276,7 @@ void Cheat::FiberMain()
 		break;
 		case hudmenu:
 		{
-			GUI::Title("HUD Options");
+			GUI::Title("HUD");
 			GUI::Toggle("Hide All HUD Elements", CheatFeatures::HideHUDBool, "");
 		}
 		break; 
@@ -2486,7 +2500,7 @@ void Cheat::FiberMain()
 		break; 
 		case weaponmenu: 
 		{
-			GUI::Title("Weapon Options");
+			GUI::Title("Weapon");
 			if (GUI::Option("Give All Weapons", ""))
 			{
 				GameFunctions::GiveAllWeaponsToPlayer(GameFunctions::PlayerPedID);
@@ -2498,166 +2512,14 @@ void Cheat::FiberMain()
 			}
 			if (GUI::Option("Max Upgrade Weapons", "Max Upgrade All Weapons"))
 			{
-				//Mk2 Weapons
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_PISTOL_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_PISTOL_MK2_CLIP_INCENDIARY"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_PISTOL_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_PISTOL_MK2_CAMO_IND_01"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_SMG_MK2_CLIP_FMJ"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_PI_SUPP"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_07"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_SB_BARREL_02"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_SMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_SMG_MK2_CAMO_IND_01"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_ASSAULTRIFLE_MK2_CLIP_FMJ"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_AR_SUPP_02"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_07"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_AR_BARREL_02"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_ASSAULTRIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_ASSAULTRIFLE_MK2_CAMO_IND_01"));
-				
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_CARBINERIFLE_MK2_CLIP_FMJ"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_AR_SUPP"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_07"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_CR_BARREL_02"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_CARBINERIFLE_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_CARBINERIFLE_MK2_CAMO"));
-
-
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_COMBATMG_MK2_CLIP_FMJ"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_SCOPE_MEDIUM_MK2"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_07"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MG_BARREL_02"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_COMBATMG_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_COMBATMG_MK2_CAMO_IND_01"));
-				
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_HEAVYSNIPER_MK2_CLIP_EXPLOSIVE"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_SR_SUPP_03"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_MUZZLE_09"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_AT_SR_BARREL_02"));
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("WEAPON_HEAVYSNIPER_MK2"), GAMEPLAY::GET_HASH_KEY("COMPONENT_HEAVYSNIPER_MK2_CAMO_IND_01"));
-
-				// Attachments FlashLight
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xAF113F99, 0x359B7AAE); //Advanced Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x0A3D4D34, 0x7BC4CDDC); //Combat PDW
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x13532244, 0x359B7AAE); //Micro SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x22D8FE39, 0x359B7AAE); //AP Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xD205520E, 0x359B7AAE); //Heavy Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x7F229F94, 0x7BC4CDDC); //Bullpump Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x1B06D571, 0x359B7AAE); //Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x5EF9FEC4, 0x359B7AAE); //Combat Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x99AEEB3B, 0x359B7AAE); //.50 Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x2BE6766B, 0x7BC4CDDC); //SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xEFE7E2DF, 0x7BC4CDDC); //Assault SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xBFEFFF6D, 0x7BC4CDDC); //Assault Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x83BF0278, 0x7BC4CDDC); //Carbine Rifle
-
-				//Attachments Clips
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xAF113F99, 0x8EC1C979); //Extened Clip Advanced Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x05FC3C11, 0xBC54DA77); //Advanced scope Sniper Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x22D8FE39, 0x249A17D5); //Extended Clip AP Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x0C472FE2, 0xBC54DA77); //Advanced scope Heavy Sniper
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xD205520E, 0x64F9C62B); //Heavy Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xBFD21232, 0x7B0033B3); //SNS Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xC0A3098D, 0x7C8BD10E); //Special Carbine
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xE284C527, 0x86BD7F72); //Assault Shotgun
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x7F229F94, 0xB3688B0F); //Bullpump Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x7FD62962, 0xD6C59CD6); //Combat MG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x1B06D571, 0xED265A1C); //Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x5EF9FEC4, 0xD67B4F2D); //Combat Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x99AEEB3B, 0xD9D3AC92); //.50 Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x083839C4, 0x33BA12E8); //Vintage Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x13532244, 0x10E6BA2B); //Micro SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x2BE6766B, 0x350966FB); //SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xEFE7E2DF, 0xBB46E417); //Assault SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x0A3D4D34, 0x334A5203); //Combat PDW
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x9D07F764, 0x82158B47); //MG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x61012683, 0xEAC8C270); //Gusenberg
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xBFEFFF6D, 0xB1214F9B); //Assault Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x83BF0278, 0x91109691); //Carbine Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xC734385A, 0xCCFD2AC5); //Marksman Rifle
-
-				//Attachments Scopes
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xAF113F99, 0xAA2C45B4); //Extened Clip Advanced Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x05FC3C11, 0xD2443DDC); //Advanced scope Sniper Rifle, 
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x0C472FE2, 0xD2443DDC); //Advanced scope Heavy Sniper
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xC0A3098D, 0xA0D89C42); //Special Carbine
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x7F229F94, 0xAA2C45B4); //Bullpump Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x13532244, 0x9D2FBF29); //Micro SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x2BE6766B, 0x3CC6BA57); //SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xEFE7E2DF, 0x9D2FBF29); //Assault SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x0A3D4D34, 0xAA2C45B4); //Combat PDW
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x3C00AFED, 0x82158B47); //MG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xBFEFFF6D, 0x9D2FBF29); //Assault Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x83BF0278, 0xA0D89C42); //Carbine Rifle
-
-				//Attachments Supressors
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xAF113F99, 0x8EC1C979); //Advanced Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x05FC3C11, 0xA73D4664); //Sniper Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x22D8FE39, 0xC304849A); //AP Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xD205520E, 0xC304849A); //Heavy Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xC0A3098D, 0xA73D4664); //Special Carbine
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x7F229F94, 0x837445AA); //Bullpump Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x1B06D571, 0x65EA7EBB); //Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x5EF9FEC4, 0xC304849A); //Combat Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x083839C4, 0xC304849A); //Vintage Pistol
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x2BE6766B, 0xC304849A); //SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xEFE7E2DF, 0xA73D4664); //Assault SMG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xBFEFFF6D, 0xA73D4664); //Assault Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x83BF0278, 0x837445AA); //Carbine Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xC734385A, 0x837445AA); //Marksman Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x1D073A89, 0xE608B35E); //Pump Shotgun
-
-				//Attachments Grip
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xC0A3098D, 0xC164F53); //Special Carbine
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x7F229F94, 0xC164F53); //Bullpump Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x9D61E50F, 0xC164F53); //Bullpump ShotGun
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xBFEFFF6D, 0xC164F53); //Assault Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x83BF0278, 0xC164F53); //Carbine Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xC734385A, 0xC164F53); //Marksman Rifle
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x0A3D4D34, 0xC164F53); //Combat PDW
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x7FD62962, 0xC164F53); //Combat MG
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0xE284C527, 0xC164F53); //Assault Shotgun
-
-				//Special Finish
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, 0x83BF0278, 0xD89B9658); //Carbine Rifle
-
-				//Paints
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x1B06D571, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x5EF9FEC4, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x22D8FE39, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x99AEEB3B, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x13532244, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x2BE6766B, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0xEFE7E2DF, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0xBFEFFF6D, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x83BF0278, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0xAF113F99, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x9D07F764, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x7FD62962, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x1D073A89, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x7846A318, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0xE284C527, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x9D61E50F, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x05FC3C11, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x0C472FE2, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0xA284510B, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0xB1CA77B1, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x42BF8A85, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x687652CE, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x61012683, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0xC0A3098D, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0xD205520E, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0xBFD21232, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x7F229F94, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x083839C4, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x7F7497E5, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0xA89CB99E, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x63AB0442, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0xC734385A, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x0A3D4D34, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0xF9D04ADB, 2);
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x0A3D4D34, 2);
+				GameFunctions::MaxUpgradeAllWeapons();
 			}
 			GUI::MenuOption("Custom Bullets", custombulletsmenu);
 			GUI::MenuOption("Vehicle Gun", vehiclegunmenu);
 			GUI::MenuOption("Triggerbot", aimbotsettingsmenu);		
 			GUI::Toggle("No reload", CheatFeatures::NoWeaponReloadBool, "Always have max amount of ammo");
-			GUI::Toggle("Auto Give All Weapons", CheatFeatures::AutoGiveAllWeaponsBool, "Always have all weapons");
+			GUI::Toggle("Auto Give All Weapons", CheatFeatures::AutoGiveAllWeaponsBool, "");
+			GUI::Toggle("Auto Give All Weapon Upgrades", CheatFeatures::AutoGiveAllWeaponUpgradesBool, "");
 			GUI::Toggle("Teleport Gun", CheatFeatures::TeleportGunBool, "Teleport to where you shoot");
 			GUI::Toggle("Entity Information Gun", CheatFeatures::EntityInformationGunBool, "Shows info about aimed entity");
 			GUI::Toggle("Cartoon Gun", CheatFeatures::CartoonGunBool, "Shows cartoon effects while shooting");
@@ -2720,11 +2582,11 @@ void Cheat::FiberMain()
 		break;
 		case teleportmenu:
 		{
-			GUI::Title("Teleport Options");
+			GUI::Title("Teleport");
 			if (GUI::Option("Teleport To Waypoint", "")) { GameFunctions::TeleportToBlipCoord(SpriteWaypoint); }
 			if (GUI::Option("Teleport To Personal Vehicle", "")) { GameFunctions::TeleportToBlipCoord(SpritePersonalVehicleCar);  }
 			if (GUI::Option("Teleport To Objective", "")) { GameFunctions::TeleportToObjective(); }
-			if (GUI::Option("Teleport to custom coordinate", ""))
+			if (GUI::Option("Teleport to Custom Coordinate", ""))
 			{
 				Vector3 TargetCoordinates;
 				try
@@ -2893,14 +2755,14 @@ void Cheat::FiberMain()
 		break; 
 		case ESPMenu:
 		{
-			GUI::Title("ESP Options");
+			GUI::Title("Extra-sensory Perception");
 			GUI::Toggle("Basic ESP", CheatFeatures::PlayerESPBool, "Toggle Player ESP");
 		}
 		break; 
 		case SelectedPlayerTrollMenu:
 		{
-			GUI::Title("Troll Options");
-			GUI::MenuOption("Attachment Options", SelectedPlayerAttachmentOptions);
+			GUI::Title("Trolling");
+			GUI::MenuOption("Attachments", SelectedPlayerAttachmentOptions);
 			GUI::Toggle("Explode Loop", CheatFeatures::ExplodeLoopSelectedPlayerBool, "Run explode loop on selected player", false);
 			GUI::Toggle("Freeze Player", CheatFeatures::FreezeSelectedPlayerBool, "Freeze character of selected player", false);
 			GUI::Toggle("Shake Cam", CheatFeatures::ShakeCamSelectedPlayerBool, "Shake selected player character camera", false);
@@ -3079,24 +2941,24 @@ void Cheat::FiberMain()
 				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer), false), 
 					                                   false, false);
 			}
-			GUI::MenuOption("Teleport Options", SelectedPlayerTeleportMenu);
-			GUI::MenuOption("Friendly Options", SelectedPlayerFriendlyMenu);
-			GUI::MenuOption("Troll Options", SelectedPlayerTrollMenu);
-			GUI::MenuOption("Remote Options", SelectedPlayerRemoteOptions, true);
+			GUI::MenuOption("Teleport", SelectedPlayerTeleportMenu);
+			GUI::MenuOption("Friendly", SelectedPlayerFriendlyMenu);
+			GUI::MenuOption("Trolling", SelectedPlayerTrollMenu);
+			GUI::MenuOption("Script Events", SelectedPlayerRemoteOptions, true);
 			if (GUI::Option("Copy Outfit", "Get Selected Player Outfit")) { GameFunctions::CopySelectedPlayerOutfit(CheatFeatures::selectedPlayer); }
 			if (GUI::Option("View Profile", "View Selected Player Social Club Profile")) { int playerHandle; NETWORK::NETWORK_HANDLE_FROM_PLAYER(CheatFeatures::selectedPlayer, &playerHandle, 13); NETWORK::NETWORK_SHOW_PROFILE_UI(&playerHandle); }
 		}
 		break;
 		case SelectedPlayerFriendlyMenu:
 		{
-			GUI::Title("Friendly Options");
-			GUI::MenuOption("Money Options", SelectedPlayerMoneyMenu);
+			GUI::Title("Friendly");
+			GUI::MenuOption("Money", SelectedPlayerMoneyMenu);
 			if (GUI::Option("Give All Weapons", "Give all weapons to selected player")) { GameFunctions::GiveAllWeaponsToPlayer(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer)); }
 		}
 		break;
 		case SelectedPlayerRemoteOptions:
 		{
-			GUI::Title("Remote Options");
+			GUI::Title("Script Events");
 			if (GUI::Option("Kick To Single Player", "Kick Selected Player to SP")) 
 			{
 				if (NETWORK::NETWORK_IS_SESSION_STARTED())
@@ -3109,7 +2971,7 @@ void Cheat::FiberMain()
 		break; 
 		case SelectedPlayerTeleportMenu:
 		{
-			GUI::Title("Teleport Options"); 
+			GUI::Title("Teleport"); 
 			if (GUI::Option("Teleport Into Vehicle", "Teleport into Selected Player vehicle"))
 			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer), false);
@@ -3119,7 +2981,7 @@ void Cheat::FiberMain()
 		break; 
 		case SelfOptionsMenu:
 		{
-			GUI::Title("Self Options");
+			GUI::Title("Self");
 			GUI::MenuOption("Model Changer", ModelChangerMenu);
 			GUI::MenuOption("Animations & Scenarios", AnimationsAndScenariosMenu);
 			GUI::MenuOption("Clothing", clothingmenu);
@@ -3144,14 +3006,14 @@ void Cheat::FiberMain()
 		break;
 		case SelectedPlayerMoneyMenu:
 		{
-			GUI::Title("Money Options");
+			GUI::Title("Money");
 			GUI::Toggle("Toggle", CheatFeatures::MoneyDropBool, "Enable Money Drop on selected player", false);
 			GUI::Int("Drop Delay", CheatFeatures::MoneyDropDelay, 50, 2000, 50, false, "Set to 1500 to prevent transaction errors");
 		} 
 		break;
 		case clothingmenu:
 		{
-			GUI::Title("Clothing Options"); 
+			GUI::Title("Clothing"); 
 			GUI::MenuOption("Outfits", outfitsmenu); 
 			GUI::MenuOption("Components Changer", componentschangermenu);
 		}
@@ -3223,7 +3085,7 @@ void Cheat::FiberMain()
 		break; 
 		case SelectedPlayerAttachmentOptions:
 		{
-			GUI::Title("Attach Options");
+			GUI::Title("Attachments");
 			if (GUI::Option("Plate", ""))				{ GameFunctions::AttachObjectToPed(CheatFeatures::selectedPlayer, "p_oil_slick_01"); }
 			if (GUI::Option("EMP", ""))				{ GameFunctions::AttachObjectToPed(CheatFeatures::selectedPlayer, "hei_prop_heist_emp"); }
 			if (GUI::Option("Beach Fire", ""))		{ GameFunctions::AttachObjectToPed(CheatFeatures::selectedPlayer, "prop_beach_fire"); }
@@ -3255,7 +3117,7 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("Protections");	
 			if (GUI::Option("Enable/Disable Anti-Crash Camera", "Changes camera position to prevent crash")) { GameFunctions::EnableDisableAntiCrashCamera(); }
-			GUI::Break("Protection Options", true);
+			GUI::Break("Protection", true);
 			if (GUI::Option("Enable All", "Enable all protection options")) {
 				CheatFeatures::ProtectionVoteKickBool = true;
 				CheatFeatures::ProtectionFreezeBool = true;
@@ -3492,7 +3354,7 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Theme Loader", ThemeLoaderMenu);
 			GUI::Break("Settings", true);
 			GUI::MenuOption("Colors", GUIColorsMenu);
-			GUI::MenuOption("Header Options", headeroptionsmenu);
+			GUI::MenuOption("Header", headeroptionsmenu);
 			GUI::StringVector("Toggles", { "Shop Box", "Circle" }, CheatFeatures::BoolOptionVectorPosition, "Select Boolean Toggle", false);
 			GUI::Int("Max Visible Menu Options", GUI::maxVisOptions, 5, 16, 1, false);
 			GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu", false);
@@ -3516,10 +3378,9 @@ void Cheat::FiberMain()
 		break; 
 		case headeroptionsmenu:
 		{
-			GUI::Title("Header Options");
+			GUI::Title("Header");
 			GUI::Toggle("Show Header GUI", GUI::ShowHeaderGUI, "Toggle Header GUI", false);
 			GUI::Toggle("Show Header Background", GUI::ShowHeaderBackground, "Toggle Header Background", false);
-			GUI::Toggle("Show Header Glare", GUI::ShowHeaderGlare, "Show GTAO Interaction Menu Glare", false);
 		}
 		break;
 		case GUIColorsMenu:
@@ -3532,7 +3393,6 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Small Title Background", settingssmalltitlebackground);
 			GUI::MenuOption("Options Scroller", settingsscroller);
 			GUI::MenuOption("Option Text", settingsoptiontext);
-			GUI::MenuOption("Line And Arrow", settingsbottomline);
 		}
 		break;
 		case settingsmenubottombackground:
@@ -3581,22 +3441,6 @@ void Cheat::FiberMain()
 			GUI::Int("Green", GUI::titleRect.g, 0, 255, 1, false);
 			GUI::Int("Blue", GUI::titleRect.b, 0, 255, 1, false);
 			GUI::Int("Opacity", GUI::titleRect.a, 0, 255, 1, false);
-		}
-		break;
-		case settingsbottomline:
-		{
-			GUI::Title("Line And Arrow");
-			if (GUI::Option("Set Default", ""))
-			{
-				GUI::TopAndBottomLine.r = 0;
-				GUI::TopAndBottomLine.g = 0;
-				GUI::TopAndBottomLine.b = 255;
-				GUI::TopAndBottomLine.a = 255;
-			}
-			GUI::Int("Red", GUI::TopAndBottomLine.r, 0, 255, 1, false);
-			GUI::Int("Green", GUI::TopAndBottomLine.g, 0, 255, 1, false);
-			GUI::Int("Blue", GUI::TopAndBottomLine.b, 0, 255, 1, false);
-			GUI::Int("Opacity", GUI::TopAndBottomLine.a, 0, 255, 1, false);
 		}
 		break;
 		case settingsheaderbackground:

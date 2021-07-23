@@ -43,6 +43,7 @@ void* GetScriptHandlerIfNetworkedHooked()
 }
 
 GetLabelText GetLabelTextOriginal = nullptr;
+std::string Cheat::GameFunctions::InGameHelpTextMessage;
 const char* GetLabelTextHooked(void* this_, const char* label)
 {
 	if (std::strcmp(label, "HUD_MPREENTER") == 0)	{ return "Joining a New GTA Online Session With GTAV Cheat"; }
@@ -57,6 +58,10 @@ const char* GetLabelTextHooked(void* this_, const char* label)
 	if (!Cheat::GameFunctions::InGameKeyboardWindowTitle.empty())
 	{
 		if (std::strcmp(label, "FMMC_KEY_TIP8") == 0) { return Cheat::CheatFunctions::StringToChar(Cheat::GameFunctions::InGameKeyboardWindowTitle); }
+	}
+	if (!Cheat::GameFunctions::InGameHelpTextMessage.empty())
+	{
+		if (std::strcmp(label, "LETTERS_HELP2") == 0) { return Cheat::CheatFunctions::StringToChar(Cheat::GameFunctions::InGameHelpTextMessage); }
 	}
 	return GetLabelTextOriginal(this_, label);
 }
@@ -77,7 +82,7 @@ bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argS
 	if (result)
 	{
 		bool IsBlackListedScript = std::find(std::begin(MiscScriptsArray), std::end(MiscScriptsArray), argStruct[0]) != std::end(MiscScriptsArray);
-		//char* SenderName = PLAYER::GET_PLAYER_NAME(*(std::int8_t*)(argStruct[1] + 0x2D)); //TODO: Invalid Player ID Offset?
+		char* SenderName = PLAYER::GET_PLAYER_NAME(argStruct[1]);
 		if (Cheat::CheatFeatures::BlockAllScriptEvents)
 		{
 			return false;
