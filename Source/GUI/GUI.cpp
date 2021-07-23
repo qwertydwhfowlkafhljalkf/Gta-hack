@@ -288,43 +288,26 @@ bool Cheat::GUI::Toggle(std::string option, bool & b00l, std::string Information
 		return true;
 	}
 
-	std::string ToggleTextureNameEnabled, ToggleTextureNameDisabled;
-	RGBA ToggleColorEnabled, ToggleColorDisabled;
-	if (Cheat::CheatFeatures::BoolOptionVectorPosition == 0)
-	{
-		ToggleTextureNameEnabled = "shop_box_tick";
-		ToggleTextureNameDisabled = "shop_box_blank";
-		ToggleColorEnabled = { 255, 255, 255, 255 };
-		ToggleColorDisabled = ToggleColorEnabled;
-	}
-	else if (Cheat::CheatFeatures::BoolOptionVectorPosition == 1)
-	{
-		ToggleTextureNameEnabled = "common_medal";
-		ToggleTextureNameDisabled = ToggleTextureNameEnabled;
-		ToggleColorEnabled = { 43, 255, 0, 255 };
-		ToggleColorDisabled = { 255, 0, 0, 255 };
-	}
-
 	if (b00l)
 	{
 		if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 		{
-			GUI::Drawing::Spriter("commonmenu", ToggleTextureNameEnabled, Cheat::GUI::guiX + 0.092f, GUI::guiY + (GUI::optionCount * 0.035f - 0.160f), 0.03f, 0.05f, 0, ToggleColorEnabled.r, ToggleColorEnabled.g, ToggleColorEnabled.b, ToggleColorEnabled.a);
+			GUI::Drawing::Spriter("Textures", "ToggleOn", Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount * 0.035f - 0.160f), 0.025f, 0.025f, 0, 255, 255, 255, 255);
 		}
 		else if ((GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions)) && GUI::optionCount <= GUI::currentOption)
 		{
-			GUI::Drawing::Spriter("commonmenu", ToggleTextureNameEnabled, Cheat::GUI::guiX + 0.092f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.160f, 0.03f, 0.05f, 0, ToggleColorEnabled.r, ToggleColorEnabled.g, ToggleColorEnabled.b, ToggleColorEnabled.a);
+			GUI::Drawing::Spriter("Textures", "ToggleOn", Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.160f, 0.025f, 0.025f, 0, 255, 255, 255, 255);
 		}
 	}
 	else
 	{
 		if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 		{
-			GUI::Drawing::Spriter("commonmenu", ToggleTextureNameDisabled, Cheat::GUI::guiX + 0.092f, GUI::guiY + (GUI::optionCount * 0.035f - 0.160f), 0.03f, 0.05f, 0, ToggleColorDisabled.r, ToggleColorDisabled.g, ToggleColorDisabled.b, ToggleColorDisabled.a);
+			GUI::Drawing::Spriter("Textures", "ToggleOff", Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount * 0.035f - 0.160f), 0.025f, 0.025f, 0, 255, 255, 255, 255);
 		}
 		else if ((GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions)) && GUI::optionCount <= GUI::currentOption)
 		{
-			GUI::Drawing::Spriter("commonmenu", ToggleTextureNameDisabled, Cheat::GUI::guiX + 0.092f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.160f, 0.03f, 0.05f, 0, ToggleColorDisabled.r, ToggleColorDisabled.g, ToggleColorDisabled.b, ToggleColorDisabled.a);
+			GUI::Drawing::Spriter("Textures", "ToggleOff", Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.160f, 0.025f, 0.025f, 0, 255, 255, 255, 255);
 		}
 	}
 
@@ -568,7 +551,6 @@ void Cheat::GUI::End()
 		GUI::Drawing::Text(CHEAT_BUILD_NUMBER, GUI::count, { Cheat::GUI::guiX + 0.085f, GUI::guiY + ((GUI::maxVisOptions + 1) * 0.035f - 0.172f) }, { 0.30f, 0.30f }, true);
 		GUI::Drawing::Rect(GUI::MenuBottomRect, { Cheat::GUI::guiX, GUI::guiY + ((GUI::maxVisOptions + 1) * 0.035f - 0.1585f) }, { Cheat::GUI::guiWidth, 0.035f });
 		GUI::Drawing::Spriter("Textures", "LogoSmall", Cheat::GUI::guiX, GUI::guiY + ((GUI::maxVisOptions + 1) * 0.035f - 0.160f), 0.025f, 0.040f, 0, 255, 255, 255, 255);
-
 	}
 	else if (OptionCount > 0)
 	{
@@ -836,7 +818,6 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 		float Width		= std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_width"));
 
 		Cheat::GUI::keyPressDelay = CheatFunctions::StringToInt(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "key_press_delay"));
-		Cheat::CheatFeatures::BoolOptionVectorPosition = CheatFunctions::StringToInt(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "boolean_toggle"));
 
 		if (Cheat::CheatFunctions::IsIntegerInRange(0.110000, 0.86000, X))
 		{
@@ -925,8 +906,6 @@ void Cheat::GUI::SaveTheme(std::string ThemeFileName)
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::maxVisOptions), ThemeFilePath, "THEME", "max_vis_options");
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::OpenGUIKey), ThemeFilePath, "THEME", "open_key");
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::GUINavigationKey), ThemeFilePath, "THEME", "cursor_navigation_toggle_key");
-
-	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::CheatFeatures::BoolOptionVectorPosition), ThemeFilePath, "THEME", "boolean_toggle");
 
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MainTitleRect.r), ThemeFilePath, "THEME", "title_background_red");
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::MainTitleRect.g), ThemeFilePath, "THEME", "title_background_green");

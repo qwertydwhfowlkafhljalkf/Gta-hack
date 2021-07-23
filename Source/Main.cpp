@@ -1449,7 +1449,7 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("Vehicle");
 			GUI::MenuOption("Spawner", vehiclespawnermenu);
-			GUI::MenuOption("Vehicle Customizer", VehicleCustomizerMenu);
+			GUI::MenuOption("Los Santos Customs", VehicleCustomizerMenu);
 			GUI::MenuOption("Vehicle Weapons", vehicleweaponsmenu);
 			if (GUI::Option("Delete Vehicle", "Delete the current vehicle"))
 			{
@@ -1483,7 +1483,7 @@ void Cheat::FiberMain()
 				}
 			}	
 			GUI::Toggle("Vehicle God Mode", CheatFeatures::VehicleGodmodeBool, "Makes current vehicle invincible");
-			GUI::Toggle("Vehicle Invisible", CheatFeatures::VehicleInvisibleBool, "Makes current vehicle invisible");
+			GUI::Toggle("Vehicle Invisibility", CheatFeatures::VehicleInvisibleBool, "Makes current vehicle invisible");
 			GUI::Toggle("Vehicle Horn Boost", CheatFeatures::VehicleHornBoostBool, "Press horn button to use");
 			GUI::Toggle("Unlimited Rocket Boost", CheatFeatures::UnlimitedRocketBoostBool, "");
 			GUI::StringVector("Speedometer", { "Disabled", "On-Screen", "License Plate", "Both" }, CheatFeatures::SpeedometerVectorPosition, "Set speedometer");
@@ -1494,7 +1494,7 @@ void Cheat::FiberMain()
 		break; 
 		case VehicleCustomizerMenu:
 		{
-			GUI::Title("Vehicle Customizer");
+			GUI::Title("Los Santos Customs");
 			if (GUI::Option("Repair & Clean", "Repair & Clean current vehicle"))
 			{
 				GameFunctions::RepairAndCleanVehicle();
@@ -2498,10 +2498,10 @@ void Cheat::FiberMain()
 			}
 		}
 		break; 
-		case weaponmenu: 
+		case WeaponsMenu:
 		{
-			GUI::Title("Weapon");
-			if (GUI::Option("Give All Weapons", ""))
+			GUI::Title("Weapons");
+			if (GUI::Option("Get All Weapons", ""))
 			{
 				GameFunctions::GiveAllWeaponsToPlayer(GameFunctions::PlayerPedID);
 			}
@@ -2510,26 +2510,43 @@ void Cheat::FiberMain()
 				if (CheatFeatures::AutoGiveAllWeaponsBool) { GameFunctions::MinimapNotification("Disable 'Auto Give All Weapons' to use this"); }
 				else { WEAPON::REMOVE_ALL_PED_WEAPONS(GameFunctions::PlayerPedID, true); }
 			}
-			if (GUI::Option("Max Upgrade Weapons", "Max Upgrade All Weapons"))
+			GUI::Break("Upgrades", true);
+			if (GUI::Option("Max Upgrade All Weapons", "Max Upgrade All Weapons"))
 			{
 				GameFunctions::MaxUpgradeAllWeapons();
 			}
+			GUI::Break("Auto", true);
+			GUI::Toggle("Auto Get All Weapons", CheatFeatures::AutoGiveAllWeaponsBool, "");
+			GUI::Toggle("Auto Get All Weapon Upgrades", CheatFeatures::AutoGiveAllWeaponUpgradesBool, "");
+			GUI::Break("Color", true);
+			GUI::Toggle("Rainbow Gun", CheatFeatures::RainbowGunBool, "");
+		}
+		break;
+		case WeaponVisualsMenu:
+		{
+			GUI::Title("Visuals");
+			GUI::Toggle("Crosshair", CheatFeatures::CrossHairBool, "");
+			GUI::Toggle("Cartoon Gun", CheatFeatures::CartoonGunBool, "Shows cartoon effects while shooting");
+		}
+		break;
+		case weaponmenu: 
+		{
+			GUI::Title("Weapon");
+			GUI::MenuOption("Weapons", WeaponsMenu);
+			GUI::MenuOption("Visuals", WeaponVisualsMenu);
 			GUI::MenuOption("Custom Bullets", custombulletsmenu);
 			GUI::MenuOption("Vehicle Gun", vehiclegunmenu);
-			GUI::MenuOption("Triggerbot", aimbotsettingsmenu);		
+			GUI::MenuOption("Aimbot", aimbotsettingsmenu);		
+			GUI::Break("General", true);
 			GUI::Toggle("No reload", CheatFeatures::NoWeaponReloadBool, "Always have max amount of ammo");
-			GUI::Toggle("Auto Give All Weapons", CheatFeatures::AutoGiveAllWeaponsBool, "");
-			GUI::Toggle("Auto Give All Weapon Upgrades", CheatFeatures::AutoGiveAllWeaponUpgradesBool, "");
 			GUI::Toggle("Teleport Gun", CheatFeatures::TeleportGunBool, "Teleport to where you shoot");
 			GUI::Toggle("Entity Information Gun", CheatFeatures::EntityInformationGunBool, "Shows info about aimed entity");
-			GUI::Toggle("Cartoon Gun", CheatFeatures::CartoonGunBool, "Shows cartoon effects while shooting");
 			GUI::Toggle("Delete Gun", CheatFeatures::DeleteGunBool, "Use SNS Pistol with this option");
 			GUI::Toggle("Rapid Fire", CheatFeatures::WeaponRapidFireBool, "Shoot very fast");
 			GUI::Toggle("Money Gun", CheatFeatures::MoneyGunBool, "Drops money bags where you shoot");
 			GUI::Toggle("One Shot One Kill", CheatFeatures::OneHitKillBool, "Better known as 'one-hit kill'");
 			GUI::Toggle("Gravity Gun", CheatFeatures::GravityGunBool, "Use Combat Pistol for this option");
 			GUI::Toggle("Airstrike Gun", CheatFeatures::AirstrikeGunBool, "");
-			GUI::Toggle("Rainbow Gun", CheatFeatures::RainbowGunBool, "Loops colors on your equipped weapon");
 		}
 		break; 
 		case vehiclegunmenu:
@@ -2574,7 +2591,7 @@ void Cheat::FiberMain()
 		break; 
 		case aimbotsettingsmenu:
 		{
-			GUI::Title("Triggerbot");
+			GUI::Title("Aimbot");
 			GUI::Toggle("Toggle Triggerbot", CheatFeatures::TriggerBotBool, "Toggle Triggerbot");
 			GUI::Toggle("Shoot NPC's", CheatFeatures::TriggerBot_ShootNPCBool, "Triggerbot shoots at NPC's");
 			GUI::Toggle("Shoot Players", CheatFeatures::TriggerBot_ShootPlayersBool, "Triggerbot shoots at players");
@@ -2994,7 +3011,7 @@ void Cheat::FiberMain()
 			GUI::Toggle("Ignored By Everyone", CheatFeatures::PlayerIgnoredBool, "NPC's will (mostly) ignore you");
 			GUI::Toggle("Never Wanted", CheatFeatures::NeverWantedBool, "Never get a wanted level");
 			if (GUI::Int("Wanted Level", PlayerWantedLevelInteger, 0, 5, 1, false, "Set Wanted Level")) { CheatFeatures::NeverWantedBool = false; PLAYER::SET_PLAYER_WANTED_LEVEL(GameFunctions::PlayerID, PlayerWantedLevelInteger, false); PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(GameFunctions::PlayerID, false); }
-			GUI::Toggle("Invisible", CheatFeatures::PlayerInvisibleBool, "Makes your character invisible");
+			GUI::Toggle("Invisibility", CheatFeatures::PlayerInvisibleBool, "Makes your character invisible");
 			GUI::Toggle("Explosive Melee", CheatFeatures::ExplosiveMeleeBool, "Objects you hit with melee explode");
 			GUI::Toggle("Tiny Player", CheatFeatures::TinyPlayerBool, "Lowers your character's scaling");
 			GUI::Toggle("Super Man", CheatFeatures::SuperManBool, "Fly around like a superman!");
@@ -3355,7 +3372,6 @@ void Cheat::FiberMain()
 			GUI::Break("Settings", true);
 			GUI::MenuOption("Colors", GUIColorsMenu);
 			GUI::MenuOption("Header", headeroptionsmenu);
-			GUI::StringVector("Toggles", { "Shop Box", "Circle" }, CheatFeatures::BoolOptionVectorPosition, "Select Boolean Toggle", false);
 			GUI::Int("Max Visible Menu Options", GUI::maxVisOptions, 5, 16, 1, false);
 			GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu", false);
 			GUI::Float("X-Axis", GUI::guiX, 0.11f, 0.86f, 0.01f, true, false, "");

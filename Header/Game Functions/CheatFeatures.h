@@ -4,7 +4,6 @@ namespace Cheat
 {
 	namespace CheatFeatures
 	{
-		extern int BoolOptionVectorPosition;
 		extern int SpeedometerVectorPosition;
 		extern int selectedPlayer;
 		extern int PlayerOpacityInt;
@@ -176,6 +175,8 @@ namespace Cheat
 		void AutoGiveAllWeapons();
 		extern bool AutoGiveAllWeaponUpgradesBool;
 		void AutoGiveAllWeaponUpgrades();
+		extern bool CrossHairBool;
+		void CrossHair();
 		extern bool FreeCamBool;
 		void FreeCam(bool toggle);
 		extern bool CartoonGunBool;

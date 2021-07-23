@@ -1,6 +1,5 @@
 #include "../Header/Main.h"
 
-int Cheat::CheatFeatures::BoolOptionVectorPosition = 0; //0: Shop Box. 1: Circle
 int Cheat::CheatFeatures::SpeedometerVectorPosition = 0;
 int Cheat::CheatFeatures::PlayerOpacityInt = 250;
 bool Cheat::CheatFeatures::UseKMH = true;
@@ -154,6 +153,7 @@ void Cheat::CheatFeatures::Looped()
 	FreeCamBool ? FreeCam(true) : FreeCam(false);
 	CartoonGunBool ? CartoonGun() : NULL;
 	EntityInformationGunBool ? EntityInformationGun() : NULL;
+	CrossHairBool ? CrossHair() : NULL;
 }
 
 
@@ -1315,4 +1315,10 @@ void Cheat::CheatFeatures::AutoGiveAllWeaponUpgrades()
 	{
 		GameFunctions::MaxUpgradeAllWeapons();
 	}
+}
+
+bool Cheat::CheatFeatures::CrossHairBool = false;
+void Cheat::CheatFeatures::CrossHair()
+{
+	GUI::Drawing::Spriter("Textures", "Crosshair1", 0.50f, 0.50f, 0.030f, 0.030f, 0, 255, 255, 255, 255);
 }

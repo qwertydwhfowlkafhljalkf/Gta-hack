@@ -20,6 +20,8 @@ enum SubMenus
 	SelectedPlayerMenu,
 	teleportmenu,
 	weaponmenu,
+	WeaponsMenu,
+	WeaponVisualsMenu,
 	VehicleCustomizerColorMenu,
 	miscmenu,
 	worldmenu,
