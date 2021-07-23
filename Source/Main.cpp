@@ -1482,7 +1482,7 @@ void Cheat::FiberMain()
 					GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}	
-			GUI::Toggle("Vehicle Godmode", CheatFeatures::VehicleGodmodeBool, "Makes current vehicle invincible");
+			GUI::Toggle("Vehicle God Mode", CheatFeatures::VehicleGodmodeBool, "Makes current vehicle invincible");
 			GUI::Toggle("Vehicle Invisible", CheatFeatures::VehicleInvisibleBool, "Makes current vehicle invisible");
 			GUI::Toggle("Vehicle Horn Boost", CheatFeatures::VehicleHornBoostBool, "Press horn button to use");
 			GUI::Toggle("Unlimited Rocket Boost", CheatFeatures::UnlimitedRocketBoostBool, "");
@@ -1891,7 +1891,7 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("Vehicle Spawn Settings");
 			GUI::Toggle("Spawn Inside Vehicle", CheatFeatures::VehicleSpawnerSpawnInsideVehicle, "");
-			GUI::Toggle("Spawn With Godmode", CheatFeatures::VehicleSpawnerSpawnWithGodmode, "");
+			GUI::Toggle("Spawn With God Mode", CheatFeatures::VehicleSpawnerSpawnWithGodmode, "");
 			GUI::Toggle("Spawn Max Upgraded", CheatFeatures::VehicleSpawnerSpawnMaxUpgraded, "");
 			GUI::Toggle("Delete Old Vehicle", CheatFeatures::VehicleSpawnerDeleteOldVehicle, "");
 			GUI::Toggle("Spawn With Blip", CheatFeatures::VehicleSpawnerSpawnWithBlip, "");
@@ -2526,7 +2526,7 @@ void Cheat::FiberMain()
 			GUI::Toggle("Delete Gun", CheatFeatures::DeleteGunBool, "Use SNS Pistol with this option");
 			GUI::Toggle("Rapid Fire", CheatFeatures::WeaponRapidFireBool, "Shoot very fast");
 			GUI::Toggle("Money Gun", CheatFeatures::MoneyGunBool, "Drops money bags where you shoot");
-			GUI::Toggle("Weapon Damage Multiplier", CheatFeatures::OneHitKillBool, "Better known as 'one-hit kill'");
+			GUI::Toggle("One Shot One Kill", CheatFeatures::OneHitKillBool, "Better known as 'one-hit kill'");
 			GUI::Toggle("Gravity Gun", CheatFeatures::GravityGunBool, "Use Combat Pistol for this option");
 			GUI::Toggle("Airstrike Gun", CheatFeatures::AirstrikeGunBool, "");
 			GUI::Toggle("Rainbow Gun", CheatFeatures::RainbowGunBool, "Loops colors on your equipped weapon");
@@ -2985,7 +2985,7 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Model Changer", ModelChangerMenu);
 			GUI::MenuOption("Animations & Scenarios", AnimationsAndScenariosMenu);
 			GUI::MenuOption("Clothing", clothingmenu);
-			GUI::Toggle("Godmode", CheatFeatures::GodmodeBool, "Makes your character invincible", true);
+			GUI::Toggle("God Mode", CheatFeatures::GodmodeBool, "Makes your character invincible", true);
 			GUI::Toggle("No Ragdoll & Seatbelt", CheatFeatures::NoRagdollAndSeatbeltBool, "Disables ragdoll on your character");
 			GUI::Toggle("Super Jump", CheatFeatures::SuperJumpBool, "Makes your character jump higher");
 			GUI::Toggle("Super Run", CheatFeatures::SuperRunBool, "Run very fast");
@@ -2998,10 +2998,10 @@ void Cheat::FiberMain()
 			GUI::Toggle("Explosive Melee", CheatFeatures::ExplosiveMeleeBool, "Objects you hit with melee explode");
 			GUI::Toggle("Tiny Player", CheatFeatures::TinyPlayerBool, "Lowers your character's scaling");
 			GUI::Toggle("Super Man", CheatFeatures::SuperManBool, "Fly around like a superman!");
-			if (GUI::Int("Player Opacity", CheatFeatures::PlayerOpacityInt, 50, 250, 50, false, "Changes local player opacity")) { ENTITY::SET_ENTITY_ALPHA(GameFunctions::PlayerPedID, (CheatFeatures::PlayerOpacityInt), false); }
+			if (GUI::Int("Opacity", CheatFeatures::PlayerOpacityInt, 50, 250, 50, false, "Changes local player opacity")) { ENTITY::SET_ENTITY_ALPHA(GameFunctions::PlayerPedID, (CheatFeatures::PlayerOpacityInt), false); }
 			if (GUI::Option("Suicide", "Kill your character")) { PED::APPLY_DAMAGE_TO_PED(GameFunctions::PlayerPedID, 300, true); }
 			if (GUI::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(2441237).At(4013).As<int>() = 1; }
-			if (GUI::Option("Clean Player", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(GameFunctions::PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(GameFunctions::PlayerPedID); GameFunctions::MinimapNotification("Player Cleaned"); }	
+			if (GUI::Option("Clean", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(GameFunctions::PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(GameFunctions::PlayerPedID); GameFunctions::MinimapNotification("Player Cleaned"); }	
 		}
 		break;
 		case SelectedPlayerMoneyMenu:
@@ -3360,7 +3360,6 @@ void Cheat::FiberMain()
 			GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu", false);
 			GUI::Float("X-Axis", GUI::guiX, 0.11f, 0.86f, 0.01f, true, false, "");
 			GUI::Float("Y-Axis", GUI::guiY, 0.10f, 0.90f, 0.01f, true, false, "");
-			GUI::Float("GUI Width", GUI::guiWidth, 0.21f, 0.30f, 0.01f, true, false, "TODO: Text Scaling not implemented");
 			std::string OpenKeyString = "Open Key: ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::OpenGUIKey);
 			if (GUI::Option(OpenKeyString.c_str(), "Select to change"))
 			{

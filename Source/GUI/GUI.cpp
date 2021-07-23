@@ -2,7 +2,9 @@
 
 float Cheat::GUI::guiX					= 0.11f;
 float Cheat::GUI::guiY					= 0.30f;
-float Cheat::GUI::guiWidth				= 0.21f; //TODO: Text Scaling not implemented
+float Cheat::GUI::guiWidth				= 0.21f;
+float Cheat::GUI::SelectableInfoBoxX	= 0.50f;
+float Cheat::GUI::SelectableInfoBoxY	= 0.840f;
 bool Cheat::GUI::ControlsDisabled		= false; //All cheat input is ignored when True
 bool Cheat::GUI::selectPressed			= false;
 bool Cheat::GUI::leftPressed			= false;
@@ -105,10 +107,11 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, bool Di
 	}
 	if (OnCurrent)
 	{
-		GUI::Drawing::Rect({ 0, 0, 255, 210 }, { 0.50f, 0.882f }, { 0.25f, 0.005f });
-		GUI::Drawing::Rect({ 0, 0, 0, 210 }, { 0.50f, 0.840f }, { 0.25f, 0.080f });
-		GUI::Drawing::Text(OptionInformationText != "" ? CheatFunctions::TextWrap(OptionInformationText, 30) : option, GUI::count, {0.38f, 0.807f}, {0.30f, 0.30f}, false);
-		if (GUI::CurrentOptionIsSavable) { GUI::Drawing::Text("Save Option: " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::SaveItemKey), GUI::count, { 0.54f, 0.807f }, { 0.30f, 0.30f }, false); }
+		//Selectable Information Box
+		GUI::Drawing::Rect({ 0, 0, 255, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY + 0.042f }, { 0.25f, 0.005f });
+		GUI::Drawing::Rect({ 0, 0, 0, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY }, { 0.25f, 0.080f });
+		GUI::Drawing::Text(OptionInformationText != "" ? CheatFunctions::TextWrap(OptionInformationText, 30) : option, GUI::count, { SelectableInfoBoxX - 0.12f, SelectableInfoBoxY - 0.033f}, { 0.30f, 0.30f }, false);
+		if (GUI::CurrentOptionIsSavable) { GUI::Drawing::Text("Save Option: " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::SaveItemKey), GUI::count, { SelectableInfoBoxX + 0.04f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false); }
 		
 		GUI::currentOptionVisible = GUI::optionCount - (GUI::optionCount - GUI::optionCountVisible);
 		GUI::CurrentOptionIsSavable = false;
@@ -118,7 +121,6 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, bool Di
 		if (GUI::selectPressed)
 		{
 			DoSelectAction:
-			if (CheatFeatures::CursorGUINavigationEnabled) { UI::_SET_CURSOR_SPRITE(Grab); }
 			if (GUI::SelectableHandler(Disabled))
 			{
 				return true;
@@ -266,11 +268,11 @@ bool Cheat::GUI::MenuOptionPlayerList(std::string PlayerName, SubMenus newSub)
 	VECTOR2 Position;
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
-		Position = { Cheat::GUI::guiX - 0.093f, GUI::guiY + (GUI::optionCount * 0.035f - 0.160f) };
+		Position = { Cheat::GUI::guiX - 0.093f, GUI::guiY + (GUI::optionCount * 0.035f - 0.158f) };
 	}
 	else if (GUI::optionCount > GUI::currentOption - GUI::maxVisOptions && GUI::optionCount <= GUI::currentOption)
 	{
-		Position = { Cheat::GUI::guiX - 0.093f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.160f };
+		Position = { Cheat::GUI::guiX - 0.093f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.158f };
 	}
 	GUI::Drawing::Spriter(CurrentOnlinePlayerPictureName, CurrentOnlinePlayerPictureName, Position.x, Position.y, 0.02f, 0.03f, 0, 255, 255, 255, 255);
 	return false;
@@ -307,22 +309,22 @@ bool Cheat::GUI::Toggle(std::string option, bool & b00l, std::string Information
 	{
 		if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 		{
-			GUI::Drawing::Spriter("commonmenu", ToggleTextureNameEnabled, Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount * 0.035f - 0.160f), 0.03f, 0.05f, 0, ToggleColorEnabled.r, ToggleColorEnabled.g, ToggleColorEnabled.b, ToggleColorEnabled.a);
+			GUI::Drawing::Spriter("commonmenu", ToggleTextureNameEnabled, Cheat::GUI::guiX + 0.092f, GUI::guiY + (GUI::optionCount * 0.035f - 0.160f), 0.03f, 0.05f, 0, ToggleColorEnabled.r, ToggleColorEnabled.g, ToggleColorEnabled.b, ToggleColorEnabled.a);
 		}
 		else if ((GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions)) && GUI::optionCount <= GUI::currentOption)
 		{
-			GUI::Drawing::Spriter("commonmenu", ToggleTextureNameEnabled, Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.160f, 0.03f, 0.05f, 0, ToggleColorEnabled.r, ToggleColorEnabled.g, ToggleColorEnabled.b, ToggleColorEnabled.a);
+			GUI::Drawing::Spriter("commonmenu", ToggleTextureNameEnabled, Cheat::GUI::guiX + 0.092f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.160f, 0.03f, 0.05f, 0, ToggleColorEnabled.r, ToggleColorEnabled.g, ToggleColorEnabled.b, ToggleColorEnabled.a);
 		}
 	}
 	else
 	{
 		if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 		{
-			GUI::Drawing::Spriter("commonmenu", ToggleTextureNameDisabled, Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount * 0.035f - 0.160f), 0.03f, 0.05f, 0, ToggleColorDisabled.r, ToggleColorDisabled.g, ToggleColorDisabled.b, ToggleColorDisabled.a);
+			GUI::Drawing::Spriter("commonmenu", ToggleTextureNameDisabled, Cheat::GUI::guiX + 0.092f, GUI::guiY + (GUI::optionCount * 0.035f - 0.160f), 0.03f, 0.05f, 0, ToggleColorDisabled.r, ToggleColorDisabled.g, ToggleColorDisabled.b, ToggleColorDisabled.a);
 		}
 		else if ((GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions)) && GUI::optionCount <= GUI::currentOption)
 		{
-			GUI::Drawing::Spriter("commonmenu", ToggleTextureNameDisabled, Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.160f, 0.03f, 0.05f, 0, ToggleColorDisabled.r, ToggleColorDisabled.g, ToggleColorDisabled.b, ToggleColorDisabled.a);
+			GUI::Drawing::Spriter("commonmenu", ToggleTextureNameDisabled, Cheat::GUI::guiX + 0.092f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.160f, 0.03f, 0.05f, 0, ToggleColorDisabled.r, ToggleColorDisabled.g, ToggleColorDisabled.b, ToggleColorDisabled.a);
 		}
 	}
 
@@ -846,11 +848,6 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 			Cheat::GUI::guiY = std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_y"));
 		}
 
-		if (Cheat::CheatFunctions::IsIntegerInRange(0.210000, 0.31000, Width))
-		{
-			Cheat::GUI::guiWidth = std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_width"));
-		}
-
 		Cheat::GUI::maxVisOptions = CheatFunctions::StringToInt(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "max_vis_options"));
 		if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "open_key") != "NOT_FOUND")
 		{
@@ -864,7 +861,7 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 	catch (...) {}
 
 	//Check Theme File Version
-	if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "theme_file_version") != "1.5")
+	if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "theme_file_version") != "1.6")
 	{
 		remove(ThemeFilePath.c_str());
 		SaveTheme(ThemeFileName);
@@ -924,7 +921,6 @@ void Cheat::GUI::SaveTheme(std::string ThemeFileName)
 	Cheat::CheatFunctions::WriteBoolToIni(Cheat::GUI::RestorePreviousSubmenu, ThemeFilePath, "THEME", "restore_previous_submenu");
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::guiX), ThemeFilePath, "THEME", "gui_x");
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::guiY), ThemeFilePath, "THEME", "gui_y");
-	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::guiWidth), ThemeFilePath, "THEME", "gui_width");
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::keyPressDelay), ThemeFilePath, "THEME", "key_press_delay");
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::maxVisOptions), ThemeFilePath, "THEME", "max_vis_options");
 	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::OpenGUIKey), ThemeFilePath, "THEME", "open_key");

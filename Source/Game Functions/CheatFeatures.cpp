@@ -788,10 +788,7 @@ void Cheat::CheatFeatures::UnlimitedSpecialAbility()
 {
 	if (!NETWORK::NETWORK_IS_SESSION_STARTED())
 	{ 
-		if (PLAYER::IS_SPECIAL_ABILITY_ENABLED(Cheat::GameFunctions::PlayerID))
-		{
-			PLAYER::SPECIAL_ABILITY_FILL_METER(Cheat::GameFunctions::PlayerID, true);
-		}
+		PLAYER::SPECIAL_ABILITY_FILL_METER(Cheat::GameFunctions::PlayerID, true);
 	}
 }
 

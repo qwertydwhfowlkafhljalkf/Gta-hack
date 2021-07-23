@@ -134,18 +134,28 @@ void Cheat::CheatFunctions::LoopedFunctions()
 	//Cursor Navigation Handler
 	if (Cheat::CheatFeatures::CursorGUINavigationEnabled)
 	{
-		PLAYER::SET_PLAYER_CONTROL(Cheat::GameFunctions::PlayerID, false, 0);
+		PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, false, 0);
 		UI::_SHOW_CURSOR_THIS_FRAME();
 		UI::_SET_CURSOR_SPRITE(Normal);
 
-		if (GameFunctions::IsCursorAtXYPosition({ Cheat::GUI::guiX, GUI::guiY - 0.213f }, { Cheat::GUI::guiWidth, 0.084f }))
+		if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - 0.213f }, { GUI::guiWidth, 0.084f }))
 		{
 			UI::_SET_CURSOR_SPRITE(PreGrab);
 			if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
 			{
 				UI::_SET_CURSOR_SPRITE(Grab);
-				Cheat::GUI::guiX = GameFunctions::ReturnCursorYXCoords().x;
-				Cheat::GUI::guiY = GameFunctions::ReturnCursorYXCoords().y + 0.20f;
+				GUI::guiX = GameFunctions::ReturnCursorYXCoords().x;
+				GUI::guiY = GameFunctions::ReturnCursorYXCoords().y + 0.20f;
+			}
+		}
+		if (GameFunctions::IsCursorAtXYPosition({ GUI::SelectableInfoBoxX, GUI::SelectableInfoBoxY }, { 0.25f, 0.080f }))
+		{
+			UI::_SET_CURSOR_SPRITE(PreGrab);
+			if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
+			{
+				UI::_SET_CURSOR_SPRITE(Grab);
+				Cheat::GUI::SelectableInfoBoxX = GameFunctions::ReturnCursorYXCoords().x;
+				Cheat::GUI::SelectableInfoBoxY = GameFunctions::ReturnCursorYXCoords().y;
 			}
 		}
 		if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX - 0.100f, GUI::guiY - 0.156f }, { 0.060f, 0.025f }))

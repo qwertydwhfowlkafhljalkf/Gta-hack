@@ -131,6 +131,8 @@ namespace Cheat
 		extern float guiX;
 		extern float guiY;
 		extern float guiWidth;
+		extern float SelectableInfoBoxX;
+		extern float SelectableInfoBoxY;
 		extern std::vector <std::string> ThemeFilesVector;
 		extern bool ShowHeaderBackground;
 		extern bool ShowHeaderGUI;
