@@ -932,7 +932,7 @@ void Cheat::FiberMain()
 		case vehiclespawnermenu:
 		{
 			GUI::Title("Vehicle Spawn");
-			GUI::MenuOption("Spawn Settings", VehicleSpawnSettings);
+			GUI::MenuOption("Settings", VehicleSpawnSettings);
 			GUI::MenuOption("Spawned Vehicles", SpawnedVehiclesMenu);
 			if (GUI::Option("Custom Input", "Input custom vehicle model name"))
 			{
@@ -940,7 +940,6 @@ void Cheat::FiberMain()
 				if (KeyboardInput == "0") { break; }
 				GameFunctions::SpawnVehicle(KeyboardInput);
 			}
-			GUI::Toggle("Show Vehicle Info & Preview", CheatFeatures::ShowVehicleInfoAndPreview, "Shows selected vehicle info & picture");
 			GUI::Break("Categories", true);
 			GUI::MenuOption("DLC Vehicles", DLCVehiclesMenu);
 			GUI::MenuOption("Super", Super);
@@ -2913,9 +2912,9 @@ void Cheat::FiberMain()
 		case SelectedPlayerMenu:
 		{
 			GUI::Title(PLAYER::GET_PLAYER_NAME(CheatFeatures::selectedPlayer));
-			GUI::Toggle("Spectate Player", CheatFeatures::SpectatePlayerBool, "Spectate Selected Player", false);
+			GUI::Toggle("Spectate", CheatFeatures::SpectatePlayerBool, "", false);
 			if (GUI::Option("Host Kick", "Kick selected player - Host only")) { NETWORK::NETWORK_SESSION_KICK_PLAYER(CheatFeatures::selectedPlayer); }
-			if (GUI::Option("Teleport To", "Teleport to selected player coords"))
+			if (GUI::Option("Teleport To", ""))
 			{
 				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer), false), 
 					                                   false, false);
@@ -3319,6 +3318,7 @@ void Cheat::FiberMain()
 			GUI::Title("Hide Elements");
 			GUI::Toggle("Hide Selectable Information Box", Cheat::CheatFeatures::HideSelectableInformationBox, "");
 			GUI::Toggle("Hide Player Information Box", CheatFeatures::HidePlayerInformationBox, "");
+			GUI::Toggle("Hide Vehicle Info & Preview", CheatFeatures::HideVehicleInfoAndPreview, "");
 			GUI::Toggle("Hide Own IP Address", CheatFeatures::HideOwnIPAddress, "Hiddes Local IP Address from Player Information Box");
 		}
 		break;

@@ -12,7 +12,7 @@ namespace Cheat
 		extern bool BlockAllScriptEvents;
 		extern bool ShowBlockedScriptEventNotifications;
 		extern bool HideOwnIPAddress;
-		extern bool ShowVehicleInfoAndPreview;
+		extern bool HideVehicleInfoAndPreview;
 		extern bool CursorGUINavigationEnabled;
 		extern bool ShowJoiningPlayersNotification;
 		extern bool LogChatMessages;

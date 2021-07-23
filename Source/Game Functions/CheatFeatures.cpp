@@ -7,7 +7,7 @@ bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
 bool Cheat::CheatFeatures::ShowBlockedScriptEventNotifications = true;
 bool Cheat::CheatFeatures::HideOwnIPAddress = true;
-bool Cheat::CheatFeatures::ShowVehicleInfoAndPreview = true;
+bool Cheat::CheatFeatures::HideVehicleInfoAndPreview = false;
 bool Cheat::CheatFeatures::ShowJoiningPlayersNotification = true;
 bool Cheat::CheatFeatures::LogChatMessages = true;
 bool Cheat::CheatFeatures::GTAODeveloperMode = false;
@@ -16,7 +16,7 @@ bool Cheat::CheatFeatures::VehicleSpawnerDeleteOldVehicle = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnWithBlip = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnWithGodmode = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnMaxUpgraded = false;
-bool Cheat::CheatFeatures::HidePlayerInformationBox = true;
+bool Cheat::CheatFeatures::HidePlayerInformationBox = false;
 bool Cheat::CheatFeatures::HideSelectableInformationBox = false;
 
 int PostInitBannerNotificationScaleformHandle;

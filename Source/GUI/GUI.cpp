@@ -170,7 +170,7 @@ bool Cheat::GUI::VehicleOption(std::string option, std::string ModelName)
 			}
 		}
 		
-		if (Cheat::CheatFeatures::ShowVehicleInfoAndPreview)
+		if (!Cheat::CheatFeatures::HideVehicleInfoAndPreview)
 		{
 			std::ostringstream ModelMaxSpeed;
 			if (Cheat::CheatFeatures::UseKMH)
