@@ -44,10 +44,10 @@ void Cheat::FiberMain()
 		case AllPlayersMenu:
 		{
 			GUI::Title("All Players");
-			GUI::MenuOption("ESP", ESPMenu);
+			GUI::MenuOption("Extra-sensory Perception", ESPMenu);
 			GUI::MenuOption("Weapon", allplayers_weaponoptionsmenu);
 			GUI::MenuOption("Trolling", allplayers_trolloptionsmenu);
-			if (GUI::Option("Host Kick All Players", "Kick all players from session - Host only")) 
+			if (GUI::Option("Host Kick Players", "Kick all players from session - Host only")) 
 			{
 				for (int i = 1; i <= 32; i++)
 				{
@@ -58,7 +58,7 @@ void Cheat::FiberMain()
 		break;
 		case allplayers_weaponoptionsmenu:
 		{
-			GUI::Title("All Players -> Weapon");
+			GUI::Title("Weapon");
 			if (GUI::Option("Give All Weapons", "Give all players all weapons"))
 			{
 				for (int i = 0; i < 32; i++)
@@ -155,7 +155,8 @@ void Cheat::FiberMain()
 			GUI::Break("Rank", true);
 			if (GUI::Option("Set Custom Rank", "Input a custom Rank"))
 			{
-				GameFunctions::SetRankRockstarGift(GameFunctions::DisplayKeyboardAndReturnInputInteger(4, "Enter desired rank (as single digit)"));
+				int Rank = GameFunctions::DisplayKeyboardAndReturnInputInteger(4, "Enter desired rank (as single digit)");
+				if (Rank != 0) { GameFunctions::SetRankRockstarGift(Rank); }
 			}
 			GUI::MenuOption("Unlocks", unlocksmenu);
 			GUI::Break("Miscellaneous", true);
@@ -2236,6 +2237,7 @@ void Cheat::FiberMain()
 			}		
 			if (GUI::Option("Get Empty Session", "Get Empty (Public) Session")) { Sleep(10000); }
 			if (GUI::Option("Exit to Single Player", "")) { NETWORK::SHUTDOWN_AND_LAUNCH_SINGLE_PLAYER_GAME(); }
+			if (GUI::Option("Close Game", "Must hold spacebar to prevent accidental closure")) { if (CheatFunctions::IsKeyCurrentlyPressed(VK_SPACE, false)) { std::exit(EXIT_SUCCESS); } }
 		}
 		break;
 		case hudmenu:
