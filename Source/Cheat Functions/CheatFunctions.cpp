@@ -589,3 +589,16 @@ std::string Cheat::CheatFunctions::TextWrap(std::string String, int Location)
 	}
 	return String;
 }
+
+void Cheat::CheatFunctions::CopyStringToClipboard(const std::string& String)
+{
+	OpenClipboard(NULL);
+	EmptyClipboard();
+	HGLOBAL Global = GlobalAlloc(GMEM_MOVEABLE, String.size() + 1);
+	if (!Global) { CloseClipboard(); return; }
+	memcpy(GlobalLock(Global), String.c_str(), String.size() + 1);
+	GlobalUnlock(Global);
+	SetClipboardData(CF_TEXT, Global);
+	CloseClipboard();
+	GlobalFree(Global);
+}

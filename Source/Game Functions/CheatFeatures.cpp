@@ -1274,11 +1274,11 @@ void Cheat::CheatFeatures::ShowSessionInformation()
 	std::string yMsg = " Y " + std::to_string(playerCoord.y);
 	std::string zMsg = " Z " + std::to_string(playerCoord.z);
 
-	Cheat::GUI::Drawing::Text("Local Player Coords", Cheat::GUI::optionText, { 0.162f, 0.8100f }, { 0.25f, 0.25f }, false);
-	Cheat::GUI::Drawing::Text(xMsg, Cheat::GUI::optionText, { 0.16f, 0.8225f }, { 0.25f, 0.25f }, false);
-	Cheat::GUI::Drawing::Text(yMsg, Cheat::GUI::optionText, { 0.16f, 0.8350f }, { 0.25f, 0.25f }, false);
-	Cheat::GUI::Drawing::Text(zMsg, Cheat::GUI::optionText, { 0.16f, 0.8475f }, { 0.25f, 0.25f }, false);
-	if (NETWORK::NETWORK_IS_SESSION_STARTED()) { Cheat::GUI::Drawing::Text(NumbConnectedPlayers, Cheat::GUI::optionText, { 0.1615f, 0.8650f }, { 0.25f, 0.25f }, false); }
+	Cheat::GUI::Drawing::Text("Local Player Coords", GUI::TextColorAndFont, { 0.162f, 0.8100f }, { 0.25f, 0.25f }, false);
+	Cheat::GUI::Drawing::Text(xMsg, GUI::TextColorAndFont, { 0.16f, 0.8225f }, { 0.25f, 0.25f }, false);
+	Cheat::GUI::Drawing::Text(yMsg, GUI::TextColorAndFont, { 0.16f, 0.8350f }, { 0.25f, 0.25f }, false);
+	Cheat::GUI::Drawing::Text(zMsg, GUI::TextColorAndFont, { 0.16f, 0.8475f }, { 0.25f, 0.25f }, false);
+	if (NETWORK::NETWORK_IS_SESSION_STARTED()) { Cheat::GUI::Drawing::Text(NumbConnectedPlayers, GUI::TextColorAndFont, { 0.1615f, 0.8650f }, { 0.25f, 0.25f }, false); }
 }
 
 
@@ -1308,7 +1308,11 @@ void Cheat::CheatFeatures::AutoGiveAllWeaponUpgrades()
 }
 
 bool Cheat::CheatFeatures::CrossHairBool = false;
+bool Cheat::CheatFeatures::CrossHairADSOnlyBool = false;
 void Cheat::CheatFeatures::CrossHair()
 {
-	GUI::Drawing::Spriter("Textures", "Crosshair1", 0.50f, 0.50f, 0.030f, 0.030f, 0, 255, 255, 255, 255);
+	if (!CrossHairADSOnlyBool || CrossHairADSOnlyBool && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_AIM))
+	{
+		GUI::Drawing::Spriter("Textures", "Crosshair1", 0.50f, 0.50f, 0.030f, 0.030f, 0, 255, 255, 255, 255);
+	}
 }

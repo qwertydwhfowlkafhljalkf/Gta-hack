@@ -8,21 +8,14 @@ void Cheat::GameFunctions::GiveAllWeaponsToPlayer(Ped Player)
 	}
 }
 
-void Cheat::GameFunctions::RepairAndCleanVehicle()
+void Cheat::GameFunctions::RepairAndCleanVehicle(Vehicle vehicle)
 {
-	if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, false)) 
-	{
-		VEHICLE::SET_VEHICLE_FIXED(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID));
-		ENTITY::SET_ENTITY_HEALTH(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), ENTITY::GET_ENTITY_MAX_HEALTH(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID)));
-		VEHICLE::SET_VEHICLE_DIRT_LEVEL(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 0);
-		VEHICLE::SET_VEHICLE_ENGINE_HEALTH(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), 1000);
-		VEHICLE::SET_VEHICLE_ENGINE_ON(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), true, true, true);
-		Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Fixed & Cleaned", "Textures", "AdvancedNotificationImage", false, 4, "Vehicle Customizer", "", 1.0, "");
-	}
-	else
-	{
-		Cheat::GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
-	}
+	VEHICLE::SET_VEHICLE_FIXED(vehicle);
+	ENTITY::SET_ENTITY_HEALTH(vehicle, ENTITY::GET_ENTITY_MAX_HEALTH(vehicle));
+	VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0);
+	VEHICLE::SET_VEHICLE_ENGINE_HEALTH(vehicle, 1000);
+	VEHICLE::SET_VEHICLE_ENGINE_ON(vehicle, true, true, true);
+	Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Fixed & Cleaned", "Textures", "AdvancedNotificationImage", false, 4, "Vehicle Customizer", "", 1.0, "");
 }
 
 void Cheat::GameFunctions::SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID) 
@@ -481,15 +474,15 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		//Draw Title and Background
 		if (Cheat::GUI::guiX < 0.54f)
 		{
-			GUI::Drawing::Rect(GUI::scroller, { Cheat::GUI::guiX + 0.266f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
-			GUI::Drawing::Text("Player Information", { GUI::titleText }, { Cheat::GUI::guiX + 0.260f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
-			GUI::Drawing::Rect(GUI::MainTitleRect, { Cheat::GUI::guiX + 0.266f, GUI::guiY - 0.156f }, { 0.32f, 0.030f });
+			GUI::Drawing::Rect(GUI::PrimaryColor, { Cheat::GUI::guiX + 0.266f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
+			GUI::Drawing::Text("Player Information", { GUI::TextColorAndFont }, { Cheat::GUI::guiX + 0.260f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
+			GUI::Drawing::Rect({ 0, 0, 0, 210 }, { Cheat::GUI::guiX + 0.266f, GUI::guiY - 0.156f }, { 0.32f, 0.030f });
 		}
 		else
 		{
-			GUI::Drawing::Rect(GUI::scroller, { Cheat::GUI::guiX - 0.266f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
-			GUI::Drawing::Text("Player Information", { GUI::titleText }, { Cheat::GUI::guiX - 0.260f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
-			GUI::Drawing::Rect(GUI::MainTitleRect, { Cheat::GUI::guiX - 0.266f,GUI::guiY - 0.156f }, { 0.32f, 0.030f });
+			GUI::Drawing::Rect(GUI::PrimaryColor, { Cheat::GUI::guiX - 0.266f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
+			GUI::Drawing::Text("Player Information", { GUI::TextColorAndFont }, { Cheat::GUI::guiX - 0.260f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
+			GUI::Drawing::Rect({ 0, 0, 0, 210 }, { Cheat::GUI::guiX - 0.266f,GUI::guiY - 0.156f }, { 0.32f, 0.030f });
 		}
 
 		//Text Entry's

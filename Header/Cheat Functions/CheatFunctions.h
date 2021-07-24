@@ -80,5 +80,6 @@ namespace Cheat
 		std::string RemoveCharactersFromStringAndReturn(std::string String, char* CharactersToRemove);
 		int StringToInt(std::string String);
 		std::string TextWrap(std::string String, int Location);
+		void CopyStringToClipboard(const std::string& String);
 	}
 }

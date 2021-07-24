@@ -9,7 +9,7 @@ namespace Cheat
 		extern std::string InGameKeyboardWindowTitle;
 		extern std::string InGameHelpTextMessage;
 		void GiveAllWeaponsToPlayer(Ped Player);
-		void RepairAndCleanVehicle();
+		void RepairAndCleanVehicle(Vehicle vehicle);
 		void SubtitleNotification(char* Message, int ShowDuration = 4000);
 		void TeleportToBlipCoord(Blip TargetBlip);
 		void TeleportToObjective();

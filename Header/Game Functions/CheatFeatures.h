@@ -174,6 +174,7 @@ namespace Cheat
 		extern bool AutoGiveAllWeaponUpgradesBool;
 		void AutoGiveAllWeaponUpgrades();
 		extern bool CrossHairBool;
+		extern bool CrossHairADSOnlyBool;
 		void CrossHair();
 		extern bool FreeCamBool;
 		void FreeCam(bool toggle);

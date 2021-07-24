@@ -6,16 +6,8 @@ enum SubMenus
 	MainMenu,
 	SelfOptionsMenu,
 	SettingsMenu,
-	GUIVisualsMenu,
-	ThemeLoaderMenu,
+	ThemeMenu,
 	ThemeFilesMenu,
-	GUITitleBackgroundColorMenu,
-	settingsheaderbackground,
-	settingssmalltitlebackground,
-	settingsscroller,
-	settingsmenubackground,
-	settingsoptiontext,
-	settingsmenubottombackground,
 	PlayerListMenu,
 	SelectedPlayerMenu,
 	teleportmenu,
@@ -99,8 +91,8 @@ enum SubMenus
 	SelectedPlayerTeleportMenu,
 	sessionoptionsmenu,
 	hudmenu,
-	guisettings,
 	HideElementsMenu,
+	AboutMenu,
 	CheatSettingsMenu,
 	unlocksmenu,
 	reportsmenu_stats,
@@ -143,7 +135,7 @@ namespace Cheat
 		extern float SelectableInfoBoxY;
 		extern std::vector <std::string> ThemeFilesVector;
 		extern bool ShowHeaderBackground;
-		extern bool ShowHeaderGUI;
+		extern bool ShowHeaderTexture;
 		extern bool HideGUIElements;
 		extern bool CheatGUIHasBeenOpened;
 		extern bool CurrentOptionIsSavable;
@@ -167,22 +159,10 @@ namespace Cheat
 		extern SubMenus PreviousMenu;
 		extern int optionsArray[1000];
 		extern SubMenus menusArray[1000];
-		extern RGBAF count;
-		extern RGBAF titleText;
-		extern RGBA titleRect;
-		extern RGBA MainTitleRect;
-		extern RGBA headerRect;
-		extern RGBAF breakText;
-		extern RGBAF optionText;
 		extern RGBA selectedText;
-		extern RGBAF arrow;
-		extern RGBAF integre;
-		extern RGBA optionRect;
-		extern RGBA MenuBackgroundRect;
-		extern RGBA MenuBottomRect;
 		extern RGBA scroller;
-		extern RGBA primary;
-		extern RGBA secondary;
+		extern RGBA PrimaryColor;
+		extern RGBAF TextColorAndFont;
 		extern int keyPressDelay;
 		extern int keyPressPreviousTick;
 		extern int OpenGUIKey;

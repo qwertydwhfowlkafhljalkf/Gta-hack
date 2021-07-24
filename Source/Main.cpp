@@ -917,6 +917,10 @@ void Cheat::FiberMain()
 					{
 						PED::SET_PED_INTO_VEHICLE(GameFunctions::PlayerPedID, i, -1);
 					}
+					if (GUI::Option("Repair & Clean Vehicle", ""))
+					{
+						GameFunctions::RepairAndCleanVehicle(i);
+					}
 					if (GUI::Option("Delete", ""))
 					{
 						ENTITY::SET_ENTITY_AS_MISSION_ENTITY(i, true, true);
@@ -1458,60 +1462,42 @@ void Cheat::FiberMain()
 		case VehicleCustomizerMenu:
 		{
 			GUI::Title("Los Santos Customs");
-			if (GUI::Option("Repair & Clean", "Repair & Clean current vehicle"))
+			if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false))
 			{
-				GameFunctions::RepairAndCleanVehicle();
-			}
-			if (GUI::Option("Max Upgrade", "Max Upgrade current vehicle"))
-			{
-				if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, 0)) {
+				if (GUI::Option("Repair & Clean", "Repair & Clean current vehicle"))
+				{
+					GameFunctions::RepairAndCleanVehicle(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID));
+				}
+				if (GUI::Option("Max Upgrade", "Max Upgrade current vehicle"))
+				{
 					GameFunctions::MaxUpgradeVehicle(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID));
 					GameFunctions::AdvancedMinimapNotification("Vehicle Max Upgraded", "Textures", "AdvancedNotificationImage", false, 4, "Vehicle Customizer", "", 1.0, "");
 				}
-				else 
+				if (GUI::Option("Max Downgrade", "Max downgrade current vehicle"))
 				{
-					GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
-				}
-			}
-			if (GUI::Option("Max Downgrade", "Max downgrade current vehicle"))
-			{
-				if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, 0)) {
 					GameFunctions::MaxDowngradeVehicle(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID));
 					GameFunctions::AdvancedMinimapNotification("Vehicle Max Downgraded", "Textures", "AdvancedNotificationImage", false, 4, "Vehicle Customizer", "", 1.0, "");
 				}
-				else 
+				if (GUI::Option("Add Blip Registration", "Add Blip To Current Vehicle"))
 				{
-					GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
-				}
-			}
-			if (GUI::Option("Add Blip Registration", "Add Blip To Current Vehicle")) {
-				if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, 0)) {
-
 					GameFunctions::AddBlipToVehicle(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID));
 				}
-				else
+				if (GUI::Option("Change License Plate Text", "Input custom vehicle license plate text"))
 				{
-					GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
-				}
-			}
-			if (GUI::Option("Change License Plate Text", "Input custom vehicle license plate text"))
-			{
-				if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, 0)) {			
-					Vehicle VehicleHandle = PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID);
 					char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(8, "Enter new license plate text");
 					if (KeyboardInput == "0") { break; }
-					VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(VehicleHandle, KeyboardInput);
+					VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), KeyboardInput);
 					GameFunctions::AdvancedMinimapNotification("License Plate Text Updated", "Textures", "AdvancedNotificationImage", false, 4, "Vehicle Customizer", "", 1.0, "");
 				}
-				else 
-				{
-					GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
-				}
+				GUI::MenuOption("Color", VehicleCustomizerColorMenu);
+				GUI::MenuOption("Neon", vehicle_lsc_neon_options);
+				GUI::MenuOption("Multipliers", vehiclemultipliersmenus);
+				GUI::MenuOption("Door", vehicledooroptionsmenu);
 			}
-			GUI::MenuOption("Color", VehicleCustomizerColorMenu);
-			GUI::MenuOption("Neon", vehicle_lsc_neon_options);
-			GUI::MenuOption("Multipliers", vehiclemultipliersmenus);
-			GUI::MenuOption("Door", vehicledooroptionsmenu);
+			else
+			{
+				GUI::Break("Player is not in a vehicle", false);
+			}
 		}
 		break;
 		case VehicleCustomizerColorMenu:
@@ -1853,10 +1839,10 @@ void Cheat::FiberMain()
 		case VehicleSpawnSettings:
 		{
 			GUI::Title("Vehicle Spawn Settings");
-			GUI::Toggle("Spawn Inside Vehicle", CheatFeatures::VehicleSpawnerSpawnInsideVehicle, "");
+			GUI::Toggle("Spawn Inside", CheatFeatures::VehicleSpawnerSpawnInsideVehicle, "");
 			GUI::Toggle("Spawn With God Mode", CheatFeatures::VehicleSpawnerSpawnWithGodmode, "");
 			GUI::Toggle("Spawn Max Upgraded", CheatFeatures::VehicleSpawnerSpawnMaxUpgraded, "");
-			GUI::Toggle("Delete Old Vehicle", CheatFeatures::VehicleSpawnerDeleteOldVehicle, "");
+			GUI::Toggle("Delete Current", CheatFeatures::VehicleSpawnerDeleteOldVehicle, "");
 			GUI::Toggle("Spawn With Blip", CheatFeatures::VehicleSpawnerSpawnWithBlip, "");
 		}
 		break; 
@@ -1867,7 +1853,7 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Weather", weathermenu);
 			GUI::MenuOption("Nearby Vehicles", nearbyvehicles_menu);
 			GUI::MenuOption("Nearby Peds", nearbypeds_menu); 
-			GUI::Toggle("Snow (local)", CheatFeatures::WorldSnowLocalBool, "GTA Online Only");
+			GUI::Toggle("Snow", CheatFeatures::WorldSnowLocalBool, "GTA Online Only");
 			if (GUI::Option("Clear Area", "Clear area of vehicles, objects etc")) 
 			{
 				Vector3 MyPos = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
@@ -2174,7 +2160,7 @@ void Cheat::FiberMain()
 			GUI::Break(CurrentGameTimeString.c_str(), false);
 			std::string CurrentSystemTimeString = "System Time: ~c~" + CheatFunctions::ReturnDateTimeFormatAsString("%H:%M:%S");
 			GUI::Break(CurrentSystemTimeString.c_str(), false);
-			GUI::Break("Misc", true);
+			GUI::Break("Miscellaneous", true);
 			GUI::Toggle("Slow Motion", CheatFeatures::SlowMotionBool, "Slows Down Game Time");
 			GUI::Toggle("Pause Time", CheatFeatures::PauseTimeBool, "Pause Game Time");
 		}
@@ -2212,6 +2198,10 @@ void Cheat::FiberMain()
 			GUI::Toggle("Show Session Information", CheatFeatures::ShowSessionInformationBool, "Show session info (next to radar)");
 			GUI::Toggle("Show FPS", CheatFeatures::ShowFPSBool, "Show game FPS");
 			GUI::Toggle("Mobile Radio", CheatFeatures::MobileRadioBool, "");
+			if (GUI::Option("Stop Cutscene", ""))
+			{
+				CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
+			}
 			if (GUI::Option("Drive To Waypoint", "A NPC drives you to waypoint"))
 			{
 				int WaypointHandle = UI::GET_FIRST_BLIP_INFO_ID(8);
@@ -2492,6 +2482,7 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("Visuals");
 			GUI::Toggle("Crosshair", CheatFeatures::CrossHairBool, "");
+			GUI::Toggle("Crosshair -> ADS only", CheatFeatures::CrossHairADSOnlyBool, "");
 			GUI::Toggle("Cartoon Gun", CheatFeatures::CartoonGunBool, "Shows cartoon effects while shooting");
 		}
 		break;
@@ -2510,7 +2501,7 @@ void Cheat::FiberMain()
 			GUI::Toggle("Delete Gun", CheatFeatures::DeleteGunBool, "Use SNS Pistol with this option");
 			GUI::Toggle("Rapid Fire", CheatFeatures::WeaponRapidFireBool, "Shoot very fast");
 			GUI::Toggle("Money Gun", CheatFeatures::MoneyGunBool, "Drops money bags where you shoot");
-			GUI::Toggle("One Shot One Kill", CheatFeatures::OneHitKillBool, "Better known as 'one-hit kill'");
+			GUI::Toggle("One Shot One Kill", CheatFeatures::OneHitKillBool, "");
 			GUI::Toggle("Gravity Gun", CheatFeatures::GravityGunBool, "Use Combat Pistol for this option");
 			GUI::Toggle("Airstrike Gun", CheatFeatures::AirstrikeGunBool, "");
 		}
@@ -3306,45 +3297,12 @@ void Cheat::FiberMain()
 		case SettingsMenu:
 		{
 			GUI::Title("Settings");
-			GUI::MenuOption("GUI", guisettings);
+			GUI::MenuOption("Theme", ThemeMenu);
 			GUI::MenuOption("Hide Elements", HideElementsMenu);
 			GUI::MenuOption("Cheat", CheatSettingsMenu);
-			if (GUI::Option("Visit Github Page", ""))
-			{
-				system("start https://github.com/HatchesPls/GrandTheftAutoV-Cheat");
-			}
-		}
-		break;
-		case HideElementsMenu:
-		{
-			GUI::Title("Hide Elements");
-			GUI::Toggle("Hide Selectable Information Box", Cheat::CheatFeatures::HideSelectableInformationBox, "");
-			GUI::Toggle("Hide Player Information Box", CheatFeatures::HidePlayerInformationBox, "");
-			GUI::Toggle("Hide Vehicle Info & Preview", CheatFeatures::HideVehicleInfoAndPreview, "");
-			GUI::Toggle("Hide Own IP Address", CheatFeatures::HideOwnIPAddress, "Hiddes Local IP Address from Player Information Box");
-		}
-		break;
-		case CheatSettingsMenu:
-		{
-			GUI::Title("Cheat");
-			GUI::Break("Speed", true);
-			GUI::Toggle("Use KM/H", CheatFeatures::UseKMH, "If disabled MP/H is used");
-			GUI::Break("Protection", true);
-			GUI::Toggle("Blocked Script Notifications", CheatFeatures::ShowBlockedScriptEventNotifications, "");
-		}
-		break;
-		case guisettings:
-		{
-			GUI::Title("GUI");
-			GUI::MenuOption("Theme Loader", ThemeLoaderMenu);
-			GUI::Break("General", true);
-			GUI::MenuOption("Visuals", GUIVisualsMenu);
-			GUI::MenuOption("Header", headeroptionsmenu);
-			GUI::Int("Max Visible Menu Options", GUI::maxVisOptions, 5, 16, 1, false);
-			GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu", false);
-			GUI::Float("X-Axis", GUI::guiX, 0.11f, 0.86f, 0.01f, true, false, "");
-			GUI::Float("Y-Axis", GUI::guiY, 0.10f, 0.90f, 0.01f, true, false, "");
-			std::string OpenKeyString = "Open Key: ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::OpenGUIKey);
+			GUI::Int("Max Visible Menu Options", GUI::maxVisOptions, 5, 16, 1);
+			GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu");
+			std::string OpenKeyString = "Open Menu Key: ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::OpenGUIKey);
 			if (GUI::Option(OpenKeyString.c_str(), "Select to change"))
 			{
 				int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
@@ -3356,118 +3314,63 @@ void Cheat::FiberMain()
 				int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
 				if (PressedKey != 0) { GUI::GUINavigationKey = PressedKey; GameFunctions::MinimapNotification("Cursor Navigation Key has been set"); }
 			}
-			GUI::Int("Key Press Delay", GUI::keyPressDelay, 1, 250, 1, false);
-			if (GUI::Option("Reset Position", ""))
+			GUI::Int("Key Press Delay", GUI::keyPressDelay, 1, 250, 1);
+			GUI::MenuOption("About", AboutMenu);
+		}
+		break;
+		case HideElementsMenu:
+		{
+			GUI::Title("Hide Elements");
+			GUI::Toggle("Hide Selectable Information Box", Cheat::CheatFeatures::HideSelectableInformationBox, "");
+			GUI::Toggle("Hide Player Information Box", CheatFeatures::HidePlayerInformationBox, "");
+			GUI::Toggle("Hide Vehicle Info & Preview", CheatFeatures::HideVehicleInfoAndPreview, "");
+			GUI::Toggle("Hide Own IP Address", CheatFeatures::HideOwnIPAddress, "Hiddes Local IP Address from Player Information Box");
+		}
+		break;
+		case AboutMenu:
+		{
+			GUI::Title("About");
+			GUI::Break("Author: HatchesPls", false);
+			if (GUI::Option("Support this project!", "Select to copy Bitcoin address to clipboard"))
 			{
-				GUI::guiX = GUI::guiX_Default;
-				GUI::guiY = GUI::guiY_Default;
+				CheatFunctions::CopyStringToClipboard("3BwCVtcJaNgUovcYQkDYFjrdy5YydTnjwc");
+				GameFunctions::MinimapNotification("~g~Bitcoin adr copied to clipboard.~n~Thank you for your support!");
 			}
-			GUI::Break("Player Information Box", true);
-			if (GUI::Option("Reset Position", ""))
+			if (GUI::Option("Visit Github Page", ""))
 			{
-				GUI::SelectableInfoBoxX = GUI::SelectableInfoBoxX_Default;
-				GUI::SelectableInfoBoxY = GUI::SelectableInfoBoxY_Default;
+				system("start https://github.com/HatchesPls/GrandTheftAutoV-Cheat");
 			}
 		}
-		break; 
+		break;
+		case CheatSettingsMenu:
+		{
+			GUI::Title("Cheat");
+			GUI::Break("Speed", true);
+			GUI::Toggle("Use KM/H", CheatFeatures::UseKMH, "If disabled MP/H is used");
+			GUI::Break("Protection", true);
+			GUI::Toggle("Blocked Script Notifications", CheatFeatures::ShowBlockedScriptEventNotifications, "");
+		}
+		break;
 		case headeroptionsmenu:
 		{
 			GUI::Title("Header");
-			GUI::Toggle("Show Header GUI", GUI::ShowHeaderGUI, "Toggle Header GUI", false);
-			GUI::Toggle("Show Header Background", GUI::ShowHeaderBackground, "Toggle Header Background", false);
+			GUI::Toggle("Header Texture", GUI::ShowHeaderTexture, "", false);
+			GUI::Toggle("Header Background", GUI::ShowHeaderBackground, "", false);
 		}
 		break;
-		case GUIVisualsMenu:
+		case ThemeMenu:
 		{
-			GUI::Title("Visuals");
-			GUI::Break("Colors - [PENDING REWORK]", true);
-			GUI::MenuOption("Title Background", GUITitleBackgroundColorMenu);
-			GUI::MenuOption("Header Background", settingsheaderbackground);
-			GUI::MenuOption("Menu Background", settingsmenubackground);
-			GUI::MenuOption("Menu Bottom Background", settingsmenubottombackground);
-			GUI::MenuOption("Small Title Background", settingssmalltitlebackground);
-			GUI::MenuOption("Options Scroller", settingsscroller);
-			GUI::MenuOption("Option Text", settingsoptiontext);
-			GUI::Break("Font - WIP", true);
-			//GUI::StringVector("Font", { "Chalet London", "House Script", "Monospace", "WingDings", "Chalet Comprime Cologne", "Pricedown" }, CheatFeatures::SpeedometerVectorPosition, "");
-		}
-		break;
-		case settingsmenubottombackground:
-		{
-			GUI::Title("Menu Bottom Background");
-			if (GUI::Option("Set Default", ""))
-			{
-				GUI::MenuBottomRect.r = 0;
-				GUI::MenuBottomRect.g = 0;
-				GUI::MenuBottomRect.b = 0;
-				GUI::MenuBottomRect.a = 255;
-			}		
-			GUI::Int("Red", GUI::MenuBottomRect.r, 0, 255, 1, false);
-			GUI::Int("Green", GUI::MenuBottomRect.g, 0, 255, 1, false);
-			GUI::Int("Blue", GUI::MenuBottomRect.b, 0, 255, 1, false);
-			GUI::Int("Opacity", GUI::MenuBottomRect.a, 0, 255, 1, false);
-		}
-		break;
-		case settingsmenubackground:
-		{
-			GUI::Title("Menu Background");
-			if (GUI::Option("Set Default", ""))
-			{
-				GUI::MenuBackgroundRect.r = 0;
-				GUI::MenuBackgroundRect.g = 0;
-				GUI::MenuBackgroundRect.b = 0;
-				GUI::MenuBackgroundRect.a = 220;
-			}
-			GUI::Int("Red", GUI::MenuBackgroundRect.r, 0, 255, 1, false);
-			GUI::Int("Green", GUI::MenuBackgroundRect.g, 0, 255, 1, false);
-			GUI::Int("Blue", GUI::MenuBackgroundRect.b, 0, 255, 1, false);
-			GUI::Int("Opacity", GUI::MenuBackgroundRect.a, 0, 255, 1, false);
-		}
-		break;
-		case settingssmalltitlebackground:
-		{
-			GUI::Title("Small Title Background");
-			if (GUI::Option("Set Default", ""))
-			{
-				GUI::titleRect.r = 0;
-				GUI::titleRect.g = 0;
-				GUI::titleRect.b = 255;
-				GUI::titleRect.a = 255;
-			}
-			GUI::Int("Red", GUI::titleRect.r, 0, 255, 1, false);
-			GUI::Int("Green", GUI::titleRect.g, 0, 255, 1, false);
-			GUI::Int("Blue", GUI::titleRect.b, 0, 255, 1, false);
-			GUI::Int("Opacity", GUI::titleRect.a, 0, 255, 1, false);
-		}
-		break;
-		case settingsheaderbackground:
-		{
-			GUI::Title("Header Background");
-			if (GUI::Option("Set Default", ""))
-			{
-				GUI::headerRect.r = 0;
-				GUI::headerRect.g = 0;
-				GUI::headerRect.b = 255;
-				GUI::headerRect.a = 200;
-			}
-			GUI::Int("Red", GUI::headerRect.r, 0, 255, 1, false);
-			GUI::Int("Green", GUI::headerRect.g, 0, 255, 1, false);
-			GUI::Int("Blue", GUI::headerRect.b, 0, 255, 1, false);
-			GUI::Int("Opacity", GUI::headerRect.a, 0, 255, 1, false);
-		}
-		break;
-		case ThemeLoaderMenu:
-		{
-			GUI::Title("Theme Loader");
+			GUI::Title("Theme");
+			GUI::MenuOption("Header", headeroptionsmenu);
 			GUI::MenuOption("Theme Files", ThemeFilesMenu);
 			if (!GUI::CurrentTheme.empty())
 			{
-				GUI::Break("Active Theme: ~c~" + GUI::CurrentTheme, false);
+				GUI::Break("Loaded Theme: ~c~" + GUI::CurrentTheme, false);
 				if (GUI::Option("Save To Current Theme", ""))
 				{
 					GUI::SaveTheme(GUI::CurrentTheme);
 				}
-				if (GUI::Option("Delete Current Theme", "Delete active theme"))
+				if (GUI::Option("Delete Loaded Theme", "Delete active theme"))
 				{
 					GUI::DeleteCurrentTheme();
 				}
@@ -3481,6 +3384,62 @@ void Cheat::FiberMain()
 				char* NewThemeFileName = GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Theme Name");
 				if (NewThemeFileName == "0") { break; }
 				GUI::SaveTheme(NewThemeFileName);
+			}
+			GUI::Break("Color", true);
+			if (GUI::Option("Primary", ""))
+			{
+				GUI::PrimaryColor.r = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter R-color"));
+				GUI::PrimaryColor.g = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter G-color"));
+				GUI::PrimaryColor.b = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter B-color"));
+				GameFunctions::MinimapNotification("Updated Primary Color");
+			}
+			if (GUI::Option("Text", ""))
+			{
+				GUI::TextColorAndFont.r = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter R-color"));
+				GUI::TextColorAndFont.g = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter G-color"));
+				GUI::TextColorAndFont.b = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter B-color"));
+				GameFunctions::MinimapNotification("Updated Text Color");
+			}
+			GUI::Break("Font", true);
+			if (GUI::Option("Chalet London", ""))
+			{
+				GUI::TextColorAndFont.f = FontChaletLondon;
+			}
+			if (GUI::Option("House Script", ""))
+			{
+				GUI::TextColorAndFont.f = FontHouseScript;
+			}
+			if (GUI::Option("Monospace", ""))
+			{
+				GUI::TextColorAndFont.f = FontMonospace;
+			}
+			if (GUI::Option("Wing Dings", ""))
+			{
+				GUI::TextColorAndFont.f = FontWingDings;
+			}
+			if (GUI::Option("Chalet Comprime Cologne", ""))
+			{
+				GUI::TextColorAndFont.f = FontChaletComprimeCologne;
+			}
+			if (GUI::Option("Pricedown", ""))
+			{
+				GUI::TextColorAndFont.f = FontPricedown;
+			}
+			GUI::Break("Menu", true);
+			GUI::Float("X-Axis", GUI::guiX, 0.11f, 0.86f, 0.01f, true, false, "");
+			GUI::Float("Y-Axis", GUI::guiY, 0.10f, 0.90f, 0.01f, true, false, "");
+			if (GUI::Option("Reset Position", ""))
+			{
+				GUI::guiX = GUI::guiX_Default;
+				GUI::guiY = GUI::guiY_Default;
+			}
+			GUI::Break("Selectable Information Box", true);
+			GUI::Float("X-Axis", GUI::SelectableInfoBoxX, 0.000f, 0.1000f, 0.01f, true, false, "");
+			GUI::Float("Y-Axis", GUI::SelectableInfoBoxY, 0.000f, 0.1000f, 0.01f, true, false, "");
+			if (GUI::Option("Reset Position", ""))
+			{
+				GUI::SelectableInfoBoxX = GUI::SelectableInfoBoxX_Default;
+				GUI::SelectableInfoBoxY = GUI::SelectableInfoBoxY_Default;
 			}
 		}
 		break;
@@ -3503,54 +3462,6 @@ void Cheat::FiberMain()
 			{
 				GUI::Break("No Theme Files Available", false);
 			}
-		}
-		break;
-		case GUITitleBackgroundColorMenu:
-		{
-			GUI::Title("Title Background");
-			if (GUI::Option("Set Default", ""))
-			{
-				GUI::MainTitleRect.r = 0;
-				GUI::MainTitleRect.g = 0;
-				GUI::MainTitleRect.b = 0;
-				GUI::MainTitleRect.a = 255;
-			}
-			GUI::Int("Red", GUI::MainTitleRect.r, 0, 255, 1, false);
-			GUI::Int("Green", GUI::MainTitleRect.g, 0, 255, 1, false);
-			GUI::Int("Blue", GUI::MainTitleRect.b, 0, 255, 1, false);
-			GUI::Int("Opacity", GUI::MainTitleRect.a, 0, 255, 1, false);
-		}
-		break;
-		case settingsoptiontext:
-		{
-			GUI::Title("Option Text");
-			if (GUI::Option("Set Default", ""))
-			{
-				GUI::optionText.r = 255;
-				GUI::optionText.g = 255;
-				GUI::optionText.b = 255;
-				GUI::optionText.a = 255;
-			}
-			GUI::Int("Red", GUI::optionText.r, 0, 255, 1, false);
-			GUI::Int("Green", GUI::optionText.g, 0, 255, 1, false);
-			GUI::Int("Blue", GUI::optionText.b, 0, 255, 1, false);
-			GUI::Int("Opacity", GUI::optionText.a, 0, 255, 1, false);
-		}
-		break;
-		case settingsscroller:
-		{
-			GUI::Title("Options Scroller");
-			if (GUI::Option("Set Default", ""))
-			{
-				GUI::scroller.r = 0;
-				GUI::scroller.g = 0;
-				GUI::scroller.b = 255;
-				GUI::scroller.a = 255;
-			}
-			GUI::Int("Red", GUI::scroller.r, 0, 255, 1, false);
-			GUI::Int("Green", GUI::scroller.g, 0, 255, 1, false);
-			GUI::Int("Blue", GUI::scroller.b, 0, 255, 1, false);
-			GUI::Int("Opacity", GUI::scroller.a, 0, 255, 1, false);
 		}
 		break;
 		}
