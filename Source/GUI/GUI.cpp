@@ -788,7 +788,7 @@ void Cheat::GUI::DeleteCurrentTheme()
 	else 
 	{ 
 		Cheat::CheatFunctions::IniFileWriteString("", Cheat::CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "active_theme");
-		Cheat::GUI::CurrentTheme.clear(); 
+		Cheat::GUI::CurrentTheme.clear();
 		GUI::currentOption = 1;
 		Cheat::GameFunctions::MinimapNotification("Theme File Removed"); 
 	}
