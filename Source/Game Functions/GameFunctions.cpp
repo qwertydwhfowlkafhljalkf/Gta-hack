@@ -15,7 +15,7 @@ void Cheat::GameFunctions::RepairAndCleanVehicle(Vehicle vehicle)
 	VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0);
 	VEHICLE::SET_VEHICLE_ENGINE_HEALTH(vehicle, 1000);
 	VEHICLE::SET_VEHICLE_ENGINE_ON(vehicle, true, true, true);
-	Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Fixed & Cleaned", "Textures", "AdvancedNotificationImage", false, 4, "Vehicle Customizer", "", 1.0, "");
+	Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Fixed & Cleaned", "Textures", "AdvancedNotificationImage", false, 4, "Los Santos Customs", "", 1.0, "");
 }
 
 void Cheat::GameFunctions::SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID) 

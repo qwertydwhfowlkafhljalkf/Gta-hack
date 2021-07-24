@@ -1471,12 +1471,12 @@ void Cheat::FiberMain()
 				if (GUI::Option("Max Upgrade", "Max Upgrade current vehicle"))
 				{
 					GameFunctions::MaxUpgradeVehicle(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID));
-					GameFunctions::AdvancedMinimapNotification("Vehicle Max Upgraded", "Textures", "AdvancedNotificationImage", false, 4, "Vehicle Customizer", "", 1.0, "");
+					GameFunctions::AdvancedMinimapNotification("Vehicle Max Upgraded", "Textures", "AdvancedNotificationImage", false, 4, "Los Santos Customs", "", 1.0, "");
 				}
 				if (GUI::Option("Max Downgrade", "Max downgrade current vehicle"))
 				{
 					GameFunctions::MaxDowngradeVehicle(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID));
-					GameFunctions::AdvancedMinimapNotification("Vehicle Max Downgraded", "Textures", "AdvancedNotificationImage", false, 4, "Vehicle Customizer", "", 1.0, "");
+					GameFunctions::AdvancedMinimapNotification("Vehicle Max Downgraded", "Textures", "AdvancedNotificationImage", false, 4, "Los Santos Customs", "", 1.0, "");
 				}
 				if (GUI::Option("Add Blip Registration", "Add Blip To Current Vehicle"))
 				{
@@ -1487,7 +1487,7 @@ void Cheat::FiberMain()
 					char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(8, "Enter new license plate text");
 					if (KeyboardInput == "0") { break; }
 					VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), KeyboardInput);
-					GameFunctions::AdvancedMinimapNotification("License Plate Text Updated", "Textures", "AdvancedNotificationImage", false, 4, "Vehicle Customizer", "", 1.0, "");
+					GameFunctions::AdvancedMinimapNotification("License Plate Text Updated", "Textures", "AdvancedNotificationImage", false, 4, "Los Santos Customs", "", 1.0, "");
 				}
 				GUI::MenuOption("Color", VehicleCustomizerColorMenu);
 				GUI::MenuOption("Neon", vehicle_lsc_neon_options);
