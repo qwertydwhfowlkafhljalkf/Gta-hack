@@ -540,21 +540,19 @@ bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vecto
 void Cheat::GUI::End()
 {
 	GUI::TotalOptionsCount = GUI::optionCount;
-	int OptionCount = GUI::optionCount;
-
-	if (OptionCount >= GUI::maxVisOptions)
+	if (GUI::optionCount >= GUI::maxVisOptions)
 	{
 		GUI::Drawing::Text(std::to_string(GUI::currentOptionVisible) + "/" + std::to_string(GUI::optionCountVisible), TextColorAndFont, { Cheat::GUI::guiX - 0.088f, GUI::guiY + ((GUI::maxVisOptions + 1) * 0.035f - 0.172f) }, { 0.30f, 0.30f }, true);
 		GUI::Drawing::Text(CHEAT_BUILD_NUMBER, TextColorAndFont, { Cheat::GUI::guiX + 0.085f, GUI::guiY + ((GUI::maxVisOptions + 1) * 0.035f - 0.172f) }, { 0.30f, 0.30f }, true);
-		GUI::Drawing::Rect({ 0, 0, 0, 255 }, { Cheat::GUI::guiX, GUI::guiY + ((GUI::maxVisOptions + 1) * 0.035f - 0.1585f) }, { Cheat::GUI::guiWidth, 0.035f });
-		GUI::Drawing::Spriter("Textures", "LogoSmall", Cheat::GUI::guiX, GUI::guiY + ((GUI::maxVisOptions + 1) * 0.035f - 0.160f), 0.025f, 0.040f, 0, 255, 255, 255, 255);
+		GUI::Drawing::Rect({ 0, 0, 0, 210 }, { Cheat::GUI::guiX, GUI::guiY + ((GUI::maxVisOptions + 1) * 0.035f - 0.1585f) }, { Cheat::GUI::guiWidth, 0.035f });
+		GUI::Drawing::Spriter("Textures", "LogoSmall", Cheat::GUI::guiX, GUI::guiY + ((GUI::maxVisOptions + 1) * 0.035f - 0.159f), 0.030f, 0.045f, 0, 255, 255, 255, 255);
 	}
-	else if (OptionCount > 0)
+	else if (GUI::optionCount > 0)
 	{
 		GUI::Drawing::Text(std::to_string(GUI::currentOptionVisible) + "/" + std::to_string(GUI::optionCountVisible), TextColorAndFont, { Cheat::GUI::guiX - 0.088f, GUI::guiY + (GUI::optionCount + 1) * 0.035f - 0.172f }, { 0.30f, 0.30f }, true);
 		GUI::Drawing::Text(CHEAT_BUILD_NUMBER, TextColorAndFont, { Cheat::GUI::guiX + 0.085f, GUI::guiY + (GUI::optionCount + 1) * 0.035f - 0.172f }, { 0.30f, 0.30f }, true);
-		GUI::Drawing::Rect({ 0, 0, 0, 255 }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount + 1) * 0.035f - 0.1585f }, { Cheat::GUI::guiWidth, 0.035f });
-		GUI::Drawing::Spriter("Textures", "LogoSmall", Cheat::GUI::guiX, GUI::guiY + ((GUI::optionCount + 1) * 0.035f - 0.160f), 0.025f, 0.040f, 0, 255, 255, 255, 255);
+		GUI::Drawing::Rect({ 0, 0, 0, 210 }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount + 1) * 0.035f - 0.1585f }, { Cheat::GUI::guiWidth, 0.035f });
+		GUI::Drawing::Spriter("Textures", "LogoSmall", Cheat::GUI::guiX, GUI::guiY + ((GUI::optionCount + 1) * 0.035f - 0.159f), 0.030f, 0.045f, 0, 255, 255, 255, 255);
 	}
 }
 
