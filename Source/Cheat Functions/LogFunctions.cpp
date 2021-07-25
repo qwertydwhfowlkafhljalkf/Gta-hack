@@ -14,7 +14,7 @@ void Cheat::LogFunctions::Init()
 	CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), "\n" + MessageString, std::ofstream::out | std::ofstream::app);
 }
 
-void Cheat::LogFunctions::Message(char* Message)
+void Cheat::LogFunctions::Message(std::string Message)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 	std::string MessageString = CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S]") + " [Info] " + Message + "\n";

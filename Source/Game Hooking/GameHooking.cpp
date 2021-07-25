@@ -294,8 +294,7 @@ void setPat(std::string	name, char*	pat, char* mask, T** out, bool rel, int offs
 	{
 		if (ptr == nullptr)
 		{
-			std::string Message = "Failed to find '" + name + "' pattern";
-			Cheat::LogFunctions::Error(Cheat::CheatFunctions::StringToChar(Message), false);
+			Cheat::LogFunctions::Error("Failed to find '" + name + "' pattern", false);
 			std::exit(EXIT_SUCCESS);
 		}
 
@@ -322,8 +321,7 @@ void setFn(std::string name, char* pat, char* mask, T* out, int skip = 0)
 
 	if (ptr == nullptr)
 	{
-		std::string Message = "Failed to find '" + name + "' pattern";
-		Cheat::LogFunctions::Error(Cheat::CheatFunctions::StringToChar(Message), true);
+		Cheat::LogFunctions::Error(Cheat::CheatFunctions::StringToChar("Failed to find '" + name + "' pattern"), true);
 		std::exit(EXIT_SUCCESS);
 	}
 

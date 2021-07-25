@@ -1268,3 +1268,18 @@ void Cheat::GameFunctions::MaxUpgradeAllWeapons()
 	WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0xF9D04ADB, 2);
 	WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, 0x0A3D4D34, 2);
 }
+
+void Cheat::GameFunctions::ShowTeleportLocationsMenu(std::vector<TeleportLocationStruct> category)
+{
+	for (int i = 0; i < category.size(); i++)
+	{
+		Vector3 Coords;
+		Coords.x = category[i].coordinateX;
+		Coords.y = category[i].coordinateY;
+		Coords.z = category[i].coordinateZ;
+		if (GUI::Option(category[i].Name, ""))
+		{
+			GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
+		}
+	}
+}

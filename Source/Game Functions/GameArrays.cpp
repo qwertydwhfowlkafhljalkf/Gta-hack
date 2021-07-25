@@ -1489,3 +1489,45 @@ const std::vector<VehicleModelPicturesStruct> Cheat::GameArrays::VehicleModelPic
 { "sssa_dlc_tuner","sultan3" },
 { "sssa_dlc_tuner","warrener2" }
 };
+
+const std::vector<TeleportLocationStruct> Cheat::GameArrays::TeleportLocationsSafehouses = {
+	{ "Michael's Safehouse", -827.138f, 176.368f, 70.4999f },
+	{ "Franklin's Safehouse", -18.0355f, -1456.94f, 30.4548f },
+	{ "Franklin's Safehouse 2", 10.8766f, 545.654f, 175.419f },
+	{ "Trevor's Safehouse", 1982.13f, 3829.44f, 32.3662f },
+	{ "Trevor's Safehouse 2", -1157.05f, -1512.73f, 4.2127f },
+	{ "Trevor's Safehouse 3", 91.1407f, -1280.65f, 29.1353f },
+	{ "Michael's Safehouse Inside", -813.603f, 179.474f, 72.1548f },
+	{ "Franklin's Safehouse Inside", -14.3803f, -1438.51f, 31.1073f },
+	{ "Franklin's Safehouse 2 Inside", 7.11903f, 536.615f, 176.028f },
+	{ "Trevor's Safehouse Inside", 1972.61f, 3817.04f, 33.4278f },
+	{ "Trevor's Safehouse 2 Inside", -1151.77f, -1518.14f, 10.6327f },
+	{ "Trevor's Safehouse 3 Inside", 96.1536f, -1290.73f, 29.2664f }
+};
+
+const std::vector<TeleportLocationStruct> Cheat::GameArrays::TeleportLocationsHighAltitude = {
+	{ "Airplane Graveyard Airplane Tail ", 2395.096f, 3049.616f, 60.053f },
+	{ "FIB Building Roof", 150.126f, -754.591f, 262.865f },
+	{ "Galileo Observatory Roof", -438.804f, 1076.097f, 352.411f },
+	{ "IAA Building Roof", 134.085f, -637.859f, 262.851f },
+	{ "Maze Bank Arena Roof", -324.300f, -1968.545f, 67.002f },
+	{ "Maze Bank Roof", -75.015f, -818.215f, 326.176f },
+	{ "Palmer-Taylor Power Station Chimney", 2732.931f, 1577.540f, 83.671f },
+	{ "Rebel Radio", 736.153f, 2583.143f, 79.634f },
+	{ "Sandy Shores Building Site Crane", 1051.209f, 2280.452f, 89.727f },
+	{ "Satellite Dish Antenna", 2034.988f, 2953.105f, 74.602f },
+	{ "Stab City", 126.975f, 3714.419f, 46.827f },
+	{ "Very High Up", -129.964f, 8130.873f, 6705.307f },
+	{ "Windmill Top", 2026.677f, 1842.684f, 133.313f }
+};
+
+const std::vector<TeleportLocationStruct> Cheat::GameArrays::TeleportLocationsUnderwater = {
+	{ "Dead Sea Monster", -3373.726f, 504.714f, -24.656f },
+	{ "Humane Labs Tunnel", 3619.749f, 2742.740f, 28.690f },
+	{ "Sunken Body", -3161.078f, 3001.998f, -37.974f },
+	{ "Sunken Cargo Ship", 3199.748f, -379.018f, -22.500f },
+	{ "Sunken Plane", -942.350f, 6608.752f, -20.912f },
+	{ "Underwater Hatch", 4273.950f, 2975.714f, -170.746f },
+	{ "Underwater UFO", 762.426f, 7380.371f, -111.377f },
+	{ "Underwater WW2 Tank", 4201.633f, 3643.821f, -39.016f }
+};

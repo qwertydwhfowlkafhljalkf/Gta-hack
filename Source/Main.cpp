@@ -1878,7 +1878,7 @@ void Cheat::FiberMain()
 					if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, false))
 					{
 						GameFunctions::RequestNetworkControlOfEntity(vehs[OffsetID]);
-						ENTITY::SET_ENTITY_COORDS(vehs[OffsetID], 6400.f, 6400.f, 0.f, false, false, false, false);
+						ENTITY::DELETE_ENTITY(&vehs[OffsetID]);
 					}
 				}
 				delete[] vehs;
@@ -2227,7 +2227,7 @@ void Cheat::FiberMain()
 			}		
 			if (GUI::Option("Get Empty Session", "Get Empty (Public) Session")) { Sleep(10000); }
 			if (GUI::Option("Exit to Single Player", "")) { NETWORK::SHUTDOWN_AND_LAUNCH_SINGLE_PLAYER_GAME(); }
-			if (GUI::Option("Close Game", "Must hold spacebar to prevent accidental closure")) { if (CheatFunctions::IsKeyCurrentlyPressed(VK_SPACE, false)) { std::exit(EXIT_SUCCESS); } }
+			if (GUI::Option("Close Game", "Must hold spacebar to prevent accidental closure")) { if (CheatFunctions::IsKeyCurrentlyPressed(VK_SPACE)) { std::exit(EXIT_SUCCESS); } }
 		}
 		break;
 		case hudmenu:
@@ -2239,7 +2239,6 @@ void Cheat::FiberMain()
 		case iplloader:
 		{
 			GUI::Title("IPL Loader");
-			GUI::MenuOption("Go to IPL Teleports submenu", iplteleports);
 			if (GUI::Option("Load MP data", ""))
 			{
 				DLC2::ON_ENTER_MP();
@@ -2572,6 +2571,7 @@ void Cheat::FiberMain()
 					TargetCoordinates.z = std::stof(GameFunctions::DisplayKeyboardAndReturnInput(25, "Enter Z-axis coordinate"));		
 					if (TargetCoordinates.z == 0) { goto CanceledCustomTeleport; }
 					GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, TargetCoordinates, false,false);
+					break;
 				}
 				catch (...)
 				{
@@ -2593,8 +2593,44 @@ void Cheat::FiberMain()
 				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) { Handle = PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0); }
 				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Handle, Coords.x, Coords.y, Coords.z, 0, 0, 1);
 			}
-			GUI::MenuOption("IPL Teleports", iplteleports);
-			GUI::MenuOption("Common Locations", CommonTeleportLocations);
+			GUI::Break("Custom Locations", true);
+			if (GUI::Option("Save current location", ""))
+			{
+				char* NewThemeFileName = GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Custom Teleport Location Name");
+				if (NewThemeFileName == "0") { break; }
+				CheatFunctions::AddCustomTeleportLocation(NewThemeFileName);
+				GameFunctions::MinimapNotification("Custom Location Saved");
+			}
+			GUI::MenuOption("View locations", CustomTeleportLocations);
+			GUI::Break("Presets", true);
+			GUI::MenuOption("Common", CommonTeleportLocations);
+			GUI::MenuOption("IPL's", iplteleports);
+			GUI::MenuOption("Safehouses", SafehousesTeleportLocations);
+			GUI::MenuOption("Underwater", UnderwaterTeleportLocations);
+			GUI::MenuOption("High Altitude", HighAltitudeTeleportLocations);
+		}
+		break;
+		case CustomTeleportLocations:
+		{
+			GUI::Title("Custom Locations");
+		}
+		break;
+		case UnderwaterTeleportLocations:
+		{
+			GUI::Title("Underwater");
+			GameFunctions::ShowTeleportLocationsMenu(GameArrays::TeleportLocationsUnderwater);
+		}
+		break;
+		case HighAltitudeTeleportLocations:
+		{
+			GUI::Title("High Altitude");
+			GameFunctions::ShowTeleportLocationsMenu(GameArrays::TeleportLocationsHighAltitude);
+		}
+		break;
+		case SafehousesTeleportLocations:
+		{
+			GUI::Title("Safehouses");
+			GameFunctions::ShowTeleportLocationsMenu(GameArrays::TeleportLocationsSafehouses);
 		}
 		break;
 		case CommonTeleportLocations:
@@ -2700,7 +2736,6 @@ void Cheat::FiberMain()
 		case iplteleports:
 		{
 			GUI::Title("IPL Teleports");
-			GUI::MenuOption("Go to IPL Loader submenu", iplloader);
 			if (GUI::Option("North Yankton", ""))
 			{
 				ENTITY::SET_ENTITY_COORDS(GameFunctions::PlayerPedID, 5309.519f, -5212.37f, 83.522f, true, false, false, true);
@@ -2766,7 +2801,7 @@ void Cheat::FiberMain()
 			}
 			if (GUI::Option("Airstrike Player", "Airstrike selected player"))
 			{
-				Vector3 Coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer), 1);
+				Vector3 Coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer), true);
 				Coords.z += 15;
 				GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35, Coords.x, Coords.y, Coords.z, 250, 1, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer), 1, 1, 500);
 				GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 30, Coords.x, Coords.y, Coords.z, 250, 0, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), 0, 1, 1, 500);

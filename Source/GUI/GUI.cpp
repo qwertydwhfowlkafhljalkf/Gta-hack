@@ -1,10 +1,10 @@
 #include "../Header/Main.h"
 
-const float Cheat::GUI::guiX_Default		= 0.11f;
-const float Cheat::GUI::guiY_Default		= 0.30f;
-const float Cheat::GUI::guiWidth_Default	= 0.21f;
-const float Cheat::GUI::SelectableInfoBoxX_Default = 0.50f;
-const float Cheat::GUI::SelectableInfoBoxY_Default = 0.840f;
+const float Cheat::GUI::guiX_Default				= 0.11f;
+const float Cheat::GUI::guiY_Default				= 0.30f;
+const float Cheat::GUI::guiWidth_Default			= 0.21f;
+const float Cheat::GUI::SelectableInfoBoxX_Default	= 0.50f;
+const float Cheat::GUI::SelectableInfoBoxY_Default	= 0.840f;
 float Cheat::GUI::guiX					= 0.11f;
 float Cheat::GUI::guiY					= 0.30f;
 float Cheat::GUI::guiWidth				= 0.21f;

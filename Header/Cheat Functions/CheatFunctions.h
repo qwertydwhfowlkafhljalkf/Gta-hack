@@ -11,6 +11,7 @@ namespace Cheat
 		const std::string ReturnConfigFilePath();
 		const std::string ReturnMainLogFilePath();
 		const std::string ReturnChatLogFilePath();
+		const std::string ReturnCustomTeleportLocationsFilePath();
 		void LoadConfig();
 		bool IsOptionRegisteredAsLoaded(std::string OptionName);
 		template<typename T> void LoadConfigOption(std::string OptionName, T& ReturnedVariable)
@@ -81,5 +82,8 @@ namespace Cheat
 		int StringToInt(std::string String);
 		std::string TextWrap(std::string String, int Location);
 		void CopyStringToClipboard(const std::string& String);
+		Json::Value ReadJsonFileAndReturnDataObject(std::string FilePath);
+		void AddCustomTeleportLocation(std::string CustomTeleportLocationName);
+		void DeleteCustomTeleportLocation(std::string CustomTeleportLocationName);
 	}
 }

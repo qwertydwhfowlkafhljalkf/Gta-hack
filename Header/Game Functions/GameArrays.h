@@ -12,6 +12,14 @@ struct WeaponHashesStruct
 	DWORD WeaponHash;
 };
 
+struct TeleportLocationStruct
+{
+	std::string Name;
+	float coordinateX;
+	float coordinateY;
+	float coordinateZ;
+};
+
 namespace Cheat
 {
 	namespace GameArrays
@@ -55,6 +63,9 @@ namespace Cheat
 		extern const std::vector<std::string> CommercialModels;
 		extern const std::vector<VehicleModelPicturesStruct> VehicleModelPictures;
 		extern const std::vector<WeaponHashesStruct> WeaponsHashList;
+		extern const std::vector<TeleportLocationStruct> TeleportLocationsSafehouses;
+		extern const std::vector<TeleportLocationStruct> TeleportLocationsHighAltitude;
+		extern const std::vector<TeleportLocationStruct> TeleportLocationsUnderwater;
 		extern std::vector<Vehicle> SpawnedVehicles;
 	}
 }

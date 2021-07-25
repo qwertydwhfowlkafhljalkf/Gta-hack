@@ -75,5 +75,6 @@ namespace Cheat
 		bool IsPlayerIDValid(Player ID);
 		Player ReturnPlayerIDFromPlayerName(std::string PlayerName);
 		void MaxUpgradeAllWeapons();
+		void ShowTeleportLocationsMenu(std::vector<TeleportLocationStruct> category);
 	}
 }

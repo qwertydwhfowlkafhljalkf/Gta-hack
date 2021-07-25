@@ -9,12 +9,12 @@ void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 {
 	if (!std::filesystem::create_directory(Path))
 	{
-		std::string String = "Failed to create directory '" + Path + "' Error: " + Cheat::CheatFunctions::GetLastErrorAsString();
+		std::string String = __func__ + (std::string)"() Failed to create directory '" + Path + "' Error: " + Cheat::CheatFunctions::GetLastErrorAsString();
 		Cheat::LogFunctions::DebugMessage(CheatFunctions::StringToChar(String));
 	}
 	else
 	{
-		std::string String = "Created directory '" + Path + "'";
+		std::string String = __func__ + (std::string)"() Created directory '" + Path + "'";
 		Cheat::LogFunctions::DebugMessage((CheatFunctions::StringToChar(String)));
 	}
 }
@@ -50,6 +50,11 @@ const std::string Cheat::CheatFunctions::ReturnMainLogFilePath()
 const std::string Cheat::CheatFunctions::ReturnChatLogFilePath()
 {
 	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Logs\\Chats.log";
+}
+
+const std::string Cheat::CheatFunctions::ReturnCustomTeleportLocationsFilePath()
+{
+	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\CustomTeleportLocations.json";
 }
 
 bool Cheat::CheatFunctions::FileOrDirectoryExists(std::string Path)
@@ -181,6 +186,34 @@ void Cheat::CheatFunctions::LoopedFunctions()
 				GUI::currentOption += 1;
 			}
 			Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
+		}
+	}
+
+	//Custom Locations handling
+	if (GUI::currentMenu == CustomTeleportLocations)
+	{
+		if (FileOrDirectoryExists(ReturnCustomTeleportLocationsFilePath()))
+		{
+			int NmbOfLocations = 0;
+			Json::Value JsonHandle = ReadJsonFileAndReturnDataObject(ReturnCustomTeleportLocationsFilePath());
+			for (auto it = JsonHandle.begin(); it != JsonHandle.end(); ++it)
+			{
+				NmbOfLocations++;
+				if (GUI::Option(it.key().asString(), "Select to teleport. Hold Delete key while selecting to delete"))
+				{
+					if (IsKeyCurrentlyPressed(VK_DELETE)) { DeleteCustomTeleportLocation(it.key().asString()); break; }
+					Vector3 Target;
+					Target.x = JsonHandle[it.key().asString()]["X"].asFloat();
+					Target.y = JsonHandle[it.key().asString()]["Y"].asFloat();
+					Target.z = JsonHandle[it.key().asString()]["Z"].asFloat();
+					GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Target, false, false);
+				}
+			} 
+			if (NmbOfLocations == 0)
+			{
+				GUI::Break("No custom locations have been saved", false);
+			}
+			NmbOfLocations = 0;
 		}
 	}
 }
@@ -430,7 +463,7 @@ bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool PressedOnce)
 	{
 		if (PressedOnce)
 		{
-			if (GetAsyncKeyState(vKey) & 1)
+			if (GetAsyncKeyState(vKey) & 0x0001)
 			{
 				return true;
 			}
@@ -601,4 +634,48 @@ void Cheat::CheatFunctions::CopyStringToClipboard(const std::string& String)
 	SetClipboardData(CF_TEXT, Global);
 	CloseClipboard();
 	GlobalFree(Global);
+}
+
+Json::Value Cheat::CheatFunctions::ReadJsonFileAndReturnDataObject(std::string FilePath)
+{
+	Json::Value JsonHandle;
+	std::fstream FileHandle(FilePath, std::ifstream::in);
+	if (FileOrDirectoryExists(FilePath))
+	{
+		try
+		{
+			FileHandle >> JsonHandle;
+		}
+		catch (...) { goto Exit; }
+	}
+
+	Exit:
+	FileHandle.close();
+	return JsonHandle;
+}
+
+void Cheat::CheatFunctions::AddCustomTeleportLocation(std::string CustomTeleportLocationName)
+{
+	Json::Value JsonHandle = ReadJsonFileAndReturnDataObject(ReturnCustomTeleportLocationsFilePath());
+	remove(StringToChar(ReturnCustomTeleportLocationsFilePath()));
+	if (JsonHandle.isMember(CustomTeleportLocationName)) { JsonHandle.removeMember(CustomTeleportLocationName); }
+
+	Vector3 LocalPlayerCoords = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, true);
+	JsonHandle[CustomTeleportLocationName]["X"] = LocalPlayerCoords.x;
+	JsonHandle[CustomTeleportLocationName]["Y"] = LocalPlayerCoords.y;
+	JsonHandle[CustomTeleportLocationName]["Z"] = LocalPlayerCoords.z;
+
+	std::fstream FileHandle(ReturnCustomTeleportLocationsFilePath(), std::ios_base::out);
+	FileHandle << JsonHandle;
+	FileHandle.close();
+}
+
+void Cheat::CheatFunctions::DeleteCustomTeleportLocation(std::string CustomTeleportLocationName)
+{
+	Json::Value JsonHandle = ReadJsonFileAndReturnDataObject(ReturnCustomTeleportLocationsFilePath());
+	remove(StringToChar(ReturnCustomTeleportLocationsFilePath()));
+	if (JsonHandle.isMember(CustomTeleportLocationName)) { JsonHandle.removeMember(CustomTeleportLocationName); }
+	std::fstream FileHandle(ReturnCustomTeleportLocationsFilePath(), std::ios_base::out);
+	FileHandle << JsonHandle;
+	FileHandle.close();
 }
