@@ -69,8 +69,6 @@ namespace Cheat
 		void ProtectionGiveRemoveWeapons(bool toggle);
 		extern bool SuperJumpBool;
 		void SuperJump();
-		extern bool PlayerForceFieldBool;
-		void PlayerForceField();
 		extern bool FastRunBool;
 		void FastRun(bool toggle);
 		extern bool ShowFPSBool;

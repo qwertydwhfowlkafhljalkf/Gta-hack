@@ -69,12 +69,13 @@ namespace Cheat
 		void CopySelectedPlayerOutfit(Player SelectedPlayer);
 		int ReturnPlayerRockstarID(Player PlayerHandle);
 		std::string ReturnPlayerIPAddressAsString(Player PlayerHandle);
-		std::string ReturnCurrentGTAOCharacter();
+		std::string ReturnCurrentGTAOCharacter(int NumberOnly = false);
 		void PlayFrontendSoundDefault(char* SoundName);
 		void PlayScenarioNearbyPeds(char* Scenario);
 		bool IsPlayerIDValid(Player ID);
 		Player ReturnPlayerIDFromPlayerName(std::string PlayerName);
 		void MaxUpgradeAllWeapons();
 		void ShowTeleportLocationsMenu(std::vector<TeleportLocationStruct> category);
+		void ShowCustomIngameWarningMessage(std::string FirstLine, int InstructionalKey, std::string SecondLine);
 	}
 }

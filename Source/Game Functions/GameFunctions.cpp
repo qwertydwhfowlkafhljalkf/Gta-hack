@@ -1074,10 +1074,11 @@ std::string Cheat::GameFunctions::ReturnPlayerIPAddressAsString(Player PlayerHan
 	return IPBufferString;
 }
 
-std::string Cheat::GameFunctions::ReturnCurrentGTAOCharacter()
+std::string Cheat::GameFunctions::ReturnCurrentGTAOCharacter(int NumberOnly)
 {
 	int CharacterID;
 	STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_LAST_MP_CHAR"), &CharacterID, -1);
+	if (NumberOnly) { return std::to_string(CharacterID); }
 	return "MP" + std::to_string(CharacterID);
 }
 
@@ -1282,4 +1283,9 @@ void Cheat::GameFunctions::ShowTeleportLocationsMenu(std::vector<TeleportLocatio
 			GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
 		}
 	}
+}
+
+void Cheat::GameFunctions::ShowCustomIngameWarningMessage(std::string FirstLine, int InstructionalKey, std::string SecondLine)
+{
+	
 }

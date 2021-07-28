@@ -86,7 +86,7 @@ enum SubMenus
 	SessionChatMenu,
 	vehicleweaponsmenu,
 	allplayers_trolloptionsmenu,
-	statsoptionsmenu,
+	RecoveryMenu,
 	vehicledooroptionsmenu,
 	vehiclemultipliersmenus,
 	custombulletsmenu,

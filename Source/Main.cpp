@@ -129,7 +129,7 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Player List", PlayerListMenu);
 			GUI::MenuOption("All Players", AllPlayersMenu);
 			GUI::MenuOption("Protections", protections);
-			GUI::MenuOption("Recovery", statsoptionsmenu);
+			GUI::MenuOption("Recovery", RecoveryMenu);
 			GUI::MenuOption("Session", sessionoptionsmenu);
 			GUI::Toggle("Off Radar", CheatFeatures::OffRadarBool, "Enables Lester Off Radar Feature");
 			GUI::Toggle("No Idle Kick", CheatFeatures::NoIdleKickBool, "Does not work when out of game focus");
@@ -147,11 +147,11 @@ void Cheat::FiberMain()
 			GUI::Title("Session Chat");
 			GUI::Toggle("Log Chat Messages", CheatFeatures::LogChatMessages, "Chat gets logged to console");
 		}
-		break; 
-		case statsoptionsmenu:
+		break;
+		case RecoveryMenu:
 		{
 			GUI::Title("Recovery"); 
-			GUI::MenuOption("Reports", reportsmenu_stats);
+			GUI::Break("~bold~~r~Features in this submenu can be risky", false);
 			GUI::Break("Rank", true);
 			if (GUI::Option("Set Custom Rank", "Input a custom Rank"))
 			{
@@ -183,6 +183,19 @@ void Cheat::FiberMain()
 			{
 				STATS::STAT_SET_FLOAT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PLAYER_MENTAL_STATE")), 0.0, true);
 				GameFunctions::MinimapNotification("Mental State Reset");
+			}
+			GUI::Break("ATM", true);
+			if (GUI::Option("Move Wallet To Bank", ""))
+			{
+				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move");
+				if (KeyboardInput == "0") { break; }
+				UNK3::_NETWORK_TRANSFER_WALLET_TO_BANK(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), CheatFunctions::StringToInt(KeyboardInput));
+			}
+			if (GUI::Option("Move Bank To Wallet", ""))
+			{
+				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move");
+				if (KeyboardInput == "0") { break; }
+				UNK3::_NETWORK_TRANSFER_BANK_TO_WALLET(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), CheatFunctions::StringToInt(KeyboardInput));
 			}
 		}
 		break; 
@@ -2180,6 +2193,7 @@ void Cheat::FiberMain()
 		case miscmenu:
 		{
 			GUI::Title("Miscellaneous");
+			GUI::MenuOption("Report Stats", reportsmenu_stats);
 			GUI::MenuOption("HUD", hudmenu); 
 			GUI::MenuOption("IPL Loader", iplloader);
 			GUI::Toggle("Disable Phone", CheatFeatures::DisablePhoneBool, "Disable phone controls");
@@ -2191,7 +2205,6 @@ void Cheat::FiberMain()
 			GUI::Toggle("No Orbital Cannon Cooldown", CheatFeatures::OrbitalCannonCooldownBypassBool, "");
 			GUI::Toggle("Rockstar Developer Mode", CheatFeatures::GTAODeveloperMode, "Toggles GTAO Spectator Options");
 			GUI::Toggle("Auto Teleport To Waypoint", CheatFeatures::AutoTeleportToWaypointBool, "");
-			GUI::Toggle("Force Field", CheatFeatures::PlayerForceFieldBool, "Gives your character a force field");
 			GUI::Toggle("Show Session Information", CheatFeatures::ShowSessionInformationBool, "Show session info (next to radar)");
 			GUI::Toggle("Show FPS", CheatFeatures::ShowFPSBool, "Show game FPS");
 			GUI::Toggle("Mobile Radio", CheatFeatures::MobileRadioBool, "");
@@ -3264,17 +3277,23 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Cheat", CheatSettingsMenu);
 			GUI::Int("Max Visible Menu Options", GUI::maxVisOptions, 5, 16, 1);
 			GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu");
-			std::string OpenKeyString = "Open Menu Key: ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::OpenGUIKey);
-			if (GUI::Option(OpenKeyString.c_str(), "Select to change"))
+			if (GUI::Option("Menu GUI ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::OpenGUIKey), "Select to change"))
 			{
 				int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
-				if (PressedKey != 0) { GUI::OpenGUIKey = PressedKey; GameFunctions::MinimapNotification("Open Key has been set"); }
+				if (PressedKey != 0)
+				{
+					GUI::OpenGUIKey = PressedKey;
+					GameFunctions::MinimapNotification("Menu GUI key has been set");
+				}
 			}
-			std::string GUINavigationKeyString = "Cursor Navigation: ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::GUINavigationKey);
-			if (GUI::Option(GUINavigationKeyString.c_str(), "Select to change"))
+			if (GUI::Option("Cursor Navigation ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::GUINavigationKey), "Select to change"))
 			{
 				int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
-				if (PressedKey != 0) { GUI::GUINavigationKey = PressedKey; GameFunctions::MinimapNotification("Cursor Navigation Key has been set"); }
+				if (PressedKey != 0) 
+				{ 
+					GUI::GUINavigationKey = PressedKey;
+					GameFunctions::MinimapNotification("Cursor Navigation key has been set");
+				}
 			}
 			GUI::Int("Key Press Delay", GUI::keyPressDelay, 1, 250, 1);
 			GUI::MenuOption("About", AboutMenu);
@@ -3422,7 +3441,7 @@ void Cheat::FiberMain()
 			}
 			else
 			{
-				GUI::Break("No Theme Files Available", false);
+				GUI::Break("No Theme Files Saved Yet", false);
 			}
 		}
 		break;

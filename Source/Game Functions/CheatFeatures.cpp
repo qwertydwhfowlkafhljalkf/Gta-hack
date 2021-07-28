@@ -105,7 +105,6 @@ void Cheat::CheatFeatures::Looped()
 	ProtectionAlterWantedLevelBool ? ProtectionAlterWantedLevel(true) : ProtectionAlterWantedLevel(false);
 	ProtectionGiveRemoveWeaponsBool ? ProtectionGiveRemoveWeapons(true) : ProtectionGiveRemoveWeapons(false);
 	SuperJumpBool ? SuperJump() : NULL;
-	PlayerForceFieldBool ? PlayerForceField() : NULL;
 	FastRunBool ? FastRun(true) : FastRun(false);
 	ShowFPSBool ? ShowFPS() : NULL;
 	JumpAroundModeBool ? JumpAroundMode() : NULL;
@@ -419,13 +418,6 @@ bool Cheat::CheatFeatures::SuperJumpBool = false;
 void Cheat::CheatFeatures::SuperJump()
 {
 	GAMEPLAY::SET_SUPER_JUMP_THIS_FRAME(Cheat::GameFunctions::PlayerID);
-}
-
-bool Cheat::CheatFeatures::PlayerForceFieldBool = false;
-void Cheat::CheatFeatures::PlayerForceField()
-{
-	if(!NoRagdollAndSeatbeltBool) { NoRagdollAndSeatbeltBool = true; Cheat::GameFunctions::MinimapNotification("Enabled No Ragdoll & Seatbelt feature to prevent your character from flying around"); }
-	FIRE::ADD_EXPLOSION(ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 0).x, ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 0).y, ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 0).z, 7, 100.0f, false, true, 0.0f);
 }
 
 bool Cheat::CheatFeatures::FastRunBool = false;
@@ -834,14 +826,13 @@ void Cheat::CheatFeatures::FreezeAllPlayers()
 	{
 		if (i != Cheat::GameFunctions::PlayerPedID)
 		{
-			Ped Player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::selectedPlayer);
+			Ped Player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i);
 			AI::CLEAR_PED_TASKS_IMMEDIATELY(Player);
 			AI::CLEAR_PED_TASKS(Player);
 			AI::CLEAR_PED_SECONDARY_TASK(Player);
 		}
 	}
 }
-
 
 bool Cheat::CheatFeatures::TriggerBot_ShootNPCBool = false;
 bool Cheat::CheatFeatures::TriggerBot_ShootPlayersBool = false;
