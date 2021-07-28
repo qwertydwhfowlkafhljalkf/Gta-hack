@@ -188,34 +188,6 @@ void Cheat::CheatFunctions::LoopedFunctions()
 			Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 		}
 	}
-
-	//Custom Locations handling
-	if (GUI::currentMenu == CustomTeleportLocations)
-	{
-		if (FileOrDirectoryExists(ReturnCustomTeleportLocationsFilePath()))
-		{
-			int NmbOfLocations = 0;
-			Json::Value JsonHandle = ReadJsonFileAndReturnDataObject(ReturnCustomTeleportLocationsFilePath());
-			for (auto it = JsonHandle.begin(); it != JsonHandle.end(); ++it)
-			{
-				NmbOfLocations++;
-				if (GUI::Option(it.key().asString(), "Select to teleport. Hold Delete key while selecting to delete"))
-				{
-					if (IsKeyCurrentlyPressed(VK_DELETE)) { DeleteCustomTeleportLocation(it.key().asString()); break; }
-					Vector3 Target;
-					Target.x = JsonHandle[it.key().asString()]["X"].asFloat();
-					Target.y = JsonHandle[it.key().asString()]["Y"].asFloat();
-					Target.z = JsonHandle[it.key().asString()]["Z"].asFloat();
-					GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Target, false, false);
-				}
-			} 
-			if (NmbOfLocations == 0)
-			{
-				GUI::Break("No custom locations have been saved", false);
-			}
-			NmbOfLocations = 0;
-		}
-	}
 }
 
 bool Cheat::CheatFunctions::IsGameWindowFocussed()

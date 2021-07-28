@@ -2168,16 +2168,13 @@ void Cheat::FiberMain()
 		case weathermenu:
 		{
 			GUI::Title("Weather");
-			if (GUI::Option("Extra Sunny", "")) { GAMEPLAY::SET_OVERRIDE_WEATHER("EXTRASUNNY"); }
-			if (GUI::Option("Sunny", "")) { GAMEPLAY::SET_OVERRIDE_WEATHER("CLEAR"); }
-			if (GUI::Option("Cloudy", "")) { GAMEPLAY::SET_OVERRIDE_WEATHER("CLOUDS"); }
-			if (GUI::Option("Smoggy", "")) { GAMEPLAY::SET_OVERRIDE_WEATHER("SMOG"); }
-			if (GUI::Option("Foggy", "")) { GAMEPLAY::SET_OVERRIDE_WEATHER("FOGGY"); }
-			if (GUI::Option("Overcast", "")) { GAMEPLAY::SET_OVERRIDE_WEATHER("OVERCAST"); }
-			if (GUI::Option("Stormy", "")) { GAMEPLAY::SET_OVERRIDE_WEATHER("THUNDER"); }
-			if (GUI::Option("Snow", "")) { GAMEPLAY::SET_OVERRIDE_WEATHER("SNOW"); }
-			if (GUI::Option("Snowlight", "")) { GAMEPLAY::SET_OVERRIDE_WEATHER("SNOWLIGHT"); }
-			if (GUI::Option("Blizzard", "")) { GAMEPLAY::SET_OVERRIDE_WEATHER("BLIZZARD"); }
+			for (int i = 0; i < GameArrays::WeatherTypes.size(); i++)
+			{
+				if (GUI::Option(GameArrays::WeatherTypes[i].SelectableName, "")) 
+				{ 
+					GAMEPLAY::SET_OVERRIDE_WEATHER(CheatFunctions::StringToChar(GameArrays::WeatherTypes[i].WeatherType));
+				}
+			}
 		}
 		break;
 		case miscmenu:
@@ -2548,7 +2545,8 @@ void Cheat::FiberMain()
 		case aimbotsettingsmenu:
 		{
 			GUI::Title("Aimbot");
-			GUI::Toggle("Toggle Triggerbot", CheatFeatures::TriggerBotBool, "Toggle Triggerbot");
+			GUI::Toggle("Triggerbot", CheatFeatures::TriggerBotBool, "");
+			GUI::Break("Target", true);
 			GUI::Toggle("Shoot NPC's", CheatFeatures::TriggerBot_ShootNPCBool, "Triggerbot shoots at NPC's");
 			GUI::Toggle("Shoot Players", CheatFeatures::TriggerBot_ShootPlayersBool, "Triggerbot shoots at players");
 		}
@@ -2603,7 +2601,7 @@ void Cheat::FiberMain()
 			}
 			GUI::MenuOption("View locations", CustomTeleportLocations);
 			GUI::Break("Presets", true);
-			GUI::MenuOption("Common", CommonTeleportLocations);
+			GUI::MenuOption("Landmarks", LandmarkTeleportLocations);
 			GUI::MenuOption("IPL's", iplteleports);
 			GUI::MenuOption("Safehouses", SafehousesTeleportLocations);
 			GUI::MenuOption("Underwater", UnderwaterTeleportLocations);
@@ -2613,6 +2611,29 @@ void Cheat::FiberMain()
 		case CustomTeleportLocations:
 		{
 			GUI::Title("Custom Locations");
+			if (CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnCustomTeleportLocationsFilePath()))
+			{
+				int NmbOfLocations = 0;
+				Json::Value JsonHandle = CheatFunctions::ReadJsonFileAndReturnDataObject(CheatFunctions::ReturnCustomTeleportLocationsFilePath());
+				for (auto it = JsonHandle.begin(); it != JsonHandle.end(); ++it)
+				{
+					NmbOfLocations++;
+					if (GUI::Option(it.key().asString(), "Select to teleport. Hold Delete key while selecting to delete"))
+					{
+						if (CheatFunctions::IsKeyCurrentlyPressed(VK_DELETE)) { CheatFunctions::DeleteCustomTeleportLocation(it.key().asString()); break; }
+						Vector3 Target;
+						Target.x = JsonHandle[it.key().asString()]["X"].asFloat();
+						Target.y = JsonHandle[it.key().asString()]["Y"].asFloat();
+						Target.z = JsonHandle[it.key().asString()]["Z"].asFloat();
+						GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Target, false, false);
+					}
+				}
+				if (NmbOfLocations == 0)
+				{
+					GUI::Break("No custom locations have been saved", false);
+				}
+				NmbOfLocations = 0;
+			}
 		}
 		break;
 		case UnderwaterTeleportLocations:
@@ -2633,104 +2654,10 @@ void Cheat::FiberMain()
 			GameFunctions::ShowTeleportLocationsMenu(GameArrays::TeleportLocationsSafehouses);
 		}
 		break;
-		case CommonTeleportLocations:
+		case LandmarkTeleportLocations:
 		{
-			GUI::Title("Common Teleport Locations");	
-			if (GUI::Option("High In The Sky", ""))
-			{
-				Vector3 Coords;
-				Coords.x = 240.93f; Coords.y = -765.19f; Coords.z = 2558.83f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}
-			if (GUI::Option("Diamond Casino & Resort", ""))
-			{
-				Vector3 Coords;
-				Coords.x = 916.37f; Coords.y = 51.22f; Coords.z = 80.89f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}
-			if (GUI::Option("Mount Chiliad", "")) 
-			{
-				Vector3 Coords;
-				Coords.x = 496.75f; Coords.y = 5591.17f; Coords.z = 795.03f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}		
-			if (GUI::Option("Maze Bank", "")) 
-			{
-				Vector3 Coords;
-				Coords.x = -74.94243f; Coords.y = -818.63446f; Coords.z = 326.174347f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}	
-			if (GUI::Option("Military Base", "")) 
-			{
-				Vector3 Coords;
-				Coords.x = -2012.8470f; Coords.y = 2956.5270f; Coords.z = 32.8101f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}
-			if (GUI::Option("Zancudo Tower", "")) 
-			{
-				Vector3 Coords;
-				Coords.x = -2356.0940f; Coords.y = 3248.645f; Coords.z = 101.4505f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}
-			if (GUI::Option("Mask Shop", "")) 
-			{
-				Vector3 Coords;
-				Coords.x = -1338.16f; Coords.y = -1278.11f; Coords.z = 4.87f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}	
-			if (GUI::Option("LSC", "")) {
-				Vector3 Coords;
-				Coords.x = -373.01f; Coords.y = -124.91f; Coords.z = 38.31f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}
-			if (GUI::Option("Ammunation", "")) 
-			{
-				Vector3 Coords;
-				Coords.x = 247.3652f; Coords.y = -45.8777f; Coords.z = 69.9411f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}	
-			if (GUI::Option("Airport", "")) 
-			{
-				Vector3 Coords;
-				Coords.x = -1102.2910f; Coords.y = -2894.5160f; Coords.z = 13.9467f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}
-			if (GUI::Option("Clothes Store", "")) 
-			{
-				Vector3 Coords;
-				Coords.x = -718.91f; Coords.y = -158.16f; Coords.z = 37.00f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}
-			if (GUI::Option("Waterfall", "")) 
-			{
-				Vector3 Coords;
-				Coords.x = -597.9525f; Coords.y = 4475.2910f; Coords.z = 25.6890f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}
-			if (GUI::Option("FIB", "")) 
-			{
-				Vector3 Coords;
-				Coords.x = 135.5220f; Coords.y = -749.0003f; Coords.z = 260.0000f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}
-			if (GUI::Option("Human Labs", "")) 
-			{
-				Vector3 Coords;
-				Coords.x = 3617.231f; Coords.y = 3739.871f; Coords.z = 28.6901f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}	
-			if (GUI::Option("MMI", "")) 
-			{
-				Vector3 Coords;
-				Coords.x = -222.1977f; Coords.y = -1185.8500f; Coords.z = 23.0294f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}		
-			if (GUI::Option("Sandy Shores Airfield", "")) 
-			{
-				Vector3 Coords;
-				Coords.x = 1741.4960f; Coords.y = 3269.2570f; Coords.z = 41.6014f;
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
-			}
+			GUI::Title("Landmarks");
+			GameFunctions::ShowTeleportLocationsMenu(GameArrays::TeleportLocationsLandmarks);
 		}
 		break;
 		case iplteleports:

@@ -175,17 +175,17 @@ bool Cheat::GUI::VehicleOption(std::string option, std::string ModelName)
 
 			if (Cheat::GUI::guiX < 0.71f)
 			{
-				GUI::Drawing::Text("Model Name: " + ModelName, TextColorAndFont, { Cheat::GUI::guiX + 0.111f,  GUI::guiY + 0.002f }, { 0.45f, 0.30f }, false);
-				GUI::Drawing::Text(ModelMaxSpeed.str(), TextColorAndFont, { Cheat::GUI::guiX + 0.111f, GUI::guiY + 0.015f }, { 0.45f, 0.30f }, false);
-				GUI::Drawing::Text("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, {Cheat::GUI::guiX + 0.111f, GUI::guiY + 0.038f}, {0.45f, 0.30f}, false);
+				GUI::Drawing::Text("Model Name: " + ModelName, TextColorAndFont, { Cheat::GUI::guiX + 0.111f,  GUI::guiY - 0.004f }, { 0.45f, 0.30f }, false);
+				GUI::Drawing::Text(ModelMaxSpeed.str(), TextColorAndFont, { Cheat::GUI::guiX + 0.111f, GUI::guiY + 0.010f }, { 0.45f, 0.30f }, false);
+				GUI::Drawing::Text("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, {Cheat::GUI::guiX + 0.111f, GUI::guiY + 0.027f}, {0.45f, 0.30f}, false);
 				GUI::Drawing::Rect({ 0, 0, 0, 150 }, { Cheat::GUI::guiX + 0.187f, GUI::guiY - 0.061f }, { 0.16f, 0.22f });
 				GUI::Drawing::Spriter(VehiclePreviewDictName, VehiclePreviewName, Cheat::GUI::guiX + 0.187f, GUI::guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
 			}
 			else
 			{
-				GUI::Drawing::Text("Model Name: " + ModelName, TextColorAndFont, { Cheat::GUI::guiX - 0.262f, GUI::guiY + 0.002f }, { 0.45f, 0.30f }, false);
-				GUI::Drawing::Text("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { Cheat::GUI::guiX - 0.262f, GUI::guiY + 0.038f }, { 0.45f, 0.30f }, false);
-				GUI::Drawing::Text(ModelMaxSpeed.str(), TextColorAndFont, { Cheat::GUI::guiX - 0.262f, GUI::guiY + 0.015f }, { 0.45f, 0.30f }, false);
+				GUI::Drawing::Text("Model Name: " + ModelName, TextColorAndFont, { Cheat::GUI::guiX - 0.262f, GUI::guiY - 0.004f }, { 0.45f, 0.30f }, false);
+				GUI::Drawing::Text(ModelMaxSpeed.str(), TextColorAndFont, { Cheat::GUI::guiX - 0.262f, GUI::guiY + 0.010f }, { 0.45f, 0.30f }, false);
+				GUI::Drawing::Text("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { Cheat::GUI::guiX - 0.262f, GUI::guiY + 0.027f }, { 0.45f, 0.30f }, false);
 				GUI::Drawing::Rect({ 0, 0, 0, 150 }, { Cheat::GUI::guiX - 0.187f, GUI::guiY - 0.061f }, { 0.16f, 0.22f });
 				GUI::Drawing::Spriter(VehiclePreviewDictName, VehiclePreviewName, Cheat::GUI::guiX - 0.187f, GUI::guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
 			}
@@ -229,6 +229,10 @@ bool Cheat::GUI::Break(std::string option, bool TextCentered)
 			{
 				GUI::currentOption = GUI::optionCount;
 			}
+		}
+		else if (GUI::currentOption == 1 && GUI::TotalOptionsCount > 1)
+		{
+			GUI::currentOption++;
 		}
 	}
 	return false;

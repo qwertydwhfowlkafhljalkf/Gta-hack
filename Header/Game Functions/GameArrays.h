@@ -20,6 +20,12 @@ struct TeleportLocationStruct
 	float coordinateZ;
 };
 
+struct WeatherTypesStruct
+{
+	std::string SelectableName;
+	std::string WeatherType;
+};
+
 namespace Cheat
 {
 	namespace GameArrays
@@ -66,6 +72,8 @@ namespace Cheat
 		extern const std::vector<TeleportLocationStruct> TeleportLocationsSafehouses;
 		extern const std::vector<TeleportLocationStruct> TeleportLocationsHighAltitude;
 		extern const std::vector<TeleportLocationStruct> TeleportLocationsUnderwater;
+		extern const std::vector<TeleportLocationStruct> TeleportLocationsLandmarks;
 		extern std::vector<Vehicle> SpawnedVehicles;
+		extern const std::vector<WeatherTypesStruct> WeatherTypes;
 	}
 }

@@ -68,7 +68,7 @@ enum SubMenus
 	LosSantosTunersDLCMenu,
 	OnlineOptionsMenu,
 	timemenu,
-	CommonTeleportLocations,
+	LandmarkTeleportLocations,
 	CustomTeleportLocations,
 	SafehousesTeleportLocations,
 	HighAltitudeTeleportLocations,
