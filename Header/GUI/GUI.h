@@ -81,7 +81,6 @@ enum SubMenus
 	clothingmenu,
 	outfitsmenu,
 	componentschangermenu,
-	SelectedPlayerMoneyMenu,
 	SelectedPlayerRemoteOptions,
 	SessionChatMenu,
 	vehicleweaponsmenu,

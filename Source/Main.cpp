@@ -155,10 +155,13 @@ void Cheat::FiberMain()
 			GUI::Break("Rank", true);
 			if (GUI::Option("Set Custom Rank", "Input a custom Rank"))
 			{
-				int Rank = GameFunctions::DisplayKeyboardAndReturnInputInteger(4, "Enter desired rank (as single digit)");
+				int Rank = GameFunctions::DisplayKeyboardAndReturnInputInteger(4, "Enter desired rank");
 				if (Rank != 0) { GameFunctions::SetRankRockstarGift(Rank); }
 			}
 			GUI::MenuOption("Unlocks", unlocksmenu);
+			GUI::Break("Money", true);
+			GUI::Toggle("Drop Money", CheatFeatures::MoneyDropBool, "Only works for local player", false);
+			GUI::Int("Drop Delay", CheatFeatures::MoneyDropDelay, 50, 2000, 50, false, "Set to 1500 to prevent transaction errors");
 			GUI::Break("Miscellaneous", true);
 			if (GUI::Option("Set Max Nightclub Popularity", "Set NightClub Popularity to 100%"))
 			{
@@ -2898,7 +2901,6 @@ void Cheat::FiberMain()
 		case SelectedPlayerFriendlyMenu:
 		{
 			GUI::Title("Friendly");
-			GUI::MenuOption("Money", SelectedPlayerMoneyMenu);
 			if (GUI::Option("Give All Weapons", "Give all weapons to selected player")) { GameFunctions::GiveAllWeaponsToPlayer(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer)); }
 		}
 		break;
@@ -2948,13 +2950,6 @@ void Cheat::FiberMain()
 			if (GUI::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(2441237).At(4013).As<int>() = 1; }
 			if (GUI::Option("Clean", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(GameFunctions::PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(GameFunctions::PlayerPedID); GameFunctions::MinimapNotification("Player Cleaned"); }	
 		}
-		break;
-		case SelectedPlayerMoneyMenu:
-		{
-			GUI::Title("Money");
-			GUI::Toggle("Toggle", CheatFeatures::MoneyDropBool, "Enable Money Drop on selected player", false);
-			GUI::Int("Drop Delay", CheatFeatures::MoneyDropDelay, 50, 2000, 50, false, "Set to 1500 to prevent transaction errors");
-		} 
 		break;
 		case clothingmenu:
 		{
