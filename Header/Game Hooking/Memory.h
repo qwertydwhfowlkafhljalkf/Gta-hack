@@ -309,5 +309,3 @@ namespace Memory {
 		*reinterpret_cast<T*>(Addr) = value;
 	}
 }
-
-

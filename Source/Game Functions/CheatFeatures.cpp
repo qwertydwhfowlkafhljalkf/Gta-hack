@@ -345,7 +345,7 @@ void Cheat::CheatFeatures::PauseTime(bool toggle)
 bool Cheat::CheatFeatures::ExplosiveMeleeBool = false;
 void Cheat::CheatFeatures::ExplosiveMelee()
 {
-	Memory::set_value<int>({ OFFSET_PLAYER, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, 0x2000u);
+	Memory::set_value<int>({ OFFSET_PLAYER, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, FrameFlagExplosiveMelee);
 }
 
 bool Cheat::CheatFeatures::OrbitalCannonCooldownBypassBool = false;
@@ -844,9 +844,27 @@ void Cheat::CheatFeatures::TriggerBot()
 	{
 		Vector3 BoneCoords;
 		BoneCoords = PED::GET_PED_BONE_COORDS(AimedAtEntity, SKEL_Head, 0.1f, 0.0f, 0.0f);
-		if (TriggerBot_ShootNPCBool && TriggerBot_ShootPlayersBool) { if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) { PED::SET_PED_SHOOTS_AT_COORD(Cheat::GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); } }
-		else if (TriggerBot_ShootNPCBool && !TriggerBot_ShootPlayersBool) { if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && !PED::IS_PED_A_PLAYER(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) { PED::SET_PED_SHOOTS_AT_COORD(Cheat::GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); } }
-		else if (TriggerBot_ShootPlayersBool && !TriggerBot_ShootNPCBool) { if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && PED::IS_PED_A_PLAYER(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) { PED::SET_PED_SHOOTS_AT_COORD(Cheat::GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); } }
+		if (TriggerBot_ShootNPCBool && TriggerBot_ShootPlayersBool) 
+		{ 
+			if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255)
+			{
+				PED::SET_PED_SHOOTS_AT_COORD(GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true);
+			}
+		}
+		else if (TriggerBot_ShootNPCBool && !TriggerBot_ShootPlayersBool) 
+		{ 
+			if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && !PED::IS_PED_A_PLAYER(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) 
+			{ 
+				PED::SET_PED_SHOOTS_AT_COORD(GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); 
+			} 
+		}
+		else if (TriggerBot_ShootPlayersBool && !TriggerBot_ShootNPCBool) 
+		{ 
+			if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && PED::IS_PED_A_PLAYER(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) 
+			{ 
+				PED::SET_PED_SHOOTS_AT_COORD(GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); 
+			} 
+		}
 	}
 }
 

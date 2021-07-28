@@ -34,7 +34,7 @@ std::string Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath()
 {
 	char CheatModuleFilePath[MAX_PATH];
 	GetModuleFileNameA(CheatModuleHandle, CheatModuleFilePath, MAX_PATH);
-	return std::filesystem::path{ CheatModuleFilePath }.parent_path().string();
+	return std::filesystem::path(CheatModuleFilePath).parent_path().string();
 }
 
 const std::string Cheat::CheatFunctions::ReturnConfigFilePath()
@@ -100,7 +100,6 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		Cheat::GUI::currentMenu == SelectedPlayerFriendlyMenu ||
 		Cheat::GUI::currentMenu == SelectedPlayerRemoteOptions ||
 		Cheat::GUI::currentMenu == SelectedPlayerTeleportMenu ||
-		Cheat::GUI::currentMenu == SelectedPlayerMoneyMenu ||
 		Cheat::GUI::currentMenu == SelectedPlayerAttachmentOptions ||
 		Cheat::GUI::currentMenu == SelectedPlayerTrollMenu ||
 		Cheat::GUI::currentMenu == SelectedPlayerRemoteOptions)

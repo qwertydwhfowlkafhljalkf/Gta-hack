@@ -876,7 +876,7 @@ void Cheat::GUI::Drawing::InitTextureFile()
 	int textureID;
 	if (Cheat::CheatFunctions::FileOrDirectoryExists(Cheat::CheatFunctions::TextureFilePath()))
 	{
-		RegisterTextureFile(&textureID, Cheat::CheatFunctions::TextureFilePath().c_str(), true, "Textures.ytd", false);
+		RegisterTextureFile(&textureID, CheatFunctions::StringToChar(Cheat::CheatFunctions::TextureFilePath()), true, "Textures.ytd", false);
 		return;
 	}
 	else

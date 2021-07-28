@@ -1193,5 +1193,13 @@ enum CursorType
 	DownArrow = 9,
 	HorizontalExpand = 10,
 	Add = 11,
-	Remove = 12,
+	Remove = 12
+};
+
+enum FrameFlags : std::uint32_t
+{
+	FrameFlagExplosiveAmmo = 1 << 3,
+	FrameFlagFireAmmo = 1 << 4,
+	FrameFlagExplosiveMelee = 1 << 5,
+	FrameFlagSuperJump = 1 << 6,
 };
