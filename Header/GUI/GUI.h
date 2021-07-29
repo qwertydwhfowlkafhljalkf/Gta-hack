@@ -14,6 +14,7 @@ enum SubMenus
 	weaponmenu,
 	WeaponsMenu,
 	WeaponVisualsMenu,
+	WeaponAmmoMenu,
 	VehicleCustomizerColorMenu,
 	miscmenu,
 	worldmenu,
@@ -88,7 +89,6 @@ enum SubMenus
 	RecoveryMenu,
 	vehicledooroptionsmenu,
 	vehiclemultipliersmenus,
-	custombulletsmenu,
 	vehiclegunmenu,
 	aimbotsettingsmenu,
 	SelectedPlayerTeleportMenu,
@@ -164,8 +164,8 @@ namespace Cheat
 		extern RGBA scroller;
 		extern RGBA PrimaryColor;
 		extern RGBAF TextColorAndFont;
-		extern int keyPressDelay;
-		extern int keyPressPreviousTick;
+		extern int KeyPressDelay;
+		extern int KeyPressPreviousTick;
 		extern int OpenGUIKey;
 		extern int GUINavigationKey;
 		extern int SaveItemKey;

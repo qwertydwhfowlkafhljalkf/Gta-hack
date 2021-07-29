@@ -3,6 +3,8 @@
 int Cheat::CheatFeatures::SpeedometerVectorPosition = 0;
 int Cheat::CheatFeatures::AimbotBoneVectorPosition = 0;
 int Cheat::CheatFeatures::MeasurementSystemVectorPosition = 0;
+int Cheat::CheatFeatures::ImpactAmmoVectorPosition = 0;
+int Cheat::CheatFeatures::CustomAmmoVectorPosition = 0;
 int Cheat::CheatFeatures::PlayerOpacityInt = 250;
 bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
@@ -84,6 +86,109 @@ void Cheat::CheatFeatures::Looped()
 		if (SpeedometerVectorPosition == 2 || SpeedometerVectorPosition == 3) { VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0), CheatFunctions::StringToChar(Speed.str())); }
 	}
 
+	//Impact Ammo
+	if (ImpactAmmoVectorPosition != 0)
+	{
+		if (ImpactAmmoVectorPosition == 1 || ImpactAmmoVectorPosition == 2)
+		{
+			bool IsClassicBag = ImpactAmmoVectorPosition == 2 ? true : false;
+			if (PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
+			{
+				Vector3 coords;
+				if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(Cheat::GameFunctions::PlayerPedID, &coords))
+				{
+					Hash PolyBag = GAMEPLAY::GET_HASH_KEY(IsClassicBag ? "prop_money_bag_01" : "p_poly_bag_01_s");
+					STREAMING::REQUEST_MODEL(PolyBag);
+					while (!STREAMING::HAS_MODEL_LOADED(PolyBag)) { GameHooking::PauseMainFiber(0, false); }
+					if (STREAMING::HAS_MODEL_LOADED(PolyBag)) { OBJECT::CREATE_AMBIENT_PICKUP(0xCE6FDD6B, coords.x, coords.y, coords.z + 1.f, 0, IsClassicBag ? 2000 : 2500, PolyBag, false, true); STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(PolyBag); }
+				}
+			}
+		}
+		else if (ImpactAmmoVectorPosition == 3)
+		{
+			Memory::set_value<int>({ OFFSET_PLAYER, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, FrameFlagFireAmmo);
+		}
+		else if (ImpactAmmoVectorPosition == 4)
+		{
+			if (PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
+			{
+				Vector3 coords;
+				if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(Cheat::GameFunctions::PlayerPedID, &coords))
+				{
+					GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(coords.x, coords.y, coords.z + 30, coords.x, coords.y, coords.z, 250, 0, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), 0, 1, 1, 500);
+				}
+			}
+		}
+		else if (ImpactAmmoVectorPosition == 5)
+		{
+			if (PED::IS_PED_SHOOTING(GameFunctions::PlayerPedID))
+			{
+				Vector3 iCoord;
+				if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(GameFunctions::PlayerPedID, &iCoord))
+				{
+					ENTITY::SET_ENTITY_COORDS(GameFunctions::PlayerPedID, iCoord.x, iCoord.y, iCoord.z + 1, false, false, true, true);
+				}
+			}
+		}
+		else if (ImpactAmmoVectorPosition == 6)
+		{
+			Memory::set_value<int>({ OFFSET_PLAYER, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, FrameFlagExplosiveAmmo);
+		}
+		else if (ImpactAmmoVectorPosition == 7)
+		{
+			Vector3 iCoord;
+			if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(GameFunctions::PlayerPedID, &iCoord))
+			{
+				
+				GameFunctions::MinimapNotification(CheatFunctions::StringToChar(std::to_string(iCoord.x) + ", " + std::to_string(iCoord.y) + ", " + std::to_string(iCoord.z)));
+			}
+		}
+	}
+
+	//Custom Ammo
+	if (CustomAmmoVectorPosition != 0)
+	{
+		Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
+		Vector3 dir = GameFunctions::RotToDirection(&rot);
+		Vector3 camPosition = CAM::GET_GAMEPLAY_CAM_COORD();
+		Vector3 playerPosition = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, 1);
+		float spawnDistance = GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &playerPosition);
+		spawnDistance += 0.25;
+		Vector3 spawnPosition = GameFunctions::AddTwoVectors(&camPosition, &GameFunctions::MultiplyVector(&dir, spawnDistance));
+		float endDistance = GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &playerPosition);
+		endDistance += 1000;
+		Vector3 endPosition = GameFunctions::AddTwoVectors(&camPosition, &GameFunctions::MultiplyVector(&dir, endDistance));
+
+		Hash WeaponAsset;
+		if (CustomAmmoVectorPosition == 1)
+		{
+			WeaponAsset = GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_NOSE_TURRET_VALKYRIE");
+		}
+		else if (CustomAmmoVectorPosition == 2)
+		{
+			WeaponAsset = GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_TANK");
+		}
+		else if (CustomAmmoVectorPosition == 3)
+		{
+			WeaponAsset = GAMEPLAY::GET_HASH_KEY("WEAPON_VEHICLE_ROCKET");
+		}
+		else if (CustomAmmoVectorPosition == 4)
+		{
+			WeaponAsset = GAMEPLAY::GET_HASH_KEY("WEAPON_FIREWORK");
+		}
+
+		if (PED::IS_PED_ON_FOOT(Cheat::GameFunctions::PlayerPedID) && PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
+		{
+			if (!WEAPON::HAS_WEAPON_ASSET_LOADED(WeaponAsset))
+			{
+				WEAPON::REQUEST_WEAPON_ASSET(WeaponAsset, 31, 0);
+				while (!WEAPON::HAS_WEAPON_ASSET_LOADED(WeaponAsset)) { GameHooking::PauseMainFiber(0); }
+			}
+			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, WeaponAsset, GameFunctions::PlayerPedID, 1, 0, -1.0);
+		}
+	}
+	
+
 	GodmodeBool ? Godmode(true) : Godmode(false);
 	NeverWantedBool ? NeverWanted(true) : NeverWanted(false);
 	NoWeaponReloadBool ? NoWeaponReload() : NULL;
@@ -118,7 +223,6 @@ void Cheat::CheatFeatures::Looped()
 	PlayerIgnoredBool ? PlayerIgnored(true) : PlayerIgnored(false);
 	NoClipBool ? NoClip() : NoClipWasEnabled ? ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, true, true), NoClipWasEnabled = false : NULL;
 	RainbowVehicleBool ? RainbowVehicle() : NULL;
-	TeleportGunBool ? TeleportGun() : NULL;
 	DeleteGunBool ? DeleteGun() : NULL;
 	SpectatePlayerBool ? SpectatePlayer(true) : SpectatePlayer(false);
 	NoRagdollAndSeatbeltBool ? NoRagdollAndSeatbelt(true) : NoRagdollAndSeatbelt(false);
@@ -140,11 +244,8 @@ void Cheat::CheatFeatures::Looped()
 	NoIdleKickBool ? NoIdleKick() : NULL;
 	BribeAuthoritiesBool ? BribeAuthorities() : NULL;
 	MoneyDropBool ? MoneyDrop() : NULL;
-	MoneyGunBool ? MoneyGun() : NULL;
 	VehicleWeaponsBool ? VehicleWeapons() : NULL;
-	AirstrikeGunBool ? AirstrikeGun() : NULL;
 	SuperRunBool ? SuperRun() : NULL;
-	CustomWeaponBulletsBool ? CustomWeaponBullets() : NULL;
 	ShowSessionInformationBool ? ShowSessionInformation() : NULL;
 	AutoGiveAllWeaponsBool ? AutoGiveAllWeapons() : NULL;
 	AutoGiveAllWeaponUpgradesBool ? AutoGiveAllWeaponUpgrades() : NULL;
@@ -703,20 +804,6 @@ void Cheat::CheatFeatures::RainbowVehicle()
 	VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), Red, Green, Blue);
 }
 
-bool Cheat::CheatFeatures::TeleportGunBool = false;
-void Cheat::CheatFeatures::TeleportGun()
-{
-	if (PED::IS_PED_SHOOTING(GameFunctions::PlayerPedID))
-	{
-		Vector3 iCoord;
-		if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(GameFunctions::PlayerPedID, &iCoord))
-		{
-			ENTITY::SET_ENTITY_COORDS(GameFunctions::PlayerPedID, iCoord.x, iCoord.y, iCoord.z + 1, false, false, true, true);
-			GameHooking::PauseMainFiber(0, false);
-		}
-	}
-}
-
 bool Cheat::CheatFeatures::EntityInformationGunBool = false;
 void Cheat::CheatFeatures::EntityInformationGun()
 {
@@ -1134,22 +1221,6 @@ void Cheat::CheatFeatures::MoneyDrop()
 	}
 }
 
-bool Cheat::CheatFeatures::MoneyGunBool = false;
-void Cheat::CheatFeatures::MoneyGun()
-{
-	if (PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
-	{
-		Vector3 coords;
-		if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(Cheat::GameFunctions::PlayerPedID, &coords))
-		{
-			Hash PolyBag = GAMEPLAY::GET_HASH_KEY("p_poly_bag_01_s");
-			STREAMING::REQUEST_MODEL(PolyBag);
-			while (!STREAMING::HAS_MODEL_LOADED(PolyBag)) { GameHooking::PauseMainFiber(0, false); }
-			if (STREAMING::HAS_MODEL_LOADED(PolyBag)) { OBJECT::CREATE_AMBIENT_PICKUP(0xCE6FDD6B, coords.x, coords.y, coords.z + 1.f, 0, 2500, PolyBag, false, true); STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(PolyBag); }
-		}	
-	}
-}
-
 DWORD VehicleWeapons_LastTick = 0;
 bool Cheat::CheatFeatures::VehicleWeapons_TankRounds = true;
 bool Cheat::CheatFeatures::VehicleWeapons_VehicleRockets = false;
@@ -1200,21 +1271,6 @@ void Cheat::CheatFeatures::VehicleWeapons()
 	}
 }
 
-
-bool Cheat::CheatFeatures::AirstrikeGunBool = false;
-void Cheat::CheatFeatures::AirstrikeGun()
-{
-	if (PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
-	{
-		Vector3 coords;
-		WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(Cheat::GameFunctions::PlayerPedID, &coords);
-		if (coords.x != 0 || coords.y != 0 || coords.z != 0) {
-			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(coords.x, coords.y, coords.z + 30, coords.x, coords.y, coords.z, 250, 0, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), 0, 1, 1, 500);
-		}
-	}
-}
-
-
 bool Cheat::CheatFeatures::SuperRunBool = false;
 void Cheat::CheatFeatures::SuperRun()
 {
@@ -1227,51 +1283,6 @@ void Cheat::CheatFeatures::SuperRun()
 		PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(Cheat::GameFunctions::PlayerID, 1.59f);
 	}
 }
-
-bool Cheat::CheatFeatures::CustomWeaponBullets_ValkyrieGun = true;
-bool Cheat::CheatFeatures::CustomWeaponBullets_TankBullets = false;
-bool Cheat::CheatFeatures::CustomWeaponBullets_RpgBullets = false;
-bool Cheat::CheatFeatures::CustomWeaponBullets_FireworkBullets = false;
-bool Cheat::CheatFeatures::CustomWeaponBulletsBool = false;
-void Cheat::CheatFeatures::CustomWeaponBullets()
-{
-	Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
-	Vector3 dir = Cheat::GameFunctions::RotToDirection(&rot);
-	Vector3 camPosition = CAM::GET_GAMEPLAY_CAM_COORD();
-	Vector3 playerPosition = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 1);
-	float spawnDistance = Cheat::GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &playerPosition);
-	spawnDistance += 0.25;
-	Vector3 spawnPosition = Cheat::GameFunctions::AddTwoVectors(&camPosition, &Cheat::GameFunctions::MultiplyVector(&dir, spawnDistance));
-
-	float endDistance = Cheat::GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &playerPosition);
-	endDistance += 1000;
-	Vector3 endPosition = Cheat::GameFunctions::AddTwoVectors(&camPosition, &Cheat::GameFunctions::MultiplyVector(&dir, endDistance));
-
-	if (PED::IS_PED_ON_FOOT(Cheat::GameFunctions::PlayerPedID) && PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
-	{
-		Hash weaponAssetRocket1 = GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_NOSE_TURRET_VALKYRIE");
-		Hash weaponAssetRocket2 = GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_TANK");
-		Hash weaponAssetRocket3 = GAMEPLAY::GET_HASH_KEY("WEAPON_VEHICLE_ROCKET");
-		Hash weaponAssetRocket4 = GAMEPLAY::GET_HASH_KEY("WEAPON_FIREWORK");
-
-		if (!WEAPON::HAS_WEAPON_ASSET_LOADED(weaponAssetRocket1) || !WEAPON::HAS_WEAPON_ASSET_LOADED(weaponAssetRocket2) || !WEAPON::HAS_WEAPON_ASSET_LOADED(weaponAssetRocket3) || !WEAPON::HAS_WEAPON_ASSET_LOADED(weaponAssetRocket4))
-		{
-			WEAPON::REQUEST_WEAPON_ASSET(weaponAssetRocket1, 31, 0);
-			while (!WEAPON::HAS_WEAPON_ASSET_LOADED(weaponAssetRocket1)) { GameHooking::PauseMainFiber(0); }
-			WEAPON::REQUEST_WEAPON_ASSET(weaponAssetRocket2, 31, 0);
-			while (!WEAPON::HAS_WEAPON_ASSET_LOADED(weaponAssetRocket2)) { GameHooking::PauseMainFiber(0); }
-			WEAPON::REQUEST_WEAPON_ASSET(weaponAssetRocket3, 31, 0);
-			while (!WEAPON::HAS_WEAPON_ASSET_LOADED(weaponAssetRocket3)) { GameHooking::PauseMainFiber(0); }
-			WEAPON::REQUEST_WEAPON_ASSET(weaponAssetRocket4, 31, 0);
-			while (!WEAPON::HAS_WEAPON_ASSET_LOADED(weaponAssetRocket4)) { GameHooking::PauseMainFiber(0); }
-		}
-		if (CustomWeaponBullets_ValkyrieGun) { GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, weaponAssetRocket1, Cheat::GameFunctions::PlayerPedID, 1, 0, -1.0); }
-		if (CustomWeaponBullets_TankBullets) { GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, weaponAssetRocket2, Cheat::GameFunctions::PlayerPedID, 1, 0, -1.0); }
-		if (CustomWeaponBullets_RpgBullets) { GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, weaponAssetRocket3, Cheat::GameFunctions::PlayerPedID, 1, 0, -1.0); }
-		if (CustomWeaponBullets_FireworkBullets) { GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, weaponAssetRocket4, Cheat::GameFunctions::PlayerPedID, 1, 0, -1.0); }
-	}
-}
-
 
 bool Cheat::CheatFeatures::ShowSessionInformationBool = false;
 void Cheat::CheatFeatures::ShowSessionInformation()

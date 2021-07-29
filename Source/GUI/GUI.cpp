@@ -40,8 +40,8 @@ std::vector <std::string> Cheat::GUI::ThemeFilesVector;
 RGBA Cheat::GUI::PrimaryColor               { 0, 0, 255, 255 };
 RGBAF Cheat::GUI::TextColorAndFont			{ 255, 255, 255, 255, FontChaletLondon };
 
-int Cheat::GUI::keyPressDelay				= 200;
-int Cheat::GUI::keyPressPreviousTick		= GetTickCount64();
+int Cheat::GUI::KeyPressDelay				= 200;
+int Cheat::GUI::KeyPressPreviousTick		= GetTickCount64();
 int Cheat::GUI::OpenGUIKey					= VK_F4;
 int Cheat::GUI::GUINavigationKey			= VK_F5;
 int Cheat::GUI::SaveItemKey					= VK_F12;
@@ -518,7 +518,7 @@ bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vecto
 		CheatFunctions::SaveOption(option, std::to_string(position), IsSavable && !Disabled ? true : false);
 		size_t max = static_cast<int>(Vector.size()) - 1;
 		int min = 0;
-		if (GUI::leftPressed) 
+		if (GUI::leftPressed)
 		{
 			position >= 1 ? position-- : position = static_cast<int>(max);
 			return true;
@@ -569,7 +569,7 @@ void Cheat::GUI::ControlsLoop()
 		GUI::leftPressed = false;
 		GUI::rightPressed = false;
 
-		if (GetTickCount64() - GUI::keyPressPreviousTick > GUI::keyPressDelay)
+		if (GetTickCount64() - GUI::KeyPressPreviousTick > GUI::KeyPressDelay)
 		{
 			if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(GUI::OpenGUIKey))
 			{
@@ -593,7 +593,7 @@ void Cheat::GUI::ControlsLoop()
 				}
 
 				Cheat::GameFunctions::PlayFrontendSoundDefault("SELECT");
-				GUI::keyPressPreviousTick = GetTickCount64();
+				GUI::KeyPressPreviousTick = GetTickCount64();
 			}
 			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD0))
 			{
@@ -602,7 +602,7 @@ void Cheat::GUI::ControlsLoop()
 					GUI::BackMenu();
 					Cheat::GameFunctions::PlayFrontendSoundDefault("BACK"); 
 				}
-				GUI::keyPressPreviousTick = GetTickCount64();
+				GUI::KeyPressPreviousTick = GetTickCount64();
 			}
 			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD8))
 			{
@@ -611,7 +611,7 @@ void Cheat::GUI::ControlsLoop()
 				{
 					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 				}
-				GUI::keyPressPreviousTick = GetTickCount64();
+				GUI::KeyPressPreviousTick = GetTickCount64();
 			}
 			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD2))
 			{
@@ -620,7 +620,7 @@ void Cheat::GUI::ControlsLoop()
 				{
 					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 				}
-				GUI::keyPressPreviousTick = GetTickCount64();
+				GUI::KeyPressPreviousTick = GetTickCount64();
 			}
 			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD6))
 			{
@@ -629,7 +629,7 @@ void Cheat::GUI::ControlsLoop()
 				{
 					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 				}
-				GUI::keyPressPreviousTick = GetTickCount64();
+				GUI::KeyPressPreviousTick = GetTickCount64();
 			}
 			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD4))
 			{
@@ -638,7 +638,7 @@ void Cheat::GUI::ControlsLoop()
 				{
 					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 				}
-				GUI::keyPressPreviousTick = GetTickCount64();
+				GUI::KeyPressPreviousTick = GetTickCount64();
 			}
 			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD5))
 			{
@@ -647,7 +647,7 @@ void Cheat::GUI::ControlsLoop()
 				{
 					Cheat::GameFunctions::PlayFrontendSoundDefault("SELECT");
 				}
-				GUI::keyPressPreviousTick = GetTickCount64();
+				GUI::KeyPressPreviousTick = GetTickCount64();
 			}
 		}
 		GUI::optionCount = 0;
@@ -885,7 +885,7 @@ void Cheat::GUI::Drawing::InitTextureFile()
 	//Error
 Error:
 	Cheat::GameFunctions::MinimapNotification("~r~Failed to load Texture");
-	Cheat::LogFunctions::DebugMessage("Failed to load Textures.ytd");
+	Cheat::LogFunctions::DebugMessage("Failed to load Texture");
 }
 
 void Cheat::GUI::Drawing::Text(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center, bool Outline)

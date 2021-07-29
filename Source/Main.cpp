@@ -891,7 +891,7 @@ void Cheat::FiberMain()
 		break;
 		case ModelChangerMenu:
 		{
-			GUI::Title("Model Changer");
+			GUI::Title("Change Model");
 			if (GUI::Option("Custom Input", "Input custom Ped model"))
 			{
 				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter custom ped model name");
@@ -2496,6 +2496,14 @@ void Cheat::FiberMain()
 			GUI::Toggle("Crosshair", CheatFeatures::CrossHairBool, "");
 			GUI::Toggle("Crosshair -> ADS only", CheatFeatures::CrossHairADSOnlyBool, "");
 			GUI::Toggle("Cartoon Gun", CheatFeatures::CartoonGunBool, "Shows cartoon effects while shooting");
+			GUI::Toggle("Entity Information Gun", CheatFeatures::EntityInformationGunBool, "Shows info about aimed entity");
+		}
+		break;
+		case WeaponAmmoMenu:
+		{
+			GUI::Title("Ammo Modification");
+			GUI::StringVector("Impact Ammo", { "Disabled", "Money Bags (2.5k)", "Money Bags (Classic)", "Fire", "Airtrike", "Teleport To", "Explosion", "Show bullet coord" }, CheatFeatures::ImpactAmmoVectorPosition, "Money can only be picked up by you");
+			GUI::StringVector("Custom Ammo", { "Disabled", "Valkyrie", "Rhino Tank", "RPG", "Firework" }, CheatFeatures::CustomAmmoVectorPosition, "");
 		}
 		break;
 		case weaponmenu: 
@@ -2503,19 +2511,15 @@ void Cheat::FiberMain()
 			GUI::Title("Weapon");
 			GUI::MenuOption("Weapons", WeaponsMenu);
 			GUI::MenuOption("Visuals", WeaponVisualsMenu);
-			GUI::MenuOption("Custom Bullets", custombulletsmenu);
+			GUI::MenuOption("Ammo Modification", WeaponAmmoMenu);
 			GUI::MenuOption("Vehicle Gun", vehiclegunmenu);
 			GUI::MenuOption("Aimbot", aimbotsettingsmenu);		
 			GUI::Break("General", true);
 			GUI::Toggle("No reload", CheatFeatures::NoWeaponReloadBool, "Always have max amount of ammo");
-			GUI::Toggle("Teleport Gun", CheatFeatures::TeleportGunBool, "Teleport to where you shoot");
-			GUI::Toggle("Entity Information Gun", CheatFeatures::EntityInformationGunBool, "Shows info about aimed entity");
 			GUI::Toggle("Delete Gun", CheatFeatures::DeleteGunBool, "Use SNS Pistol with this option");
 			GUI::Toggle("Rapid Fire", CheatFeatures::WeaponRapidFireBool, "Shoot very fast");
-			GUI::Toggle("Money Gun", CheatFeatures::MoneyGunBool, "Drops money bags where you shoot");
 			GUI::Toggle("One Shot One Kill", CheatFeatures::OneHitKillBool, "");
 			GUI::Toggle("Gravity Gun", CheatFeatures::GravityGunBool, "Use Combat Pistol for this option");
-			GUI::Toggle("Airstrike Gun", CheatFeatures::AirstrikeGunBool, "");
 		}
 		break; 
 		case vehiclegunmenu:
@@ -2548,16 +2552,6 @@ void Cheat::FiberMain()
 			if (GUI::Option("Dump", "")) { CheatFeatures::VehicleGun_VehicleNameString = "DUMP"; }
 		}
 		break;
-		case custombulletsmenu: 
-		{
-			GUI::Title("Custom Bullets");
-			GUI::Toggle("Toggle Custom Bullets", CheatFeatures::CustomWeaponBulletsBool, "");
-			GUI::Toggle("Valkyrie Bullets", CheatFeatures::CustomWeaponBullets_ValkyrieGun, "");
-			GUI::Toggle("Tank Bullets", CheatFeatures::CustomWeaponBullets_TankBullets, "");
-			GUI::Toggle("RPG Bullets", CheatFeatures::CustomWeaponBullets_RpgBullets, "");
-			GUI::Toggle("Firework Bullets", CheatFeatures::CustomWeaponBullets_FireworkBullets, "");
-		}
-		break; 
 		case aimbotsettingsmenu:
 		{
 			GUI::Title("Aimbot");
@@ -2931,7 +2925,7 @@ void Cheat::FiberMain()
 		case SelfOptionsMenu:
 		{
 			GUI::Title("Self");
-			GUI::MenuOption("Model Changer", ModelChangerMenu);
+			GUI::MenuOption("Change Model", ModelChangerMenu);
 			GUI::MenuOption("Animations & Scenarios", AnimationsAndScenariosMenu);
 			GUI::MenuOption("Clothing", clothingmenu);
 			GUI::Toggle("God Mode", CheatFeatures::GodmodeBool, "Makes your character invincible", true);
@@ -3292,7 +3286,7 @@ void Cheat::FiberMain()
 					GameFunctions::MinimapNotification("Cursor Navigation key has been set");
 				}
 			}
-			GUI::Int("Key Press Delay", GUI::keyPressDelay, 1, 250, 1);
+			GUI::Int("Key Press Delay", GUI::KeyPressDelay, 1, 250, 1);
 			GUI::StringVector("Measurement System", { "Metric", "Imperial" }, CheatFeatures::MeasurementSystemVectorPosition, "Metric = KM/H, Imperial = MP/H");
 			GUI::MenuOption("About", AboutMenu);
 		}
