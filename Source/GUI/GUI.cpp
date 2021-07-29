@@ -419,13 +419,17 @@ bool Cheat::GUI::Float(std::string option, float & _float, float min, float max,
 		}
 	}
 
+
+	std::ostringstream DisplayFloat;
+	DisplayFloat.precision(3);
+	DisplayFloat << std::fixed << _float;
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
-		GUI::Drawing::Text(std::to_string(_float), TextColorAndFont, { Cheat::GUI::guiX + 0.08f, GUI::guiY + GUI::optionCount * 0.035f - 0.172f }, { 0.32f, 0.32f }, true);
+		GUI::Drawing::Text(DisplayFloat.str(), TextColorAndFont, { Cheat::GUI::guiX + 0.08f, GUI::guiY + GUI::optionCount * 0.035f - 0.172f }, { 0.32f, 0.32f }, true);
 	}
 	else if (GUI::optionCount > GUI::currentOption - GUI::maxVisOptions && GUI::optionCount <= GUI::currentOption)
 	{
-		GUI::Drawing::Text(std::to_string(_float), TextColorAndFont, { Cheat::GUI::guiX + 0.08f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.172f }, { 0.32f, 0.32f }, true);
+		GUI::Drawing::Text(DisplayFloat.str(), TextColorAndFont, { Cheat::GUI::guiX + 0.08f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.172f }, { 0.32f, 0.32f }, true);
 	}
 	return false;
 }
