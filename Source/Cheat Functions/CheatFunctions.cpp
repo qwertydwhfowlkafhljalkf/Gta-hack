@@ -91,57 +91,57 @@ Ped Cheat::GameFunctions::PlayerPedID;
 void Cheat::CheatFunctions::LoopedFunctions()
 {
 	//Player ID and Player Ped ID
-	Cheat::GameFunctions::PlayerID = PLAYER::PLAYER_ID();
-	Cheat::GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
+	GameFunctions::PlayerID = PLAYER::PLAYER_ID();
+	GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
 
 	//Features
-	Cheat::CheatFeatures::Looped();
+	CheatFeatures::Looped();
 
 	//Controls
-	Cheat::GUI::ControlsLoop();
+	GUI::ControlsLoop();
 
 	//Submenu handlers - additional submenu logic is looped here
-	if (Cheat::GUI::currentMenu == SelectedPlayerMenu ||
-		Cheat::GUI::currentMenu == SelectedPlayerFriendlyMenu ||
-		Cheat::GUI::currentMenu == SelectedPlayerRemoteOptions ||
-		Cheat::GUI::currentMenu == SelectedPlayerTeleportMenu ||
-		Cheat::GUI::currentMenu == SelectedPlayerAttachmentOptions ||
-		Cheat::GUI::currentMenu == SelectedPlayerTrollMenu ||
-		Cheat::GUI::currentMenu == SelectedPlayerRemoteOptions)
+	if (GUI::currentMenu == SelectedPlayerMenu ||
+		GUI::currentMenu == SelectedPlayerFriendlyMenu ||
+		GUI::currentMenu == SelectedPlayerRemoteOptions ||
+		GUI::currentMenu == SelectedPlayerTeleportMenu ||
+		GUI::currentMenu == SelectedPlayerAttachmentOptions ||
+		GUI::currentMenu == SelectedPlayerTrollMenu ||
+		GUI::currentMenu == SelectedPlayerRemoteOptions)
 	{
-		if (Cheat::GameFunctions::IsPlayerIDValid(Cheat::CheatFeatures::selectedPlayer))
+		if (GameFunctions::IsPlayerIDValid(CheatFeatures::selectedPlayer))
 		{
-			Cheat::GameFunctions::ShowPlayerInformationBox(Cheat::CheatFeatures::selectedPlayer);
+			GameFunctions::ShowPlayerInformationBox(CheatFeatures::selectedPlayer);
 		}
 		else
 		{
-			Cheat::GUI::PreviousMenu = NOMENU;
-			Cheat::GUI::MoveMenu(MainMenu);
-			Cheat::GameFunctions::MinimapNotification("~r~Invalid Player ID");
+			GUI::PreviousMenu = NOMENU;
+			GUI::MoveMenu(MainMenu);
+			GameFunctions::MinimapNotification("~r~Invalid Player ID");
 		}
 	}
-	if (Cheat::GUI::currentMenu == ThemeFilesMenu)
+	if (GUI::currentMenu == ThemeFilesMenu)
 	{
-		Cheat::GUI::ThemeFilesVector.clear();
-		std::string ThemeFolderPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
-		if (!Cheat::CheatFunctions::FileOrDirectoryExists(ThemeFolderPath)) { Cheat::CheatFunctions::CreateNewDirectory(ThemeFolderPath); }
+		GUI::ThemeFilesVector.clear();
+		std::string ThemeFolderPath = CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
+		if (!Cheat::CheatFunctions::FileOrDirectoryExists(ThemeFolderPath)) { CheatFunctions::CreateNewDirectory(ThemeFolderPath); }
 		for (const auto& file : std::filesystem::directory_iterator(ThemeFolderPath.c_str()))
 		{
 			if (file.path().extension() == ".ini")
 			{
-				Cheat::GUI::ThemeFilesVector.push_back(file.path().stem().string());
+				GUI::ThemeFilesVector.push_back(file.path().stem().string());
 			}
 		}
 	}
 
 	//Show subtitle message in-game while config file is loading
-	if (!Cheat::CheatFunctions::LoadConfigThreadFunctionCompleted)
+	if (!CheatFunctions::LoadConfigThreadFunctionCompleted)
 	{
 		GameFunctions::SubtitleNotification("Loading configuration file, one moment please", 1);
 	}
 
 	//Cursor Navigation Handler
-	if (Cheat::CheatFeatures::CursorGUINavigationEnabled)
+	if (CheatFeatures::CursorGUINavigationEnabled)
 	{
 		PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, false, 0);
 		UI::_SHOW_CURSOR_THIS_FRAME();
@@ -163,8 +163,8 @@ void Cheat::CheatFunctions::LoopedFunctions()
 			if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
 			{
 				UI::_SET_CURSOR_SPRITE(Grab);
-				Cheat::GUI::SelectableInfoBoxX = GameFunctions::ReturnCursorYXCoords().x;
-				Cheat::GUI::SelectableInfoBoxY = GameFunctions::ReturnCursorYXCoords().y;
+				GUI::SelectableInfoBoxX = GameFunctions::ReturnCursorYXCoords().x;
+				GUI::SelectableInfoBoxY = GameFunctions::ReturnCursorYXCoords().y;
 			}
 		}
 		if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX - 0.100f, GUI::guiY - 0.156f }, { 0.060f, 0.025f }))

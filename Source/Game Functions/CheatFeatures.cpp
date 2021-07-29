@@ -322,7 +322,7 @@ void Cheat::CheatFeatures::GravityGun()
 {
 	Entity EntityTarget;
 	DWORD equippedWeapon;
-	WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &equippedWeapon, 1);
+	WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &equippedWeapon, true);
 
 	Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
 	Vector3 dir = Cheat::GameFunctions::RotToDirection(&rot);

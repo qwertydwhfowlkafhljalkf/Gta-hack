@@ -1465,7 +1465,7 @@ void Cheat::FiberMain()
 					GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}	
-			GUI::Toggle("Vehicle God Mode", CheatFeatures::VehicleGodmodeBool, "Makes current vehicle invincible");
+			GUI::Toggle("Vehicle Invincibility", CheatFeatures::VehicleGodmodeBool, "Makes current vehicle invincible");
 			GUI::Toggle("Vehicle Invisibility", CheatFeatures::VehicleInvisibleBool, "Makes current vehicle invisible");
 			GUI::Toggle("Vehicle Horn Boost", CheatFeatures::VehicleHornBoostBool, "Press horn button to use");
 			GUI::Toggle("Unlimited Rocket Boost", CheatFeatures::UnlimitedRocketBoostBool, "");
@@ -1856,7 +1856,7 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("Vehicle Spawn Settings");
 			GUI::Toggle("Spawn Inside", CheatFeatures::VehicleSpawnerSpawnInsideVehicle, "");
-			GUI::Toggle("Spawn With God Mode", CheatFeatures::VehicleSpawnerSpawnWithGodmode, "");
+			GUI::Toggle("Spawn Invincible", CheatFeatures::VehicleSpawnerSpawnWithGodmode, "");
 			GUI::Toggle("Spawn Max Upgraded", CheatFeatures::VehicleSpawnerSpawnMaxUpgraded, "");
 			GUI::Toggle("Delete Current", CheatFeatures::VehicleSpawnerDeleteOldVehicle, "");
 			GUI::Toggle("Spawn With Blip", CheatFeatures::VehicleSpawnerSpawnWithBlip, "");
@@ -2473,12 +2473,24 @@ void Cheat::FiberMain()
 			{
 				GameFunctions::GiveAllWeaponsToPlayer(GameFunctions::PlayerPedID);
 			}
-			if (GUI::Option("Remove All Weapons", ""))
+			if (GUI::Option("Clear All Weapons", "Weapons are not permanently removed"))
 			{
 				if (CheatFeatures::AutoGiveAllWeaponsBool) { GameFunctions::MinimapNotification("Disable 'Auto Give All Weapons' to use this"); }
 				else { WEAPON::REMOVE_ALL_PED_WEAPONS(GameFunctions::PlayerPedID, true); }
 			}
 			GUI::Break("Upgrades", true);
+			if (GUI::Option("Max Upgrade Current Weapon", ""))
+			{
+				Hash CurrentWeapon;
+				WEAPON::GET_CURRENT_PED_WEAPON(GameFunctions::PlayerPedID, &CurrentWeapon, true);
+				for (auto const& i : GameArrays::MaxUpgradeWeaponComponents)
+				{
+					if (i.WeaponHash == CurrentWeapon)
+					{
+						WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, i.WeaponHash, GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(i.UpgradeHash)));
+					}
+				}
+			}
 			if (GUI::Option("Max Upgrade All Weapons", "Max Upgrade All Weapons"))
 			{
 				GameFunctions::MaxUpgradeAllWeapons();
@@ -2502,7 +2514,7 @@ void Cheat::FiberMain()
 		case WeaponAmmoMenu:
 		{
 			GUI::Title("Ammo Modification");
-			GUI::StringVector("Impact Ammo", { "Disabled", "Money Bags (2.5k)", "Money Bags (Classic)", "Fire", "Airtrike", "Teleport To", "Explosion", "Show bullet coord" }, CheatFeatures::ImpactAmmoVectorPosition, "Money can only be picked up by you");
+			GUI::StringVector("Impact Ammo", { "Disabled", "Money Bags (2.5k)", "Money Bags (Classic)", "Fire", "Airstrike", "Teleport To", "Explosion", "Show bullet coord" }, CheatFeatures::ImpactAmmoVectorPosition, "Money can only be picked up by you");
 			GUI::StringVector("Custom Ammo", { "Disabled", "Valkyrie", "Rhino Tank", "RPG", "Firework" }, CheatFeatures::CustomAmmoVectorPosition, "");
 		}
 		break;
@@ -2865,10 +2877,10 @@ void Cheat::FiberMain()
 				std::string PlayernameString = PLAYER::GET_PLAYER_NAME(i);
 				if (GameFunctions::IsPlayerIDValid(i))
 				{
-					if (GameFunctions::PlayerIsFreemodeScriptHost(i)) { PlayernameString.append(" ~o~[Host]"); }
-					if (GameFunctions::IsPlayerFriend(i)) { PlayernameString.append(" ~b~[Friend]"); }
-					if (GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) { PlayernameString.append(" ~p~[Interior]"); }
-					if (GameFunctions::PlayerID == i) { PlayernameString.append(" ~g~[You]"); }
+					if (GameFunctions::PlayerIsFreemodeScriptHost(i)) { PlayernameString.append(" ~o~[HOST]"); }
+					if (GameFunctions::IsPlayerFriend(i)) { PlayernameString.append("~b~[FRIEND]"); }
+					if (GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) { PlayernameString.append(" ~p~[INTERIOR]"); }
+					if (GameFunctions::PlayerID == i) { PlayernameString.append(" ~g~[SELF]"); }
 					GUI::MenuOptionPlayerList(PlayernameString, SelectedPlayerMenu) ? CheatFeatures::selectedPlayer = i : NULL;
 					if (GUI::currentOption == GUI::optionCount) { GameFunctions::ShowPlayerInformationBox(i); }
 				}
@@ -2928,7 +2940,7 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Change Model", ModelChangerMenu);
 			GUI::MenuOption("Animations & Scenarios", AnimationsAndScenariosMenu);
 			GUI::MenuOption("Clothing", clothingmenu);
-			GUI::Toggle("God Mode", CheatFeatures::GodmodeBool, "Makes your character invincible", true);
+			GUI::Toggle("Invincible", CheatFeatures::GodmodeBool, "Gives your character God Mode", true);
 			GUI::Toggle("No Ragdoll & Seatbelt", CheatFeatures::NoRagdollAndSeatbeltBool, "Disables ragdoll on your character");
 			GUI::Toggle("Super Jump", CheatFeatures::SuperJumpBool, "Makes your character jump higher");
 			GUI::Toggle("Super Run", CheatFeatures::SuperRunBool, "Run very fast");

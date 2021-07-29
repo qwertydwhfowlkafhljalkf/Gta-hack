@@ -26,6 +26,12 @@ struct WeatherTypesStruct
 	std::string WeatherType;
 };
 
+struct MaxUpgradeWeaponComponentsStruct
+{
+	Hash WeaponHash;
+	std::string UpgradeHash;
+};
+
 namespace Cheat
 {
 	namespace GameArrays
@@ -75,5 +81,6 @@ namespace Cheat
 		extern const std::vector<TeleportLocationStruct> TeleportLocationsLandmarks;
 		extern std::vector<Vehicle> SpawnedVehicles;
 		extern const std::vector<WeatherTypesStruct> WeatherTypes;
+		extern const std::vector<MaxUpgradeWeaponComponentsStruct> MaxUpgradeWeaponComponents;
 	}
 }
