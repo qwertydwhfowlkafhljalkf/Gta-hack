@@ -2562,6 +2562,7 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("Aimbot");
 			GUI::Toggle("Triggerbot", CheatFeatures::TriggerBotBool, "");
+			GUI::StringVector("Bone", { "Head", "Neck", "Right Hand", "Left Hand" }, CheatFeatures::AimbotBoneVectorPosition, "");
 			GUI::Break("Target", true);
 			GUI::Toggle("Shoot NPC's", CheatFeatures::TriggerBot_ShootNPCBool, "Triggerbot shoots at NPC's");
 			GUI::Toggle("Shoot Players", CheatFeatures::TriggerBot_ShootPlayersBool, "Triggerbot shoots at players");
@@ -3278,6 +3279,7 @@ void Cheat::FiberMain()
 				if (PressedKey != 0)
 				{
 					GUI::OpenGUIKey = PressedKey;
+					CheatFunctions::IniFileWriteString(std::to_string(PressedKey), CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Menu GUI Key");
 					GameFunctions::MinimapNotification("Menu GUI key has been set");
 				}
 			}
@@ -3287,6 +3289,7 @@ void Cheat::FiberMain()
 				if (PressedKey != 0) 
 				{ 
 					GUI::GUINavigationKey = PressedKey;
+					CheatFunctions::IniFileWriteString(std::to_string(PressedKey), CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
 					GameFunctions::MinimapNotification("Cursor Navigation key has been set");
 				}
 			}
@@ -3327,18 +3330,10 @@ void Cheat::FiberMain()
 			GUI::Toggle("Blocked Script Notifications", CheatFeatures::ShowBlockedScriptEventNotifications, "");
 		}
 		break;
-		case headeroptionsmenu:
-		{
-			GUI::Title("Header");
-			GUI::Toggle("Header Texture", GUI::ShowHeaderTexture, "", false);
-			GUI::Toggle("Header Background", GUI::ShowHeaderBackground, "", false);
-		}
-		break;
 		case ThemeMenu:
 		{
 			GUI::Title("Theme");
-			GUI::MenuOption("Header", headeroptionsmenu);
-			GUI::MenuOption("Theme Files", ThemeFilesMenu);
+			GUI::MenuOption("Saved Themes", ThemeFilesMenu);
 			if (!GUI::CurrentTheme.empty())
 			{
 				GUI::Break("Loaded Theme: ~c~" + GUI::CurrentTheme, false);
@@ -3346,21 +3341,24 @@ void Cheat::FiberMain()
 				{
 					GUI::SaveTheme(GUI::CurrentTheme);
 				}
-				if (GUI::Option("Delete Loaded Theme", "Delete active theme"))
+				if (GUI::Option("Delete Theme", "Delete loaded theme"))
 				{
 					GUI::DeleteCurrentTheme();
 				}
 			}
 			else
 			{
-				GUI::Break("Active Theme: ~c~None", false);
+				GUI::Break("Loaded Theme: ~c~None", false);
 			}
-			if (GUI::Option("Save To New", "Save current GUI to new theme file"))
+			if (GUI::Option("Save To New", ""))
 			{
 				char* NewThemeFileName = GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Theme Name");
 				if (NewThemeFileName == "0") { break; }
 				GUI::SaveTheme(NewThemeFileName);
 			}
+			GUI::Break("Header", true);
+			GUI::Toggle("Header Texture", GUI::ShowHeaderTexture, "", false);
+			GUI::Toggle("Header Background", GUI::ShowHeaderBackground, "", false);
 			GUI::Break("Color", true);
 			if (GUI::Option("Primary", ""))
 			{
@@ -3421,7 +3419,7 @@ void Cheat::FiberMain()
 		break;
 		case ThemeFilesMenu:
 		{
-			GUI::Title("Theme Files");
+			GUI::Title("Saved Themes");
 			if (!GUI::ThemeFilesVector.empty())
 			{
 				for (auto const& i : GUI::ThemeFilesVector)
@@ -3469,6 +3467,9 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 		//Create 'Logs' directory
 		std::string LogsDirectoryPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Logs";
 		if (!Cheat::CheatFunctions::FileOrDirectoryExists(LogsDirectoryPath)) { Cheat::CheatFunctions::CreateNewDirectory(LogsDirectoryPath); }
+		//Create 'Themes' directory
+		std::string ThemesDirectoryPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
+		if (!Cheat::CheatFunctions::FileOrDirectoryExists(ThemesDirectoryPath)) { Cheat::CheatFunctions::CreateNewDirectory(ThemesDirectoryPath); }
 		//Continue cheat loading
 		CreateThread(NULL, NULL, InitThread, hModule, NULL, NULL);
 		break;

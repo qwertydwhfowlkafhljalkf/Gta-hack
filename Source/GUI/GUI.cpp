@@ -7,7 +7,7 @@ const float Cheat::GUI::SelectableInfoBoxX_Default	= 0.50f;
 const float Cheat::GUI::SelectableInfoBoxY_Default	= 0.840f;
 float Cheat::GUI::guiX					= 0.11f;
 float Cheat::GUI::guiY					= 0.30f;
-float Cheat::GUI::guiWidth				= 0.21f;
+float Cheat::GUI::guiWidth				= 0.21f; //Do not use (scalling not properly implemented yet)
 float Cheat::GUI::SelectableInfoBoxX	= 0.50f;
 float Cheat::GUI::SelectableInfoBoxY	= 0.840f;
 bool Cheat::GUI::ControlsDisabled		= false; //All cheat input is ignored when True
@@ -729,71 +729,57 @@ void Cheat::GUI::AddPlayerInfoBoxTextEntry(std::string text, int Row1, int Row2,
 
 void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 {
-	std::string ThemeFolderPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
-	std::string ThemeFilePath = ThemeFolderPath + "\\" + ThemeFileName + ".ini";
-	if (!Cheat::CheatFunctions::FileOrDirectoryExists(ThemeFilePath)) { Cheat::GameFunctions::MinimapNotification("~r~Requested Theme File does not exist"); return;  }
+	if (!CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnThemeFilePath(ThemeFileName))) { GameFunctions::MinimapNotification("~r~Requested Theme does not exist"); return;  }
 
 	Cheat::GUI::CurrentTheme = ThemeFileName;
-
 	try
 	{ 
-		float X			= std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "menu_gui_x"));
-		float Y			= std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "menu_gui_y"));
-		float Width		= std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "gui_width"));
+		float menu_guiX = std::stof(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "menu_gui_x"));
+		float menu_guiY	= std::stof(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "menu_gui_y"));
+		float selectable_information_boxX = std::stof(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "selectable_information_box_x"));
+		float selectable_information_boxY = std::stof(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "selectable_information_box_y"));
 
-		Cheat::GUI::keyPressDelay = CheatFunctions::StringToInt(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "key_press_delay"));
+		GUI::guiX = std::stof(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "menu_gui_x"));
+		GUI::guiY = std::stof(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "menu_gui_y"));
+		GUI::SelectableInfoBoxX = std::stof(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "selectable_information_box_x"));
+		GUI::SelectableInfoBoxY = std::stof(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "selectable_information_box_y"));
 
-		if (Cheat::CheatFunctions::IsIntegerInRange(0.110000, 0.86000, X))
-		{
-			Cheat::GUI::guiX = std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "menu_gui_x"));
-		}
+		GUI::ShowHeaderTexture = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Header", "header_texture"));
+		GUI::ShowHeaderBackground = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Header", "header_background"));
 
-		if (Cheat::CheatFunctions::IsIntegerInRange(0.100000, 0.80000, Y))
-		{
-			Cheat::GUI::guiY = std::stof(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "menu_gui_y"));
-		}
+		Cheat::GUI::PrimaryColor.r = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_r"));
+		Cheat::GUI::PrimaryColor.g = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_g"));
+		Cheat::GUI::PrimaryColor.b = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_b"));
 
-		if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "open_key") != "NOT_FOUND")
-		{
-			Cheat::GUI::OpenGUIKey = CheatFunctions::StringToInt(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "open_key"));
-		}
-		if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "cursor_navigation_toggle_key") != "NOT_FOUND")
-		{
-			Cheat::GUI::GUINavigationKey = CheatFunctions::StringToInt(Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "cursor_navigation_toggle_key"));
-		}
+		Cheat::GUI::TextColorAndFont.r = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_r"));
+		Cheat::GUI::TextColorAndFont.g = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_g"));
+		Cheat::GUI::TextColorAndFont.b = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_b"));
+
+		Cheat::GUI::TextColorAndFont.f = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Font", "text_font"));
 	}
 	catch (...) {}
 
 	//Check Theme File Version
-	if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(ThemeFilePath, "THEME", "theme_file_version") != "2.0")
+	if (Cheat::CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Theme", "theme_file_version") != "2.1")
 	{
-		remove(ThemeFilePath.c_str());
-		SaveTheme(ThemeFileName);
-		Cheat::GameFunctions::SubtitleNotification("~b~Active Theme outdated, it has been resaved to update the changes", 5000);
+		Cheat::GameFunctions::SubtitleNotification("The loaded Theme is outdated. Please resave it", 5000);
 	}
 
 	//Save New Active Theme Name To Config File
 	if (!StartUp) 
 	{
-		Cheat::CheatFunctions::IniFileWriteString(Cheat::GUI::CurrentTheme, Cheat::CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "active_theme");
+		Cheat::CheatFunctions::IniFileWriteString(GUI::CurrentTheme, CheatFunctions::ReturnConfigFilePath(), "Settings", "Active Theme");
 		Cheat::GameFunctions::MinimapNotification("Theme Loaded"); 
 	}
 }
 
 void Cheat::GUI::DeleteCurrentTheme()
 {
-	std::string ThemeFileNamePath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes\\" + Cheat::GUI::CurrentTheme + ".ini";
-	if (remove(ThemeFileNamePath.c_str()) != 0) 
-	{ 
-		Cheat::GameFunctions::MinimapNotification("~r~Failed To Delete Theme File"); 
-	}
-	else 
-	{ 
-		Cheat::CheatFunctions::IniFileWriteString("", Cheat::CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "active_theme");
-		Cheat::GUI::CurrentTheme.clear();
-		GUI::currentOption = 1;
-		Cheat::GameFunctions::MinimapNotification("Theme File Removed"); 
-	}
+	remove(CheatFunctions::StringToChar(CheatFunctions::ReturnThemeFilePath(CurrentTheme)));
+	CheatFunctions::IniFileRemoveKey(CheatFunctions::ReturnConfigFilePath(), "Settings", "Active Theme");
+	GUI::CurrentTheme.clear();
+	GUI::currentOption = 1;
+	Cheat::GameFunctions::MinimapNotification("Theme Removed");
 }
 
 void Cheat::GUI::ChangeControlsState(bool State)
@@ -812,20 +798,27 @@ void Cheat::GUI::ChangeControlsState(bool State)
 
 void Cheat::GUI::SaveTheme(std::string ThemeFileName)
 {
-	std::string ThemeFolderPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
-	std::string ThemeFilePath = ThemeFolderPath + "\\" + ThemeFileName + ".ini";
-	if (!Cheat::CheatFunctions::FileOrDirectoryExists(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes"))
-	{ 
-		Cheat::CheatFunctions::CreateNewDirectory(ThemeFolderPath);
-	}
+	CheatFunctions::IniFileWriteString("2.1", CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Theme", "theme_file_version");
 
-	Cheat::CheatFunctions::IniFileWriteString("2.0", ThemeFilePath, "THEME", "theme_file_version");
-	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::guiX), ThemeFilePath, "THEME", "menu_gui_x");
-	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::guiY), ThemeFilePath, "THEME", "menu_gui_y");
-	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::OpenGUIKey), ThemeFilePath, "THEME", "open_key");
-	Cheat::CheatFunctions::IniFileWriteString(std::to_string(Cheat::GUI::GUINavigationKey), ThemeFilePath, "THEME", "cursor_navigation_toggle_key");
+	CheatFunctions::IniFileWriteString(std::to_string(GUI::guiX), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "menu_gui_x");
+	CheatFunctions::IniFileWriteString(std::to_string(GUI::guiY), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "menu_gui_y");
+	CheatFunctions::IniFileWriteString(std::to_string(GUI::SelectableInfoBoxX), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "selectable_information_box_x");
+	CheatFunctions::IniFileWriteString(std::to_string(GUI::SelectableInfoBoxY), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "selectable_information_box_y");
 
-	Cheat::GameFunctions::MinimapNotification("Theme Saved");
+	CheatFunctions::WriteBoolToIni(GUI::ShowHeaderTexture, CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Header", "header_texture");
+	CheatFunctions::WriteBoolToIni(GUI::ShowHeaderBackground, CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Header", "header_background");
+
+	CheatFunctions::IniFileWriteString(std::to_string(GUI::PrimaryColor.r), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_r");
+	CheatFunctions::IniFileWriteString(std::to_string(GUI::PrimaryColor.g), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_g");
+	CheatFunctions::IniFileWriteString(std::to_string(GUI::PrimaryColor.b), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_b");
+
+	CheatFunctions::IniFileWriteString(std::to_string(GUI::TextColorAndFont.r), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_r");
+	CheatFunctions::IniFileWriteString(std::to_string(GUI::TextColorAndFont.g), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_g");
+	CheatFunctions::IniFileWriteString(std::to_string(GUI::TextColorAndFont.b), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_b");
+
+	CheatFunctions::IniFileWriteString(std::to_string(GUI::TextColorAndFont.f), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Font", "text_font");
+
+	GameFunctions::MinimapNotification("Theme Saved");
 }
 
 bool Cheat::GUI::SelectableHandler(bool DisabledState)

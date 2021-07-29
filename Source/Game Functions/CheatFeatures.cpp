@@ -1,6 +1,7 @@
 #include "../Header/Main.h"
 
 int Cheat::CheatFeatures::SpeedometerVectorPosition = 0;
+int Cheat::CheatFeatures::AimbotBoneVectorPosition = 0;
 int Cheat::CheatFeatures::PlayerOpacityInt = 250;
 bool Cheat::CheatFeatures::UseKMH = true;
 bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
@@ -839,31 +840,31 @@ bool Cheat::CheatFeatures::TriggerBot_ShootPlayersBool = false;
 bool Cheat::CheatFeatures::TriggerBotBool = false;
 void Cheat::CheatFeatures::TriggerBot()
 {
+	int TargetBone;
+	if (AimbotBoneVectorPosition == 0)
+	{
+		TargetBone = SKEL_Head;
+	}
+	else if (AimbotBoneVectorPosition == 1)
+	{
+		TargetBone = SKEL_Neck_1;
+	}
+	else if (AimbotBoneVectorPosition == 2)
+	{
+		TargetBone = SKEL_R_Hand;
+	}
+	else if (AimbotBoneVectorPosition == 3)
+	{
+		TargetBone = SKEL_L_Hand;
+	}
+		
 	Entity AimedAtEntity;
 	if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &AimedAtEntity))
 	{
-		Vector3 BoneCoords;
-		BoneCoords = PED::GET_PED_BONE_COORDS(AimedAtEntity, SKEL_Head, 0.1f, 0.0f, 0.0f);
-		if (TriggerBot_ShootNPCBool && TriggerBot_ShootPlayersBool) 
-		{ 
-			if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255)
-			{
-				PED::SET_PED_SHOOTS_AT_COORD(GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true);
-			}
-		}
-		else if (TriggerBot_ShootNPCBool && !TriggerBot_ShootPlayersBool) 
-		{ 
-			if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && !PED::IS_PED_A_PLAYER(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) 
-			{ 
-				PED::SET_PED_SHOOTS_AT_COORD(GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); 
-			} 
-		}
-		else if (TriggerBot_ShootPlayersBool && !TriggerBot_ShootNPCBool) 
-		{ 
-			if (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && PED::IS_PED_A_PLAYER(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255) 
-			{ 
-				PED::SET_PED_SHOOTS_AT_COORD(GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true); 
-			} 
+		Vector3 BoneCoords = PED::GET_PED_BONE_COORDS(AimedAtEntity, TargetBone, 0.1f, 0.0f, 0.0f);
+		if ((PED::IS_PED_A_PLAYER(AimedAtEntity) && TriggerBot_ShootPlayersBool) || (ENTITY::IS_ENTITY_A_PED(AimedAtEntity) && TriggerBot_ShootNPCBool) && !ENTITY::IS_ENTITY_DEAD(AimedAtEntity) && ENTITY::GET_ENTITY_ALPHA(AimedAtEntity) == 255)
+		{
+			PED::SET_PED_SHOOTS_AT_COORD(GameFunctions::PlayerPedID, BoneCoords.x, BoneCoords.y, BoneCoords.z, true);
 		}
 	}
 }

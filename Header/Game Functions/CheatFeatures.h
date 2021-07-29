@@ -5,6 +5,7 @@ namespace Cheat
 	namespace CheatFeatures
 	{
 		extern int SpeedometerVectorPosition;
+		extern int AimbotBoneVectorPosition;
 		extern int selectedPlayer;
 		extern int PlayerOpacityInt;
 		extern bool UseKMH;

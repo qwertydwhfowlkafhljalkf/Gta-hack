@@ -12,6 +12,7 @@ namespace Cheat
 		const std::string ReturnMainLogFilePath();
 		const std::string ReturnChatLogFilePath();
 		const std::string ReturnCustomTeleportLocationsFilePath();
+		const std::string ReturnThemeFilePath(std::string ThemeName);
 		void LoadConfig();
 		bool IsOptionRegisteredAsLoaded(std::string OptionName);
 		template<typename T> void LoadConfigOption(std::string OptionName, T& ReturnedVariable)
@@ -70,6 +71,7 @@ namespace Cheat
 		int ReturnNumberOfDigitsInValue(double Number);
 		void IniFileWriteString(std::string string, std::string FilePath, std::string Section, std::string Key);
 		std::string IniFileReturnKeyValueAsString(std::string FilePath, std::string Section, std::string Key);
+		void IniFileRemoveKey(std::string FilePath, std::string Section, std::string Key);
 		void WriteBoolToIni(bool b00l, std::string file, std::string app, std::string key);
 		std::string ReturnDateTimeFormatAsString(const char* DateTimeFormat);
 		bool StringToBool(std::string String);

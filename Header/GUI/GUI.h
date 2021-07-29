@@ -100,7 +100,6 @@ enum SubMenus
 	unlocksmenu,
 	reportsmenu_stats,
 	allplayers_weaponoptionsmenu,
-	headeroptionsmenu,
 	VehicleCustomizerMenu,
 	DLCVehiclesMenu,
 	SUBMENUS_END //Used to get total size of SubMenus (SUBMENUS_END - 2) 

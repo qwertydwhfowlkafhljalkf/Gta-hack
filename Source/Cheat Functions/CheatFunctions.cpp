@@ -57,6 +57,11 @@ const std::string Cheat::CheatFunctions::ReturnCustomTeleportLocationsFilePath()
 	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\CustomTeleportLocations.json";
 }
 
+const std::string Cheat::CheatFunctions::ReturnThemeFilePath(std::string ThemeName)
+{
+	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes\\" + ThemeName + ".ini";
+}
+
 bool Cheat::CheatFunctions::FileOrDirectoryExists(std::string Path)
 {
 	if (std::filesystem::exists(Path))
@@ -193,7 +198,7 @@ bool Cheat::CheatFunctions::IsGameWindowFocussed()
 {
 	if (FindWindowA("grcWindow", "Grand Theft Auto V") == GetForegroundWindow())
 	{ 
-		return true; 
+		return true;
 	} 
 	else 
 	{ 
@@ -228,7 +233,6 @@ int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 				if (i == VK_ESCAPE)
 				{
 					Cheat::GameFunctions::MinimapNotification("Canceled Key Selection");
-					UI::SET_PAUSE_MENU_ACTIVE(false);
 					return 0;
 				}
 				return i;
@@ -280,9 +284,17 @@ void Cheat::CheatFunctions::LoadConfig()
 	std::thread LoadConfigThreadHandle(LoadConfigThreadFunction);
 	LoadConfigThreadHandle.detach();
 
+	//Load keys
+	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Menu GUI Key");
+	if (MenuGUIKey != "NOT_FOUND") { GUI::OpenGUIKey = StringToInt(MenuGUIKey); }
+	
+	std::string CursorNavigationKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
+	if (CursorNavigationKey != "NOT_FOUND") { GUI::OpenGUIKey = StringToInt(CursorNavigationKey); }
+
+
 	//Load Active Theme Name
-	std::string ActiveThemeSetting = Cheat::CheatFunctions::IniFileReturnKeyValueAsString(Cheat::CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "active_theme");
-	if (ActiveThemeSetting != "NOT_FOUND") { Cheat::GUI::LoadTheme(CheatFunctions::StringToChar(ActiveThemeSetting), true); }
+	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Active Theme");
+	if (ActiveThemeSetting != "NOT_FOUND") { GUI::LoadTheme(CheatFunctions::StringToChar(ActiveThemeSetting), true); }
 }
 
 bool Cheat::CheatFunctions::IsOptionRegisteredAsLoaded(std::string OptionName)
@@ -406,6 +418,14 @@ std::string Cheat::CheatFunctions::IniFileReturnKeyValueAsString(std::string Fil
 	File.read(IniStruct);
 	if (!IniStruct.has(Section) || !IniStruct[Section].has(Key)) { return "NOT_FOUND"; }
 	return IniStruct.get(Section).get(Key);
+}
+
+void Cheat::CheatFunctions::IniFileRemoveKey(std::string FilePath, std::string Section, std::string Key)
+{
+	mINI::INIFile File(FilePath);
+	mINI::INIStructure IniStruct;
+	File.read(IniStruct);
+	IniStruct[Section].remove(Key); //WIP - this does not appear to work? According to docs this **should** work. Returning to this later.
 }
 
 void Cheat::CheatFunctions::WriteBoolToIni(bool b00l, std::string file, std::string app, std::string key)
@@ -586,7 +606,7 @@ int Cheat::CheatFunctions::StringToInt(std::string String)
 
 std::string Cheat::CheatFunctions::TextWrap(std::string String, int Location) 
 {
-	int NewLine = String.rfind(' ', Location);
+	int NewLine = static_cast<int>(String.rfind(' ', Location));
 	if (NewLine != std::string::npos)
 	{
 		String.at(NewLine) = '\n';
