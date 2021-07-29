@@ -39,6 +39,7 @@ namespace Cheat
 		void SlowMotion(bool toggle);
 		extern bool WorldBlackoutBool;
 		void WorldBlackout(bool toggle);
+		extern float GravityGunEntityDistance;
 		extern bool GravityGunBool;
 		void GravityGun();
 		extern bool HideHUDBool;

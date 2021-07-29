@@ -2527,11 +2527,13 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Vehicle Gun", vehiclegunmenu);
 			GUI::MenuOption("Aimbot", aimbotsettingsmenu);		
 			GUI::Break("General", true);
-			GUI::Toggle("No reload", CheatFeatures::NoWeaponReloadBool, "Always have max amount of ammo");
+			GUI::Toggle("No Reload", CheatFeatures::NoWeaponReloadBool, "Always have max amount of ammo");
 			GUI::Toggle("Delete Gun", CheatFeatures::DeleteGunBool, "Use SNS Pistol with this option");
 			GUI::Toggle("Rapid Fire", CheatFeatures::WeaponRapidFireBool, "Shoot very fast");
 			GUI::Toggle("One Shot One Kill", CheatFeatures::OneHitKillBool, "");
-			GUI::Toggle("Gravity Gun", CheatFeatures::GravityGunBool, "Use Combat Pistol for this option");
+			GUI::Break("Entity Control", true);
+			GUI::Toggle("Gravity Gun", CheatFeatures::GravityGunBool, "");
+			GUI::Float("Entity Distance", CheatFeatures::GravityGunEntityDistance, 5.f, 25.f, 1.f, false, true, "Changing distance is also possible with the scroll wheel");
 		}
 		break; 
 		case vehiclegunmenu:

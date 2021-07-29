@@ -317,50 +317,67 @@ void Cheat::CheatFeatures::WorldBlackout(bool toggle)
 }
 
 
+float Cheat::CheatFeatures::GravityGunEntityDistance = 5.f;
 bool Cheat::CheatFeatures::GravityGunBool = false;
 void Cheat::CheatFeatures::GravityGun()
 {
+	if (CAM::GET_FOLLOW_PED_CAM_VIEW_MODE() == PedCamViewModes::FirstPerson)
+	{
+		CAM::SET_FOLLOW_PED_CAM_VIEW_MODE(PedCamViewModes::ThirdPersonMedium);
+	}
+	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_NEXT_CAMERA, true);
+
+	if (!CursorGUINavigationEnabled)
+	{
+		if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_UP) && GravityGunEntityDistance < 25.f)
+		{
+			GravityGunEntityDistance += 1.f;
+		}
+		else if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_DOWN) && GravityGunEntityDistance > 5.f)
+		{
+			GravityGunEntityDistance -= 1.f;
+		}
+	}
+
 	Entity EntityTarget;
 	DWORD equippedWeapon;
-	WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &equippedWeapon, true);
+	WEAPON::GET_CURRENT_PED_WEAPON(GameFunctions::PlayerPedID, &equippedWeapon, true);
 
-	Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
-	Vector3 dir = Cheat::GameFunctions::RotToDirection(&rot);
+	Vector3 dir = Cheat::GameFunctions::RotToDirection(&CAM::GET_GAMEPLAY_CAM_ROT(0));
 	Vector3 camPosition = CAM::GET_GAMEPLAY_CAM_COORD();
-	Vector3 playerPosition = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 1);
-	float spawnDistance = Cheat::GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &playerPosition);
-	spawnDistance += 5;
-	Vector3 spawnPosition = Cheat::GameFunctions::AddTwoVectors(&camPosition, &Cheat::GameFunctions::MultiplyVector(&dir, spawnDistance));
+	float spawnDistance = GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, true));
+	spawnDistance += GravityGunEntityDistance;
+	Vector3 spawnPosition = GameFunctions::AddTwoVectors(&camPosition, &GameFunctions::MultiplyVector(&dir, spawnDistance));
 
-	Player tempPed = Cheat::GameFunctions::PlayerID;
-	if (equippedWeapon == 0x5EF9FEC4) //CombatPistol
+	Player tempPed = GameFunctions::PlayerID;
+	if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(GameFunctions::PlayerID, &EntityTarget) && CheatFunctions::IsKeyCurrentlyPressed(VK_RBUTTON))
 	{
-		if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &EntityTarget) && CheatFunctions::IsKeyCurrentlyPressed(VK_RBUTTON))
+		Vector3 EntityTargetPos = ENTITY::GET_ENTITY_COORDS(EntityTarget, 0);
+		PLAYER::DISABLE_PLAYER_FIRING(tempPed, true);
+		if (ENTITY::IS_ENTITY_A_PED(EntityTarget) && PED::IS_PED_IN_ANY_VEHICLE(EntityTarget, false))
 		{
-			Vector3 EntityTargetPos = ENTITY::GET_ENTITY_COORDS(EntityTarget, 0);
-			PLAYER::DISABLE_PLAYER_FIRING(tempPed, true);
-			if (ENTITY::IS_ENTITY_A_PED(EntityTarget) && PED::IS_PED_IN_ANY_VEHICLE(EntityTarget, 1))
-			{
-				EntityTarget = PED::GET_VEHICLE_PED_IS_IN(EntityTarget, 0);
-			}
-
-			GameFunctions::RequestNetworkControlOfEntity(EntityTarget);
-
-			if (ENTITY::IS_ENTITY_A_VEHICLE(EntityTarget)) ENTITY::SET_ENTITY_HEADING(EntityTarget, ENTITY::GET_ENTITY_HEADING(tempPed));
-
-			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(EntityTarget, spawnPosition.x, spawnPosition.y, spawnPosition.z, 0, 0, 0);
-
-			if (CheatFunctions::IsKeyCurrentlyPressed(VK_RBUTTON))
-			{
-				ENTITY::SET_ENTITY_HEADING(EntityTarget, ENTITY::GET_ENTITY_HEADING(tempPed));
-				ENTITY::APPLY_FORCE_TO_ENTITY(EntityTarget, 1, dir.x * 10000.0f, dir.y * 10000.0f, dir.z * 10000.0f, 0.0f, 0.0f, 0.0f, 0, 0, 1, 1, 0, 1);
-				PLAYER::DISABLE_PLAYER_FIRING(tempPed, false);
-			}
+			EntityTarget = PED::GET_VEHICLE_PED_IS_IN(EntityTarget, 0);
 		}
-		if (!PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &EntityTarget))
+
+		GameFunctions::RequestNetworkControlOfEntity(EntityTarget);
+
+		if (ENTITY::IS_ENTITY_A_VEHICLE(EntityTarget))
 		{
+			ENTITY::SET_ENTITY_HEADING(EntityTarget, ENTITY::GET_ENTITY_HEADING(tempPed));
+		}
+
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(EntityTarget, spawnPosition.x, spawnPosition.y, spawnPosition.z, 0, 0, 0);
+
+		if (CheatFunctions::IsKeyCurrentlyPressed(VK_RBUTTON))
+		{
+			ENTITY::SET_ENTITY_HEADING(EntityTarget, ENTITY::GET_ENTITY_HEADING(tempPed));
+			ENTITY::APPLY_FORCE_TO_ENTITY(EntityTarget, 1, dir.x * 10000.0f, dir.y * 10000.0f, dir.z * 10000.0f, 0.0f, 0.0f, 0.0f, 0, 0, 1, 1, 0, 1);
 			PLAYER::DISABLE_PLAYER_FIRING(tempPed, false);
 		}
+	}
+	if (!PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &EntityTarget))
+	{
+		PLAYER::DISABLE_PLAYER_FIRING(tempPed, false);
 	}
 }
 

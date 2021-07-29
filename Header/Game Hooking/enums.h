@@ -1203,3 +1203,12 @@ enum FrameFlags : std::uint32_t
 	FrameFlagExplosiveMelee = 1 << 5,
 	FrameFlagSuperJump = 1 << 6,
 };
+
+enum PedCamViewModes
+{
+	ThirdPersonNear = 0,
+	ThirdPersonMedium = 1,
+	ThirdPersonFar = 2,
+	Cinematic = 3,
+	FirstPerson = 4,
+};
