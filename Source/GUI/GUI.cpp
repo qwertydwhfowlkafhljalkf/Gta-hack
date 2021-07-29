@@ -729,7 +729,12 @@ void Cheat::GUI::AddPlayerInfoBoxTextEntry(std::string text, int Row1, int Row2,
 
 void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 {
-	if (!CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnThemeFilePath(ThemeFileName))) { GameFunctions::MinimapNotification("~r~Requested Theme does not exist"); return;  }
+	if (!CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnThemeFilePath(ThemeFileName))) 
+	{ 
+		GameFunctions::MinimapNotification("~r~Requested Theme does not exist"); 
+		CheatFunctions::IniFileRemoveKey(CheatFunctions::ReturnConfigFilePath(), "Settings", "Active Theme");
+		return;  
+	}
 
 	Cheat::GUI::CurrentTheme = ThemeFileName;
 	try

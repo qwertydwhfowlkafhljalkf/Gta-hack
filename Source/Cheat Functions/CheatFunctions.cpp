@@ -425,7 +425,11 @@ void Cheat::CheatFunctions::IniFileRemoveKey(std::string FilePath, std::string S
 	mINI::INIFile File(FilePath);
 	mINI::INIStructure IniStruct;
 	File.read(IniStruct);
-	IniStruct[Section].remove(Key); //WIP - this does not appear to work? According to docs this **should** work. Returning to this later.
+	if (IniStruct[Section].has(Key))
+	{
+		IniStruct[Section].remove(Key);
+		File.write(IniStruct);
+	}
 }
 
 void Cheat::CheatFunctions::WriteBoolToIni(bool b00l, std::string file, std::string app, std::string key)
@@ -446,7 +450,6 @@ bool Cheat::CheatFunctions::StringToBool(std::string String)
 	}
 	return false;
 }
-
 
 bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool PressedOnce)
 {
