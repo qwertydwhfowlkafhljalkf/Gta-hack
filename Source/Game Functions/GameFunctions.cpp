@@ -574,11 +574,11 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		{
 			Cheat::GUI::AddPlayerInfoBoxTextEntry("Vehicle Speed", 8);
 			float VehicleSpeed = round(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(SelectedPlayerPed, false)) * 100) / 100;
-			if (CheatFeatures::UseKMH)
+			if (CheatFeatures::MeasurementSystemVectorPosition == 0)
 			{
 				Speed << MSToKMH(VehicleSpeed) << " KM/H";
 			}
-			else
+			else if (CheatFeatures::MeasurementSystemVectorPosition == 1)
 			{
 				Speed << MSToMPH(VehicleSpeed) << " MP/H";
 			}

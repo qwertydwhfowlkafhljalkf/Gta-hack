@@ -164,11 +164,11 @@ bool Cheat::GUI::VehicleOption(std::string option, std::string ModelName)
 		if (!Cheat::CheatFeatures::HideVehicleInfoAndPreview)
 		{
 			std::ostringstream ModelMaxSpeed;
-			if (Cheat::CheatFeatures::UseKMH)
+			if (CheatFeatures::MeasurementSystemVectorPosition == 0)
 			{
 				ModelMaxSpeed << "Max Speed: " << Cheat::GameFunctions::MSToKMH(VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))) << " KM/H";
 			}
-			else
+			else if (CheatFeatures::MeasurementSystemVectorPosition == 1)
 			{
 				ModelMaxSpeed << "Max Speed: " << Cheat::GameFunctions::MSToMPH(VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))) << " MP/H";
 			}
@@ -731,9 +731,9 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 {
 	if (!CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnThemeFilePath(ThemeFileName))) 
 	{ 
-		GameFunctions::MinimapNotification("~r~Requested Theme does not exist"); 
+		GameFunctions::MinimapNotification("Requested Theme does not exist. Auto load entry removed from config file."); 
 		CheatFunctions::IniFileRemoveKey(CheatFunctions::ReturnConfigFilePath(), "Settings", "Active Theme");
-		return;  
+		return;
 	}
 
 	Cheat::GUI::CurrentTheme = ThemeFileName;

@@ -2,11 +2,10 @@
 
 int Cheat::CheatFeatures::SpeedometerVectorPosition = 0;
 int Cheat::CheatFeatures::AimbotBoneVectorPosition = 0;
+int Cheat::CheatFeatures::MeasurementSystemVectorPosition = 0;
 int Cheat::CheatFeatures::PlayerOpacityInt = 250;
-bool Cheat::CheatFeatures::UseKMH = true;
 bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
-bool Cheat::CheatFeatures::ShowBlockedScriptEventNotifications = true;
 bool Cheat::CheatFeatures::HideOwnIPAddress = true;
 bool Cheat::CheatFeatures::HideVehicleInfoAndPreview = false;
 bool Cheat::CheatFeatures::ShowJoiningPlayersNotification = true;
@@ -73,11 +72,11 @@ void Cheat::CheatFeatures::Looped()
 	if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) 
 	{
 		std::ostringstream Speed;
-		if (UseKMH)
+		if (CheatFeatures::MeasurementSystemVectorPosition == 0)
 		{
 			Speed << Cheat::GameFunctions::MSToKMH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0))) << " KM/H";
 		}
-		else
+		else if (CheatFeatures::MeasurementSystemVectorPosition == 1)
 		{
 			Speed << Cheat::GameFunctions::MSToMPH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0))) << " MP/H";
 		}

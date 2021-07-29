@@ -89,12 +89,9 @@ bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argS
 		}
 		else if (Cheat::CheatFeatures::BlockMaliciousScriptEvents && IsBlackListedScript)
 		{
-			if (Cheat::CheatFeatures::ShowBlockedScriptEventNotifications)
-			{
-				Cheat::LogFunctions::DebugMessage("Blocked Script Event " + argStruct[0]);
-				std::string MessageString = "Blocked Script Event " + std::to_string(argStruct[0]);
-				Cheat::GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Remote Events Protection", "", .5, "");
-			}
+			Cheat::LogFunctions::DebugMessage("Blocked Script Event " + argStruct[0]);
+			std::string MessageString = "Blocked Script Event " + std::to_string(argStruct[0]);
+			Cheat::GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Remote Events Protection", "", .5, "");
 			return false;
 		}
 	}

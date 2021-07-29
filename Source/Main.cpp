@@ -1449,12 +1449,12 @@ void Cheat::FiberMain()
 					int MaxSpeedInput = GameFunctions::DisplayKeyboardAndReturnInputInteger(3, "Enter the desired max speed");
 					if (MaxSpeedInput == 0) { GameFunctions::MinimapNotification("Canceled setting Max Vehicle Speed"); break; }
 					Vehicle VehicleHandle = PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID);
-					if (CheatFeatures::UseKMH)
+					if (CheatFeatures::MeasurementSystemVectorPosition == 0)
 					{
 						ENTITY::SET_ENTITY_MAX_SPEED(VehicleHandle, GameFunctions::KMHToMS(MaxSpeedInput));
 						GameFunctions::MinimapNotification("Max Speed Set (KM/H)");
 					}
-					else
+					else if (CheatFeatures::MeasurementSystemVectorPosition == 1)
 					{
 						ENTITY::SET_ENTITY_MAX_SPEED(VehicleHandle, GameFunctions::MPHToMS(MaxSpeedInput));
 						GameFunctions::MinimapNotification("Max Speed Set (MP/H)");
@@ -2240,7 +2240,7 @@ void Cheat::FiberMain()
 			}		
 			if (GUI::Option("Get Empty Session", "Get Empty (Public) Session")) { Sleep(10000); }
 			if (GUI::Option("Exit to Single Player", "")) { NETWORK::SHUTDOWN_AND_LAUNCH_SINGLE_PLAYER_GAME(); }
-			if (GUI::Option("Close Game", "Must hold spacebar to prevent accidental closure")) { if (CheatFunctions::IsKeyCurrentlyPressed(VK_SPACE)) { std::exit(EXIT_SUCCESS); } }
+			if (GUI::Option("Close Game", "You must hold spacebar to prevent accidental closure")) { if (CheatFunctions::IsKeyCurrentlyPressed(VK_SPACE)) { std::exit(EXIT_SUCCESS); } }
 		}
 		break;
 		case hudmenu:
@@ -3270,7 +3270,6 @@ void Cheat::FiberMain()
 			GUI::Title("Settings");
 			GUI::MenuOption("Theme", ThemeMenu);
 			GUI::MenuOption("Hide Elements", HideElementsMenu);
-			GUI::MenuOption("Cheat", CheatSettingsMenu);
 			GUI::Int("Max Visible Menu Options", GUI::maxVisOptions, 5, 16, 1);
 			GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu");
 			if (GUI::Option("Menu GUI ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::OpenGUIKey), "Select to change"))
@@ -3286,7 +3285,7 @@ void Cheat::FiberMain()
 			if (GUI::Option("Cursor Navigation ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::GUINavigationKey), "Select to change"))
 			{
 				int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
-				if (PressedKey != 0) 
+				if (PressedKey != 0)
 				{ 
 					GUI::GUINavigationKey = PressedKey;
 					CheatFunctions::IniFileWriteString(std::to_string(PressedKey), CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
@@ -3294,6 +3293,7 @@ void Cheat::FiberMain()
 				}
 			}
 			GUI::Int("Key Press Delay", GUI::keyPressDelay, 1, 250, 1);
+			GUI::StringVector("Measurement System", { "Metric", "Imperial" }, CheatFeatures::MeasurementSystemVectorPosition, "Metric = KM/H, Imperial = MP/H");
 			GUI::MenuOption("About", AboutMenu);
 		}
 		break;
@@ -3319,15 +3319,6 @@ void Cheat::FiberMain()
 			{
 				system("start https://github.com/HatchesPls/GrandTheftAutoV-Cheat");
 			}
-		}
-		break;
-		case CheatSettingsMenu:
-		{
-			GUI::Title("Cheat");
-			GUI::Break("Speed", true);
-			GUI::Toggle("Use KM/H", CheatFeatures::UseKMH, "If disabled MP/H is used");
-			GUI::Break("Protection", true);
-			GUI::Toggle("Blocked Script Notifications", CheatFeatures::ShowBlockedScriptEventNotifications, "");
 		}
 		break;
 		case ThemeMenu:

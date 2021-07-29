@@ -6,12 +6,11 @@ namespace Cheat
 	{
 		extern int SpeedometerVectorPosition;
 		extern int AimbotBoneVectorPosition;
+		extern int MeasurementSystemVectorPosition;
 		extern int selectedPlayer;
 		extern int PlayerOpacityInt;
-		extern bool UseKMH;
 		extern bool BlockMaliciousScriptEvents;
 		extern bool BlockAllScriptEvents;
-		extern bool ShowBlockedScriptEventNotifications;
 		extern bool HideOwnIPAddress;
 		extern bool HideVehicleInfoAndPreview;
 		extern bool CursorGUINavigationEnabled;

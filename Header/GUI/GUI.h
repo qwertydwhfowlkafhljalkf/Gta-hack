@@ -96,7 +96,6 @@ enum SubMenus
 	hudmenu,
 	HideElementsMenu,
 	AboutMenu,
-	CheatSettingsMenu,
 	unlocksmenu,
 	reportsmenu_stats,
 	allplayers_weaponoptionsmenu,
