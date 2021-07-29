@@ -29,7 +29,8 @@ enum SubMenus
 	SpawnedVehiclesMenu,
 	AllPlayersMenu,
 	ModelChangerMenu,
-	vehiclespawnermenu,
+	SpawnMenu,
+	VehicleSpawnMenu,
 	Super,
 	Sports,
 	smugglersrun,
@@ -103,6 +104,16 @@ enum SubMenus
 	DLCVehiclesMenu,
 	SUBMENUS_END //Used to get total size of SubMenus (SUBMENUS_END - 2) 
 };
+
+enum SelectableBitFlags
+{
+	SELECTABLE_DUMMY = 1,			//Placeholder
+	SELECTABLE_DISABLED = 2,		//The selectable is disabled, if the select key is pressed on the item a message appears informing the user about the disable state
+	SELECTABLE_DISABLE_SAVE = 4,	//The selectable won't save when the corresponding key is pressed
+	SELECTABLE_CENTER_TEXT = 8,		//This currently only applies to the Break selectable. Text will be centered relative to menu GUI.
+	SELECTABLE_RETURN_VALUE_CHANGE = 16   //Currently only used by Float selectable. Function will return when a value is changed (e.g. left or right is pressed)
+};
+
 
 typedef struct VECTOR2 { float x, y; };
 typedef struct VECTOR2_2 { float w, h; };
@@ -182,15 +193,15 @@ namespace Cheat
 		void Title(std::string TitleName);
 		void AddPlayerInfoBoxTextEntry(std::string text, int Row1 = NULL, int Row2 = NULL, int Row3 = NULL, int Row4 = NULL);
 		bool Break(std::string option, bool TextCentered);
-		bool Option(std::string option, std::string InformationText, bool Disabled = false);
+		bool Option(std::string option, std::string InformationText, int BitFlags = NULL);
 		bool VehicleOption(std::string option, std::string ModelName);
-		bool MenuOption(std::string option, SubMenus newSub, bool Disabled = false);
+		bool MenuOption(std::string option, SubMenus newSub, int BitFlags = NULL);
 		bool MenuOptionPlayerList(std::string PlayerName, SubMenus newSub);
-		bool Toggle(std::string option, bool& b00l, std::string InformationText, bool IsSavable = true, bool Disabled = false);
-		bool Int(std::string option, int& _int, int min, int max, int step, bool IsSavable = true, std::string InformationText = "Select to change", bool Disabled = false);
-		bool Float(std::string option, float& _float, float min, float max, float steps, bool ReturnTrueWithValueChange, bool IsSavable = true, std::string InformationText = "", bool Disabled = false);
-		bool IntVector(std::string option, std::vector<int> Vector, int& position, bool IsSavable = true, bool Disabled = false);
-		bool FloatVector(std::string option, std::vector<float> Vector, int& position, bool IsSavable = true, bool Disabled = false);
-		bool StringVector(std::string option, std::vector<std::string> Vector, int& position, std::string InformationText, bool IsSavable = true, bool Disabled = false);
+		bool Toggle(std::string option, bool& b00l, std::string InformationText, int BitFlags = NULL);
+		bool Int(std::string option, int& _int, int min, int max, int step, std::string InformationText = "Select to change", int BitFlags = NULL);
+		bool Float(std::string option, float& _float, float min, float max, float steps, std::string InformationText = "", std::streamsize FloatPrecision = 3, int BitFlags = NULL);
+		bool IntVector(std::string option, std::vector<int> Vector, int& position, int BitFlags = NULL);
+		bool FloatVector(std::string option, std::vector<float> Vector, int& position, int BitFlags = NULL);
+		bool StringVector(std::string option, std::vector<std::string> Vector, int& position, std::string InformationText, int BitFlags = NULL);
 	}
 }

@@ -75,7 +75,7 @@ void Cheat::GUI::Title(std::string TitleName)
 	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_VEH_HEADLIGHT, true);
 }
 
-bool Cheat::GUI::Option(std::string option, std::string InformationText, bool Disabled)
+bool Cheat::GUI::Option(std::string option, std::string InformationText, int BitFlags)
 {
 	GUI::optionCount++;
 	GUI::optionCountVisible++;
@@ -83,7 +83,7 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, bool Di
 	VECTOR2 TextPosition, RectPosition;
 	RGBA RectColor;
 
-	if (Disabled) { option.append(" (Disabled)"); }
+	if(BitFlags & SELECTABLE_DISABLED) { option.append(" (Disabled)"); }
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
 		TextPosition = { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount) * 0.035f - 0.174f };
@@ -119,7 +119,7 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, bool Di
 		if (GUI::selectPressed)
 		{
 			DoSelectAction:
-			if (GUI::SelectableHandler(Disabled))
+			if (GUI::SelectableHandler(BitFlags & SELECTABLE_DISABLED ? true : false))
 			{
 				return true;
 			}
@@ -129,7 +129,7 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, bool Di
 	if (GameFunctions::IsCursorAtXYPosition(RectPosition, { Cheat::GUI::guiWidth, 0.035f }) && CheatFeatures::CursorGUINavigationEnabled)
 	{
 		UI::_SET_CURSOR_SPRITE(PreGrab);
-		if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, INPUT_CURSOR_ACCEPT) && !Disabled)
+		if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, INPUT_CURSOR_ACCEPT) && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			goto DoSelectAction;
 		}
@@ -237,9 +237,9 @@ bool Cheat::GUI::Break(std::string option, bool TextCentered)
 	return false;
 }
 
-bool Cheat::GUI::MenuOption(std::string option, SubMenus newSub, bool Disabled)
+bool Cheat::GUI::MenuOption(std::string option, SubMenus newSub, int BitFlags)
 {
-	if (Option(option, "", Disabled))
+	if (Option(option, "", BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 	{
 		GUI::MoveMenu(newSub);
 		return true;
@@ -278,11 +278,11 @@ bool Cheat::GUI::MenuOptionPlayerList(std::string PlayerName, SubMenus newSub)
 	return false;
 }
 
-bool Cheat::GUI::Toggle(std::string option, bool & b00l, std::string InformationText, bool IsSavable, bool Disabled)
+bool Cheat::GUI::Toggle(std::string option, bool & b00l, std::string InformationText, int BitFlags)
 {
-	if (IsSavable && !Disabled) { CheatFunctions::LoadConfigOption(option, b00l); }
+	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, b00l); }
 
-	if (Option(option, InformationText, Disabled))
+	if (Option(option, InformationText, BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 	{
 		b00l ^= 1;
 		return true;
@@ -313,16 +313,16 @@ bool Cheat::GUI::Toggle(std::string option, bool & b00l, std::string Information
 
 	if (GUI::optionCount == GUI::currentOption)
 	{
-		CheatFunctions::SaveOption(option, b00l ? "true" : "false", IsSavable && !Disabled ? true : false);
+		CheatFunctions::SaveOption(option, b00l ? "true" : "false", !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 	}
 	return false;
 }
 
-bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step, bool IsSavable, std::string InformationText, bool Disabled)
+bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step, std::string InformationText, int BitFlags)
 {
-	if (IsSavable && !Disabled) { CheatFunctions::LoadConfigOption(option, _int); }
+	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, _int); }
 
-	if (Option(option, InformationText, Disabled))
+	if (Option(option, InformationText, BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 	{
 		int KeyBoardInput = Cheat::GameFunctions::DisplayKeyboardAndReturnInputInteger(CheatFunctions::ReturnNumberOfDigitsInValue(max), "Enter number");
 		if (KeyBoardInput >= min && KeyBoardInput <= max)
@@ -365,7 +365,7 @@ bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step,
 
 	if (GUI::optionCount == GUI::currentOption)
 	{
-		if (GUI::leftPressed && !Disabled)
+		if (GUI::leftPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			if (_int < max)
 			{
@@ -374,7 +374,7 @@ bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step,
 			}
 			return true;
 		}
-		if (GUI::rightPressed && !Disabled)
+		if (GUI::rightPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			if (_int > min)
 			{
@@ -384,61 +384,61 @@ bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step,
 			return true;
 		}
 
-		CheatFunctions::SaveOption(option, std::to_string(_int), IsSavable && !Disabled ? true : false);
+		CheatFunctions::SaveOption(option, std::to_string(_int), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 	}
 	return false;
 }
 
-bool Cheat::GUI::Float(std::string option, float & _float, float min, float max, float steps, bool ReturnTrueWithValueChange, bool IsSavable, std::string InformationText, bool Disabled)
+bool Cheat::GUI::Float(std::string option, float & _float, float min, float max, float steps, std::string InformationText, std::streamsize FloatPrecision, int BitFlags)
 {
-	if (IsSavable && !Disabled) { CheatFunctions::LoadConfigOption(option, _float); }
+	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, _float); }
 
-	if (Option(option, InformationText, Disabled))
+	if (Option(option, InformationText, BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 	{
 		return true;
 	}
 
+	bool IgnoreMinMax = min == 0.0f && max == 0.0f;
 	if (GUI::optionCount == GUI::currentOption) 
 	{	
-		CheatFunctions::SaveOption(option, std::to_string(_float), IsSavable && !Disabled ? true : false);
-		if (GUI::leftPressed && !Disabled)
+		CheatFunctions::SaveOption(option, std::to_string(_float), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
+		if (GUI::leftPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
-			if (_float < max)
+			if (_float < max || IgnoreMinMax)
 			{
 				_float += steps;
 			}
-			if (ReturnTrueWithValueChange) { return true;  }
+			if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true;  }
 		}
-		if (GUI::rightPressed && !Disabled)
+		if (GUI::rightPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
-			if (_float > min)
+			if (_float > min || IgnoreMinMax)
 			{
 				_float -= steps;
 			}
-			if (ReturnTrueWithValueChange) { return true; }
+			if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true; }
 		}
 	}
 
-
 	std::ostringstream DisplayFloat;
-	DisplayFloat.precision(3);
+	DisplayFloat.precision(FloatPrecision);
 	DisplayFloat << std::fixed << _float;
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
-		GUI::Drawing::Text(DisplayFloat.str(), TextColorAndFont, { Cheat::GUI::guiX + 0.08f, GUI::guiY + GUI::optionCount * 0.035f - 0.172f }, { 0.32f, 0.32f }, true);
+		GUI::Drawing::Text("< " + DisplayFloat.str() + " >", TextColorAndFont, {Cheat::GUI::guiX + 0.08f, GUI::guiY + GUI::optionCount * 0.035f - 0.172f}, {0.32f, 0.32f}, true);
 	}
 	else if (GUI::optionCount > GUI::currentOption - GUI::maxVisOptions && GUI::optionCount <= GUI::currentOption)
 	{
-		GUI::Drawing::Text(DisplayFloat.str(), TextColorAndFont, { Cheat::GUI::guiX + 0.08f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.172f }, { 0.32f, 0.32f }, true);
+		GUI::Drawing::Text("< " + DisplayFloat.str() + " >", TextColorAndFont, { Cheat::GUI::guiX + 0.08f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.172f }, { 0.32f, 0.32f }, true);
 	}
 	return false;
 }
 
-bool Cheat::GUI::IntVector(std::string option, std::vector<int> Vector, int& position, bool IsSavable, bool Disabled)
+bool Cheat::GUI::IntVector(std::string option, std::vector<int> Vector, int& position, int BitFlags)
 {
-	if (IsSavable && !Disabled) { CheatFunctions::LoadConfigOption(option, position); }
+	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, position); }
 
-	if (Option(option, "", Disabled))
+	if (Option(option, "", BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 	{
 		return true;
 	}
@@ -447,17 +447,17 @@ bool Cheat::GUI::IntVector(std::string option, std::vector<int> Vector, int& pos
 	{
 		int max = static_cast<int>(Vector.size()) - 1;
 		int min = 0;
-		if (GUI::leftPressed && !Disabled)
+		if (GUI::leftPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			position >= 1 ? position-- : position = max;
 			return true;
 		}
-		if (GUI::rightPressed && !Disabled)
+		if (GUI::rightPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			position < max ? position++ : position = min;
 			return true;
 		}
-		CheatFunctions::SaveOption(option, std::to_string(position), IsSavable && !Disabled ? true : false);
+		CheatFunctions::SaveOption(option, std::to_string(position), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 	}
 
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
@@ -471,26 +471,26 @@ bool Cheat::GUI::IntVector(std::string option, std::vector<int> Vector, int& pos
 	return false;
 }
 
-bool Cheat::GUI::FloatVector(std::string option, std::vector<float> Vector, int& position, bool IsSavable, bool Disabled)
+bool Cheat::GUI::FloatVector(std::string option, std::vector<float> Vector, int& position, int BitFlags)
 {
-	if (IsSavable && !Disabled) { CheatFunctions::LoadConfigOption(option, position); }
+	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, position); }
 
-	if (Option(option, "", Disabled))
+	if (Option(option, "", BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 	{
 		return true;
 	}
 
 	if (GUI::optionCount == GUI::currentOption) 
 	{
-		CheatFunctions::SaveOption(option, std::to_string(position), IsSavable && !Disabled ? true : false);
+		CheatFunctions::SaveOption(option, std::to_string(position), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 		size_t max = static_cast<int>(Vector.size()) - 1;
 		int min = 0;
-		if (GUI::leftPressed && !Disabled)
+		if (GUI::leftPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			position >= 1 ? position-- : position = static_cast<int>(max);
 			return true;
 		}
-		if (GUI::rightPressed && !Disabled)
+		if (GUI::rightPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			position < max ? position++ : position = static_cast<int>(min);
 			return true;
@@ -507,18 +507,19 @@ bool Cheat::GUI::FloatVector(std::string option, std::vector<float> Vector, int&
 	}
 	return false;
 }
-bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vector, int & position, std::string InformationText, bool IsSavable, bool Disabled)
-{
-	if (IsSavable && !Disabled) { CheatFunctions::LoadConfigOption(option, position); }
 
-	if (Option(option, InformationText, Disabled))
+bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vector, int & position, std::string InformationText, int BitFlags)
+{
+	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, position); }
+
+	if (Option(option, InformationText, BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 	{
 		return true;
 	}
 
 	if (GUI::optionCount == GUI::currentOption) 
 	{
-		CheatFunctions::SaveOption(option, std::to_string(position), IsSavable && !Disabled ? true : false);
+		CheatFunctions::SaveOption(option, std::to_string(position), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 		size_t max = static_cast<int>(Vector.size()) - 1;
 		int min = 0;
 		if (GUI::leftPressed)

@@ -20,6 +20,7 @@ int SetPedTexture_Torso = 0, SetPedTexture_TorsoTexture = 0, SetPedTexture_Face 
 	SetPedTexture_AccesoriesSec = 0, SetPedTexture_AccesoriesSecTexture = 0, SetPedTexture_Textures = 0, 
 	SetPedTexture_TexturesTexture = 0, SetPedTexture_TorsoSec = 0,  SetPedTexture_TorsoSecTexture = 0;
 
+
 void Cheat::FiberMain()
 { 
 	CheatFeatures::NonLooped();
@@ -35,6 +36,7 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Online", OnlineOptionsMenu);
 			GUI::MenuOption("Weapon", weaponmenu);
 			GUI::MenuOption("Vehicle", vehiclemenu);
+			GUI::MenuOption("Spawn", SpawnMenu);
 			GUI::MenuOption("Teleport", teleportmenu);
 			GUI::MenuOption("World", worldmenu);
 			GUI::MenuOption("Miscellaneous", miscmenu);
@@ -75,7 +77,7 @@ void Cheat::FiberMain()
 		case allplayers_trolloptionsmenu:
 		{
 			GUI::Title("Trolling"); 
-			GUI::Toggle("Freeze All Players", CheatFeatures::FreezeAllPlayersBool, "Freeze all players in session", false);
+			GUI::Toggle("Freeze All Players", CheatFeatures::FreezeAllPlayersBool, "Freeze all players in session", SELECTABLE_DISABLE_SAVE);
 			if (GUI::Option("Kick All Out Of Vehicle", "Kick all players from their vehicle"))
 			{
 				for (int i = 0; i < 32; i++)
@@ -160,8 +162,8 @@ void Cheat::FiberMain()
 			}
 			GUI::MenuOption("Unlocks", unlocksmenu);
 			GUI::Break("Money", true);
-			GUI::Toggle("Drop Money", CheatFeatures::MoneyDropBool, "Only works for local player", false);
-			GUI::Int("Drop Delay", CheatFeatures::MoneyDropDelay, 50, 2000, 50, false, "Set to 1500 to prevent transaction errors");
+			GUI::Toggle("Drop Money", CheatFeatures::MoneyDropBool, "Only works for local player", SELECTABLE_DISABLE_SAVE);
+			GUI::Int("Drop Delay", CheatFeatures::MoneyDropDelay, 50, 2000, 50, "Set to 1500 to prevent transaction errors");
 			GUI::Break("Miscellaneous", true);
 			if (GUI::Option("Set Max Nightclub Popularity", "Set NightClub Popularity to 100%"))
 			{
@@ -950,7 +952,7 @@ void Cheat::FiberMain()
 			}
 		}
 		break;
-		case vehiclespawnermenu:
+		case VehicleSpawnMenu:
 		{
 			GUI::Title("Vehicle Spawn");
 			GUI::MenuOption("Settings", VehicleSpawnSettings);
@@ -986,6 +988,12 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Trains", Trains);
 			GUI::MenuOption("Utility", Utility);
 			GUI::MenuOption("Vans", Vans);
+		}
+		break;
+		case SpawnMenu:
+		{
+			GUI::Title("Spawn");
+			GUI::MenuOption("Vehicle", VehicleSpawnMenu);
 		}
 		break;
 		case DLCVehiclesMenu:
@@ -1431,7 +1439,6 @@ void Cheat::FiberMain()
 		case vehiclemenu:
 		{
 			GUI::Title("Vehicle");
-			GUI::MenuOption("Spawn", vehiclespawnermenu);
 			GUI::MenuOption("Los Santos Customs", VehicleCustomizerMenu);
 			GUI::MenuOption("Vehicle Weapons", vehicleweaponsmenu);
 			if (GUI::Option("Delete Vehicle", "Delete the current vehicle"))
@@ -2168,9 +2175,9 @@ void Cheat::FiberMain()
 		case timemenu:
 		{
 			GUI::Title("Time");
-			if (GUI::Int("Hour", SetTimeHour, 0, 23, 1, false)) { NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(SetTimeHour, TIME::GET_CLOCK_MINUTES(), TIME::GET_CLOCK_SECONDS()); }
-			if (GUI::Int("Minutes", SetTimeMinutes, 0, 59, 1, false)) { NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(TIME::GET_CLOCK_HOURS(), SetTimeMinutes, TIME::GET_CLOCK_SECONDS()); }
-			if (GUI::Int("Seconds", SetTimeSeconds, 0, 59, 1, false)) { NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(TIME::GET_CLOCK_HOURS(), TIME::GET_CLOCK_MINUTES(), SetTimeSeconds); }
+			if (GUI::Int("Hour", SetTimeHour, 0, 23, 1, "", SELECTABLE_DISABLE_SAVE)) { NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(SetTimeHour, TIME::GET_CLOCK_MINUTES(), TIME::GET_CLOCK_SECONDS()); }
+			if (GUI::Int("Minutes", SetTimeMinutes, 0, 59, 1, "", SELECTABLE_DISABLE_SAVE)) { NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(TIME::GET_CLOCK_HOURS(), SetTimeMinutes, TIME::GET_CLOCK_SECONDS()); }
+			if (GUI::Int("Seconds", SetTimeSeconds, 0, 59, 1, "", SELECTABLE_DISABLE_SAVE)) { NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(TIME::GET_CLOCK_HOURS(), TIME::GET_CLOCK_MINUTES(), SetTimeSeconds); }
 			GUI::Break("Current Time", true);
 			std::string CurrentGameTimeString = "Game Time: ~c~" + std::to_string(TIME::GET_CLOCK_HOURS()) + ":" + std::to_string(TIME::GET_CLOCK_MINUTES()) + ":" + std::to_string(TIME::GET_CLOCK_SECONDS());
 			GUI::Break(CurrentGameTimeString.c_str(), false);
@@ -2533,7 +2540,7 @@ void Cheat::FiberMain()
 			GUI::Toggle("One Shot One Kill", CheatFeatures::OneHitKillBool, "");
 			GUI::Break("Entity Control", true);
 			GUI::Toggle("Gravity Gun", CheatFeatures::GravityGunBool, "");
-			GUI::Float("Entity Distance", CheatFeatures::GravityGunEntityDistance, 5.f, 25.f, 1.f, false, true, "Changing distance is also possible with the scroll wheel");
+			GUI::Float("Entity Distance", CheatFeatures::GravityGunEntityDistance, 5.f, 25.f, 1.f, "Changing distance is also possible with the scroll wheel", 0);
 		}
 		break; 
 		case vehiclegunmenu:
@@ -2609,7 +2616,7 @@ void Cheat::FiberMain()
 			{
 				PED::SET_PED_INTO_VEHICLE(GameFunctions::PlayerPedID, VEHICLE::GET_LAST_DRIVEN_VEHICLE(), -1);
 			}
-			if (GUI::Float("Teleport Forward", TeleportFoward, 1.f, 10.f, 1.f, false, false, "Select to teleport"))
+			if (GUI::Float("Teleport Forward", TeleportFoward, 1.f, 10.f, 1.f, "Select to teleport", 0))
 			{
 				Vector3 Coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(GameFunctions::PlayerPedID, 0.0, TeleportFoward, 0.0);
 				int Handle = GameFunctions::PlayerPedID;
@@ -2724,9 +2731,9 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("Trolling");
 			GUI::MenuOption("Attachments", SelectedPlayerAttachmentOptions);
-			GUI::Toggle("Explode Loop", CheatFeatures::ExplodeLoopSelectedPlayerBool, "Run explode loop on selected player", false);
-			GUI::Toggle("Freeze Player", CheatFeatures::FreezeSelectedPlayerBool, "Freeze character of selected player", false);
-			GUI::Toggle("Shake Cam", CheatFeatures::ShakeCamSelectedPlayerBool, "Shake selected player character camera", false);
+			GUI::Toggle("Explode Loop", CheatFeatures::ExplodeLoopSelectedPlayerBool, "Run explode loop on selected player", SELECTABLE_DISABLE_SAVE);
+			GUI::Toggle("Freeze Player", CheatFeatures::FreezeSelectedPlayerBool, "Freeze character of selected player", SELECTABLE_DISABLE_SAVE);
+			GUI::Toggle("Shake Cam", CheatFeatures::ShakeCamSelectedPlayerBool, "Shake selected player character camera", SELECTABLE_DISABLE_SAVE);
 			if (GUI::Option("Set Off Car Alarm", "Enable Car Alarm of Selected Player"))
 			{
 				int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer);
@@ -2892,7 +2899,7 @@ void Cheat::FiberMain()
 		case SelectedPlayerMenu:
 		{
 			GUI::Title(PLAYER::GET_PLAYER_NAME(CheatFeatures::selectedPlayer));
-			GUI::Toggle("Spectate", CheatFeatures::SpectatePlayerBool, "", false);
+			GUI::Toggle("Spectate", CheatFeatures::SpectatePlayerBool, "", SELECTABLE_DISABLE_SAVE);
 			if (GUI::Option("Host Kick", "Kick selected player - Host only")) { NETWORK::NETWORK_SESSION_KICK_PLAYER(CheatFeatures::selectedPlayer); }
 			if (GUI::Option("Teleport To", ""))
 			{
@@ -2902,7 +2909,7 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Teleport", SelectedPlayerTeleportMenu);
 			GUI::MenuOption("Friendly", SelectedPlayerFriendlyMenu);
 			GUI::MenuOption("Trolling", SelectedPlayerTrollMenu);
-			GUI::MenuOption("Script Events", SelectedPlayerRemoteOptions, true);
+			GUI::MenuOption("Script Events", SelectedPlayerRemoteOptions, SELECTABLE_DISABLED);
 			if (GUI::Option("Copy Outfit", "Get Selected Player Outfit")) { GameFunctions::CopySelectedPlayerOutfit(CheatFeatures::selectedPlayer); }
 			if (GUI::Option("View Profile", "View Selected Player Social Club Profile")) { int playerHandle; NETWORK::NETWORK_HANDLE_FROM_PLAYER(CheatFeatures::selectedPlayer, &playerHandle, 13); NETWORK::NETWORK_SHOW_PROFILE_UI(&playerHandle); }
 		}
@@ -2942,19 +2949,19 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Change Model", ModelChangerMenu);
 			GUI::MenuOption("Animations & Scenarios", AnimationsAndScenariosMenu);
 			GUI::MenuOption("Clothing", clothingmenu);
-			GUI::Toggle("Invincible", CheatFeatures::GodmodeBool, "Gives your character God Mode", true);
+			GUI::Toggle("Invincible", CheatFeatures::GodmodeBool, "Gives your character God Mode");
 			GUI::Toggle("No Ragdoll & Seatbelt", CheatFeatures::NoRagdollAndSeatbeltBool, "Disables ragdoll on your character");
 			GUI::Toggle("Super Jump", CheatFeatures::SuperJumpBool, "Makes your character jump higher");
 			GUI::Toggle("Super Run", CheatFeatures::SuperRunBool, "Run very fast");
 			GUI::Toggle("Fast Run", CheatFeatures::FastRunBool, "Multiplies run speed");
 			GUI::Toggle("Ignored By Everyone", CheatFeatures::PlayerIgnoredBool, "NPC's will (mostly) ignore you");
 			GUI::Toggle("Never Wanted", CheatFeatures::NeverWantedBool, "Never get a wanted level");
-			if (GUI::Int("Wanted Level", PlayerWantedLevelInteger, 0, 5, 1, false, "Set Wanted Level")) { CheatFeatures::NeverWantedBool = false; PLAYER::SET_PLAYER_WANTED_LEVEL(GameFunctions::PlayerID, PlayerWantedLevelInteger, false); PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(GameFunctions::PlayerID, false); }
+			if (GUI::Int("Wanted Level", PlayerWantedLevelInteger, 0, 5, 1, "Set Wanted Level", SELECTABLE_DISABLE_SAVE)) { CheatFeatures::NeverWantedBool = false; PLAYER::SET_PLAYER_WANTED_LEVEL(GameFunctions::PlayerID, PlayerWantedLevelInteger, false); PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(GameFunctions::PlayerID, false); }
 			GUI::Toggle("Invisibility", CheatFeatures::PlayerInvisibleBool, "Makes your character invisible");
 			GUI::Toggle("Explosive Melee", CheatFeatures::ExplosiveMeleeBool, "Objects you hit with melee explode");
 			GUI::Toggle("Tiny Player", CheatFeatures::TinyPlayerBool, "Lowers your character's scaling");
 			GUI::Toggle("Super Man", CheatFeatures::SuperManBool, "Fly around like a superman!");
-			if (GUI::Int("Opacity", CheatFeatures::PlayerOpacityInt, 50, 250, 50, false, "Changes local player opacity")) { ENTITY::SET_ENTITY_ALPHA(GameFunctions::PlayerPedID, (CheatFeatures::PlayerOpacityInt), false); }
+			if (GUI::Int("Opacity", CheatFeatures::PlayerOpacityInt, 50, 250, 50, "Changes local player opacity")) { ENTITY::SET_ENTITY_ALPHA(GameFunctions::PlayerPedID, (CheatFeatures::PlayerOpacityInt), false); }
 			if (GUI::Option("Suicide", "Kill your character")) { PED::APPLY_DAMAGE_TO_PED(GameFunctions::PlayerPedID, 300, true); }
 			if (GUI::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(2441237).At(4013).As<int>() = 1; }
 			if (GUI::Option("Clean", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(GameFunctions::PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(GameFunctions::PlayerPedID); GameFunctions::MinimapNotification("Player Cleaned"); }	
@@ -2970,30 +2977,30 @@ void Cheat::FiberMain()
 		case componentschangermenu:
 		{
 			GUI::Title("Components Changer");
-			if (GUI::Int("Face", SetPedTexture_Face, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 0, SetPedTexture_Face, 0); }
-			if (GUI::Int("Face Texture", SetPedTexture_FaceTexture, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 0, SetPedTexture_Face, SetPedTexture_Face); }
-			if (GUI::Int("Head", SetPedTexture_Head, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 0, SetPedTexture_Head, 0); }
-			if (GUI::Int("Head Texture", SetPedTexture_HeadTexture, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 1, SetPedTexture_Head, SetPedTexture_HeadTexture); }
-			if (GUI::Int("Hair", SetPedTexture_Hair, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 2, SetPedTexture_Hair, 0); }
-			if (GUI::Int("Hair Texture", SetPedTexture_HairTexture, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 2, SetPedTexture_Hair, SetPedTexture_HairTexture); }
-			if (GUI::Int("Torso", SetPedTexture_Torso, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 3, SetPedTexture_Torso, 0); }
-			if (GUI::Int("Torso Texture", SetPedTexture_TorsoTexture, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 3, SetPedTexture_Torso, SetPedTexture_TorsoTexture); }
-			if (GUI::Int("Legs", SetPedTexture_Legs, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 4, SetPedTexture_Legs, 0); }
-			if (GUI::Int("Legs Texture", SetPedTexture_LegsTexture, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 4, SetPedTexture_Legs, SetPedTexture_LegsTexture); }
-			if (GUI::Int("Hands", SetPedTexture_Hands, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 5, SetPedTexture_Hands, 0); }
-			if (GUI::Int("Hands Texture", SetPedTexture_HandsTexture, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 5, SetPedTexture_Hands, SetPedTexture_HandsTexture); }
-			if (GUI::Int("Feet", SetPedTexture_Feet, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 6, SetPedTexture_Feet, 0); }
-			if (GUI::Int("Feet Texture", SetPedTexture_FeetTexture, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 6, SetPedTexture_Feet, SetPedTexture_FeetTexture); }
-			if (GUI::Int("Eyes", SetPedTexture_Eyes, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 7, SetPedTexture_Eyes, 0); }
-			if (GUI::Int("Eyes Texture", SetPedTexture_EyesTexture, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 7, SetPedTexture_Eyes, SetPedTexture_EyesTexture); }
-			if (GUI::Int("Accesories", SetPedTexture_Accesories, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 8, SetPedTexture_Accesories, 0); }
-			if (GUI::Int("Accesories Texture", SetPedTexture_AccesoriesTexture, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 8, SetPedTexture_Accesories, SetPedTexture_AccesoriesTexture); }
-			if (GUI::Int("Accesories2", SetPedTexture_AccesoriesSec, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 9, SetPedTexture_AccesoriesSec, 0); }
-			if (GUI::Int("Accesories2 Texture", SetPedTexture_AccesoriesSecTexture, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 9, SetPedTexture_AccesoriesSec, SetPedTexture_AccesoriesSecTexture); }
-			if (GUI::Int("Torso 2", SetPedTexture_TorsoSec, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 11, SetPedTexture_TorsoSec, 0); }
-			if (GUI::Int("Torso 2 Texture", SetPedTexture_TorsoSecTexture, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 11, SetPedTexture_TorsoSec, SetPedTexture_TorsoSecTexture); }
-			if (GUI::Int("Textures", SetPedTexture_Textures, 0, 255, 1, false, "")) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 10, SetPedTexture_Textures, 0); }
-			if (GUI::Int("Textures Texture", SetPedTexture_TexturesTexture, 0, 255, 1, false, "")) {  GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 9, SetPedTexture_Textures, SetPedTexture_TexturesTexture); }
+			if (GUI::Int("Face", SetPedTexture_Face, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 0, SetPedTexture_Face, 0); }
+			if (GUI::Int("Face Texture", SetPedTexture_FaceTexture, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 0, SetPedTexture_Face, SetPedTexture_Face); }
+			if (GUI::Int("Head", SetPedTexture_Head, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 0, SetPedTexture_Head, 0); }
+			if (GUI::Int("Head Texture", SetPedTexture_HeadTexture, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 1, SetPedTexture_Head, SetPedTexture_HeadTexture); }
+			if (GUI::Int("Hair", SetPedTexture_Hair, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 2, SetPedTexture_Hair, 0); }
+			if (GUI::Int("Hair Texture", SetPedTexture_HairTexture, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 2, SetPedTexture_Hair, SetPedTexture_HairTexture); }
+			if (GUI::Int("Torso", SetPedTexture_Torso, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 3, SetPedTexture_Torso, 0); }
+			if (GUI::Int("Torso Texture", SetPedTexture_TorsoTexture, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 3, SetPedTexture_Torso, SetPedTexture_TorsoTexture); }
+			if (GUI::Int("Legs", SetPedTexture_Legs, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 4, SetPedTexture_Legs, 0); }
+			if (GUI::Int("Legs Texture", SetPedTexture_LegsTexture, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 4, SetPedTexture_Legs, SetPedTexture_LegsTexture); }
+			if (GUI::Int("Hands", SetPedTexture_Hands, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 5, SetPedTexture_Hands, 0); }
+			if (GUI::Int("Hands Texture", SetPedTexture_HandsTexture, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 5, SetPedTexture_Hands, SetPedTexture_HandsTexture); }
+			if (GUI::Int("Feet", SetPedTexture_Feet, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 6, SetPedTexture_Feet, 0); }
+			if (GUI::Int("Feet Texture", SetPedTexture_FeetTexture, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 6, SetPedTexture_Feet, SetPedTexture_FeetTexture); }
+			if (GUI::Int("Eyes", SetPedTexture_Eyes, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 7, SetPedTexture_Eyes, 0); }
+			if (GUI::Int("Eyes Texture", SetPedTexture_EyesTexture, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 7, SetPedTexture_Eyes, SetPedTexture_EyesTexture); }
+			if (GUI::Int("Accesories", SetPedTexture_Accesories, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 8, SetPedTexture_Accesories, 0); }
+			if (GUI::Int("Accesories Texture", SetPedTexture_AccesoriesTexture, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 8, SetPedTexture_Accesories, SetPedTexture_AccesoriesTexture); }
+			if (GUI::Int("Accesories2", SetPedTexture_AccesoriesSec, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 9, SetPedTexture_AccesoriesSec, 0); }
+			if (GUI::Int("Accesories2 Texture", SetPedTexture_AccesoriesSecTexture, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 9, SetPedTexture_AccesoriesSec, SetPedTexture_AccesoriesSecTexture); }
+			if (GUI::Int("Torso 2", SetPedTexture_TorsoSec, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 11, SetPedTexture_TorsoSec, 0); }
+			if (GUI::Int("Torso 2 Texture", SetPedTexture_TorsoSecTexture, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 11, SetPedTexture_TorsoSec, SetPedTexture_TorsoSecTexture); }
+			if (GUI::Int("Textures", SetPedTexture_Textures, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 10, SetPedTexture_Textures, 0); }
+			if (GUI::Int("Textures Texture", SetPedTexture_TexturesTexture, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) {  GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 9, SetPedTexture_Textures, SetPedTexture_TexturesTexture); }
 		}
 		break;
 		case outfitsmenu:
@@ -3086,7 +3093,7 @@ void Cheat::FiberMain()
 				CheatFeatures::BlockMaliciousScriptEvents = false;
 			}
 			GUI::Toggle("Remote Events", CheatFeatures::BlockMaliciousScriptEvents, "Some GTAO missions might not work");
-			GUI::Toggle("Remote Events -> Block All", CheatFeatures::BlockAllScriptEvents, "Join GTAO before enabling", false);
+			GUI::Toggle("Remote Events -> Block All", CheatFeatures::BlockAllScriptEvents, "Join GTAO before enabling", SELECTABLE_DISABLE_SAVE);
 			GUI::Toggle("Vote Kick", CheatFeatures::ProtectionVoteKickBool, "");
 			GUI::Toggle("Freeze", CheatFeatures::ProtectionFreezeBool, "");
 			GUI::Toggle("Give/Remove Weapons", CheatFeatures::ProtectionGiveRemoveWeaponsBool, "");
@@ -3356,8 +3363,8 @@ void Cheat::FiberMain()
 				GUI::SaveTheme(NewThemeFileName);
 			}
 			GUI::Break("Header", true);
-			GUI::Toggle("Header Texture", GUI::ShowHeaderTexture, "", false);
-			GUI::Toggle("Header Background", GUI::ShowHeaderBackground, "", false);
+			GUI::Toggle("Header Texture", GUI::ShowHeaderTexture, "", SELECTABLE_DISABLE_SAVE);
+			GUI::Toggle("Header Background", GUI::ShowHeaderBackground, "", SELECTABLE_DISABLE_SAVE);
 			GUI::Break("Color", true);
 			if (GUI::Option("Primary", ""))
 			{
@@ -3399,16 +3406,16 @@ void Cheat::FiberMain()
 				GUI::TextColorAndFont.f = FontPricedown;
 			}
 			GUI::Break("Menu", true);
-			GUI::Float("X-Axis", GUI::guiX, 0.11f, 0.86f, 0.01f, true, false, "");
-			GUI::Float("Y-Axis", GUI::guiY, 0.10f, 0.90f, 0.01f, true, false, "");
+			GUI::Float("X-Axis", GUI::guiX, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
+			GUI::Float("Y-Axis", GUI::guiY, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
 			if (GUI::Option("Reset Position", ""))
 			{
 				GUI::guiX = GUI::guiX_Default;
 				GUI::guiY = GUI::guiY_Default;
 			}
 			GUI::Break("Selectable Information Box", true);
-			GUI::Float("X-Axis", GUI::SelectableInfoBoxX, 0.000f, 0.1000f, 0.01f, true, false, "");
-			GUI::Float("Y-Axis", GUI::SelectableInfoBoxY, 0.000f, 0.1000f, 0.01f, true, false, "");
+			GUI::Float("X-Axis", GUI::SelectableInfoBoxX, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
+			GUI::Float("Y-Axis", GUI::SelectableInfoBoxY, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
 			if (GUI::Option("Reset Position", ""))
 			{
 				GUI::SelectableInfoBoxX = GUI::SelectableInfoBoxX_Default;
