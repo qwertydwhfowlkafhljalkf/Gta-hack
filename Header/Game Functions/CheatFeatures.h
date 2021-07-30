@@ -9,6 +9,7 @@ namespace Cheat
 		extern int MeasurementSystemVectorPosition;
 		extern int ImpactAmmoVectorPosition;
 		extern int CustomAmmoVectorPosition;
+		extern int FontTypeVectorPosition;
 		extern int selectedPlayer;
 		extern int PlayerOpacityInt;
 		extern bool BlockMaliciousScriptEvents;

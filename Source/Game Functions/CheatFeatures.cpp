@@ -5,6 +5,7 @@ int Cheat::CheatFeatures::AimbotBoneVectorPosition = 0;
 int Cheat::CheatFeatures::MeasurementSystemVectorPosition = 0;
 int Cheat::CheatFeatures::ImpactAmmoVectorPosition = 0;
 int Cheat::CheatFeatures::CustomAmmoVectorPosition = 0;
+int Cheat::CheatFeatures::FontTypeVectorPosition = 0;
 int Cheat::CheatFeatures::PlayerOpacityInt = 250;
 bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;

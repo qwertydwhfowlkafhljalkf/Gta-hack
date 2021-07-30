@@ -3381,29 +3381,32 @@ void Cheat::FiberMain()
 				GameFunctions::MinimapNotification("Updated Text Color");
 			}
 			GUI::Break("Font", true);
-			if (GUI::Option("Chalet London", ""))
+			if (GUI::StringVector("Type", { "Chalet London", "House Script", "Monospace", "Wing Dings", "Chalet Comprime Cologne", "Pricedown" }, CheatFeatures::FontTypeVectorPosition, ""))
 			{
-				GUI::TextColorAndFont.f = FontChaletLondon;
-			}
-			if (GUI::Option("House Script", ""))
-			{
-				GUI::TextColorAndFont.f = FontHouseScript;
-			}
-			if (GUI::Option("Monospace", ""))
-			{
-				GUI::TextColorAndFont.f = FontMonospace;
-			}
-			if (GUI::Option("Wing Dings", ""))
-			{
-				GUI::TextColorAndFont.f = FontWingDings;
-			}
-			if (GUI::Option("Chalet Comprime Cologne", ""))
-			{
-				GUI::TextColorAndFont.f = FontChaletComprimeCologne;
-			}
-			if (GUI::Option("Pricedown", ""))
-			{
-				GUI::TextColorAndFont.f = FontPricedown;
+				if (CheatFeatures::FontTypeVectorPosition == 0)
+				{
+					GUI::TextColorAndFont.f = FontChaletLondon;
+				}
+				else if (CheatFeatures::FontTypeVectorPosition == 1)
+				{
+					GUI::TextColorAndFont.f = FontHouseScript;
+				}
+				else if (CheatFeatures::FontTypeVectorPosition == 2)
+				{
+					GUI::TextColorAndFont.f = FontMonospace;
+				}
+				else if (CheatFeatures::FontTypeVectorPosition == 3)
+				{
+					GUI::TextColorAndFont.f = FontWingDings;
+				}
+				else if (CheatFeatures::FontTypeVectorPosition == 4)
+				{
+					GUI::TextColorAndFont.f = FontChaletComprimeCologne;
+				}
+				else if (CheatFeatures::FontTypeVectorPosition == 5)
+				{
+					GUI::TextColorAndFont.f = FontPricedown;
+				}
 			}
 			GUI::Break("Menu", true);
 			GUI::Float("X-Axis", GUI::guiX, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
