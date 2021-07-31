@@ -14,13 +14,13 @@ bool Cheat::GUI::ControlsDisabled		= false; //All cheat input is ignored when Tr
 bool Cheat::GUI::selectPressed			= false;
 bool Cheat::GUI::leftPressed			= false;
 bool Cheat::GUI::rightPressed			= false;
-bool Cheat::GUI::ShowHeaderBackground	= true;
+bool Cheat::GUI::ShowHeaderBackground	= false;
 bool Cheat::GUI::ShowHeaderTexture		= true;
 bool Cheat::GUI::HideGUIElements		= false; //Prevents all GUI elements from being visible when True
 bool Cheat::GUI::CheatGUIHasBeenOpened	= false;
 bool Cheat::GUI::CurrentOptionIsSavable	= false;
 bool Cheat::GUI::RestorePreviousSubmenu = true;
-std::string OptionInformationText;
+std::string SelectableInformationText;
 std::string Cheat::GUI::CurrentTheme;
 int Cheat::GUI::maxVisOptions			= 10;
 int Cheat::GUI::currentOption			= 0;
@@ -50,7 +50,7 @@ int Cheat::GUI::SaveItemKey					= VK_F12;
 void Cheat::GUI::Title(std::string TitleName)
 {
 	if (Cheat::GUI::ShowHeaderBackground) { GUI::Drawing::Rect({ PrimaryColor.r, PrimaryColor.g, PrimaryColor.b, 200 }, { Cheat::GUI::guiX, GUI::guiY - 0.213f }, { Cheat::GUI::guiWidth, 0.084f }); }
-	if (Cheat::GUI::ShowHeaderTexture) { Cheat::GUI::Drawing::Spriter("Textures", "HeaderDefaultTransparent", Cheat::GUI::guiX, GUI::guiY - 0.213f, Cheat::GUI::guiWidth, 0.084f, 0, 255, 255, 255, 255); }
+	if (Cheat::GUI::ShowHeaderTexture) { Cheat::GUI::Drawing::Spriter("Textures", "HeaderDefault", Cheat::GUI::guiX, GUI::guiY - 0.213f, Cheat::GUI::guiWidth, 0.084f, 0, 255, 255, 255, 255); }
 	GUI::Drawing::Text(TitleName, TextColorAndFont, { GUI::guiX, GUI::guiY - 0.170f }, { 0.35f, 0.37f }, true, true);
 	GUI::Drawing::Rect({ 0, 0, 0, 210 }, { Cheat::GUI::guiX, GUI::guiY - 0.156f }, { Cheat::GUI::guiWidth, 0.030f });
 
@@ -107,15 +107,15 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, int Bit
 		{
 			GUI::Drawing::Rect({ GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY + 0.042f }, { 0.25f, 0.005f });
 			GUI::Drawing::Rect({ 0, 0, 0, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY }, { 0.25f, 0.080f });
-			GUI::Drawing::Text(OptionInformationText != "" ? CheatFunctions::TextWrap(OptionInformationText, 30) : option, TextColorAndFont, { SelectableInfoBoxX - 0.12f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false);
+			GUI::Drawing::Text(SelectableInformationText != "" ? CheatFunctions::TextWrap(SelectableInformationText, 30) : option, TextColorAndFont, { SelectableInfoBoxX - 0.12f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false);
 			if (GUI::CurrentOptionIsSavable) { GUI::Drawing::Text("Save Option: " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::SaveItemKey), TextColorAndFont, { SelectableInfoBoxX + 0.04f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false); }
 		}
 		
 		GUI::currentOptionVisible = GUI::optionCount - (GUI::optionCount - GUI::optionCountVisible);
 		GUI::CurrentOptionIsSavable = false;
 		GUI::previousOption = GUI::currentOption;
-		if (InformationText == "") { OptionInformationText.clear(); }
-		else { OptionInformationText = InformationText; }
+		if (InformationText == "") { SelectableInformationText.clear(); }
+		else { SelectableInformationText = InformationText; }
 		if (GUI::selectPressed)
 		{
 			DoSelectAction:

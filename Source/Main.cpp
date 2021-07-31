@@ -152,7 +152,7 @@ void Cheat::FiberMain()
 		break;
 		case RecoveryMenu:
 		{
-			GUI::Title("Recovery"); 
+			GUI::Title("Recovery");
 			GUI::Break("~bold~~r~Features in this submenu can be risky", false);
 			GUI::Break("Rank", true);
 			if (GUI::Option("Set Custom Rank", "Input a custom Rank"))
@@ -162,7 +162,9 @@ void Cheat::FiberMain()
 			}
 			GUI::MenuOption("Unlocks", unlocksmenu);
 			GUI::Break("Money", true);
-			GUI::Toggle("Drop Money", CheatFeatures::MoneyDropBool, "Only works for local player", SELECTABLE_DISABLE_SAVE);
+			GUI::Break("Wallet balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_WALLET_BALANCE(-1)), false);
+			GUI::Break("Bank balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_BANK_BALANCE()), false);
+			GUI::Toggle("Drop Money", CheatFeatures::MoneyDropBool, "Only works for local player", SELECTABLE_DISABLE_SAVE | SELECTABLE_DISABLED);
 			GUI::Int("Drop Delay", CheatFeatures::MoneyDropDelay, 50, 2000, 50, "Set to 1500 to prevent transaction errors");
 			GUI::Break("Miscellaneous", true);
 			if (GUI::Option("Set Max Nightclub Popularity", "Set NightClub Popularity to 100%"))
