@@ -380,9 +380,9 @@ int Cheat::GameFunctions::DisplayKeyboardAndReturnInputInteger(int MaxInput, std
 	return CheatFunctions::StringToInt(DisplayKeyboardAndReturnInput(MaxInput, Title));
 }
 
-void Cheat::GameFunctions::ClearAllAnimations()
+void Cheat::GameFunctions::StopAllPedAnimations(Ped TargetPed)
 {
-	AI::CLEAR_PED_TASKS_IMMEDIATELY(Cheat::GameFunctions::PlayerPedID);
+	AI::CLEAR_PED_TASKS_IMMEDIATELY(TargetPed);
 }
 
 void Cheat::GameFunctions::ClearNearbyPedAnimations()
@@ -393,26 +393,31 @@ void Cheat::GameFunctions::ClearNearbyPedAnimations()
 	Ped* peds = new Ped[ArrSize];
 	peds[0] = ElementAmount;
 
-	int PedFound = PED::GET_PED_NEARBY_PEDS(Cheat::GameFunctions::PlayerPedID, peds, -1);
+	int PedFound = PED::GET_PED_NEARBY_PEDS(PlayerPedID, peds, -1);
 
 	for (int i = 0; i < PedFound; i++)
 	{
 		int OffsetID = i * 2 + 2;
 		Cheat::GameFunctions::RequestNetworkControlOfEntity(peds[OffsetID]);
-		if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && Cheat::GameFunctions::PlayerPedID != peds[OffsetID])
+		if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && PlayerPedID != peds[OffsetID])
 		{
-			AI::CLEAR_PED_TASKS_IMMEDIATELY(peds[OffsetID]);
+			StopAllPedAnimations(peds[OffsetID]);
 		}
 	}
 }
 
-void Cheat::GameFunctions::DoLocalPedAnimation(char* AnimationName, char* AnimationID)
+void Cheat::GameFunctions::PlayPedAnimation(Ped TargetPed, char* AnimationName, char* AnimationID, bool Controllable)
 {
-	Cheat::GameFunctions::RequestNetworkControlOfEntity(Cheat::GameFunctions::PlayerPedID);
-	STREAMING::REQUEST_ANIM_DICT(AnimationName);
-	if (STREAMING::HAS_ANIM_DICT_LOADED((AnimationName))) { AI::TASK_PLAY_ANIM(Cheat::GameFunctions::PlayerPedID, AnimationName, AnimationID, 8.0f, 0.0f, -1, 9, 0, 0, 0, 0); }
+	Cheat::GameFunctions::RequestNetworkControlOfEntity(TargetPed);
+	while (!STREAMING::HAS_ANIM_DICT_LOADED((AnimationName)))
+	{
+		STREAMING::REQUEST_ANIM_DICT(AnimationName);
+		GameHooking::PauseMainFiber(0, false);
+	}
+	int Flags = 0;
+	if (Controllable) { Flags = ANIM_FLAG_UPPERBODY | ANIM_FLAG_ENABLE_PLAYER_CONTROL | ANIM_FLAG_STOP_LAST_FRAME;  }
+	AI::TASK_PLAY_ANIM(TargetPed, AnimationName, AnimationID, 8.0f, 0.0f, -1, Flags, 0, false, false, false);
 }
-
 
 void Cheat::GameFunctions::DoNearbyPedsAnimation(char* AnimationName, char* AnimationID)
 {
@@ -457,7 +462,7 @@ void Cheat::GameFunctions::PlayScenarioNearbyPeds(char* Scenario)
 		Cheat::GameFunctions::RequestNetworkControlOfEntity(peds[OffsetID]);
 		if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && Cheat::GameFunctions::PlayerPedID != peds[OffsetID])
 		{
-			AI::CLEAR_PED_TASKS_IMMEDIATELY(peds[OffsetID]);
+			StopAllPedAnimations(peds[OffsetID]);
 			AI::TASK_START_SCENARIO_IN_PLACE(peds[OffsetID], Scenario, 0, true);
 		}
 	}
@@ -494,7 +499,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		if (NETWORK::NETWORK_IS_SESSION_STARTED()) 
 		{
 			std::ostringstream PlayerRank;
-			PlayerRank << globalHandle(1590535).At(PlayerID, 876).At(211).At(6).As<int>();
+			PlayerRank << globalHandle(1590908 + 1).At(PlayerID, 874).At(205).At(5).As<int>();
 			Cheat::GUI::AddPlayerInfoBoxTextEntry(PlayerRank.str(), NULL, 2);
 
 			std::ostringstream PlayerMoney;
@@ -603,7 +608,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		Hash WeaponHash;
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Weapon", 10);
 		std::string WeaponName;
-		if (WEAPON::GET_CURRENT_PED_WEAPON(SelectedPlayerPed, &WeaponHash, 1))
+		if (WEAPON::GET_CURRENT_PED_WEAPON(SelectedPlayerPed, &WeaponHash, true))
 		{
 			for (int i = 0; i < Cheat::GameArrays::WeaponsHashList.size(); i++)
 			{
@@ -1134,7 +1139,21 @@ void Cheat::GameFunctions::ShowTeleportLocationsMenu(std::vector<TeleportLocatio
 	}
 }
 
-void Cheat::GameFunctions::ShowCustomIngameWarningMessage(std::string FirstLine, int InstructionalKey, std::string SecondLine)
+void Cheat::GameFunctions::ToggleOffRadar(bool state)
 {
-	
+	if (NETWORK::NETWORK_IS_SESSION_STARTED())
+	{
+		globalHandle(2426865).At(1 + (Cheat::GameFunctions::PlayerID * 449)).At(209).As<bool>() = state;
+		globalHandle(2441237).At(70).As<int>() = NETWORK::GET_NETWORK_TIME();
+	}
+}
+
+void Cheat::GameFunctions::ToggleCopsTurnBlindEye(bool state)
+{
+	if (NETWORK::NETWORK_IS_SESSION_STARTED())
+	{
+		globalHandle(2544210).At(4622).As<int>() = 5;
+		globalHandle(2544210).At(4623).As<int>() = 1;
+		globalHandle(2544210).At(4625).As<int>() = NETWORK::GET_NETWORK_TIME();
+	}
 }

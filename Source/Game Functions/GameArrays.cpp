@@ -1814,3 +1814,57 @@ const std::vector<MaxUpgradeWeaponComponentsStruct> Cheat::GameArrays::MaxUpgrad
 	{ 0xA284510B, "COMPONENT_AT_AR_AFGRIP" },
 	{ 0xA284510B, "COMPONENT_AT_SCOPE_SMALL" }
 };
+
+const std::vector<AnimationsStruct> Cheat::GameArrays::Animations = {
+	{ "rcmpaparazzo_2", "shag_loop_poppy" },
+	{ "rcmpaparazzo_2", "shag_loop_a" },
+	{ "mini@strip_club@private_dance@part1", "priv_dance_p1" },
+	{ "mini@strip_club@pole_dance@pole_dance1", "pd_dance_01" },
+	{ "amb@world_human_push_ups@male@base", "base" },
+	{ "amb@world_human_sit_ups@male@base", "base" },
+	{ "rcmfanatic1celebrate", "celebrate" },
+	{ "ragdoll@human", "electrocute" },
+	{ "mp_suicide", "pistol" },
+	{ "mp_suicide", "pill" },
+	{ "mp_safehouseshower@male@", "male_shower_idle_b" }
+};
+const std::vector<std::string> Cheat::GameArrays::AnimationsDisplayNames = {
+	"Sex Receiver", 
+	"Sex Giver", 
+	"Stripper Dance",
+	"Pole Dance", 
+	"Push Ups", 
+	"Sit Ups",
+	"Celebrate",
+	"Electrocution",
+	"Suicide (Pistol)",
+	"Suicide (Pill)",
+	"Showering"
+};
+
+const std::vector<std::string> Cheat::GameArrays::Scenarios = {
+	"WORLD_HUMAN_PAPARAZZI",
+	"WORLD_HUMAN_DRUG_DEALER_HARD",
+	"WORLD_HUMAN_AA_COFFEE",
+	"WORLD_HUMAN_MUSICIAN",
+	"WORLD_HUMAN_MUSCLE_FLEX",
+	"WORLD_HUMAN_JOG_STANDING",
+	"WORLD_HUMAN_BINOCULARS",
+	"WORLD_HUMAN_CLIPBOARD",
+	"PROP_HUMAN_SEAT_MUSCLE_BENCH_PRESS",
+	"PROP_HUMAN_MUSCLE_CHIN_UPS",
+	"PROP_HUMAN_BBQ",
+	"WORLD_HUMAN_SUPERHERO",
+	"WORLD_HUMAN_STAND_FISHING",
+	"WORLD_HUMAN_SECURITY_SHINE_TORCH",
+	"WORLD_HUMAN_GARDENER_LEAF_BLOWER",
+	"WORLD_HUMAN_MOBILE_FILM_SHOCKING",
+	"WORLD_HUMAN_COP_IDLES",
+	"WORLD_HUMAN_DRINKING",
+	"WORLD_HUMAN_GOLF_PLAYER",
+	"WORLD_HUMAN_WELDING",
+	"WORLD_HUMAN_SMOKING_POT",
+	"WORLD_HUMAN_HAMMERING",
+	"WORLD_HUMAN_TENNIS_PLAYER",
+	"WORLD_HUMAN_CONST_DRILL"
+};

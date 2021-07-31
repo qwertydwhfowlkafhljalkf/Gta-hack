@@ -32,6 +32,12 @@ struct MaxUpgradeWeaponComponentsStruct
 	std::string UpgradeHash;
 };
 
+struct AnimationsStruct
+{
+	std::string AnimationDictionary;
+	std::string AnimationName;
+};
+
 namespace Cheat
 {
 	namespace GameArrays
@@ -82,5 +88,8 @@ namespace Cheat
 		extern std::vector<Vehicle> SpawnedVehicles;
 		extern const std::vector<WeatherTypesStruct> WeatherTypes;
 		extern const std::vector<MaxUpgradeWeaponComponentsStruct> MaxUpgradeWeaponComponents;
+		extern const std::vector<AnimationsStruct> Animations;
+		extern const std::vector<std::string> AnimationsDisplayNames;
+		extern const std::vector<std::string> Scenarios;
 	}
 }

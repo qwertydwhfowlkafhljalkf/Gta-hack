@@ -10,6 +10,8 @@ namespace Cheat
 		extern int ImpactAmmoVectorPosition;
 		extern int CustomAmmoVectorPosition;
 		extern int FontTypeVectorPosition;
+		extern int AnimationsVectorPosition;
+		extern int ScenariosVectorPosition;
 		extern int selectedPlayer;
 		extern int PlayerOpacityInt;
 		extern bool BlockMaliciousScriptEvents;
@@ -27,6 +29,7 @@ namespace Cheat
 		extern bool VehicleSpawnerSpawnMaxUpgraded;
 		extern bool HidePlayerInformationBox;
 		extern bool HideSelectableInformationBox;
+		extern bool ControllableAnimations;
 
 		void NonLooped();
 		void Looped();
@@ -128,6 +131,7 @@ namespace Cheat
 		extern bool PlayerESPBool;
 		void PlayerESP();
 		extern bool OffRadarBool;
+		extern bool OffRadarWasEnabled;
 		void OffRadar();
 		extern bool ExplodeLoopSelectedPlayerBool;
 		void ExplodeLoopSelectedPlayer();
@@ -143,8 +147,9 @@ namespace Cheat
 		void DisablePhone();
 		extern bool NoIdleKickBool;
 		void NoIdleKick();
-		extern bool BribeAuthoritiesBool;
-		void BribeAuthorities();
+		extern bool CopsTurnBlindEyeBool;
+		extern bool CopsTurnBlindEyeWasEnabled;
+		void CopsTurnBlindEye();
 		extern bool MoneyDropBool;
 		extern int MoneyDropDelay;
 		extern int MoneyDropDelayPreviousTick;

@@ -525,12 +525,12 @@ bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vecto
 		if (GUI::leftPressed)
 		{
 			position >= 1 ? position-- : position = static_cast<int>(max);
-			return true;
+			if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true; }
 		}
 		if (GUI::rightPressed) 
 		{
 			position < max ? position++ : position = static_cast<int>(min);
-			return true;
+			if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true; }
 		}
 	}
 

@@ -6,6 +6,8 @@ int Cheat::CheatFeatures::MeasurementSystemVectorPosition = 0;
 int Cheat::CheatFeatures::ImpactAmmoVectorPosition = 0;
 int Cheat::CheatFeatures::CustomAmmoVectorPosition = 0;
 int Cheat::CheatFeatures::FontTypeVectorPosition = 0;
+int Cheat::CheatFeatures::AnimationsVectorPosition = 0;
+int Cheat::CheatFeatures::ScenariosVectorPosition = 0;
 int Cheat::CheatFeatures::PlayerOpacityInt = 250;
 bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
@@ -21,6 +23,7 @@ bool Cheat::CheatFeatures::VehicleSpawnerSpawnWithGodmode = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnMaxUpgraded = false;
 bool Cheat::CheatFeatures::HidePlayerInformationBox = false;
 bool Cheat::CheatFeatures::HideSelectableInformationBox = false;
+bool Cheat::CheatFeatures::ControllableAnimations = false;
 
 int PostInitBannerNotificationScaleformHandle;
 void Cheat::CheatFeatures::NonLooped()
@@ -188,7 +191,7 @@ void Cheat::CheatFeatures::Looped()
 			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, WeaponAsset, GameFunctions::PlayerPedID, 1, 0, -1.0);
 		}
 	}
-	
+
 
 	GodmodeBool ? Godmode(true) : Godmode(false);
 	NeverWantedBool ? NeverWanted(true) : NeverWanted(false);
@@ -235,7 +238,7 @@ void Cheat::CheatFeatures::Looped()
 	UnlimitedRocketBoostBool ? UnlimitedRocketBoost() : NULL;
 	VehicleGunBool ? VehicleGun() : NULL;
 	PlayerESPBool ? PlayerESP() : NULL;
-	OffRadarBool ? OffRadar() : NULL;
+	OffRadarBool ? OffRadar() : OffRadarWasEnabled ? GameFunctions::ToggleOffRadar(false), OffRadarWasEnabled = false : NULL;
 	ExplodeLoopSelectedPlayerBool ? ExplodeLoopSelectedPlayer() : NULL;
 	DriveOnWaterBool ? DriveOnWater() : NULL;
 	SuperManBool ? SuperMan() : NULL;
@@ -243,7 +246,7 @@ void Cheat::CheatFeatures::Looped()
 	RainbowGunBool ? RainbowGun() : NULL;
 	DisablePhoneBool ? DisablePhone() : NULL;
 	NoIdleKickBool ? NoIdleKick() : NULL;
-	BribeAuthoritiesBool ? BribeAuthorities() : NULL;
+	CopsTurnBlindEyeBool ? CopsTurnBlindEye() : CopsTurnBlindEyeWasEnabled ? GameFunctions::ToggleCopsTurnBlindEye(false), CopsTurnBlindEyeWasEnabled = false : NULL;
 	MoneyDropBool ? MoneyDrop() : NULL;
 	VehicleWeaponsBool ? VehicleWeapons() : NULL;
 	SuperRunBool ? SuperRun() : NULL;
@@ -281,7 +284,7 @@ bool Cheat::CheatFeatures::NoWeaponReloadBool = false;
 void Cheat::CheatFeatures::NoWeaponReload()
 {
 	Hash cur;
-	if (WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &cur, 1))
+	if (WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &cur, true))
 	{
 		if (WEAPON::IS_WEAPON_VALID(cur))
 		{
@@ -1085,10 +1088,18 @@ void Cheat::CheatFeatures::PlayerESP()
 }
 
 bool Cheat::CheatFeatures::OffRadarBool = false;
+bool Cheat::CheatFeatures::OffRadarWasEnabled = false;
 void Cheat::CheatFeatures::OffRadar()
 {
-	globalHandle(2426865).At(1 + (Cheat::GameFunctions::PlayerID * 449)).At(209).As<int>() = 1;
-	globalHandle(2441237).At(70).As<int>() = NETWORK::GET_NETWORK_TIME();
+	GameFunctions::ToggleOffRadar(true);
+	OffRadarWasEnabled = true;
+}
+
+bool Cheat::CheatFeatures::CopsTurnBlindEyeBool = false;
+bool Cheat::CheatFeatures::CopsTurnBlindEyeWasEnabled = false;
+void Cheat::CheatFeatures::CopsTurnBlindEye()
+{
+	GameFunctions::ToggleCopsTurnBlindEye(true);
 }
 
 bool Cheat::CheatFeatures::ExplodeLoopSelectedPlayerBool = false;
@@ -1209,14 +1220,6 @@ void Cheat::CheatFeatures::NoIdleKick()
 {
 	globalHandle(1379108).At(1165).As<int>() = -1;
 	globalHandle(1379108).At(1149).As<int>() = -1;
-}
-
-bool Cheat::CheatFeatures::BribeAuthoritiesBool = false;
-void Cheat::CheatFeatures::BribeAuthorities()
-{
-	globalHandle(2544210).At(4622).As<int>() = 5;
-	globalHandle(2544210).At(4623).As<int>() = 1;
-	globalHandle(2544210).At(4625).As<int>() = NETWORK::GET_NETWORK_TIME();
 }
 
 int Cheat::CheatFeatures::MoneyDropDelay = 50;

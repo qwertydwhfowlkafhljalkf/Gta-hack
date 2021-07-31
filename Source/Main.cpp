@@ -8,6 +8,7 @@ int VehicleSecondaryColorRed, VehicleSecondaryColorGreen, VehicleSecondaryColorB
 int VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue;										//Used by Vehicle Color features	
 int WheelColorRed, WheelColorGreen, WheelColorBlue;															//Used by Vehicle Color features
 int PlayerWantedLevelInteger = 0;																			//Used by Set Wanted Level Option
+std::string ChangeModelPedSearchTerm;																		//Used by Change Model (Self)
 int intexploits, intoffensive, REPORTSTRENGTH, OFFENSIVETAGPLATE, OFFENSIVEUGC,								//Used by Report Stats		
     EXPLOITS, GRIEFING, COMMENDSTRENGTH, FRIENDLY, HELPFUL, VCANNOYINGME, VCHATE,						
 	BADCREWNAME, BADCREWMOTTO, BADCREWSTATUS, BADCREWEMBLEM, ISPUNISHED;		
@@ -85,7 +86,7 @@ void Cheat::FiberMain()
 					if (GameFunctions::PlayerID != i)
 					{
 						GameFunctions::RequestNetworkControlOfEntity(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
-						AI::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
+						GameFunctions::StopAllPedAnimations(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
 						AI::CLEAR_PED_TASKS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
 						AI::CLEAR_PED_SECONDARY_TASK(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
 					}
@@ -133,9 +134,6 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Protections", protections);
 			GUI::MenuOption("Recovery", RecoveryMenu);
 			GUI::MenuOption("Session", sessionoptionsmenu);
-			GUI::Toggle("Off Radar", CheatFeatures::OffRadarBool, "Enables Lester Off Radar Feature");
-			GUI::Toggle("No Idle Kick", CheatFeatures::NoIdleKickBool, "Does not work when out of game focus");
-			GUI::Toggle("Bribe Authorities", CheatFeatures::BribeAuthoritiesBool, "Enables Bribe Authorities");
 		}
 		break; 
 		case sessionoptionsmenu:
@@ -906,11 +904,31 @@ void Cheat::FiberMain()
 				}
 			}
 			GUI::Break("Ped List", true);
+			if (GUI::Option("Search", "Enter keywords to filter peds list"))
+			{
+				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter search term");
+				if (KeyboardInput == "0") { break; }
+				ChangeModelPedSearchTerm = KeyboardInput;
+				std::transform(ChangeModelPedSearchTerm.begin(), ChangeModelPedSearchTerm.end(), ChangeModelPedSearchTerm.begin(), tolower);
+			}
+			if (!ChangeModelPedSearchTerm.empty())
+			{
+				if (GUI::Option("Clear Search Results", ""))
+				{
+					ChangeModelPedSearchTerm.clear();
+				}
+				GUI::Break("Search Results", true);
+			}
 			for (auto const& i : GameArrays::PedModels)
 			{
-				if (GUI::Option(i, ""))
+				std::string i_lowercase = i;
+				std::transform(i_lowercase.begin(), i_lowercase.end(), i_lowercase.begin(), tolower);
+				if (ChangeModelPedSearchTerm.empty() || i_lowercase.find(ChangeModelPedSearchTerm) != std::string::npos)
 				{
-					GameFunctions::ChangePedModelLocalPlayer(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(i)));
+					if (GUI::Option(i, ""))
+					{
+						GameFunctions::ChangePedModelLocalPlayer(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(i)));
+					}
 				}
 			}
 		}
@@ -1952,155 +1970,6 @@ void Cheat::FiberMain()
 					}
 				}
 			}
-			GUI::Break("~bold~Scenarios", true);
-			if (GUI::Option("Paparizzi", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_PAPARAZZI");
-			}
-			if (GUI::Option("Drug Dealer", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_DRUG_DEALER_HARD");
-			}
-			if (GUI::Option("Drinking Coffee", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_AA_COFFEE");
-			}
-			if (GUI::Option("Playing Instruments", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_MUSICIAN");
-			}
-			if (GUI::Option("Flexing", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_MUSCLE_FLEX");
-			}
-			if (GUI::Option("Jogging", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_JOG_STANDING");
-			}
-			if (GUI::Option("Binoculars", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_BINOCULARS");
-			}
-			if (GUI::Option("Clipboard", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_CLIPBOARD");
-			}
-			if (GUI::Option("Bench Press", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("PROP_HUMAN_SEAT_MUSCLE_BENCH_PRESS");
-			}
-			if (GUI::Option("Chin Ups", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("PROP_HUMAN_MUSCLE_CHIN_UPS");
-			}
-			if (GUI::Option("BBQ", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("PROP_HUMAN_BBQ");
-			}
-			if (GUI::Option("Superhero", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_SUPERHERO");
-			}
-			if (GUI::Option("Fishing", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_STAND_FISHING");
-			}
-			if (GUI::Option("Security", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_SECURITY_SHINE_TORCH");
-			}
-			if (GUI::Option("Leaf Blower", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_GARDENER_LEAF_BLOWER");
-			}
-			if (GUI::Option("Film Shocking", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_MOBILE_FILM_SHOCKING");
-			}
-			if (GUI::Option("Idle Cop", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_COP_IDLES");
-			}
-			if (GUI::Option("Drinking", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_DRINKING");
-			}
-			if (GUI::Option("Golf Player", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_GOLF_PLAYER");
-			}
-			if (GUI::Option("Welding", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_WELDING");
-			}
-			if (GUI::Option("Smoking Pot", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_SMOKING_POT");
-			}
-			if (GUI::Option("Hammering", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_HAMMERING");
-			}
-			if (GUI::Option("Tennis", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_TENNIS_PLAYER");
-			}
-			if (GUI::Option("Drilling", "")) 
-			{
-				GameFunctions::PlayScenarioNearbyPeds("WORLD_HUMAN_CONST_DRILL");
-
-			}
-			GUI::Break("~bold~Animations", true);
-			if (GUI::Option("Sex Receiver", "")) 
-			{
-				GameFunctions::ClearNearbyPedAnimations();
-				GameFunctions::DoNearbyPedsAnimation("rcmpaparazzo_2", "shag_loop_poppy");
-			}
-			if (GUI::Option("Sex Giver", "")) 
-			{
-				GameFunctions::ClearNearbyPedAnimations();
-				GameFunctions::DoNearbyPedsAnimation("rcmpaparazzo_2", "shag_loop_a");
-			}
-			if (GUI::Option("Stripper Dance", "")) 
-			{
-				GameFunctions::ClearNearbyPedAnimations();
-				GameFunctions::DoNearbyPedsAnimation("mini@strip_club@private_dance@part1", "priv_dance_p1");
-			}
-			if (GUI::Option("Pole Dance", "")) 
-			{
-				GameFunctions::ClearNearbyPedAnimations();
-				GameFunctions::DoNearbyPedsAnimation("mini@strip_club@pole_dance@pole_dance1", "pd_dance_01");
-			}
-			if (GUI::Option("Push Ups", "")) 
-			{
-				GameFunctions::ClearNearbyPedAnimations();
-				GameFunctions::DoNearbyPedsAnimation("amb@world_human_push_ups@male@base", "base");
-			}
-			if (GUI::Option("Sit Ups", "")) 
-			{
-				GameFunctions::ClearNearbyPedAnimations();
-				GameFunctions::DoNearbyPedsAnimation("amb@world_human_sit_ups@male@base", "base");
-			}
-			if (GUI::Option("Celebrate", "")) 
-			{
-				GameFunctions::ClearNearbyPedAnimations();
-				GameFunctions::DoNearbyPedsAnimation("rcmfanatic1celebrate", "celebrate");
-			}
-			if (GUI::Option("Electrocution", "")) 
-			{
-				GameFunctions::ClearNearbyPedAnimations();
-				GameFunctions::DoNearbyPedsAnimation("ragdoll@human", "electrocute");
-			}
-			if (GUI::Option("Suicide", "")) 
-			{
-				GameFunctions::ClearNearbyPedAnimations();
-				GameFunctions::DoNearbyPedsAnimation("mp_suicide", "pistol");
-			}
-			if (GUI::Option("Showering", "")) 
-			{
-				GameFunctions::ClearNearbyPedAnimations();
-				GameFunctions::DoNearbyPedsAnimation("mp_safehouseshower@male@", "male_shower_idle_b");
-			}
 		}
 		break; 
 		case nearbyvehicles_menu:
@@ -2824,7 +2693,7 @@ void Cheat::FiberMain()
 			{
 				Ped playerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer);
 				GameFunctions::RequestNetworkControlOfEntity(playerPed);
-				AI::CLEAR_PED_TASKS_IMMEDIATELY(playerPed);
+				GameFunctions::StopAllPedAnimations(playerPed);
 				AI::CLEAR_PED_TASKS(playerPed);
 				AI::CLEAR_PED_SECONDARY_TASK(playerPed);
 			}
@@ -2940,11 +2809,20 @@ void Cheat::FiberMain()
 			}
 		}
 		break; 
+		case GlobalsMenu:
+		{
+			GUI::Title("Globals");
+			GUI::Toggle("Off Radar", CheatFeatures::OffRadarBool, "Enables Lester Off Radar Feature");
+			GUI::Toggle("No Idle Kick", CheatFeatures::NoIdleKickBool, "Does not work when out of game focus");
+			GUI::Toggle("Cops Turn Blind Eye", CheatFeatures::CopsTurnBlindEyeBool, "Enables Bribe Authorities");
+		}
+		break;
 		case SelfOptionsMenu:
 		{
 			GUI::Title("Self");
 			GUI::MenuOption("Change Model", ModelChangerMenu);
-			GUI::MenuOption("Animations & Scenarios", AnimationsAndScenariosMenu);
+			GUI::MenuOption("Globals", GlobalsMenu);
+			GUI::MenuOption("Animations", AnimationsMenu);
 			GUI::MenuOption("Clothing", clothingmenu);
 			GUI::Toggle("Invincible", CheatFeatures::GodmodeBool, "Gives your character God Mode");
 			GUI::Toggle("No Ragdoll & Seatbelt", CheatFeatures::NoRagdollAndSeatbeltBool, "Disables ragdoll on your character");
@@ -2960,7 +2838,7 @@ void Cheat::FiberMain()
 			GUI::Toggle("Super Man", CheatFeatures::SuperManBool, "Fly around like a superman!");
 			if (GUI::Int("Opacity", CheatFeatures::PlayerOpacityInt, 50, 250, 50, "Changes local player opacity")) { ENTITY::SET_ENTITY_ALPHA(GameFunctions::PlayerPedID, (CheatFeatures::PlayerOpacityInt), false); }
 			if (GUI::Option("Suicide", "Kill your character")) { PED::APPLY_DAMAGE_TO_PED(GameFunctions::PlayerPedID, 300, true); }
-			if (GUI::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(2441237).At(4013).As<int>() = 1; }
+			if (GUI::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(2441237).At(4013).As<bool>() = true; }
 			if (GUI::Option("Clean", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(GameFunctions::PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(GameFunctions::PlayerPedID); GameFunctions::MinimapNotification("Player Cleaned"); }	
 		}
 		break;
@@ -3099,181 +2977,34 @@ void Cheat::FiberMain()
 			GUI::Toggle("Vehicle", CheatFeatures::ProtectionVehicleBool, "Control & Explosions");
 		}
 		break; 
-		case AnimationsAndScenariosMenu:
+		case AnimationsMenu:
 		{
-			GUI::Title("Animations & Scenarios");
-			if (GUI::Option("Stop Scenarios & Animations", "")) { GameFunctions::ClearAllAnimations(); }
-			GUI::Break("Animations", true);
-			if (GUI::Option("Sex Receiver", ""))
+			GUI::Title("Animations");
+			GUI::Toggle("Controllable", CheatFeatures::ControllableAnimations, "You can move and shoot while an animation is playing");
+			if (GUI::Option("Stop Animation", "")) { GameFunctions::StopAllPedAnimations(GameFunctions::PlayerPedID); }
+			if (GUI::StringVector("Animations", GameArrays::AnimationsDisplayNames, CheatFeatures::AnimationsVectorPosition, "Select to play animation"))
 			{
-				GameFunctions::ClearAllAnimations();
-				GameFunctions::DoLocalPedAnimation("rcmpaparazzo_2", "shag_loop_poppy");
+				int IndexCount = 0;
+				for (auto const& i : GameArrays::Animations)
+				{ 
+					if (IndexCount == CheatFeatures::AnimationsVectorPosition)
+					{
+						GameFunctions::PlayPedAnimation(GameFunctions::PlayerPedID, CheatFunctions::StringToChar(i.AnimationDictionary), CheatFunctions::StringToChar(i.AnimationName), CheatFeatures::ControllableAnimations);
+					}
+					IndexCount++;
+				}
 			}
-			if (GUI::Option("Sex Giver", ""))
+			if (GUI::StringVector("Scenarios", GameArrays::Scenarios, CheatFeatures::ScenariosVectorPosition, "Select to play scenario. 'Controllable' toggle not applicable."))
 			{
-				GameFunctions::ClearAllAnimations();
-				GameFunctions::DoLocalPedAnimation("rcmpaparazzo_2", "shag_loop_a");
-			}
-			if (GUI::Option("Stripper Dance", ""))
-			{
-				GameFunctions::ClearAllAnimations();
-				GameFunctions::DoLocalPedAnimation("mini@strip_club@private_dance@part1", "priv_dance_p1");
-			}
-			if (GUI::Option("Pole Dance", ""))
-			{
-				GameFunctions::ClearAllAnimations();
-				GameFunctions::DoLocalPedAnimation("mini@strip_club@pole_dance@pole_dance1", "pd_dance_01");
-			}
-			if (GUI::Option("Push Ups", ""))
-			{
-				GameFunctions::ClearAllAnimations();
-				GameFunctions::DoLocalPedAnimation("amb@world_human_push_ups@male@base", "base");
-			}
-			if (GUI::Option("Sit Ups", ""))
-			{
-				GameFunctions::ClearAllAnimations();
-				GameFunctions::DoLocalPedAnimation("amb@world_human_sit_ups@male@base", "base");
-			}
-			if (GUI::Option("Celebrate", ""))
-			{
-				GameFunctions::ClearAllAnimations();
-				GameFunctions::DoLocalPedAnimation("rcmfanatic1celebrate", "celebrate");
-			}
-			if (GUI::Option("Electrocution", ""))
-			{
-				GameFunctions::ClearAllAnimations();
-				GameFunctions::DoLocalPedAnimation("ragdoll@human", "electrocute");
-			}
-			if (GUI::Option("Suicide", ""))
-			{
-				GameFunctions::ClearAllAnimations();
-				GameFunctions::DoLocalPedAnimation("mp_suicide", "pistol");
-			}
-			if (GUI::Option("Showering", ""))
-			{
-				GameFunctions::ClearAllAnimations();
-				GameFunctions::DoLocalPedAnimation("mp_safehouseshower@male@", "male_shower_idle_b");
-			}
-			GUI::Break("Scenarios", true);
-			if (GUI::Option("Paparizzi", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_PAPARAZZI", 0, true);
-			}
-			if (GUI::Option("Drug Dealer", ""))
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_DRUG_DEALER_HARD", 0, true);
-			}
-			if (GUI::Option("Drinking Coffee", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_AA_COFFEE", 0, true);
-			}
-			if (GUI::Option("Playing Instruments", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_MUSICIAN", 0, true);
-			}
-			if (GUI::Option("Flexing", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_MUSCLE_FLEX", 0, true);
-			}
-			if (GUI::Option("Jogging", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_JOG_STANDING", 0, true);
-			}
-			if (GUI::Option("Binoculars", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_BINOCULARS", 0, true);
-			}
-			if (GUI::Option("Clipboard", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_CLIPBOARD", 0, true);
-			}
-			if (GUI::Option("Bench Press", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "PROP_HUMAN_SEAT_MUSCLE_BENCH_PRESS", 0, true);
-			}
-			if (GUI::Option("Chin Ups", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "PROP_HUMAN_MUSCLE_CHIN_UPS", 0, true);
-			}
-			if (GUI::Option("BBQ", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "PROP_HUMAN_BBQ", 0, true);
-			}
-			if (GUI::Option("Superhero", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_SUPERHERO", 0, true);
-			}
-			if (GUI::Option("Fishing", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_STAND_FISHING", 0, true);
-			}
-			if (GUI::Option("Security", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_SECURITY_SHINE_TORCH", 0, true);
-			}
-			if (GUI::Option("Leaf Blower", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_GARDENER_LEAF_BLOWER", 0, true);
-			}
-			if (GUI::Option("Film Shocking", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_MOBILE_FILM_SHOCKING", 0, true);
-			}
-			if (GUI::Option("Idle Cop", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_COP_IDLES", 0, true);
-			}
-			if (GUI::Option("Drinking", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_DRINKING", 0, true);
-			}
-			if (GUI::Option("Golf Player", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_GOLF_PLAYER", 0, true);
-			}
-			if (GUI::Option("Welding", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_WELDING", 0, true);
-			}
-			if (GUI::Option("Smoking Pot", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_SMOKING_POT", 0, true);
-			}
-			if (GUI::Option("Hammering", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_HAMMERING", 0, true);
-			}
-			if (GUI::Option("Tennis", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_TENNIS_PLAYER", 0, true);
-			}
-			if (GUI::Option("Drilling", "")) 
-			{
-				GameFunctions::ClearAllAnimations();
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, "WORLD_HUMAN_CONST_DRILL", 0, true);
+				int IndexCount = 0;
+				for (auto const& i : GameArrays::Scenarios)
+				{
+					if (IndexCount == CheatFeatures::ScenariosVectorPosition)
+					{
+						AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, CheatFunctions::StringToChar(i), 0, true);
+					}
+					IndexCount++;
+				}
 			}
 		}
 		break; 

@@ -35,7 +35,7 @@ namespace Cheat
 		void ClonePed(Ped ped);
 		char* DisplayKeyboardAndReturnInput(int MaxInput, std::string Title);
 		int DisplayKeyboardAndReturnInputInteger(int MaxInput, std::string Title);
-		void ClearAllAnimations();
+		void StopAllPedAnimations(Ped TargetPed);
 		void ShowPlayerInformationBox(Player PlayerID);
 		float Get3DDistance(Vector3 a, Vector3 b);
 		void ApplyForceToEntity(Entity e, float x, float y, float z);
@@ -48,7 +48,7 @@ namespace Cheat
 		bool IsEntityInInterior(Entity Entity);
 		void ClearNearbyPedAnimations();
 		void DoNearbyPedsAnimation(char* AnimationName, char* AnimationID);
-		void DoLocalPedAnimation(char* AnimationName, char* AnimationID);
+		void PlayPedAnimation(Ped TargetPed, char* AnimationName, char* AnimationID, bool Controllable);
 		void AttachObjectToPed(Ped Ped, char* ObjectName);
 		void DetachObjectFromPed(Ped Ped, char* ObjectName);
 		void MinimapNotification(char* Message);
@@ -76,6 +76,7 @@ namespace Cheat
 		Player ReturnPlayerIDFromPlayerName(std::string PlayerName);
 		void MaxUpgradeAllWeapons();
 		void ShowTeleportLocationsMenu(std::vector<TeleportLocationStruct> category);
-		void ShowCustomIngameWarningMessage(std::string FirstLine, int InstructionalKey, std::string SecondLine);
+		void ToggleOffRadar(bool state);
+		void ToggleCopsTurnBlindEye(bool state);
 	}
 }
