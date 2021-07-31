@@ -8,6 +8,7 @@ int Cheat::CheatFeatures::CustomAmmoVectorPosition = 0;
 int Cheat::CheatFeatures::FontTypeVectorPosition = 0;
 int Cheat::CheatFeatures::AnimationsVectorPosition = 0;
 int Cheat::CheatFeatures::ScenariosVectorPosition = 0;
+int Cheat::CheatFeatures::PedMovementVectorPosition = 0;
 int Cheat::CheatFeatures::PlayerOpacityInt = 250;
 bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;

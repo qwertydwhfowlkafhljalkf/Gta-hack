@@ -2982,7 +2982,7 @@ void Cheat::FiberMain()
 			GUI::Title("Animations");
 			GUI::Toggle("Controllable", CheatFeatures::ControllableAnimations, "You can move and shoot while an animation is playing");
 			if (GUI::Option("Stop Animation", "")) { GameFunctions::StopAllPedAnimations(GameFunctions::PlayerPedID); }
-			if (GUI::StringVector("Animations", GameArrays::AnimationsDisplayNames, CheatFeatures::AnimationsVectorPosition, "Select to play animation"))
+			if (GUI::StringVector("Animations", GameArrays::AnimationsDisplayNames, CheatFeatures::AnimationsVectorPosition, "Select to play animation", SELECTABLE_DISABLE_SAVE))
 			{
 				int IndexCount = 0;
 				for (auto const& i : GameArrays::Animations)
@@ -2994,7 +2994,7 @@ void Cheat::FiberMain()
 					IndexCount++;
 				}
 			}
-			if (GUI::StringVector("Scenarios", GameArrays::Scenarios, CheatFeatures::ScenariosVectorPosition, "Select to play scenario. 'Controllable' toggle not applicable."))
+			if (GUI::StringVector("Scenarios", GameArrays::Scenarios, CheatFeatures::ScenariosVectorPosition, "Select to play scenario. 'Controllable' toggle not applicable.", SELECTABLE_DISABLE_SAVE))
 			{
 				int IndexCount = 0;
 				for (auto const& i : GameArrays::Scenarios)
@@ -3015,6 +3015,8 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Hide Elements", HideElementsMenu);
 			GUI::Int("Max Visible Menu Options", GUI::maxVisOptions, 5, 16, 1);
 			GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu");
+			GUI::StringVector("Measurement System", { "Metric", "Imperial" }, CheatFeatures::MeasurementSystemVectorPosition, "Metric = KM/H, Imperial = MP/H", SELECTABLE_RETURN_VALUE_CHANGE);
+			GUI::Break("Keys", true);
 			if (GUI::Option("Menu GUI: ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::OpenGUIKey), "Select to change"))
 			{
 				int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
@@ -3046,7 +3048,6 @@ void Cheat::FiberMain()
 				}
 			}
 			GUI::Int("Key Press Delay", GUI::GUIKeyPressDelay, 1, 250, 5);
-			GUI::StringVector("Measurement System", { "Metric", "Imperial" }, CheatFeatures::MeasurementSystemVectorPosition, "Metric = KM/H, Imperial = MP/H", SELECTABLE_RETURN_VALUE_CHANGE);
 			GUI::MenuOption("About", AboutMenu);
 		}
 		break;

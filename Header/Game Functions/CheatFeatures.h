@@ -12,6 +12,7 @@ namespace Cheat
 		extern int FontTypeVectorPosition;
 		extern int AnimationsVectorPosition;
 		extern int ScenariosVectorPosition;
+		extern int PedMovementVectorPosition;
 		extern int selectedPlayer;
 		extern int PlayerOpacityInt;
 		extern bool BlockMaliciousScriptEvents;
