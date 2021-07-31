@@ -97,7 +97,6 @@ enum SubMenus
 	hudmenu,
 	HideElementsMenu,
 	AboutMenu,
-	unlocksmenu,
 	reportsmenu_stats,
 	allplayers_weaponoptionsmenu,
 	VehicleCustomizerMenu,

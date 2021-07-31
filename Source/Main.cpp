@@ -153,101 +153,9 @@ void Cheat::FiberMain()
 		case RecoveryMenu:
 		{
 			GUI::Title("Recovery");
-			GUI::Break("~bold~~r~Features in this submenu can be risky", false);
-			GUI::Break("Rank", true);
-			if (GUI::Option("Set Custom Rank", "Input a custom Rank"))
-			{
-				int Rank = GameFunctions::DisplayKeyboardAndReturnInputInteger(4, "Enter desired rank");
-				if (Rank != 0) { GameFunctions::SetRankRockstarGift(Rank); }
-			}
-			GUI::MenuOption("Unlocks", unlocksmenu);
-			GUI::Break("Money", true);
-			GUI::Break("Wallet balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_WALLET_BALANCE(-1)), false);
-			GUI::Break("Bank balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_BANK_BALANCE()), false);
-			GUI::Toggle("Drop Money", CheatFeatures::MoneyDropBool, "Only works for local player", SELECTABLE_DISABLE_SAVE | SELECTABLE_DISABLED);
-			GUI::Int("Drop Delay", CheatFeatures::MoneyDropDelay, 50, 2000, 50, "Set to 1500 to prevent transaction errors");
-			GUI::Break("Miscellaneous", true);
-			if (GUI::Option("Set Max Nightclub Popularity", "Set NightClub Popularity to 100%"))
-			{
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CLUB_POPULARITY")), 9999, false);
-				GameFunctions::MinimapNotification("Maxed out Nightclub Popularity");
-			}
-			if (GUI::Option("Redesign Character Prompt", ""))
-			{
-				STATS::STAT_SET_BOOL(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_FM_CHANGECHAR_ASKED")), false, true);
-				GameFunctions::MinimapNotification("Leave GTAO and rejoin to receive the notification");
-			}
-			if (GUI::Option("Clear Badsport", "Clears Badsport status"))
-			{
-				DWORD date[12];
-				STATS::STAT_SET_BOOL(GAMEPLAY::GET_HASH_KEY("MPPLY_CHAR_IS_BADSPORT "), 0, 1);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_BAD_SPORT_BITSET"), 0, 1);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP1_BAD_SPORT_BITSET"), 0, 1);
-				STATS::STAT_SET_DATE(GAMEPLAY::GET_HASH_KEY("MPPLY_BECAME_BADSPORT_DT"), &date[0], 7, 1);
-				GameFunctions::MinimapNotification("Cleared Badsport Status");
-			}
-			if (GUI::Option("Clear Mental State", "Clear current mental state"))
-			{
-				STATS::STAT_SET_FLOAT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PLAYER_MENTAL_STATE")), 0.0, true);
-				GameFunctions::MinimapNotification("Mental State Reset");
-			}
-			GUI::Break("ATM", true);
-			if (GUI::Option("Move Wallet To Bank", ""))
-			{
-				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move");
-				if (KeyboardInput == "0") { break; }
-				UNK3::_NETWORK_TRANSFER_WALLET_TO_BANK(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), CheatFunctions::StringToInt(KeyboardInput));
-			}
-			if (GUI::Option("Move Bank To Wallet", ""))
-			{
-				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move");
-				if (KeyboardInput == "0") { break; }
-				UNK3::_NETWORK_TRANSFER_BANK_TO_WALLET(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), CheatFunctions::StringToInt(KeyboardInput));
-			}
-		}
-		break; 
-		case reportsmenu_stats:
-		{
-			GUI::Title("Reports"); 
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_REPORT_STRENGTH"),	&REPORTSTRENGTH,	-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_GAME_EXPLOITS"),		&intexploits,		-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_OFFENSIVE_LANGUAGE"), &intoffensive,		-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_OFFENSIVE_TAGPLATE"), &OFFENSIVETAGPLATE, -1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_OFFENSIVE_UGC"),		&OFFENSIVEUGC,		-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_EXPLOITS"),			&EXPLOITS,			-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_GRIEFING"),			&GRIEFING,			-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_COMMEND_STRENGTH"),	&COMMENDSTRENGTH,	-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_FRIENDLY"),			&FRIENDLY,			-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_HELPFUL"),			&HELPFUL,			-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_VC_ANNOYINGME"),		&VCANNOYINGME,		-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_VC_HATE"),			&VCHATE,			-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_BAD_CREW_NAME"),		&BADCREWNAME,		-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_BAD_CREW_MOTTO"),		&BADCREWMOTTO,		-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_BAD_CREW_STATUS"),	&BADCREWSTATUS,		-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_BAD_CREW_EMBLEM"),	&BADCREWEMBLEM,		-1);
-			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_ISPUNISHED"),			&ISPUNISHED,		-1);
-			GUI::Option("Report Strength: " + std::to_string(REPORTSTRENGTH), "");
-			GUI::Option("Game Exploits: " + std::to_string(intexploits), "");
-			GUI::Option("Offensive Language: " + std::to_string(intoffensive), "");
-			GUI::Option("Offensive Tagplate: " + std::to_string(OFFENSIVETAGPLATE), "");
-			GUI::Option("Offensive UGC: " + std::to_string(OFFENSIVEUGC), "");
-			GUI::Option("Exploits: " + std::to_string(EXPLOITS), "");
-			GUI::Option("Griefing: " + std::to_string(GRIEFING), "");
-			GUI::Option("Friendly: " + std::to_string(FRIENDLY), "");
-			GUI::Option("Helpful: " + std::to_string(HELPFUL), "");
-			GUI::Option("VC Annoying Me: " + std::to_string(VCANNOYINGME), "");
-			GUI::Option("Vchate: " + std::to_string(VCHATE), "");
-			GUI::Option("Bad Crew Name: " + std::to_string(BADCREWNAME), "");
-			GUI::Option("Bad Crew Motto: " + std::to_string(BADCREWMOTTO), "");
-			GUI::Option("Bad Crew Status: " + std::to_string(BADCREWSTATUS), "");
-			GUI::Option("Bad Crew Emblem: " + std::to_string(BADCREWEMBLEM), "");
-			GUI::Option("Is Punished: " + std::to_string(ISPUNISHED), "");
-		}
-		break; 
-		case unlocksmenu:
-		{
-			GUI::Title("Unlocks");
-			if (GUI::Option("Unlock All", "Unlocks most unlockable GTA Online items")) 
+			GUI::Break("~r~Features in this submenu can be risky", false);
+			GUI::Break("Unlocks", true);
+			if (GUI::Option("Unlock All", "Unlocks many unlockable GTA Online items"))
 			{
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_ADMIN_CLOTHES_GV_BS_1")), -1, true);
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_ADMIN_CLOTHES_GV_BS_10")), -1, true);
@@ -700,12 +608,12 @@ void Cheat::FiberMain()
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_FM_ACT_PH9")), -1, true);
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SNIPERRFL_ENEMY_KILLS")), 500, true);
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_HVYSNIPER_ENEMY_KILLS")), 500, true);
-				
+
 
 
 				GameFunctions::MinimapNotification("'Unlocked All' completed");
 			}
-			if (GUI::Option("Max Skills", "Max out all skill levels")) 
+			if (GUI::Option("Max Skills", "Max out all skill levels"))
 			{
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_STAM")), 100, 0);
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_STRN")), 100, 0);
@@ -714,9 +622,9 @@ void Cheat::FiberMain()
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_FLY")), 100, 0);
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_SHO")), 100, 0);
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_STL")), 100, 0);
-				GameFunctions::MinimapNotification("Maxed out all skill values for your current character"); 	
+				GameFunctions::MinimapNotification("Maxed out all skill values for your current character");
 			}
-			if (GUI::Option("Unlock Tattoo's", "Unlock most tattoo's")) 
+			if (GUI::Option("Unlock Tattoo's", "Unlock most tattoo's"))
 			{
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_AWD_FM_DM_WINS")), 50, 1);
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_AWD_FM_TDM_MVP")), 50, 1);
@@ -739,7 +647,7 @@ void Cheat::FiberMain()
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PLAYER_HEADSHOTS")), 500, 1);
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_DB_PLAYER_KILLS")), 1000, 1);
 			}
-			if (GUI::Option("Unlock All Heist Vehicles", "Unlock Heist Vehicles")) 
+			if (GUI::Option("Unlock Heist Vehicles", "Unlock Heist Vehicles"))
 			{
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CHAR_KIT_FM_PURCHAS E")), -1, 0);
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CHAR_KIT_FM_PURCHAS E2")), -1, 0);
@@ -800,7 +708,7 @@ void Cheat::FiberMain()
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CHAR_FM_HEALTH_2_UNLCK")), -1, 0);
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_HOLDUPS_BITSET")), -1, 0);
 			}
-			if (GUI::Option("Unlock Awards & Trophies", "")) 
+			if (GUI::Option("Unlock Awards & Trophies", ""))
 			{
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PLAYER_HEADSHOTS")), 500, 1);
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PISTOL_ENEMY_KILLS")), 500, 1);
@@ -888,9 +796,96 @@ void Cheat::FiberMain()
 				STATS::STAT_SET_BOOL(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "__AWD_FMWINALLRACEMODES")), 1, 1);
 				STATS::STAT_SET_BOOL(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_AWD_FMTATTOOALLBODYPARTS")), 1, 1);
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CHAR_WANTED_LEVEL_TIME5STAR")), 2147483647, 1);
-				STATS::STAT_SET_FLOAT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_LONGEST_WHEELIE_DIST")), 1000, 1);		
+				STATS::STAT_SET_FLOAT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_LONGEST_WHEELIE_DIST")), 1000, 1);
 				GameFunctions::MinimapNotification("GTA Online Awards & Trophies unlocked");
 			}
+			GUI::Break("Rank", true);
+			if (GUI::Option("Set Custom Rank", "Input a custom Rank"))
+			{
+				int Rank = GameFunctions::DisplayKeyboardAndReturnInputInteger(4, "Enter desired rank");
+				if (Rank != 0) { GameFunctions::SetRankRockstarGift(Rank); }
+			}
+			GUI::Break("Money", true);
+			GUI::Break("Wallet balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_WALLET_BALANCE(-1)), false);
+			GUI::Break("Bank balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_BANK_BALANCE()), false);
+			GUI::Toggle("Drop Money", CheatFeatures::MoneyDropBool, "Only works for local player", SELECTABLE_DISABLE_SAVE | SELECTABLE_DISABLED);
+			GUI::Int("Drop Delay", CheatFeatures::MoneyDropDelay, 50, 2000, 50, "Set to 1500 to prevent transaction errors");
+			GUI::Break("Miscellaneous", true);
+			if (GUI::Option("Set Max Nightclub Popularity", "Set NightClub Popularity to 100%"))
+			{
+				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CLUB_POPULARITY")), 9999, false);
+				GameFunctions::MinimapNotification("Maxed out Nightclub Popularity");
+			}
+			if (GUI::Option("Redesign Character Prompt", ""))
+			{
+				STATS::STAT_SET_BOOL(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_FM_CHANGECHAR_ASKED")), false, true);
+				GameFunctions::MinimapNotification("Leave GTAO and rejoin to receive the notification");
+			}
+			if (GUI::Option("Clear Badsport", "Clears Badsport status"))
+			{
+				DWORD date[12];
+				STATS::STAT_SET_BOOL(GAMEPLAY::GET_HASH_KEY("MPPLY_CHAR_IS_BADSPORT "), 0, 1);
+				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_BAD_SPORT_BITSET"), 0, 1);
+				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP1_BAD_SPORT_BITSET"), 0, 1);
+				STATS::STAT_SET_DATE(GAMEPLAY::GET_HASH_KEY("MPPLY_BECAME_BADSPORT_DT"), &date[0], 7, 1);
+				GameFunctions::MinimapNotification("Cleared Badsport Status");
+			}
+			if (GUI::Option("Clear Mental State", "Clear current mental state"))
+			{
+				STATS::STAT_SET_FLOAT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PLAYER_MENTAL_STATE")), 0.0, true);
+				GameFunctions::MinimapNotification("Mental State Reset");
+			}
+			GUI::Break("ATM", true);
+			if (GUI::Option("Move Wallet To Bank", ""))
+			{
+				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move");
+				if (KeyboardInput == "0") { break; }
+				UNK3::_NETWORK_TRANSFER_WALLET_TO_BANK(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), CheatFunctions::StringToInt(KeyboardInput));
+			}
+			if (GUI::Option("Move Bank To Wallet", ""))
+			{
+				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move");
+				if (KeyboardInput == "0") { break; }
+				UNK3::_NETWORK_TRANSFER_BANK_TO_WALLET(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), CheatFunctions::StringToInt(KeyboardInput));
+			}
+		}
+		break; 
+		case reportsmenu_stats:
+		{
+			GUI::Title("Reports"); 
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_REPORT_STRENGTH"),	&REPORTSTRENGTH,	-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_GAME_EXPLOITS"),		&intexploits,		-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_OFFENSIVE_LANGUAGE"), &intoffensive,		-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_OFFENSIVE_TAGPLATE"), &OFFENSIVETAGPLATE, -1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_OFFENSIVE_UGC"),		&OFFENSIVEUGC,		-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_EXPLOITS"),			&EXPLOITS,			-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_GRIEFING"),			&GRIEFING,			-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_COMMEND_STRENGTH"),	&COMMENDSTRENGTH,	-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_FRIENDLY"),			&FRIENDLY,			-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_HELPFUL"),			&HELPFUL,			-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_VC_ANNOYINGME"),		&VCANNOYINGME,		-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_VC_HATE"),			&VCHATE,			-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_BAD_CREW_NAME"),		&BADCREWNAME,		-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_BAD_CREW_MOTTO"),		&BADCREWMOTTO,		-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_BAD_CREW_STATUS"),	&BADCREWSTATUS,		-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_BAD_CREW_EMBLEM"),	&BADCREWEMBLEM,		-1);
+			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_ISPUNISHED"),			&ISPUNISHED,		-1);
+			GUI::Option("Report Strength: " + std::to_string(REPORTSTRENGTH), "");
+			GUI::Option("Game Exploits: " + std::to_string(intexploits), "");
+			GUI::Option("Offensive Language: " + std::to_string(intoffensive), "");
+			GUI::Option("Offensive Tagplate: " + std::to_string(OFFENSIVETAGPLATE), "");
+			GUI::Option("Offensive UGC: " + std::to_string(OFFENSIVEUGC), "");
+			GUI::Option("Exploits: " + std::to_string(EXPLOITS), "");
+			GUI::Option("Griefing: " + std::to_string(GRIEFING), "");
+			GUI::Option("Friendly: " + std::to_string(FRIENDLY), "");
+			GUI::Option("Helpful: " + std::to_string(HELPFUL), "");
+			GUI::Option("VC Annoying Me: " + std::to_string(VCANNOYINGME), "");
+			GUI::Option("Vchate: " + std::to_string(VCHATE), "");
+			GUI::Option("Bad Crew Name: " + std::to_string(BADCREWNAME), "");
+			GUI::Option("Bad Crew Motto: " + std::to_string(BADCREWMOTTO), "");
+			GUI::Option("Bad Crew Status: " + std::to_string(BADCREWSTATUS), "");
+			GUI::Option("Bad Crew Emblem: " + std::to_string(BADCREWEMBLEM), "");
+			GUI::Option("Is Punished: " + std::to_string(ISPUNISHED), "");
 		}
 		break;
 		case ModelChangerMenu:
