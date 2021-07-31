@@ -175,11 +175,11 @@ namespace Cheat
 		extern RGBA scroller;
 		extern RGBA PrimaryColor;
 		extern RGBAF TextColorAndFont;
-		extern int KeyPressDelay;
+		extern int GUIKeyPressDelay;
 		extern int KeyPressPreviousTick;
 		extern int OpenGUIKey;
 		extern int GUINavigationKey;
-		extern int SaveItemKey;
+		extern int SaveSelectableKey;
 		extern void DeleteCurrentTheme();
 		void MoveMenu(SubMenus menu);
 		void BackMenu();

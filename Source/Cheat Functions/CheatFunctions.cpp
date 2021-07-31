@@ -244,7 +244,7 @@ int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 void Cheat::CheatFunctions::SaveOption(std::string OptionName, std::string OptionValue, bool IsSavable)
 {
 	GUI::CurrentOptionIsSavable = IsSavable;
-	if (IsKeyCurrentlyPressed(GUI::SaveItemKey))
+	if (IsKeyCurrentlyPressed(GUI::SaveSelectableKey))
 	{
 		if (IsSavable)
 		{

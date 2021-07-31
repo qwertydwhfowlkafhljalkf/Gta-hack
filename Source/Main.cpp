@@ -3015,7 +3015,7 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Hide Elements", HideElementsMenu);
 			GUI::Int("Max Visible Menu Options", GUI::maxVisOptions, 5, 16, 1);
 			GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu");
-			if (GUI::Option("Menu GUI ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::OpenGUIKey), "Select to change"))
+			if (GUI::Option("Menu GUI: ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::OpenGUIKey), "Select to change"))
 			{
 				int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
 				if (PressedKey != 0)
@@ -3025,7 +3025,7 @@ void Cheat::FiberMain()
 					GameFunctions::MinimapNotification("Menu GUI key has been set");
 				}
 			}
-			if (GUI::Option("Cursor Navigation ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::GUINavigationKey), "Select to change"))
+			if (GUI::Option("Cursor Navigation: ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::GUINavigationKey), "Select to change"))
 			{
 				int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
 				if (PressedKey != 0)
@@ -3035,8 +3035,18 @@ void Cheat::FiberMain()
 					GameFunctions::MinimapNotification("Cursor Navigation key has been set");
 				}
 			}
-			GUI::Int("Key Press Delay", GUI::KeyPressDelay, 1, 250, 1);
-			GUI::StringVector("Measurement System", { "Metric", "Imperial" }, CheatFeatures::MeasurementSystemVectorPosition, "Metric = KM/H, Imperial = MP/H");
+			if (GUI::Option("Save Selectable: ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::SaveSelectableKey), "Select to change"))
+			{
+				int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
+				if (PressedKey != 0)
+				{
+					GUI::SaveSelectableKey = PressedKey;
+					CheatFunctions::IniFileWriteString(std::to_string(PressedKey), CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Save Selectable Key");
+					GameFunctions::MinimapNotification("Cursor Navigation key has been set");
+				}
+			}
+			GUI::Int("Key Press Delay", GUI::GUIKeyPressDelay, 1, 250, 5);
+			GUI::StringVector("Measurement System", { "Metric", "Imperial" }, CheatFeatures::MeasurementSystemVectorPosition, "Metric = KM/H, Imperial = MP/H", SELECTABLE_RETURN_VALUE_CHANGE);
 			GUI::MenuOption("About", AboutMenu);
 		}
 		break;
@@ -3109,7 +3119,7 @@ void Cheat::FiberMain()
 				GameFunctions::MinimapNotification("Updated Text Color");
 			}
 			GUI::Break("Font", true);
-			if (GUI::StringVector("Type", { "Chalet London", "House Script", "Monospace", "Wing Dings", "Chalet Comprime Cologne", "Pricedown" }, CheatFeatures::FontTypeVectorPosition, ""))
+			if (GUI::StringVector("Type", { "Chalet London", "House Script", "Monospace", "Wing Dings", "Chalet Comprime Cologne", "Pricedown" }, CheatFeatures::FontTypeVectorPosition, "", SELECTABLE_RETURN_VALUE_CHANGE))
 			{
 				if (CheatFeatures::FontTypeVectorPosition == 0)
 				{

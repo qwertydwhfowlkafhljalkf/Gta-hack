@@ -31,8 +31,8 @@ int Cheat::GUI::optionCountVisible		= 0;	//This has GUI::Break excluded
 int Cheat::GUI::TotalOptionsCount		= 0;
 int Cheat::GUI::menuLevel				= 0;
 SubMenus Cheat::GUI::PreviousMenu		= NOMENU;
-SubMenus Cheat::GUI::currentMenu;
-int Cheat::GUI::PreviousMenuLevel;
+SubMenus Cheat::GUI::currentMenu		= NOMENU;
+int Cheat::GUI::PreviousMenuLevel		= 0;
 int Cheat::GUI::optionsArray			[1000];
 SubMenus Cheat::GUI::menusArray			[1000];
 std::vector <std::string> Cheat::GUI::ThemeFilesVector;
@@ -40,11 +40,11 @@ std::vector <std::string> Cheat::GUI::ThemeFilesVector;
 RGBA Cheat::GUI::PrimaryColor               { 0, 0, 255, 255 };
 RGBAF Cheat::GUI::TextColorAndFont			{ 255, 255, 255, 255, FontChaletLondon };
 
-int Cheat::GUI::KeyPressDelay				= 200;
+int Cheat::GUI::GUIKeyPressDelay			= 150;
 int Cheat::GUI::KeyPressPreviousTick		= GetTickCount64();
 int Cheat::GUI::OpenGUIKey					= VK_F4;
 int Cheat::GUI::GUINavigationKey			= VK_F5;
-int Cheat::GUI::SaveItemKey					= VK_F12;
+int Cheat::GUI::SaveSelectableKey			= VK_F12;
 
 
 void Cheat::GUI::Title(std::string TitleName)
@@ -108,7 +108,7 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, int Bit
 			GUI::Drawing::Rect({ GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY + 0.042f }, { 0.25f, 0.005f });
 			GUI::Drawing::Rect({ 0, 0, 0, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY }, { 0.25f, 0.080f });
 			GUI::Drawing::Text(SelectableInformationText != "" ? CheatFunctions::TextWrap(SelectableInformationText, 30) : option, TextColorAndFont, { SelectableInfoBoxX - 0.12f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false);
-			if (GUI::CurrentOptionIsSavable) { GUI::Drawing::Text("Save Option: " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::SaveItemKey), TextColorAndFont, { SelectableInfoBoxX + 0.04f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false); }
+			if (GUI::CurrentOptionIsSavable) { GUI::Drawing::Text("Save Option: " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::SaveSelectableKey), TextColorAndFont, { SelectableInfoBoxX + 0.04f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false); }
 		}
 		
 		GUI::currentOptionVisible = GUI::optionCount - (GUI::optionCount - GUI::optionCountVisible);
@@ -573,7 +573,7 @@ void Cheat::GUI::ControlsLoop()
 		GUI::leftPressed = false;
 		GUI::rightPressed = false;
 
-		if (GetTickCount64() - GUI::KeyPressPreviousTick > GUI::KeyPressDelay)
+		if (GetTickCount64() - GUI::KeyPressPreviousTick > GUI::GUIKeyPressDelay)
 		{
 			if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(GUI::OpenGUIKey))
 			{
