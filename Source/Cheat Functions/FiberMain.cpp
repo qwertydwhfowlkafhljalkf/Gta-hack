@@ -1,4 +1,4 @@
-﻿#include "../Header/Main.h"
+﻿#include "../Header/Cheat Functions/FiberMain.h"
 int Cheat::CheatFeatures::selectedPlayer;
 float TeleportFoward = 1.f;																					//Used by Teleport Forward option
 int engine_multiplier, torque_multiplier;																	//Used by Vehicle Multipliers options
@@ -3190,37 +3190,4 @@ void Cheat::FiberMain()
 		GUI::End();
 		GameHooking::PauseMainFiber(0, false);
 	}
-}
-
-DWORD WINAPI InitThread(LPVOID lpParam)
-{
-	Cheat::CheatFunctions::CreateConsole();
-	Cheat::LogFunctions::Init();
-	GameHooking::DoGameHooking();
-	//Hooks created - this thread is no longer needed
-	return 0;
-}
-
-HMODULE Cheat::CheatModuleHandle;
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
-{
-	switch (ul_reason_for_call)
-	{
-	case DLL_PROCESS_ATTACH:
-		DisableThreadLibraryCalls(hModule);
-		Cheat::CheatModuleHandle = hModule;
-		//Create 'gtav' directory
-		std::string GtavDirectoryPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav";
-		if (!Cheat::CheatFunctions::FileOrDirectoryExists(GtavDirectoryPath)) { Cheat::CheatFunctions::CreateNewDirectory(GtavDirectoryPath); }
-		//Create 'Logs' directory
-		std::string LogsDirectoryPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Logs";
-		if (!Cheat::CheatFunctions::FileOrDirectoryExists(LogsDirectoryPath)) { Cheat::CheatFunctions::CreateNewDirectory(LogsDirectoryPath); }
-		//Create 'Themes' directory
-		std::string ThemesDirectoryPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
-		if (!Cheat::CheatFunctions::FileOrDirectoryExists(ThemesDirectoryPath)) { Cheat::CheatFunctions::CreateNewDirectory(ThemesDirectoryPath); }
-		//Continue cheat loading
-		CreateThread(NULL, NULL, InitThread, hModule, NULL, NULL);
-		break;
-	}
-	return TRUE;
 }

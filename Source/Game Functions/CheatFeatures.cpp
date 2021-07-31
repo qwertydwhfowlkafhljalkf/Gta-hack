@@ -1,4 +1,4 @@
-#include "../Header/Main.h"
+#include "../Header/Cheat Functions/FiberMain.h"
 
 int Cheat::CheatFeatures::SpeedometerVectorPosition = 0;
 int Cheat::CheatFeatures::AimbotBoneVectorPosition = 0;
@@ -31,6 +31,9 @@ void Cheat::CheatFeatures::NonLooped()
 {
 	//Check for newer cheat version
 	Cheat::CheatFunctions::CheckCheatUpdate();
+
+	//Create Menu Selectable Arrow Animation Thread - no point creating a thread handle rn, no interaction required
+	CreateThread(NULL, NULL, CheatFunctions::MenuSelectableAnimationThread, Cheat::CheatModuleHandle, NULL, NULL);
 
 	//Initialize Texture File
 	Cheat::GUI::Drawing::InitTextureFile();

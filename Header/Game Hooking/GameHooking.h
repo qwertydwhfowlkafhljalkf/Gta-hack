@@ -21,7 +21,7 @@ public:
 	static GetPlayerAddress					get_player_address;
 	static GetChatData					    get_chat_data;
 
-	static void DoGameHooking();
+	static void Initialize();
 	static void PauseMainFiber(DWORD ms, bool ShowMessage = true);
 	static uint64_t getWorldPtr();
 	static void onTickInit();

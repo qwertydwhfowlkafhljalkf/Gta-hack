@@ -1,4 +1,4 @@
-#include "../Header/Main.h"
+#include "../Header/Cheat Functions/FiberMain.h"
 
 void Cheat::GameFunctions::GiveAllWeaponsToPlayer(Ped Player)
 {

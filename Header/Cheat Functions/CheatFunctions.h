@@ -87,5 +87,6 @@ namespace Cheat
 		Json::Value ReadJsonFileAndReturnDataObject(std::string FilePath);
 		void AddCustomTeleportLocation(std::string CustomTeleportLocationName);
 		void DeleteCustomTeleportLocation(std::string CustomTeleportLocationName);
+		DWORD WINAPI MenuSelectableAnimationThread(LPVOID lpParam);
 	}
 }

@@ -1,4 +1,4 @@
-#include "../Header/Main.h"
+#include "../Header/Cheat Functions/FiberMain.h"
 
 static NativeManagerContext g_context;
 static UINT64 g_hash;

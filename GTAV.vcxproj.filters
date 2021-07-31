@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Source\Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GUI\GUI.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
@@ -43,12 +40,15 @@
     <ClCompile Include="ThirdParty\JsonCpp\json_writer.cpp">
       <Filter>ThirdParty\JsonCpp</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Cheat Functions\FiberMain.cpp">
+      <Filter>Source Files\Cheat Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Cheat Functions\Entry.cpp">
+      <Filter>Source Files\Cheat Functions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header\Game Hooking\CrossMapping.h">
@@ -94,6 +94,9 @@
       <Filter>Header Files\Game Functions</Filter>
     </ClInclude>
     <ClInclude Include="Header\Cheat Functions\LogFunctions.h">
+      <Filter>Header Files\Cheat Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Cheat Functions\FiberMain.h">
       <Filter>Header Files\Cheat Functions</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,4 +1,4 @@
-#include "../Header/Main.h"
+#include "../Header/Cheat Functions/FiberMain.h"
 
 bool Cheat::CheatFunctions::NewerCheatVersionAvailable = false;
 std::string Cheat::CheatFunctions::NewCheatVersionString;
@@ -672,4 +672,16 @@ void Cheat::CheatFunctions::DeleteCustomTeleportLocation(std::string CustomTelep
 	std::fstream FileHandle(ReturnCustomTeleportLocationsFilePath(), std::ios_base::out);
 	FileHandle << JsonHandle;
 	FileHandle.close();
+}
+
+DWORD WINAPI Cheat::CheatFunctions::MenuSelectableAnimationThread(LPVOID lpParam)
+{
+	int Delay = 1000;
+	while (true)
+	{
+		GUI::MenuOptionArrowAnimationState = true;
+		Sleep(Delay);
+		GUI::MenuOptionArrowAnimationState = false;
+		Sleep(Delay);
+	}
 }

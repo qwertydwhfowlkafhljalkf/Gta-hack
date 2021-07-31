@@ -1,4 +1,4 @@
-#include "../Header/Main.h"
+#include "../Header/Cheat Functions/FiberMain.h"
 
 const float Cheat::GUI::guiX_Default				= 0.11f;
 const float Cheat::GUI::guiY_Default				= 0.30f;
@@ -237,6 +237,7 @@ bool Cheat::GUI::Break(std::string option, bool TextCentered)
 	return false;
 }
 
+bool Cheat::GUI::MenuOptionArrowAnimationState = false;
 bool Cheat::GUI::MenuOption(std::string option, SubMenus newSub, int BitFlags)
 {
 	if (Option(option, "", BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
@@ -244,13 +245,14 @@ bool Cheat::GUI::MenuOption(std::string option, SubMenus newSub, int BitFlags)
 		GUI::MoveMenu(newSub);
 		return true;
 	}
+
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
-		GUI::Drawing::Text(">", TextColorAndFont, { Cheat::GUI::guiX + 0.09f, GUI::guiY + (GUI::optionCount) * 0.035f - 0.174f }, { 0.35f, 0.35f }, false);
+		GUI::Drawing::Text(MenuOptionArrowAnimationState ? ">" : " >", TextColorAndFont, {Cheat::GUI::guiX + 0.09f, GUI::guiY + (GUI::optionCount) * 0.035f - 0.174f}, {0.35f, 0.35f}, false);
 	}
 	else if (GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions) && GUI::optionCount <= GUI::currentOption)
 	{
-		GUI::Drawing::Text(">", TextColorAndFont, { Cheat::GUI::guiX + 0.09f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.174f }, { 0.35f, 0.35f }, false);
+		GUI::Drawing::Text(MenuOptionArrowAnimationState ? ">" : " >", TextColorAndFont, { Cheat::GUI::guiX + 0.09f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * 0.035f - 0.174f }, { 0.35f, 0.35f }, false);
 	}
 	return false;
 }
@@ -845,21 +847,20 @@ static fpFileRegister RegisterTextureFile = (fpFileRegister)(Memory::pattern("48
 void Cheat::GUI::Drawing::InitTextureFile()
 {
 	Cheat::LogFunctions::Message("Loading Texture File");
-
 	remove(CheatFunctions::StringToChar(Cheat::CheatFunctions::TextureFilePath()));
 
 	//Find and load the resource
-	HRSRC hResource = FindResourceA(Cheat::CheatModuleHandle, MAKEINTRESOURCEA(140), "CHEAT_DATA");
+	HRSRC hResource = FindResourceA(CheatModuleHandle, MAKEINTRESOURCEA(140), "CHEAT_DATA");
 	if (!hResource) { goto Error; }
-	HGLOBAL hFileResource = LoadResource(Cheat::CheatModuleHandle, hResource);
+	HGLOBAL hFileResource = LoadResource(CheatModuleHandle, hResource);
 	if (!hFileResource) { goto Error; }
 
 	//Open and map this to a disk file
 	LPVOID lpFile = LockResource(hFileResource);
-	DWORD dwSize = SizeofResource(Cheat::CheatModuleHandle, hResource);
+	DWORD dwSize = SizeofResource(CheatModuleHandle, hResource);
 
 	//Open the file and filemap
-	HANDLE hFile = CreateFileA(CheatFunctions::StringToChar(Cheat::CheatFunctions::TextureFilePath()), GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFileA(CheatFunctions::StringToChar(CheatFunctions::TextureFilePath()), GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	HANDLE hFileMap = CreateFileMapping(hFile, NULL, PAGE_READWRITE, 0, dwSize, NULL);
 	if (!hFileMap) { goto Error; }
 
@@ -874,11 +875,10 @@ void Cheat::GUI::Drawing::InitTextureFile()
 	CloseHandle(hFileMap);
 	CloseHandle(hFile);
 
-
 	int textureID;
-	if (Cheat::CheatFunctions::FileOrDirectoryExists(Cheat::CheatFunctions::TextureFilePath()))
+	if (CheatFunctions::FileOrDirectoryExists(CheatFunctions::TextureFilePath()))
 	{
-		RegisterTextureFile(&textureID, CheatFunctions::StringToChar(Cheat::CheatFunctions::TextureFilePath()), true, "Textures.ytd", false);
+		RegisterTextureFile(&textureID, CheatFunctions::StringToChar(CheatFunctions::TextureFilePath()), true, "Textures.ytd", false);
 		return;
 	}
 	else

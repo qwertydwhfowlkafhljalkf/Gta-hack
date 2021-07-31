@@ -82,6 +82,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Header\Cheat Functions\CheatFunctions.h" />
+    <ClInclude Include="Header\Cheat Functions\FiberMain.h" />
     <ClInclude Include="Header\Cheat Functions\LogFunctions.h" />
     <ClInclude Include="Header\Game Functions\CheatFeatures.h" />
     <ClInclude Include="Header\Game Functions\GameArrays.h" />
@@ -97,10 +98,11 @@
     <ClInclude Include="Header\Game Hooking\types.h" />
     <ClInclude Include="Header\GUI\GUI.h" />
     <ClInclude Include="Header\resource.h" />
-    <ClInclude Include="Header\Main.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Cheat Functions\CheatFunctions.cpp" />
+    <ClCompile Include="Source\Cheat Functions\Entry.cpp" />
+    <ClCompile Include="Source\Cheat Functions\FiberMain.cpp" />
     <ClCompile Include="Source\Cheat Functions\LogFunctions.cpp" />
     <ClCompile Include="Source\Game Functions\CheatFeatures.cpp" />
     <ClCompile Include="Source\Game Functions\GameArrays.cpp" />
@@ -110,7 +112,6 @@
     <ClCompile Include="Source\Game Hooking\Memory.cpp" />
     <ClCompile Include="Source\Game Hooking\NativeInvoker.cpp" />
     <ClCompile Include="Source\GUI\GUI.cpp" />
-    <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="ThirdParty\JsonCpp\json_reader.cpp" />
     <ClCompile Include="ThirdParty\JsonCpp\json_value.cpp" />
     <ClCompile Include="ThirdParty\JsonCpp\json_writer.cpp" />
