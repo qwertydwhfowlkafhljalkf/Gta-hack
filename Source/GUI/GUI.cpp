@@ -15,7 +15,7 @@ bool Cheat::GUI::ControlsDisabled		= false; //All cheat input is ignored when Tr
 bool Cheat::GUI::selectPressed			= false;
 bool Cheat::GUI::leftPressed			= false;
 bool Cheat::GUI::rightPressed			= false;
-bool Cheat::GUI::ShowHeaderBackground	= false;
+bool Cheat::GUI::ShowHeaderBackground	= true;
 bool Cheat::GUI::ShowHeaderTexture		= true;
 bool Cheat::GUI::HideGUIElements		= false; //Prevents all GUI elements from being visible when True
 bool Cheat::GUI::CheatGUIHasBeenOpened	= false;
@@ -51,7 +51,7 @@ int Cheat::GUI::SaveSelectableKey			= VK_F12;
 void Cheat::GUI::Title(std::string TitleName)
 {
 	if (ShowHeaderBackground) { Drawing::Rect({ PrimaryColor.r, PrimaryColor.g, PrimaryColor.b, 200 }, { guiX, GUI::guiY - SelectableHeight - 0.181f }, { guiWidth, SelectableHeight + 0.045f }); }
-	if (ShowHeaderTexture) { Drawing::Spriter("Textures", "HeaderDefault", guiX, GUI::guiY - SelectableHeight - 0.181f, guiWidth, SelectableHeight + 0.045f, 0, 255, 255, 255, 255); }
+	if (ShowHeaderTexture) { Drawing::Spriter("Textures", "HeaderDefaultTransparent", guiX, GUI::guiY - SelectableHeight - 0.181f, guiWidth, SelectableHeight + 0.045f, 0, 255, 255, 255, 255); }
 	Drawing::Text(TitleName, TextColorAndFont, { GUI::guiX, GUI::guiY - 0.174f }, { 0.40f, 0.38f }, true, true);
 	Drawing::Rect({ 0, 0, 0, 210 }, { guiX, GUI::guiY - 0.1585f }, { guiWidth, SelectableHeight });
 
@@ -60,8 +60,8 @@ void Cheat::GUI::Title(std::string TitleName)
 		std::string CursorBackCloseString;
 		if (GUI::currentMenu == MainMenu) { CursorBackCloseString = "Close"; }
 		else { CursorBackCloseString = "Back"; }
-		GUI::Drawing::Spriter("commonmenu", "arrowleft", GUI::guiX - 0.100f, GUI::guiY - 0.156f, 0.015f, 0.025f, 0, 255, 255, 255, 255);
-		GUI::Drawing::Text(CursorBackCloseString, TextColorAndFont, { GUI::guiX - 0.094f, GUI::guiY - 0.170f }, { 0.35f, 0.37f }, false, true);
+		GUI::Drawing::Spriter("commonmenu", "arrowleft", GUI::guiX - 0.100f, GUI::guiY - 0.160f, 0.015f, 0.025f, 0, 255, 255, 255, 255);
+		GUI::Drawing::Text(CursorBackCloseString, TextColorAndFont, { GUI::guiX - 0.094f, GUI::guiY - 0.174f }, { 0.35f, 0.37f }, false, true);
 	}
 
 	UI::HIDE_HELP_TEXT_THIS_FRAME();
@@ -97,7 +97,7 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, int Bit
 		TextPosition = { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f };
 		RectPosition = { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.1585f };
 		OnCurrent ? RectColor = PrimaryColor : RectColor = { 0, 0, 0, 150 };
-		GUI::Drawing::Text(option, TextColorAndFont, TextPosition, { 0.35f, 0.35f }, false);
+		GUI::Drawing::Text(option, TextColorAndFont, TextPosition, {0.35f, 0.35f}, false);
 		GUI::Drawing::Rect(RectColor, RectPosition, { Cheat::GUI::guiWidth, SelectableHeight });
 	}
 	if (OnCurrent)
@@ -280,42 +280,31 @@ bool Cheat::GUI::MenuOptionPlayerList(std::string PlayerName, SubMenus newSub)
 	return false;
 }
 
-bool Cheat::GUI::Toggle(std::string option, bool & b00l, std::string InformationText, int BitFlags)
+bool Cheat::GUI::Toggle(std::string option, bool & TargetBool, std::string InformationText, int BitFlags)
 {
-	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, b00l); }
+	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, TargetBool); }
 
 	if (Option(option, InformationText, BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 	{
-		b00l ^= 1;
+		TargetBool ^= 1;
 		return true;
 	}
 
-	if (b00l)
+	std::string ToggleString;
+	TargetBool ? ToggleString = "ToggleOn" : ToggleString = "ToggleOff";
+
+	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
-		if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
-		{
-			GUI::Drawing::Spriter("Textures", "ToggleOn", Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount * SelectableHeight - 0.160f), 0.025f, 0.025f, 0, 255, 255, 255, 255);
-		}
-		else if ((GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions)) && GUI::optionCount <= GUI::currentOption)
-		{
-			GUI::Drawing::Spriter("Textures", "ToggleOn", Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.160f, 0.025f, 0.025f, 0, 255, 255, 255, 255);
-		}
+		GUI::Drawing::Spriter("Textures", ToggleString, Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount * SelectableHeight - 0.159f), 0.025f, 0.025f, 0, 255, 255, 255, 255);
 	}
-	else
+	else if ((GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions)) && GUI::optionCount <= GUI::currentOption)
 	{
-		if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
-		{
-			GUI::Drawing::Spriter("Textures", "ToggleOff", Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount * SelectableHeight - 0.160f), 0.025f, 0.025f, 0, 255, 255, 255, 255);
-		}
-		else if ((GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions)) && GUI::optionCount <= GUI::currentOption)
-		{
-			GUI::Drawing::Spriter("Textures", "ToggleOff", Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.160f, 0.025f, 0.025f, 0, 255, 255, 255, 255);
-		}
+		GUI::Drawing::Spriter("Textures", ToggleString, Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.159f, 0.025f, 0.025f, 0, 255, 255, 255, 255);
 	}
 
 	if (GUI::optionCount == GUI::currentOption)
 	{
-		CheatFunctions::SaveOption(option, b00l ? "true" : "false", !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
+		CheatFunctions::SaveOption(option, TargetBool ? "true" : "false", !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 	}
 	return false;
 }
@@ -758,7 +747,7 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 
 		GUI::ShowHeaderTexture = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Header", "header_texture"));
 		GUI::ShowHeaderBackground = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Header", "header_background"));
-
+	
 		Cheat::GUI::PrimaryColor.r = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_r"));
 		Cheat::GUI::PrimaryColor.g = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_g"));
 		Cheat::GUI::PrimaryColor.b = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_b"));
@@ -766,6 +755,8 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 		Cheat::GUI::TextColorAndFont.r = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_r"));
 		Cheat::GUI::TextColorAndFont.g = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_g"));
 		Cheat::GUI::TextColorAndFont.b = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_b"));
+
+		CheatFeatures::RGBDiscoBool = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "rgb_disco"));
 
 		Cheat::GUI::TextColorAndFont.f = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Font", "text_font"));
 	}
@@ -821,13 +812,17 @@ void Cheat::GUI::SaveTheme(std::string ThemeFileName)
 	CheatFunctions::WriteBoolToIni(GUI::ShowHeaderTexture, CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Header", "header_texture");
 	CheatFunctions::WriteBoolToIni(GUI::ShowHeaderBackground, CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Header", "header_background");
 
-	CheatFunctions::IniFileWriteString(std::to_string(GUI::PrimaryColor.r), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_r");
-	CheatFunctions::IniFileWriteString(std::to_string(GUI::PrimaryColor.g), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_g");
-	CheatFunctions::IniFileWriteString(std::to_string(GUI::PrimaryColor.b), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_b");
+	Cheat::CheatFunctions::WriteBoolToIni(CheatFeatures::RGBDiscoBool, CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "rgb_disco");
+	if (!CheatFeatures::RGBDiscoBool)
+	{
+		CheatFunctions::IniFileWriteString(std::to_string(GUI::PrimaryColor.r), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_r");
+		CheatFunctions::IniFileWriteString(std::to_string(GUI::PrimaryColor.g), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_g");
+		CheatFunctions::IniFileWriteString(std::to_string(GUI::PrimaryColor.b), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_b");
 
-	CheatFunctions::IniFileWriteString(std::to_string(GUI::TextColorAndFont.r), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_r");
-	CheatFunctions::IniFileWriteString(std::to_string(GUI::TextColorAndFont.g), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_g");
-	CheatFunctions::IniFileWriteString(std::to_string(GUI::TextColorAndFont.b), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_b");
+		CheatFunctions::IniFileWriteString(std::to_string(GUI::TextColorAndFont.r), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_r");
+		CheatFunctions::IniFileWriteString(std::to_string(GUI::TextColorAndFont.g), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_g");
+		CheatFunctions::IniFileWriteString(std::to_string(GUI::TextColorAndFont.b), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_b");
+	}
 
 	CheatFunctions::IniFileWriteString(std::to_string(GUI::TextColorAndFont.f), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Font", "text_font");
 

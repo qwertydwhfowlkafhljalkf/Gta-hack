@@ -291,7 +291,6 @@ void Cheat::CheatFunctions::LoadConfig()
 	std::string CursorNavigationKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
 	if (CursorNavigationKey != "NOT_FOUND") { GUI::OpenGUIKey = StringToInt(CursorNavigationKey); }
 
-
 	//Load Active Theme Name
 	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Active Theme");
 	if (ActiveThemeSetting != "NOT_FOUND") { GUI::LoadTheme(CheatFunctions::StringToChar(ActiveThemeSetting), true); }

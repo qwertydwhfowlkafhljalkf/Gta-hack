@@ -78,5 +78,6 @@ namespace Cheat
 		void ShowTeleportLocationsMenu(std::vector<TeleportLocationStruct> category);
 		void ToggleOffRadar(bool state);
 		void ToggleCopsTurnBlindEye(bool state);
+		void FadeRGB(int& r, int& g, int& b);
 	}
 }

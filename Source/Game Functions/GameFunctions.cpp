@@ -1159,3 +1159,23 @@ void Cheat::GameFunctions::ToggleCopsTurnBlindEye(bool state)
 		globalHandle(2544210).At(4625).As<int>() = NETWORK::GET_NETWORK_TIME();
 	}
 }
+
+//https://codepen.io/Codepixl/pen/ogWWaK
+void Cheat::GameFunctions::FadeRGB(int& r, int& g, int& b)
+{
+	if (r > 0 && b == 0)
+	{
+		r--;
+		g++;
+	}
+	if (g > 0 && r == 0)
+	{
+		g--;
+		b++;
+	}
+	if (b > 0 && g == 0) 
+	{
+		r++;
+		b--;
+	}
+}

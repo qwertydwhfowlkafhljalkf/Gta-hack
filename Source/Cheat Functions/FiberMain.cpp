@@ -2088,6 +2088,10 @@ void Cheat::FiberMain()
 			{
 				CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
 			}
+			if (GUI::Option("Stop spectating player", ""))
+			{
+				CheatFeatures::SpectatePlayerBool = false;
+			}
 			if (GUI::Option("Drive To Waypoint", "A NPC drives you to waypoint"))
 			{
 				int WaypointHandle = UI::GET_FIRST_BLIP_INFO_ID(8);
@@ -3105,14 +3109,15 @@ void Cheat::FiberMain()
 			GUI::Toggle("Header Texture", GUI::ShowHeaderTexture, "", SELECTABLE_DISABLE_SAVE);
 			GUI::Toggle("Header Background", GUI::ShowHeaderBackground, "", SELECTABLE_DISABLE_SAVE);
 			GUI::Break("Color", true);
-			if (GUI::Option("Primary", ""))
+			GUI::Toggle("RGB Disco", CheatFeatures::RGBDiscoBool, "", SELECTABLE_DISABLE_SAVE);
+			if (GUI::Option("Primary", "Save is disabled while RGB Disco is enabled", CheatFeatures::RGBDiscoBool ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 			{
 				GUI::PrimaryColor.r = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter R-color"));
 				GUI::PrimaryColor.g = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter G-color"));
 				GUI::PrimaryColor.b = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter B-color"));
 				GameFunctions::MinimapNotification("Updated Primary Color");
 			}
-			if (GUI::Option("Text", ""))
+			if (GUI::Option("Text", "Save is disabled while RGB Disco is enabled", CheatFeatures::RGBDiscoBool ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 			{
 				GUI::TextColorAndFont.r = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter R-color"));
 				GUI::TextColorAndFont.g = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter G-color"));

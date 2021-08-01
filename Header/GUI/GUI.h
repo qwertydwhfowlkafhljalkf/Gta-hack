@@ -199,7 +199,7 @@ namespace Cheat
 		bool VehicleOption(std::string option, std::string ModelName);
 		bool MenuOption(std::string option, SubMenus newSub, int BitFlags = NULL);
 		bool MenuOptionPlayerList(std::string PlayerName, SubMenus newSub);
-		bool Toggle(std::string option, bool& b00l, std::string InformationText, int BitFlags = NULL);
+		bool Toggle(std::string option, bool& TargetBool, std::string InformationText, int BitFlags = NULL);
 		bool Int(std::string option, int& _int, int min, int max, int step, std::string InformationText = "Select to change", int BitFlags = NULL);
 		bool Float(std::string option, float& _float, float min, float max, float steps, std::string InformationText = "", std::streamsize FloatPrecision = 3, int BitFlags = NULL);
 		bool IntVector(std::string option, std::vector<int> Vector, int& position, int BitFlags = NULL);

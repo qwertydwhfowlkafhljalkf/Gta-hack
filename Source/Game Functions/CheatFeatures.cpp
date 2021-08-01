@@ -26,6 +26,7 @@ bool Cheat::CheatFeatures::HidePlayerInformationBox = false;
 bool Cheat::CheatFeatures::HideSelectableInformationBox = false;
 bool Cheat::CheatFeatures::ControllableAnimations = false;
 
+
 int PostInitBannerNotificationScaleformHandle;
 void Cheat::CheatFeatures::NonLooped()
 {
@@ -261,6 +262,7 @@ void Cheat::CheatFeatures::Looped()
 	CartoonGunBool ? CartoonGun() : NULL;
 	EntityInformationGunBool ? EntityInformationGun() : NULL;
 	CrossHairBool ? CrossHair() : NULL;
+	RGBDiscoBool ? RGBDisco() : !RGBDiscoFirstCall ? RGBDiscoFirstCall = true : NULL;
 }
 
 
@@ -1360,4 +1362,22 @@ void Cheat::CheatFeatures::CrossHair()
 	{
 		GUI::Drawing::Spriter("Textures", "Crosshair1", 0.50f, 0.50f, 0.030f, 0.030f, 0, 255, 255, 255, 255);
 	}
+}
+
+bool Cheat::CheatFeatures::RGBDiscoBool = false;
+bool Cheat::CheatFeatures::RGBDiscoFirstCall = true;
+void Cheat::CheatFeatures::RGBDisco()
+{
+	if (RGBDiscoFirstCall)
+	{
+		GUI::PrimaryColor.r = 255;
+		GUI::PrimaryColor.g = 0;
+		GUI::PrimaryColor.b = 0;
+		GUI::TextColorAndFont.r = 0;
+		GUI::TextColorAndFont.g = 0;
+		GUI::TextColorAndFont.b = 255;
+		RGBDiscoFirstCall = false;
+	}
+	GameFunctions::FadeRGB(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
+	GameFunctions::FadeRGB(GUI::TextColorAndFont.r, GUI::TextColorAndFont.g, GUI::TextColorAndFont.b);
 }

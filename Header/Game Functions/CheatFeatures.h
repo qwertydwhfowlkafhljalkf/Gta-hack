@@ -176,5 +176,8 @@ namespace Cheat
 		void FreeCam(bool toggle);
 		extern bool CartoonGunBool;
 		void CartoonGun();
+		extern bool RGBDiscoBool;
+		extern bool RGBDiscoFirstCall;
+		void RGBDisco();
 	}
 }
