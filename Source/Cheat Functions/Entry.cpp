@@ -4,7 +4,6 @@ using namespace Cheat;
 
 DWORD WINAPI InitializationThread(LPVOID lpParam)
 {
-	CheatFunctions::CreateConsole();
 	LogFunctions::Init();
 	GameHooking::Initialize();
 	//This thread is no longer needed, goodbye

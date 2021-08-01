@@ -111,7 +111,7 @@ enum SelectableBitFlags
 	SELECTABLE_DISABLED = 2,		//The selectable is disabled, if the select key is pressed on the item a message appears informing the user about the disable state
 	SELECTABLE_DISABLE_SAVE = 4,	//The selectable won't save when the corresponding key is pressed
 	SELECTABLE_CENTER_TEXT = 8,		//This currently only applies to the Break selectable. Text will be centered relative to menu GUI.
-	SELECTABLE_RETURN_VALUE_CHANGE = 16   //Currently only used by Float and StringVector selectable. Function will return when a value is changed (e.g. left or right is pressed)
+	SELECTABLE_RETURN_VALUE_CHANGE = 16   //Currently used by Float and StringVector selectable. Function will return when a value is changed (e.g. left or right is pressed)
 };
 
 
@@ -145,6 +145,7 @@ namespace Cheat
 		extern float guiWidth;
 		extern float SelectableInfoBoxX;
 		extern float SelectableInfoBoxY;
+		extern float SelectableHeight;
 		extern std::vector <std::string> ThemeFilesVector;
 		extern bool ShowHeaderBackground;
 		extern bool ShowHeaderTexture;

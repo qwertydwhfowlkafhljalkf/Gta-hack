@@ -2,9 +2,9 @@
 
 void Cheat::GameFunctions::GiveAllWeaponsToPlayer(Ped Player)
 {
-	for (int i = 0; i < Cheat::GameArrays::WeaponsHashList.size(); i++)
+	for (int i = 0; i < GameArrays::WeaponsHashList.size(); i++)
 	{
-		WEAPON::GIVE_DELAYED_WEAPON_TO_PED(Player, Cheat::GameArrays::WeaponsHashList[i].WeaponHash, 9999, false);
+		WEAPON::GIVE_WEAPON_TO_PED(Player, GameArrays::WeaponsHashList[i].WeaponHash, 9999, false, false);
 	}
 }
 

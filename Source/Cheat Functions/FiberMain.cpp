@@ -3150,6 +3150,7 @@ void Cheat::FiberMain()
 			GUI::Break("Menu", true);
 			GUI::Float("X-Axis", GUI::guiX, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
 			GUI::Float("Y-Axis", GUI::guiY, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
+			GUI::Float("Selectable Height", GUI::SelectableHeight, 0.035f, 0.045f, 0.001, "This also slightly stretches the header element as a result of the rescale");
 			if (GUI::Option("Reset Position", ""))
 			{
 				GUI::guiX = GUI::guiX_Default;
