@@ -35,6 +35,9 @@ namespace Cheat
 		extern bool HidePlayerInformationBox;
 		extern bool HideSelectableInformationBox;
 		extern bool ControllableAnimations;
+		extern bool AllPlayersExclutionsSelf;
+		extern bool AllPlayersExclutionsFriends;
+		extern bool AllPlayersExclutionsHost;
 
 		void NonLooped();
 		void Looped();

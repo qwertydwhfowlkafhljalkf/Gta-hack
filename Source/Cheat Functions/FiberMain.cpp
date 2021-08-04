@@ -44,46 +44,47 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Settings", SettingsMenu);
 		}
 		break;
+		case AllPlayersExclutionsMenu:
+		{
+			GUI::Title("Exclutions");
+			GUI::Toggle("Exclude Self", CheatFeatures::AllPlayersExclutionsSelf, "");
+			GUI::Toggle("Exclude Friends", CheatFeatures::AllPlayersExclutionsFriends, "");
+			GUI::Toggle("Exclude Host", CheatFeatures::AllPlayersExclutionsHost, "");
+		}
+		break;
 		case AllPlayersMenu:
 		{
 			GUI::Title("All Players");
-			GUI::MenuOption("Extra-sensory Perception", ESPMenu);
-			GUI::MenuOption("Weapon", allplayers_weaponoptionsmenu);
-			GUI::MenuOption("Trolling", allplayers_trolloptionsmenu);
-			if (GUI::Option("Host Kick Players", "Kick all players from session - Host only")) 
-			{
-				for (int i = 1; i <= 32; i++)
-				{
-					if (GameFunctions::PlayerID != i) { NETWORK::NETWORK_SESSION_KICK_PLAYER(i); }
-				}
-			}
-		}
-		break;
-		case allplayers_weaponoptionsmenu:
-		{
-			GUI::Title("Weapon");
+			GUI::MenuOption("Exclutions", AllPlayersExclutionsMenu);
+			GUI::Break("Extra-sensory Perception", true);
+			GUI::Toggle("Basic ESP", CheatFeatures::PlayerESPBool, "");
+			GUI::Break("Friendly", true);
 			if (GUI::Option("Give All Weapons", "Give all players all weapons"))
 			{
 				for (int i = 0; i < 32; i++)
 				{
-					if (GameFunctions::PlayerID != i) 
+					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
+					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
+					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+
+					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
 						GameFunctions::SubtitleNotification("Giving all weapons to all players in session, one moment", 2000);
 						GameFunctions::GiveAllWeaponsToPlayer(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
 					}
 				}
 			}
-		}
-		break; 
-		case allplayers_trolloptionsmenu:
-		{
-			GUI::Title("Trolling"); 
-			GUI::Toggle("Freeze All Players", CheatFeatures::FreezeAllPlayersBool, "Freeze all players in session", SELECTABLE_DISABLE_SAVE);
-			if (GUI::Option("Kick All Out Of Vehicle", "Kick all players from their vehicle"))
+			GUI::Break("Trolling", true);
+			GUI::Toggle("Freeze", CheatFeatures::FreezeAllPlayersBool, "", SELECTABLE_DISABLE_SAVE);
+			if (GUI::Option("Kick Out Of Vehicle", ""))
 			{
 				for (int i = 0; i < 32; i++)
 				{
-					if (GameFunctions::PlayerID != i)
+					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
+					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
+					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+
+					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
 						GameFunctions::RequestNetworkControlOfEntity(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
 						GameFunctions::StopAllPedAnimations(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
@@ -92,10 +93,16 @@ void Cheat::FiberMain()
 					}
 				}
 			}
-			if (GUI::Option("Airstrike All Players", ""))
+			if (GUI::Option("Airstrike", ""))
 			{
-				for (int i = 1; i < 32; i++) {
-					if (GameFunctions::PlayerID != i) {
+				for (int i = 0; i < 32; i++) 
+				{
+					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
+					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
+					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+
+					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
+					{
 						Vector3 Coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), 1);
 						Coords.z += 15;
 						GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35, Coords.x, Coords.y, Coords.z, 250, 1, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), 1, 1, 500);
@@ -104,23 +111,47 @@ void Cheat::FiberMain()
 					}
 				}
 			}
-			if (GUI::Option("Trap All Players", ""))
+			if (GUI::Option("Trap", ""))
 			{
-				for (int i = 1; i < 32; i++) {
-					if (GameFunctions::PlayerID != i) 
+				for (int i = 0; i < 32; i++) 
+				{
+					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
+					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
+					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+
+					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
-						Vector3 remotePos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), 0);
+						Vector3 remotePos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), false);
 						OBJECT::CREATE_OBJECT(GAMEPLAY::GET_HASH_KEY("prop_gold_cont_01"), remotePos.x, remotePos.y, remotePos.z - 1.f, true, false, false);
 					}
 				}
 			}
-			if (GUI::Option("Attach Beach Fire", "Burn them all!")) 
-			{ 
-				for (int i = 1; i <= 32; i++) 
+			if (GUI::Option("Attach Beach Fire", ""))
+			{
+				for (int i = 0; i < 32; i++)
 				{
-					if (GameFunctions::PlayerID != i) 
+					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
+					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
+					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+
+					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
 						GameFunctions::AttachObjectToPed(i, "prop_beach_fire");
+					}
+				}
+			}
+			GUI::Break("Miscellaneous", true);
+			if (GUI::Option("Host Kick", "Kick all players from session")) 
+			{
+				for (int i = 0; i < 32; i++)
+				{
+					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
+					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
+					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+
+					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
+					{ 
+						NETWORK::NETWORK_SESSION_KICK_PLAYER(i); 
 					}
 				}
 			}
@@ -2055,9 +2086,10 @@ void Cheat::FiberMain()
 			{
 				GAMEPLAY::CLEAR_OVERRIDE_WEATHER();
 			}
+			GUI::Break("Types", true);
 			for (int i = 0; i < GameArrays::WeatherTypes.size(); i++)
 			{
-				if (GUI::Option(GameArrays::WeatherTypes[i].SelectableName, "")) 
+				if (GUI::Option(GameArrays::WeatherTypes[i].SelectableName, ""))
 				{ 
 					GAMEPLAY::SET_OVERRIDE_WEATHER(CheatFunctions::StringToChar(GameArrays::WeatherTypes[i].WeatherType));
 				}
@@ -2080,7 +2112,7 @@ void Cheat::FiberMain()
 			GUI::Toggle("Rockstar Developer Mode", CheatFeatures::GTAODeveloperMode, "Toggles GTAO Spectator Options");
 			GUI::Toggle("Auto Teleport To Waypoint", CheatFeatures::AutoTeleportToWaypointBool, "");
 			GUI::Toggle("Show Session Information", CheatFeatures::ShowSessionInformationBool, "Show session info (next to radar)");
-			GUI::Toggle("Show FPS", CheatFeatures::ShowFPSBool, "Show game FPS");
+			GUI::Toggle("Show FPS", CheatFeatures::ShowFPSBool, "");
 			GUI::Toggle("Mobile Radio", CheatFeatures::MobileRadioBool, "");
 			if (GUI::Option("Stop Cutscene", ""))
 			{
@@ -2589,12 +2621,6 @@ void Cheat::FiberMain()
 			}
 		}
 		break; 
-		case ESPMenu:
-		{
-			GUI::Title("Extra-sensory Perception");
-			GUI::Toggle("Basic ESP", CheatFeatures::PlayerESPBool, "Toggle Player ESP");
-		}
-		break; 
 		case SelectedPlayerTrollMenu:
 		{
 			GUI::Title("Trolling");
@@ -2955,7 +2981,7 @@ void Cheat::FiberMain()
 		case protections:
 		{
 			GUI::Title("Protections");	
-			if (GUI::Option("Enable/Disable Anti-Crash Camera", "Changes camera position to prevent crash")) { GameFunctions::EnableDisableAntiCrashCamera(); }
+			if (GUI::Option("Enable/Disable Anti-Crash Camera", "Changes camera position to prevent entity crash")) { GameFunctions::EnableDisableAntiCrashCamera(); }
 			GUI::Break("Protection", true);
 			if (GUI::Option("Enable All", "Enable all protection options")) {
 				CheatFeatures::ProtectionVoteKickBool = true;

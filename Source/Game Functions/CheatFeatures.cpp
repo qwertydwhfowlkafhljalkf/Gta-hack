@@ -29,25 +29,27 @@ bool Cheat::CheatFeatures::VehicleSpawnerSpawnAirVehicleAir = false;
 bool Cheat::CheatFeatures::HidePlayerInformationBox = false;
 bool Cheat::CheatFeatures::HideSelectableInformationBox = false;
 bool Cheat::CheatFeatures::ControllableAnimations = false;
-
+bool Cheat::CheatFeatures::AllPlayersExclutionsSelf = true;
+bool Cheat::CheatFeatures::AllPlayersExclutionsFriends = false;
+bool Cheat::CheatFeatures::AllPlayersExclutionsHost = false;
 
 int PostInitBannerNotificationScaleformHandle;
 void Cheat::CheatFeatures::NonLooped()
 {
 	//Check for newer cheat version
-	Cheat::CheatFunctions::CheckCheatUpdate();
+	CheatFunctions::CheckCheatUpdate();
 
 	//Create Menu Selectable Arrow Animation Thread - no point creating a thread handle rn, no interaction required
-	CreateThread(NULL, NULL, CheatFunctions::MenuSelectableAnimationThread, Cheat::CheatModuleHandle, NULL, NULL);
+	CreateThread(NULL, NULL, CheatFunctions::MenuSelectableAnimationThread, CheatModuleHandle, NULL, NULL);
 
 	//Initialize Texture File
-	Cheat::GUI::Drawing::InitTextureFile();
+	GUI::Drawing::InitTextureFile();
 
 	//Load Config
-	Cheat::CheatFunctions::LoadConfig();
+	CheatFunctions::LoadConfig();
 
 	//Log Post Init Completion
-	Cheat::LogFunctions::Message("GTAV Cheat Initialization Completed");
+	LogFunctions::Message("GTAV Cheat Initialization Completed");
 
 	//Init Scaleform Banner Notification
 	std::string OpenGUIString = "Welcome " + (std::string)PLAYER::GET_PLAYER_NAME(GameFunctions::PlayerID) + ". Have fun!";
@@ -956,7 +958,11 @@ void Cheat::CheatFeatures::FreezeAllPlayers()
 {
 	for (int i = 0; i < 32; i++)
 	{
-		if (i != Cheat::GameFunctions::PlayerPedID)
+		bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
+		bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
+		bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+
+		if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 		{
 			Ped Player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i);
 			AI::CLEAR_PED_TASKS_IMMEDIATELY(Player);
@@ -1076,8 +1082,10 @@ void Cheat::CheatFeatures::PlayerESP()
 {
 	if (NETWORK::NETWORK_GET_NUM_CONNECTED_PLAYERS() > 1)
 	{
-		for (int i = 1; i <= 32; i++) {
-			if (Cheat::GameFunctions::PlayerID != i) {
+		for (int i = 0; i < 32; i++) 
+		{
+			if (Cheat::GameFunctions::PlayerID != i) 
+			{
 				Vector3 entitylocation = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), false);
 				Vector3 top1world = { entitylocation.x + 0.3f, NULL, entitylocation.y + 0.3f, NULL, entitylocation.z + .8f, NULL };
 				Vector3 top2world = { entitylocation.x - 0.3f, NULL, entitylocation.y + 0.3f, NULL, entitylocation.z + .8f, NULL };
@@ -1326,13 +1334,12 @@ void Cheat::CheatFeatures::ShowSessionInformation()
 	std::string yMsg = " Y " + std::to_string(playerCoord.y);
 	std::string zMsg = " Z " + std::to_string(playerCoord.z);
 
-	Cheat::GUI::Drawing::Text("Local Player Coords", GUI::TextColorAndFont, { 0.162f, 0.8100f }, { 0.25f, 0.25f }, false);
-	Cheat::GUI::Drawing::Text(xMsg, GUI::TextColorAndFont, { 0.16f, 0.8225f }, { 0.25f, 0.25f }, false);
-	Cheat::GUI::Drawing::Text(yMsg, GUI::TextColorAndFont, { 0.16f, 0.8350f }, { 0.25f, 0.25f }, false);
-	Cheat::GUI::Drawing::Text(zMsg, GUI::TextColorAndFont, { 0.16f, 0.8475f }, { 0.25f, 0.25f }, false);
-	if (NETWORK::NETWORK_IS_SESSION_STARTED()) { Cheat::GUI::Drawing::Text(NumbConnectedPlayers, GUI::TextColorAndFont, { 0.1615f, 0.8650f }, { 0.25f, 0.25f }, false); }
+	Cheat::GUI::Drawing::Text("Local Player Coords", { 255, 255, 255, 255, FontChaletLondon }, { 0.162f, 0.8100f }, { 0.25f, 0.25f }, false);
+	Cheat::GUI::Drawing::Text(xMsg, { 255, 255, 255, 255, FontChaletLondon }, { 0.16f, 0.8225f }, { 0.25f, 0.25f }, false);
+	Cheat::GUI::Drawing::Text(yMsg, { 255, 255, 255, 255, FontChaletLondon }, { 0.16f, 0.8350f }, { 0.25f, 0.25f }, false);
+	Cheat::GUI::Drawing::Text(zMsg, { 255, 255, 255, 255, FontChaletLondon }, { 0.16f, 0.8475f }, { 0.25f, 0.25f }, false);
+	if (NETWORK::NETWORK_IS_SESSION_STARTED()) { Cheat::GUI::Drawing::Text(NumbConnectedPlayers, { 255, 255, 255, 255, FontChaletLondon }, { 0.1615f, 0.8650f }, { 0.25f, 0.25f }, false); }
 }
-
 
 bool Cheat::CheatFeatures::AutoGiveAllWeaponsBool = false;
 void Cheat::CheatFeatures::AutoGiveAllWeapons()
