@@ -3,9 +3,9 @@
 HANDLE MainFiber;
 IsDLCPresent														GameHooking::is_dlc_present;
 GetEventData														GameHooking::get_event_data;
-GetLabelText														GameHooking::get_label_text = nullptr;
-GetScriptHandlerIfNetworked											GameHooking::get_script_handler_if_networked = nullptr;
-GetScriptHandler													GameHooking::get_script_handler = nullptr;
+GetLabelText														GameHooking::get_label_text;
+GetScriptHandlerIfNetworked											GameHooking::get_script_handler_if_networked;
+GetScriptHandler													GameHooking::get_script_handler;
 GetPlayerAddress													GameHooking::get_player_address;
 GetChatData														    GameHooking::get_chat_data;
 static eGameState* 													m_gameState;
@@ -104,7 +104,7 @@ __int64 GetChatDataHooked(__int64 a1, __int64 a2, __int64 a3, const char* origTe
 	if (Cheat::CheatFeatures::LogChatMessages)
 	{
 		Cheat::CheatFunctions::WriteToFile(Cheat::CheatFunctions::ReturnChatLogFilePath(), Cheat::CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] Message: ") + (std::string)origText + "\n", std::ofstream::out | std::ofstream::app);
-		Cheat::LogFunctions::MessageCustomCategory("Chat Logger", "Message: '" + (std::string)origText + "'");
+		Cheat::LogFunctions::MessageCustomCategory("Chat Logger", " Message: '" + (std::string)origText + "'");
 	}
 	return GetChatDataOriginal(a1, a2, a3, origText, isTeam);
 }

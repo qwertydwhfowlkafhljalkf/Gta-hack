@@ -69,7 +69,7 @@
     <ClInclude Include="Header\Game Hooking\NativeInvoker.h">
       <Filter>Header Files\Game Hooking</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Game Hooking\natives.h">
+    <ClInclude Include="Header\Game Hooking\Natives.h">
       <Filter>Header Files\Game Hooking</Filter>
     </ClInclude>
     <ClInclude Include="Header\Game Hooking\Offsets.h">

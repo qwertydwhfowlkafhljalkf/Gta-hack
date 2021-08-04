@@ -1,7 +1,7 @@
 #pragma once
 
 typedef bool(__cdecl* IsDLCPresent)							(std::uint32_t dlcHash);
-typedef uint32_t*(__cdecl* fpFileRegister)					(int*, const char*, bool, const char*, bool);
+typedef uint32_t*(__cdecl* FileRegister)					(int*, const char*, bool, const char*, bool);
 typedef BOOL(__cdecl* GetEventData)							(int eventGroup, int eventIndex, uint64_t* argStruct, int argStructSize);
 using GetScriptHandlerIfNetworked							= void* (*) ();
 using GetScriptHandler										= void* (*) ();
@@ -9,11 +9,12 @@ using GetLabelText = const char* (*)						(void* this_, const char* label);
 typedef __int64(__cdecl* GetPlayerAddress)					(Player);
 typedef __int64(__cdecl* GetChatData)						(__int64 a1, __int64 a2, __int64 a3, const char* origText, BOOL a5);
 
+
 class GameHooking
 {
 public:
 	static IsDLCPresent					    is_dlc_present;
-	static fpFileRegister					m_fileregister;
+	static FileRegister						file_register;
 	static GetEventData						get_event_data;
 	static GetScriptHandlerIfNetworked		get_script_handler_if_networked;
 	static GetScriptHandler				    get_script_handler;

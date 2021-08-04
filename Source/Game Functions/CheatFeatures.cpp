@@ -9,6 +9,9 @@ int Cheat::CheatFeatures::FontTypeVectorPosition = 0;
 int Cheat::CheatFeatures::AnimationsVectorPosition = 0;
 int Cheat::CheatFeatures::ScenariosVectorPosition = 0;
 int Cheat::CheatFeatures::PedMovementVectorPosition = 0;
+int Cheat::CheatFeatures::OpenVehicleDoorPosition = 0;
+int Cheat::CheatFeatures::CloseVehicleDoorPosition = 0;
+int Cheat::CheatFeatures::FastSuperRunPosition = 0;
 int Cheat::CheatFeatures::PlayerOpacityInt = 250;
 bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
@@ -22,6 +25,7 @@ bool Cheat::CheatFeatures::VehicleSpawnerDeleteOldVehicle = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnWithBlip = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnWithGodmode = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnMaxUpgraded = false;
+bool Cheat::CheatFeatures::VehicleSpawnerSpawnAirVehicleAir = false;
 bool Cheat::CheatFeatures::HidePlayerInformationBox = false;
 bool Cheat::CheatFeatures::HideSelectableInformationBox = false;
 bool Cheat::CheatFeatures::ControllableAnimations = false;
@@ -154,6 +158,21 @@ void Cheat::CheatFeatures::Looped()
 		}
 	}
 
+	//Fast/Super Run
+	if (FastSuperRunPosition != 0 && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlSprint) && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlScriptPadUp))
+	{
+		if (FastSuperRunPosition == 1)
+		{
+			PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(GameFunctions::PlayerID, 1.49f);
+		}
+		else if (FastSuperRunPosition == 2)
+		{
+			Ped TargetPed = GameFunctions::PlayerPedID;
+			Vector3 offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(TargetPed, 0.f, 0.6f, 0.f);
+			ENTITY::APPLY_FORCE_TO_ENTITY(TargetPed, 1, 0.0f, 1.3f, 0.f, 0.0f, 0.0f, 0.0f, 0, true, true, true, false, true);
+		}
+	}
+
 	//Custom Ammo
 	if (CustomAmmoVectorPosition != 0)
 	{
@@ -254,7 +273,6 @@ void Cheat::CheatFeatures::Looped()
 	CopsTurnBlindEyeBool ? CopsTurnBlindEye() : CopsTurnBlindEyeWasEnabled ? GameFunctions::ToggleCopsTurnBlindEye(false), CopsTurnBlindEyeWasEnabled = false : NULL;
 	MoneyDropBool ? MoneyDrop() : NULL;
 	VehicleWeaponsBool ? VehicleWeapons() : NULL;
-	SuperRunBool ? SuperRun() : NULL;
 	ShowSessionInformationBool ? ShowSessionInformation() : NULL;
 	AutoGiveAllWeaponsBool ? AutoGiveAllWeapons() : NULL;
 	AutoGiveAllWeaponUpgradesBool ? AutoGiveAllWeaponUpgrades() : NULL;
@@ -1295,19 +1313,6 @@ void Cheat::CheatFeatures::VehicleWeapons()
 			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(coords1from.x, coords1from.y, coords1from.z, coords1to.x, coords1to.y, coords1to.z, 250, 1, weaponAssetRocket, Cheat::GameFunctions::PlayerPedID, 1, 0, -1.0);
 		}
 		VehicleWeapons_LastTick = GetTickCount64();
-	}
-}
-
-bool Cheat::CheatFeatures::SuperRunBool = false;
-void Cheat::CheatFeatures::SuperRun()
-{
-	if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlSprint) && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlScriptPadUp))
-	{
-		Ped ped = Cheat::GameFunctions::PlayerPedID;
-		Vector3 offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ped, 0.f, 0.6f, 0.f);
-		ENTITY::APPLY_FORCE_TO_ENTITY(ped, 1, 0.0f, 1.3f, 0.f, 0.0f, 0.0f, 0.0f, 0, true, true, true, false, true);
-		PLAYER::SET_PLAYER_SPRINT(Cheat::GameFunctions::PlayerID, true);
-		PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(Cheat::GameFunctions::PlayerID, 1.59f);
 	}
 }
 

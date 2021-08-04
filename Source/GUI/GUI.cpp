@@ -151,16 +151,16 @@ bool Cheat::GUI::VehicleOption(std::string option, std::string ModelName)
 		VehiclePreviewDictName = "Textures";
 		VehiclePreviewName	   = "NoVehiclePreviewAvailable";
 
-		for (int i = 0; i < Cheat::GameArrays::VehicleModelPictures.size(); i++)
+		for (int i = 0; i < GameArrays::VehicleModelPictures.size(); i++)
 		{
-			if (Cheat::GameArrays::VehicleModelPictures[i].PreviewName == ModelName)
+			if (GameArrays::VehicleModelPictures[i].PreviewName == ModelName)
 			{ 
-				VehiclePreviewDictName	= CheatFunctions::StringToChar(Cheat::GameArrays::VehicleModelPictures[i].DictName);
-				VehiclePreviewName		= CheatFunctions::StringToChar(Cheat::GameArrays::VehicleModelPictures[i].PreviewName);
+				VehiclePreviewDictName	= CheatFunctions::StringToChar(GameArrays::VehicleModelPictures[i].DictName);
+				VehiclePreviewName		= CheatFunctions::StringToChar(GameArrays::VehicleModelPictures[i].PreviewName);
 			}
 		}
 		
-		if (!Cheat::CheatFeatures::HideVehicleInfoAndPreview)
+		if (!CheatFeatures::HideVehicleInfoAndPreview)
 		{
 			std::ostringstream ModelMaxSpeed;
 			if (CheatFeatures::MeasurementSystemVectorPosition == 0)
@@ -172,21 +172,21 @@ bool Cheat::GUI::VehicleOption(std::string option, std::string ModelName)
 				ModelMaxSpeed << "Max Speed: " << Cheat::GameFunctions::MSToMPH(VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))) << " MP/H";
 			}
 
-			if (Cheat::GUI::guiX < 0.71f)
+			if (guiX < 0.71f)
 			{
-				GUI::Drawing::Text("Model Name: " + ModelName, TextColorAndFont, { Cheat::GUI::guiX + 0.111f,  GUI::guiY - 0.004f }, { 0.45f, 0.30f }, false);
-				GUI::Drawing::Text(ModelMaxSpeed.str(), TextColorAndFont, { Cheat::GUI::guiX + 0.111f, GUI::guiY + 0.010f }, { 0.45f, 0.30f }, false);
-				GUI::Drawing::Text("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, {Cheat::GUI::guiX + 0.111f, GUI::guiY + 0.025f}, {0.45f, 0.30f}, false);
-				GUI::Drawing::Rect({ 0, 0, 0, 150 }, { Cheat::GUI::guiX + 0.187f, GUI::guiY - 0.061f }, { 0.16f, 0.22f });
-				GUI::Drawing::Spriter(VehiclePreviewDictName, VehiclePreviewName, Cheat::GUI::guiX + 0.187f, GUI::guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
+				Drawing::Text("Model Name: " + ModelName, TextColorAndFont, { guiX + 0.111f,  guiY - 0.004f }, { 0.45f, 0.30f }, false);
+				Drawing::Text(ModelMaxSpeed.str(), TextColorAndFont, { guiX + 0.111f, guiY + 0.010f }, { 0.45f, 0.30f }, false);
+				Drawing::Text("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { guiX + 0.111f, guiY + 0.025f}, {0.45f, 0.30f}, false);
+				Drawing::Rect({ 0, 0, 0, 150 }, { guiX + 0.187f, GUI::guiY - 0.061f }, { 0.16f, 0.22f });
+				Drawing::Spriter(VehiclePreviewDictName, VehiclePreviewName, guiX + 0.187f, guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
 			}
 			else
 			{
-				GUI::Drawing::Text("Model Name: " + ModelName, TextColorAndFont, { Cheat::GUI::guiX - 0.262f, GUI::guiY - 0.004f }, { 0.45f, 0.30f }, false);
-				GUI::Drawing::Text(ModelMaxSpeed.str(), TextColorAndFont, { Cheat::GUI::guiX - 0.262f, GUI::guiY + 0.010f }, { 0.45f, 0.30f }, false);
-				GUI::Drawing::Text("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { Cheat::GUI::guiX - 0.262f, GUI::guiY + 0.025f }, { 0.45f, 0.30f }, false);
-				GUI::Drawing::Rect({ 0, 0, 0, 150 }, { Cheat::GUI::guiX - 0.187f, GUI::guiY - 0.061f }, { 0.16f, 0.22f });
-				GUI::Drawing::Spriter(VehiclePreviewDictName, VehiclePreviewName, Cheat::GUI::guiX - 0.187f, GUI::guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
+				Drawing::Text("Model Name: " + ModelName, TextColorAndFont, { guiX - 0.262f, guiY - 0.004f }, { 0.45f, 0.30f }, false);
+				Drawing::Text(ModelMaxSpeed.str(), TextColorAndFont, { guiX - 0.262f, guiY + 0.010f }, { 0.45f, 0.30f }, false);
+				Drawing::Text("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { guiX - 0.262f, guiY + 0.025f }, { 0.45f, 0.30f }, false);
+				Drawing::Rect({ 0, 0, 0, 150 }, { guiX - 0.187f, guiY - 0.061f }, { 0.16f, 0.22f });
+				Drawing::Spriter(VehiclePreviewDictName, VehiclePreviewName, guiX - 0.187f, guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
 			}
 		}
 	}
@@ -199,13 +199,13 @@ bool Cheat::GUI::Break(std::string option, bool TextCentered)
 
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
-		if (TextCentered) { GUI::Drawing::Text("[ ~c~" + option + " ~s~]", TextColorAndFont, {Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount) * SelectableHeight - 0.174f}, {0.35f, 0.35f}, TextCentered, true); }
-		else { GUI::Drawing::Text(option, TextColorAndFont, { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount) * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, TextCentered); }
+		if (TextCentered) { GUI::Drawing::Text("[ ~c~" + option + " ~s~]", { PrimaryColor.r, PrimaryColor.g, PrimaryColor.b, PrimaryColor.a, TextColorAndFont.f }, {Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount) * SelectableHeight - 0.174f}, {0.35f, 0.35f}, TextCentered, true); }
+		else { GUI::Drawing::Text(option, TextColorAndFont, { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount)*SelectableHeight - 0.174f }, { 0.35f, 0.35f }, TextCentered); }
 		GUI::Drawing::Rect({ 0, 0, 0, 150 }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount) * SelectableHeight - 0.1585f }, { Cheat::GUI::guiWidth, SelectableHeight });
 	}
 	else if (GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions) && GUI::optionCount <= GUI::currentOption)
 	{
-		if (TextCentered) { GUI::Drawing::Text("[ ~c~" + option + " ~s~]", TextColorAndFont, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, TextCentered, true); }
+		if (TextCentered) { GUI::Drawing::Text("[ ~c~" + option + " ~s~]", { PrimaryColor.r, PrimaryColor.g, PrimaryColor.b, PrimaryColor.a, TextColorAndFont.f }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, TextCentered, true); }
 		else { GUI::Drawing::Text(option, TextColorAndFont, { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, TextCentered); }
 		GUI::Drawing::Rect({ 0, 0, 0, 150 }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions))*SelectableHeight - 0.1585f }, { Cheat::GUI::guiWidth, SelectableHeight });
 	}
@@ -748,15 +748,18 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 		GUI::ShowHeaderTexture = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Header", "header_texture"));
 		GUI::ShowHeaderBackground = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Header", "header_background"));
 	
-		Cheat::GUI::PrimaryColor.r = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_r"));
-		Cheat::GUI::PrimaryColor.g = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_g"));
-		Cheat::GUI::PrimaryColor.b = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_b"));
-
-		Cheat::GUI::TextColorAndFont.r = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_r"));
-		Cheat::GUI::TextColorAndFont.g = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_g"));
-		Cheat::GUI::TextColorAndFont.b = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_b"));
-
 		CheatFeatures::RGBDiscoBool = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "rgb_disco"));
+
+		if (!CheatFeatures::RGBDiscoBool)
+		{
+			Cheat::GUI::PrimaryColor.r = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_r"));
+			Cheat::GUI::PrimaryColor.g = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_g"));
+			Cheat::GUI::PrimaryColor.b = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "primary_color_b"));
+
+			Cheat::GUI::TextColorAndFont.r = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_r"));
+			Cheat::GUI::TextColorAndFont.g = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_g"));
+			Cheat::GUI::TextColorAndFont.b = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Color", "text_color_b"));
+		}
 
 		Cheat::GUI::TextColorAndFont.f = CheatFunctions::StringToInt(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Font", "text_font"));
 	}
@@ -840,7 +843,7 @@ bool Cheat::GUI::SelectableHandler(bool DisabledState)
 	return true;
 }
 
-static fpFileRegister RegisterTextureFile = (fpFileRegister)(Memory::pattern("48 89 5C 24 ? 48 89 6C 24 ? 48 89 7C 24 ? 41 54 41 56 41 57 48 83 EC 50 48 8B EA 4C 8B FA 48 8B D9 4D 85 C9").count(1).get(0).get<decltype(RegisterTextureFile)>());
+static FileRegister RegisterTextureFile = (FileRegister)(Memory::pattern("48 89 5C 24 ? 48 89 6C 24 ? 48 89 7C 24 ? 41 54 41 56 41 57 48 83 EC 50 48 8B EA 4C 8B FA 48 8B D9 4D 85 C9").count(1).get(0).get<decltype(RegisterTextureFile)>());
 void Cheat::GUI::Drawing::InitTextureFile()
 {
 	Cheat::LogFunctions::Message("Loading Texture File");

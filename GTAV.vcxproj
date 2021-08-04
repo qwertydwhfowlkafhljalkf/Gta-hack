@@ -93,7 +93,7 @@
     <ClInclude Include="Header\Game Hooking\Memory.h" />
     <ClInclude Include="Header\Game Hooking\nativeCaller.h" />
     <ClInclude Include="Header\Game Hooking\NativeInvoker.h" />
-    <ClInclude Include="Header\Game Hooking\natives.h" />
+    <ClInclude Include="Header\Game Hooking\Natives.h" />
     <ClInclude Include="Header\Game Hooking\Offsets.h" />
     <ClInclude Include="Header\Game Hooking\types.h" />
     <ClInclude Include="Header\GUI\GUI.h" />

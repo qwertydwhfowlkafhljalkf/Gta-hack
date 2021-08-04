@@ -89,7 +89,6 @@ enum SubMenus
 	vehicleweaponsmenu,
 	allplayers_trolloptionsmenu,
 	RecoveryMenu,
-	vehicledooroptionsmenu,
 	vehiclemultipliersmenus,
 	vehiclegunmenu,
 	aimbotsettingsmenu,

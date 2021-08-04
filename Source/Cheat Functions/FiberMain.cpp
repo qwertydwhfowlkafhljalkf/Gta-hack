@@ -1530,7 +1530,15 @@ void Cheat::FiberMain()
 				GUI::MenuOption("Color", VehicleCustomizerColorMenu);
 				GUI::MenuOption("Neon", vehicle_lsc_neon_options);
 				GUI::MenuOption("Multipliers", vehiclemultipliersmenus);
-				GUI::MenuOption("Door", vehicledooroptionsmenu);
+				GUI::Break("Doors", true);
+				if (GUI::StringVector("Open", { "Front Left", "Front Right", "Back Left", "Back Right", "Hood", "Trunk", "Back", "Back2" }, CheatFeatures::OpenVehicleDoorPosition, "Select to open door"))
+				{
+					VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), CheatFeatures::PedMovementVectorPosition, false, false);
+				}
+				if (GUI::StringVector("Close", { "Front Left", "Front Right", "Back Left", "Back Right", "Hood", "Trunk", "Back", "Back2" }, CheatFeatures::CloseVehicleDoorPosition, "Select to close door"))
+				{
+					VEHICLE::SET_VEHICLE_DOOR_SHUT(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), CheatFeatures::PedMovementVectorPosition, true);
+				}
 			}
 			else
 			{
@@ -1822,21 +1830,6 @@ void Cheat::FiberMain()
 			}
 		}
 		break;
-		case vehicledooroptionsmenu:
-		{
-			GUI::Title("Door");
-			if (GUI::Option("Open All Doors", "Open All Vehicle Doors"))
-			{
-				for (int CurrentDoorIndex = 0; CurrentDoorIndex < 8; CurrentDoorIndex++)
-				{
-					VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), CurrentDoorIndex, true, false);
-				}
-			}
-			if (GUI::Option("Close All Doors", "Close All Vehicle Doors")) { VEHICLE::SET_VEHICLE_DOORS_SHUT(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), true); }
-			if (GUI::Option("Lock All Doors", "Lock All Vehicle Doors")) { VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), 4); }
-			if (GUI::Option("Unlock All Doors", "Unlock All Vehicle Doors")) { VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), 0); }
-		}
-		break;
 		case vehicleweaponsmenu:
 		{
 			GUI::Title("Vehicle Weapons");
@@ -1882,6 +1875,7 @@ void Cheat::FiberMain()
 			GUI::Toggle("Spawn Max Upgraded", CheatFeatures::VehicleSpawnerSpawnMaxUpgraded, "");
 			GUI::Toggle("Delete Current", CheatFeatures::VehicleSpawnerDeleteOldVehicle, "");
 			GUI::Toggle("Spawn With Blip", CheatFeatures::VehicleSpawnerSpawnWithBlip, "");
+			GUI::Toggle("Spawn Air Vehicles In The Air", CheatFeatures::VehicleSpawnerSpawnAirVehicleAir, "");
 		}
 		break; 
 		case worldmenu:
@@ -1892,6 +1886,8 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Nearby Vehicles", nearbyvehicles_menu);
 			GUI::MenuOption("Nearby Peds", nearbypeds_menu); 
 			GUI::Toggle("Snow", CheatFeatures::WorldSnowLocalBool, "GTA Online Only");
+			GUI::Toggle("No Gravity", CheatFeatures::NoGravityBool, "Disable gravity in the world");
+			GUI::Toggle("Blackout", CheatFeatures::WorldBlackoutBool, "Disable All Map Lights");
 			if (GUI::Option("Clear Area", "Clear area of vehicles, objects etc")) 
 			{
 				Vector3 MyPos = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
@@ -1922,8 +1918,6 @@ void Cheat::FiberMain()
 				delete[] vehs;
 				GameFunctions::MinimapNotification("Area Cleared");
 			}
-			GUI::Toggle("No Gravity", CheatFeatures::NoGravityBool, "Disable gravity in the world");
-			GUI::Toggle("Blackout", CheatFeatures::WorldBlackoutBool, "Disable All Map Lights");
 		}
 		break; 
 		case nearbypeds_menu:
@@ -2057,6 +2051,10 @@ void Cheat::FiberMain()
 		case weathermenu:
 		{
 			GUI::Title("Weather");
+			if (GUI::Option("Reset Weather", ""))
+			{
+				GAMEPLAY::CLEAR_OVERRIDE_WEATHER();
+			}
 			for (int i = 0; i < GameArrays::WeatherTypes.size(); i++)
 			{
 				if (GUI::Option(GameArrays::WeatherTypes[i].SelectableName, "")) 
@@ -2425,7 +2423,7 @@ void Cheat::FiberMain()
 				if (SpawnVehicle == "0") { break; }
 
 				Hash model = GAMEPLAY::GET_HASH_KEY(SpawnVehicle);
-				if (!STREAMING::IS_MODEL_IN_CDIMAGE(model) || !STREAMING::IS_MODEL_A_VEHICLE(model)) 
+				if (!STREAMING::IS_MODEL_A_VEHICLE(model))
 				{ 
 					GameFunctions::MinimapNotification("~r~Not a valid vehicle model"); 
 				}
@@ -2831,7 +2829,13 @@ void Cheat::FiberMain()
 			GUI::Toggle("Invincible", CheatFeatures::GodmodeBool, "Gives your character God Mode");
 			GUI::Toggle("No Ragdoll & Seatbelt", CheatFeatures::NoRagdollAndSeatbeltBool, "Disables ragdoll on your character");
 			GUI::Toggle("Super Jump", CheatFeatures::SuperJumpBool, "Makes your character jump higher");
-			GUI::Toggle("Super Run", CheatFeatures::SuperRunBool, "Run very fast");
+			if (GUI::StringVector("Fast/Super Run", { "Disabled", "Fast", "Super" }, CheatFeatures::FastSuperRunPosition, "", SELECTABLE_RETURN_VALUE_CHANGE))
+			{
+				if (CheatFeatures::FastSuperRunPosition == 0)
+				{
+					PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(GameFunctions::PlayerID, 1.00f);
+				}
+			}
 			GUI::Toggle("Fast Run", CheatFeatures::FastRunBool, "Multiplies run speed");
 			GUI::Toggle("Ignored By Everyone", CheatFeatures::PlayerIgnoredBool, "NPC's will (mostly) ignore you");
 			GUI::Toggle("Never Wanted", CheatFeatures::NeverWantedBool, "Never get a wanted level");
@@ -3109,7 +3113,7 @@ void Cheat::FiberMain()
 			GUI::Toggle("Header Texture", GUI::ShowHeaderTexture, "", SELECTABLE_DISABLE_SAVE);
 			GUI::Toggle("Header Background", GUI::ShowHeaderBackground, "", SELECTABLE_DISABLE_SAVE);
 			GUI::Break("Color", true);
-			GUI::Toggle("RGB Disco", CheatFeatures::RGBDiscoBool, "", SELECTABLE_DISABLE_SAVE);
+			GUI::Toggle("RGB Disco", CheatFeatures::RGBDiscoBool, "It's time to party!", SELECTABLE_DISABLE_SAVE);
 			if (GUI::Option("Primary", "Save is disabled while RGB Disco is enabled", CheatFeatures::RGBDiscoBool ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 			{
 				GUI::PrimaryColor.r = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter R-color"));

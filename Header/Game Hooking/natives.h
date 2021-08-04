@@ -1,10 +1,6 @@
 #pragma once
 
-// Generated 08 Apr 2019
-
-#include "types.h"
-#include "nativeCaller.h"
-
+//Generated 08 Apr 2019
 namespace PLAYER
 {
 	static Ped GET_PLAYER_PED(Player player) { return invoke<Ped>(0x43A66C31C68491C0, player); } // 0x43A66C31C68491C0 0x6E31E993

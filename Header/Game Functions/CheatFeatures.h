@@ -13,6 +13,9 @@ namespace Cheat
 		extern int AnimationsVectorPosition;
 		extern int ScenariosVectorPosition;
 		extern int PedMovementVectorPosition;
+		extern int OpenVehicleDoorPosition;
+		extern int CloseVehicleDoorPosition;
+		extern int FastSuperRunPosition;
 		extern int selectedPlayer;
 		extern int PlayerOpacityInt;
 		extern bool BlockMaliciousScriptEvents;
@@ -28,6 +31,7 @@ namespace Cheat
 		extern bool VehicleSpawnerSpawnWithBlip;
 		extern bool VehicleSpawnerSpawnWithGodmode;
 		extern bool VehicleSpawnerSpawnMaxUpgraded;
+		extern bool VehicleSpawnerSpawnAirVehicleAir;
 		extern bool HidePlayerInformationBox;
 		extern bool HideSelectableInformationBox;
 		extern bool ControllableAnimations;
@@ -161,8 +165,6 @@ namespace Cheat
 		extern bool VehicleWeapons_Fireworks;
 		extern bool VehicleWeapons_DrawLaser;
 		void VehicleWeapons();
-		extern bool SuperRunBool;
-		void SuperRun();
 		extern bool ShowSessionInformationBool;
 		void ShowSessionInformation();
 		extern bool AutoGiveAllWeaponsBool;
