@@ -6,7 +6,7 @@
 #pragma warning(disable : 4091)	
 #pragma warning(disable : 6262)
 
-#define CHEAT_BUILD_NUMBER "1.4.0.2"
+#define CHEAT_BUILD_NUMBER "2.0.0.0"
 
 #include <windows.h>
 #include <string>
