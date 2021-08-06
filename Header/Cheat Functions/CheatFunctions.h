@@ -24,7 +24,7 @@ namespace Cheat
 				if (TypeName == "bool")
 				{
 					std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
-					if (ConfigFileValue != "NOT_FOUND")
+					if (!ConfigFileValue.empty())
 					{
 						ReturnedVariable = CheatFunctions::StringToBool(CheatFunctions::GetOptionValueFromConfig(OptionName));
 						Cheat::LogFunctions::DebugMessage("Loaded savable option (Boolean) '" + OptionName + "'");
@@ -34,7 +34,7 @@ namespace Cheat
 				else if (TypeName == "int")
 				{
 					std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
-					if (ConfigFileValue != "NOT_FOUND")
+					if (!ConfigFileValue.empty())
 					{
 						ReturnedVariable = CheatFunctions::StringToInt(CheatFunctions::GetOptionValueFromConfig(OptionName));
 						Cheat::LogFunctions::DebugMessage("Loaded savable option (Integer) '" + OptionName + "'");
@@ -44,7 +44,7 @@ namespace Cheat
 				else if (TypeName == "float")
 				{
 					std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
-					if (ConfigFileValue != "NOT_FOUND")
+					if (!ConfigFileValue.empty())
 					{
 						ReturnedVariable = std::stof(CheatFunctions::GetOptionValueFromConfig(OptionName));
 						Cheat::LogFunctions::DebugMessage("Loaded savable option (Float) '" + OptionName + "'");

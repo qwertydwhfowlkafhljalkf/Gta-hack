@@ -286,14 +286,17 @@ void Cheat::CheatFunctions::LoadConfig()
 
 	//Load keys
 	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Menu GUI Key");
-	if (MenuGUIKey != "NOT_FOUND") { GUI::OpenGUIKey = StringToInt(MenuGUIKey); }
+	if (!MenuGUIKey.empty()) { GUI::OpenGUIKey = StringToInt(MenuGUIKey); }
 	
 	std::string CursorNavigationKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
-	if (CursorNavigationKey != "NOT_FOUND") { GUI::OpenGUIKey = StringToInt(CursorNavigationKey); }
+	if (!CursorNavigationKey.empty()) { GUI::OpenGUIKey = StringToInt(CursorNavigationKey); }
 
-	//Load Active Theme Name
+	std::string SaveSelectableKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Save Selectable Key");
+	if (!SaveSelectableKey.empty()) { GUI::OpenGUIKey = StringToInt(SaveSelectableKey); }
+
+	//Load Active Theme
 	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Active Theme");
-	if (ActiveThemeSetting != "NOT_FOUND") { GUI::LoadTheme(CheatFunctions::StringToChar(ActiveThemeSetting), true); }
+	if (!ActiveThemeSetting.empty()) { GUI::LoadTheme(CheatFunctions::StringToChar(ActiveThemeSetting), true); }
 }
 
 bool Cheat::CheatFunctions::IsOptionRegisteredAsLoaded(std::string OptionName)
@@ -415,7 +418,7 @@ std::string Cheat::CheatFunctions::IniFileReturnKeyValueAsString(std::string Fil
 	mINI::INIFile File(FilePath);
 	mINI::INIStructure IniStruct;
 	File.read(IniStruct);
-	if (!IniStruct.has(Section) || !IniStruct[Section].has(Key)) { return "NOT_FOUND"; }
+	if (!IniStruct.has(Section) || !IniStruct[Section].has(Key)) { return std::string(); }
 	return IniStruct.get(Section).get(Key);
 }
 
