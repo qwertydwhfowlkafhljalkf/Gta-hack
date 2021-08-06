@@ -6,7 +6,7 @@
 
 Regularly maintained free open-source internal cheat software for Grand Theft Auto V (PC).
 
-![](/preview_image.png)
+![](/Resources/preview_image.png)
 
 ## Getting started
 ### Prerequisites
