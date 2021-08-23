@@ -56,8 +56,6 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("All Players");
 			GUI::MenuOption("Exclutions", AllPlayersExclutionsMenu);
-			GUI::Break("Extra-sensory Perception", true);
-			GUI::Toggle("Basic ESP", CheatFeatures::PlayerESPBool, "");
 			GUI::Break("Friendly", true);
 			if (GUI::Option("Give All Weapons", "Give all players all weapons"))
 			{
@@ -2096,10 +2094,17 @@ void Cheat::FiberMain()
 			}
 		}
 		break;
+		case ESPMenu:
+		{
+			GUI::Title("Extra-sensory Perception");
+			GUI::Toggle("Basic Player ESP", CheatFeatures::PlayerESPBool, "");
+		}
+		break;
 		case miscmenu:
 		{
 			GUI::Title("Miscellaneous");
 			GUI::MenuOption("Report Stats", reportsmenu_stats);
+			GUI::MenuOption("Extra-sensory Perception", ESPMenu);
 			GUI::MenuOption("HUD", hudmenu); 
 			GUI::MenuOption("IPL Loader", iplloader);
 			GUI::Toggle("Disable Phone", CheatFeatures::DisablePhoneBool, "Disable phone controls");

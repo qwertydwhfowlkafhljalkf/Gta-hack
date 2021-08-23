@@ -97,6 +97,7 @@ enum SubMenus
 	HideElementsMenu,
 	AboutMenu,
 	reportsmenu_stats,
+	ESPMenu,
 	VehicleCustomizerMenu,
 	DLCVehiclesMenu,
 	SUBMENUS_END //Used to get total size of SubMenus (SUBMENUS_END - 2) 
