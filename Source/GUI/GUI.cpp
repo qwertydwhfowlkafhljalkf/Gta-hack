@@ -571,6 +571,7 @@ void Cheat::GUI::ControlsLoop()
 				Cheat::GUI::CheatGUIHasBeenOpened = true;
 				if (GUI::menuLevel == 0)
 				{
+					Cheat::GameFunctions::PlayFrontendSoundDefault("YES");
 					if (GUI::PreviousMenu != NOMENU && Cheat::GUI::RestorePreviousSubmenu)
 					{
 						GUI::MoveMenu(GUI::PreviousMenu);
@@ -584,10 +585,9 @@ void Cheat::GUI::ControlsLoop()
 				}
 				else
 				{
+					Cheat::GameFunctions::PlayFrontendSoundDefault("NO");
 					GUI::CloseGUI();
 				}
-
-				Cheat::GameFunctions::PlayFrontendSoundDefault("SELECT");
 				GUI::KeyPressPreviousTick = GetTickCount64();
 			}
 			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD0))
