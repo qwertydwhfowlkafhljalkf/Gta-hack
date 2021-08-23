@@ -65,7 +65,8 @@ namespace Cheat
 		bool IsIntegerInRange(unsigned low, unsigned high, unsigned x);
 		std::string TextureFilePath();
 		int WaitForAndReturnPressedKey();
-		char* StringToChar(std::string string);
+		char* StringToChar(std::string String);
+		const char* StringToConstChar(std::string String);
 		std::string VirtualKeyCodeToString(UCHAR virtualKey);
 		void CreateConsole();
 		int ReturnNumberOfDigitsInValue(double Number);

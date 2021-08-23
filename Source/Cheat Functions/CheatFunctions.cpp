@@ -10,12 +10,12 @@ void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 	if (!std::filesystem::create_directory(Path))
 	{
 		std::string String = __func__ + (std::string)"() Failed to create directory '" + Path + "' Error: " + Cheat::CheatFunctions::GetLastErrorAsString();
-		Cheat::LogFunctions::DebugMessage(CheatFunctions::StringToChar(String));
+		Cheat::LogFunctions::DebugMessage(String);
 	}
 	else
 	{
 		std::string String = __func__ + (std::string)"() Created directory '" + Path + "'";
-		Cheat::LogFunctions::DebugMessage((CheatFunctions::StringToChar(String)));
+		Cheat::LogFunctions::DebugMessage(String);
 	}
 }
 
@@ -249,7 +249,7 @@ void Cheat::CheatFunctions::SaveOption(std::string OptionName, std::string Optio
 		if (IsSavable)
 		{
 			std::string LogMessage = "'" + OptionName + "' saved";
-			Cheat::GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(LogMessage), "Textures", "AdvancedNotificationImage", false, 4, "Config", "", 0.5f, "");
+			Cheat::GameFunctions::AdvancedMinimapNotification(StringToChar(LogMessage), "Textures", "AdvancedNotificationImage", false, 4, "Config", "", 0.5f, "");
 			IniFileWriteString(OptionValue, ReturnConfigFilePath(), "SETTINGS", OptionName);
 		}
 	}
@@ -296,7 +296,7 @@ void Cheat::CheatFunctions::LoadConfig()
 
 	//Load Active Theme
 	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Active Theme");
-	if (!ActiveThemeSetting.empty()) { GUI::LoadTheme(CheatFunctions::StringToChar(ActiveThemeSetting), true); }
+	if (!ActiveThemeSetting.empty()) { GUI::LoadTheme(ActiveThemeSetting, true); }
 }
 
 bool Cheat::CheatFunctions::IsOptionRegisteredAsLoaded(std::string OptionName)
@@ -311,9 +311,15 @@ bool Cheat::CheatFunctions::IsOptionRegisteredAsLoaded(std::string OptionName)
 	return false;
 }
 
-char* Cheat::CheatFunctions::StringToChar(std::string string)
+char* Cheat::CheatFunctions::StringToChar(std::string String)
 {
-	return _strdup(string.c_str());
+	return _strdup(String.c_str());
+}
+
+const char* Cheat::CheatFunctions::StringToConstChar(std::string String)
+{
+	auto Temp = String.c_str();
+	return Temp;
 }
 
 std::string Cheat::CheatFunctions::VirtualKeyCodeToString(UCHAR virtualKey)
@@ -502,27 +508,29 @@ Json::Value Cheat::CheatFunctions::ReturnOnlineJsonCppDataObject(std::string URL
 {
 	int httpCode;
 	CURL* CurlHandle;
-	std::string readBuffer;
+	std::string HttpData;
+	CURLcode res;
 	CurlHandle = curl_easy_init();
 	if (CurlHandle)
 	{
 		curl_easy_setopt(CurlHandle, CURLOPT_URL, StringToChar(URL));
 		curl_easy_setopt(CurlHandle, CURLOPT_USERAGENT, "request");
+		curl_easy_setopt(CurlHandle, CURLOPT_TIMEOUT, 10);
 		curl_easy_setopt(CurlHandle, CURLOPT_WRITEFUNCTION, callback);
-		curl_easy_setopt(CurlHandle, CURLOPT_WRITEDATA, &readBuffer);
-		curl_easy_perform(CurlHandle);
+		curl_easy_setopt(CurlHandle, CURLOPT_WRITEDATA, &HttpData);
+		res = curl_easy_perform(CurlHandle);
 		curl_easy_getinfo(CurlHandle, CURLINFO_RESPONSE_CODE, &httpCode);
 		curl_easy_cleanup(CurlHandle);
 	}
 
-	if (httpCode == 200)
+	if (httpCode != CURLE_HTTP_RETURNED_ERROR && res == CURLE_OK)
 	{
 		Json::CharReaderBuilder CharBuilder;
 		Json::Value JsonData;
 		JSONCPP_STRING JsonError;
 		const std::unique_ptr<Json::CharReader> reader(CharBuilder.newCharReader());
 
-		if (reader->parse(StringToChar(readBuffer), StringToChar(readBuffer) + readBuffer.length(), &JsonData, &JsonError))
+		if (reader->parse(StringToConstChar(HttpData), StringToConstChar(HttpData) + HttpData.length(), &JsonData, &JsonError))
 		{
 			return JsonData;
 		}
@@ -655,7 +663,7 @@ Json::Value Cheat::CheatFunctions::ReadJsonFileAndReturnDataObject(std::string F
 void Cheat::CheatFunctions::AddCustomTeleportLocation(std::string CustomTeleportLocationName)
 {
 	Json::Value JsonHandle = ReadJsonFileAndReturnDataObject(ReturnCustomTeleportLocationsFilePath());
-	remove(StringToChar(ReturnCustomTeleportLocationsFilePath()));
+	remove(StringToConstChar(ReturnCustomTeleportLocationsFilePath()));
 	if (JsonHandle.isMember(CustomTeleportLocationName)) { JsonHandle.removeMember(CustomTeleportLocationName); }
 
 	Vector3 LocalPlayerCoords = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, true);
@@ -671,7 +679,7 @@ void Cheat::CheatFunctions::AddCustomTeleportLocation(std::string CustomTeleport
 void Cheat::CheatFunctions::DeleteCustomTeleportLocation(std::string CustomTeleportLocationName)
 {
 	Json::Value JsonHandle = ReadJsonFileAndReturnDataObject(ReturnCustomTeleportLocationsFilePath());
-	remove(StringToChar(ReturnCustomTeleportLocationsFilePath()));
+	remove(StringToConstChar(ReturnCustomTeleportLocationsFilePath()));
 	if (JsonHandle.isMember(CustomTeleportLocationName)) { JsonHandle.removeMember(CustomTeleportLocationName); }
 	std::fstream FileHandle(ReturnCustomTeleportLocationsFilePath(), std::ios_base::out);
 	FileHandle << JsonHandle;
