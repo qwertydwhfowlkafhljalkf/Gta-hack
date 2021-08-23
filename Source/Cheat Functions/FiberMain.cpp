@@ -2550,14 +2550,18 @@ void Cheat::FiberMain()
 				for (auto it = JsonHandle.begin(); it != JsonHandle.end(); ++it)
 				{
 					NmbOfLocations++;
-					if (GUI::Option(it.key().asString(), "Select to teleport. Hold Delete key while selecting to delete"))
+					GUI::Break(it.key().asString(), true);
+					if (GUI::Option("Teleport To", ""))
 					{
-						if (CheatFunctions::IsKeyCurrentlyPressed(VK_DELETE)) { CheatFunctions::DeleteCustomTeleportLocation(it.key().asString()); break; }
 						Vector3 Target;
 						Target.x = JsonHandle[it.key().asString()]["X"].asFloat();
 						Target.y = JsonHandle[it.key().asString()]["Y"].asFloat();
 						Target.z = JsonHandle[it.key().asString()]["Z"].asFloat();
 						GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Target, false, false);
+					}
+					if (GUI::Option("Delete", ""))
+					{
+						CheatFunctions::DeleteCustomTeleportLocation(it.key().asString());
 					}
 				}
 				if (NmbOfLocations == 0)
@@ -3185,7 +3189,7 @@ void Cheat::FiberMain()
 			GUI::Break("Menu", true);
 			GUI::Float("X-Axis", GUI::guiX, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
 			GUI::Float("Y-Axis", GUI::guiY, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
-			GUI::Float("Selectable Height", GUI::SelectableHeight, 0.035f, 0.045f, 0.001, "This also slightly stretches the header element as a result of the rescale");
+			GUI::Float("Selectable Height", GUI::SelectableHeight, 0.035f, 0.045f, 0.001f, "This also slightly stretches the header element as a result of the rescale");
 			if (GUI::Option("Reset Position", ""))
 			{
 				GUI::guiX = GUI::guiX_Default;
@@ -3210,9 +3214,14 @@ void Cheat::FiberMain()
 				{
 					if (GUI::Option(i, ""))
 					{
-						std::string ThemeFilePathMenuList = CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes\\" + i + ".ini";
-						if (!CheatFunctions::FileOrDirectoryExists(ThemeFilePathMenuList)) { GameFunctions::MinimapNotification("~r~Unable to locate theme file"); break; }
-						GUI::LoadTheme(CheatFunctions::StringToChar(i), false);
+						if (CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnThemeFilePath(i))) 
+						{
+							GUI::LoadTheme(CheatFunctions::StringToChar(i), false);
+						}
+						else
+						{
+							GameFunctions::MinimapNotification("~r~Unable to locate theme file");
+						}
 					}
 				}
 			}
