@@ -502,7 +502,6 @@ Json::Value Cheat::CheatFunctions::ReturnOnlineJsonCppDataObject(std::string URL
 {
 	int httpCode;
 	CURL* CurlHandle;
-	CURLcode Result;
 	std::string readBuffer;
 	CurlHandle = curl_easy_init();
 	if (CurlHandle)
@@ -511,28 +510,30 @@ Json::Value Cheat::CheatFunctions::ReturnOnlineJsonCppDataObject(std::string URL
 		curl_easy_setopt(CurlHandle, CURLOPT_USERAGENT, "request");
 		curl_easy_setopt(CurlHandle, CURLOPT_WRITEFUNCTION, callback);
 		curl_easy_setopt(CurlHandle, CURLOPT_WRITEDATA, &readBuffer);
-		Result = curl_easy_perform(CurlHandle);
+		curl_easy_perform(CurlHandle);
 		curl_easy_getinfo(CurlHandle, CURLINFO_RESPONSE_CODE, &httpCode);
 		curl_easy_cleanup(CurlHandle);
 	}
 
 	if (httpCode == 200)
 	{
-		Json::Reader reader;
+		Json::CharReaderBuilder CharBuilder;
 		Json::Value JsonData;
+		JSONCPP_STRING JsonError;
+		const std::unique_ptr<Json::CharReader> reader(CharBuilder.newCharReader());
 
-		if (reader.parse(readBuffer, JsonData))
+		if (reader->parse(StringToChar(readBuffer), StringToChar(readBuffer) + readBuffer.length(), &JsonData, &JsonError))
 		{
 			return JsonData;
 		}
 		else
 		{
-			Cheat::LogFunctions::DebugMessage("ReturnOnlineJsonCppDataObject() : failed to parse json data");
+			Cheat::LogFunctions::DebugMessage(__func__ + (std::string)"() : failed to parse json data. Error message returned by JsonCPP: " + JsonError);
 		}
 	}
 	else
 	{
-		Cheat::LogFunctions::DebugMessage("ReturnOnlineJsonCppDataObject() : request failed, received the following HTTP status code: " + std::to_string(httpCode));
+		Cheat::LogFunctions::DebugMessage(__func__ + (std::string)"() : request failed, received the following HTTP status code : " + std::to_string(httpCode));
 	}
 	return Json::Value();
 }
@@ -554,13 +555,13 @@ void Cheat::CheatFunctions::CheckCheatUpdate()
 	{
 		CurrentLocalVersion = StringToInt(CurrentLocalVersionString);
 		LatestOnlineVersion = StringToInt(LatestOnlineVersionString);
-	}
 
-	if (CurrentLocalVersion < LatestOnlineVersion && (CurrentLocalVersion && LatestOnlineVersion != NULL))
-	{
-		NewerCheatVersionAvailable = true;
-		NewCheatVersionString = LatestOnlineVersionString;
-		LogFunctions::DebugMessage("A newer version of the cheat is available on Github");
+		if (CurrentLocalVersion < LatestOnlineVersion)
+		{
+			NewerCheatVersionAvailable = true;
+			NewCheatVersionString = "v" + LatestOnlineVersionString;
+			LogFunctions::DebugMessage("A newer version of the cheat is available on Github");
+		}
 	}
 }
 
@@ -625,7 +626,8 @@ void Cheat::CheatFunctions::CopyStringToClipboard(const std::string& String)
 	EmptyClipboard();
 	HGLOBAL Global = GlobalAlloc(GMEM_MOVEABLE, String.size() + 1);
 	if (!Global) { CloseClipboard(); return; }
-	memcpy(GlobalLock(Global), String.c_str(), String.size() + 1);
+	LPVOID GlobalPtrn = GlobalLock(Global);
+	if (GlobalPtrn != NULL) { memcpy(GlobalPtrn, String.c_str(), String.size() + 1); }
 	GlobalUnlock(Global);
 	SetClipboardData(CF_TEXT, Global);
 	CloseClipboard();
