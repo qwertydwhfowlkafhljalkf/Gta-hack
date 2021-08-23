@@ -533,7 +533,7 @@ Json::Value Cheat::CheatFunctions::ReturnOnlineJsonCppDataObject(std::string URL
 	}
 	else
 	{
-		Cheat::LogFunctions::DebugMessage(__func__ + (std::string)"() : request failed, received the following HTTP status code : " + std::to_string(httpCode));
+		Cheat::LogFunctions::DebugMessage(__func__ + (std::string)"() : request failed, received the following HTTP status code: " + std::to_string(httpCode));
 	}
 	return Json::Value();
 }
