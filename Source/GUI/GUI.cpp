@@ -325,35 +325,24 @@ bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step,
 		return true;
 	}
 
+	std::string Text;
+	if (_int > min)
+	{
+		Text.append("< ");
+	}
+	Text.append(std::to_string(_int));
+	if (_int < max)
+	{
+		Text.append(" >");
+	}
+
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
-		if (_int < 100)
-		{
-			DrawTextInGame("< " + std::to_string(_int) + " >", TextColorAndFont, { Cheat::GUI::guiX + 0.075f, GUI::guiY + GUI::optionCount * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
-		}
-		else if (_int < 999)
-		{
-			DrawTextInGame("< " + std::to_string(_int) + " >", TextColorAndFont, { Cheat::GUI::guiX + 0.07f, GUI::guiY + GUI::optionCount * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
-		}
-		else
-		{
-			DrawTextInGame("< " + std::to_string(_int) + " >", TextColorAndFont, { Cheat::GUI::guiX + 0.06f, GUI::guiY + GUI::optionCount * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
-		}
+		DrawTextInGame(Text, TextColorAndFont, { Cheat::GUI::guiX + 0.075f, GUI::guiY + GUI::optionCount * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
 	}
 	else if ((GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions)) && GUI::optionCount <= GUI::currentOption)
 	{
-		if (_int < 100)
-		{
-			DrawTextInGame("< " + std::to_string(_int) + " >", TextColorAndFont, { Cheat::GUI::guiX + 0.075f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
-		}
-		else if (_int < 999)
-		{
-			DrawTextInGame("< " + std::to_string(_int) + " >", TextColorAndFont, { Cheat::GUI::guiX + 0.07f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
-		}
-		else
-		{
-			DrawTextInGame("< " + std::to_string(_int) + " >", TextColorAndFont, { Cheat::GUI::guiX + 0.06f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
-		}
+		DrawTextInGame(Text, TextColorAndFont, { Cheat::GUI::guiX + 0.075f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
 	}
 
 	if (GUI::optionCount == GUI::currentOption)
