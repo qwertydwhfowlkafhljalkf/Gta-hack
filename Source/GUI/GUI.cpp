@@ -47,6 +47,8 @@ int Cheat::GUI::OpenGUIKey					= VK_F4;
 int Cheat::GUI::GUINavigationKey			= VK_F5;
 int Cheat::GUI::SaveSelectableKey			= VK_F12;
 
+int Cheat::GUI::MenuArrowAnimationDelay		= 1000;
+
 
 void Cheat::GUI::Title(std::string TitleName)
 {

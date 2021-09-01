@@ -3091,6 +3091,7 @@ void Cheat::FiberMain()
 				}
 			}
 			GUI::Int("Key Press Delay", GUI::GUIKeyPressDelay, 1, 250, 5);
+			GUI::Int("Menu Arrow Animation Delay", GUI::MenuArrowAnimationDelay, 250, 2500, 25);
 			GUI::MenuOption("About", AboutMenu);
 		}
 		break;

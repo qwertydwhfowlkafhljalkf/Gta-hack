@@ -688,12 +688,14 @@ void Cheat::CheatFunctions::DeleteCustomTeleportLocation(std::string CustomTelep
 
 DWORD WINAPI Cheat::CheatFunctions::MenuSelectableAnimationThread(LPVOID lpParam)
 {
-	int Delay = 1000;
 	while (true)
 	{
-		GUI::MenuOptionArrowAnimationState = true;
-		Sleep(Delay);
-		GUI::MenuOptionArrowAnimationState = false;
-		Sleep(Delay);
+		if (GUI::menuLevel != 0)
+		{
+			GUI::MenuOptionArrowAnimationState = true;
+			Sleep(GUI::MenuArrowAnimationDelay);
+			GUI::MenuOptionArrowAnimationState = false;
+			Sleep(GUI::MenuArrowAnimationDelay);
+		}
 	}
 }
