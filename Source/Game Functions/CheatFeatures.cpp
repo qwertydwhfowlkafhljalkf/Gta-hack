@@ -42,8 +42,8 @@ void Cheat::CheatFeatures::NonLooped()
 	//Create Menu Selectable Arrow Animation Thread - no point creating a thread handle rn, no interaction required
 	CreateThread(NULL, NULL, CheatFunctions::MenuSelectableAnimationThread, CheatModuleHandle, NULL, NULL);
 
-	//Initialize Texture File
-	GUI::Drawing::InitTextureFile();
+	//Load Texture File
+	GUI::LoadTextureFile();
 
 	//Load Config
 	CheatFunctions::LoadConfig();
@@ -79,7 +79,7 @@ void Cheat::CheatFeatures::Looped()
 	//New cheat update notification
 	if (CheatFunctions::NewerCheatVersionAvailable)
 	{
-		GUI::Drawing::Text("~bold~A newer cheat version (" + CheatFunctions::NewCheatVersionString + ") is available on Github, which includes new features and bugfixes", { 255, 255, 255, 255, FontChaletLondon }, { 0.01f, 0.01f }, { 0.25f, 0.25f }, false);
+		GUI::DrawTextInGame("~bold~A newer cheat version (" + CheatFunctions::NewCheatVersionString + ") is available on Github, which includes new features and bugfixes", { 255, 255, 255, 255, FontChaletLondon }, { 0.01f, 0.01f }, { 0.25f, 0.25f }, false);
 	}
 
 	//New Session Member Notification Feature
@@ -97,7 +97,7 @@ void Cheat::CheatFeatures::Looped()
 		{
 			Speed << Cheat::GameFunctions::MSToMPH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0))) << " MP/H";
 		}
-		if (SpeedometerVectorPosition == 1 || SpeedometerVectorPosition == 3) { GUI::Drawing::Text(Speed.str(), { 0, 0, 255, 255 }, { 0.85f, 0.5000f }, { 0.70f, 0.70f }, false); }
+		if (SpeedometerVectorPosition == 1 || SpeedometerVectorPosition == 3) { GUI::DrawTextInGame(Speed.str(), { 0, 0, 255, 255 }, { 0.85f, 0.5000f }, { 0.70f, 0.70f }, false); }
 		if (SpeedometerVectorPosition == 2 || SpeedometerVectorPosition == 3) { VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0), CheatFunctions::StringToChar(Speed.str())); }
 	}
 
@@ -600,7 +600,7 @@ void Cheat::CheatFeatures::ShowFPS()
 	std::string str = std::to_string(iFps);
 	while (str.size() > str.find(".")) { str.pop_back(); }
 	std::string MessageString = "FPS: " + str;
-	GUI::Drawing::Text(MessageString, { 255, 255, 255, 255 }, { 0.50f, 0.002f }, { 0.30f, 0.30f }, false);
+	GUI::DrawTextInGame(MessageString, { 255, 255, 255, 255 }, { 0.50f, 0.002f }, { 0.30f, 0.30f }, false);
 }
 
 
@@ -860,16 +860,16 @@ void Cheat::CheatFeatures::EntityInformationGun()
 		Vector3 AimedEntityCoords = ENTITY::GET_ENTITY_COORDS(AimedEntityHandle, false);
 		std::string AimedEntityHealth = "Entity Health: " + std::to_string(ENTITY::GET_ENTITY_HEALTH(AimedEntityHandle));
 		std::string AimedEntityHash = "Entity Hash: " + std::to_string(ENTITY::GET_ENTITY_MODEL(AimedEntityHandle));
-		Cheat::GUI::Drawing::Text("~bold~Aimed Entity Information", { 255, 255, 255, 255, 0 }, { 0.500f, 0.380f }, { 0.35f, 0.35f }, false);
-		Cheat::GUI::Drawing::Text(AimedEntityHash, { 255, 255, 255, 255, 0 }, { 0.500f, 0.400f }, { 0.35f, 0.35f }, false);
-		Cheat::GUI::Drawing::Text(AimedEntityHealth, { 255, 255, 255, 255, 0 }, { 0.500f, 0.420f }, { 0.35f, 0.35f }, false);
+		GUI::DrawTextInGame("~bold~Aimed Entity Information", { 255, 255, 255, 255, 0 }, { 0.500f, 0.380f }, { 0.35f, 0.35f }, false);
+		GUI::DrawTextInGame(AimedEntityHash, { 255, 255, 255, 255, 0 }, { 0.500f, 0.400f }, { 0.35f, 0.35f }, false);
+		GUI::DrawTextInGame(AimedEntityHealth, { 255, 255, 255, 255, 0 }, { 0.500f, 0.420f }, { 0.35f, 0.35f }, false);
 
 		std::string EntityTypeMessageString;
 		if (ENTITY::IS_ENTITY_A_PED(AimedEntityHandle)) { EntityTypeMessageString = "Entity Type: Ped"; }
 		else if (ENTITY::IS_ENTITY_A_VEHICLE(AimedEntityHandle)) { EntityTypeMessageString = "Entity Type: Vehicle"; }
 		else if (ENTITY::IS_ENTITY_AN_OBJECT(AimedEntityHandle)) { EntityTypeMessageString = "Entity Type: Object"; }
 		else { EntityTypeMessageString = "Entity Type: Generic"; }
-		Cheat::GUI::Drawing::Text(EntityTypeMessageString, { 255, 255, 255, 255, 0 }, { 0.500f, 0.440f }, { 0.35f, 0.35f }, false);
+		GUI::DrawTextInGame(EntityTypeMessageString, { 255, 255, 255, 255, 0 }, { 0.500f, 0.440f }, { 0.35f, 0.35f }, false);
 	}
 }
 
@@ -1334,11 +1334,11 @@ void Cheat::CheatFeatures::ShowSessionInformation()
 	std::string yMsg = " Y " + std::to_string(playerCoord.y);
 	std::string zMsg = " Z " + std::to_string(playerCoord.z);
 
-	Cheat::GUI::Drawing::Text("Local Player Coords", { 255, 255, 255, 255, FontChaletLondon }, { 0.162f, 0.8100f }, { 0.25f, 0.25f }, false);
-	Cheat::GUI::Drawing::Text(xMsg, { 255, 255, 255, 255, FontChaletLondon }, { 0.16f, 0.8225f }, { 0.25f, 0.25f }, false);
-	Cheat::GUI::Drawing::Text(yMsg, { 255, 255, 255, 255, FontChaletLondon }, { 0.16f, 0.8350f }, { 0.25f, 0.25f }, false);
-	Cheat::GUI::Drawing::Text(zMsg, { 255, 255, 255, 255, FontChaletLondon }, { 0.16f, 0.8475f }, { 0.25f, 0.25f }, false);
-	if (NETWORK::NETWORK_IS_SESSION_STARTED()) { Cheat::GUI::Drawing::Text(NumbConnectedPlayers, { 255, 255, 255, 255, FontChaletLondon }, { 0.1615f, 0.8650f }, { 0.25f, 0.25f }, false); }
+	GUI::DrawTextInGame("Local Player Coords", { 255, 255, 255, 255, FontChaletLondon }, { 0.162f, 0.8100f }, { 0.25f, 0.25f }, false);
+	GUI::DrawTextInGame(xMsg, { 255, 255, 255, 255, FontChaletLondon }, { 0.16f, 0.8225f }, { 0.25f, 0.25f }, false);
+	GUI::DrawTextInGame(yMsg, { 255, 255, 255, 255, FontChaletLondon }, { 0.16f, 0.8350f }, { 0.25f, 0.25f }, false);
+	GUI::DrawTextInGame(zMsg, { 255, 255, 255, 255, FontChaletLondon }, { 0.16f, 0.8475f }, { 0.25f, 0.25f }, false);
+	if (NETWORK::NETWORK_IS_SESSION_STARTED()) { GUI::DrawTextInGame(NumbConnectedPlayers, { 255, 255, 255, 255, FontChaletLondon }, { 0.1615f, 0.8650f }, { 0.25f, 0.25f }, false); }
 }
 
 bool Cheat::CheatFeatures::AutoGiveAllWeaponsBool = false;
@@ -1372,7 +1372,7 @@ void Cheat::CheatFeatures::CrossHair()
 {
 	if (!CrossHairADSOnlyBool || CrossHairADSOnlyBool && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_AIM))
 	{
-		GUI::Drawing::Spriter("Textures", "Crosshair1", 0.50f, 0.50f, 0.030f, 0.030f, 0, 255, 255, 255, 255);
+		GUI::DrawSpriterInGame("Textures", "Crosshair1", 0.50f, 0.50f, 0.030f, 0.030f, 0, 255, 255, 255, 255);
 	}
 }
 

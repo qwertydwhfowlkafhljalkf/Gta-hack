@@ -123,15 +123,11 @@ namespace Cheat
 {
 	namespace GUI
 	{
-		namespace Drawing
-		{
-			void Text(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center, bool Outline = false);
-			void Rect(RGBA rgba, VECTOR2 position, VECTOR2_2 size);
-			void Spriter(std::string Streamedtexture, std::string textureName, float x, float y, float width, float height, float rotation, int r, int g, int b, int a);
-			void InitTextureFile();
-		}
-
 		extern void ControlsLoop();
+		void LoadTextureFile();
+		void DrawTextInGame(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center, bool Outline = false);
+		void DrawRectInGame(RGBA rgba, VECTOR2 position, VECTOR2_2 size);
+		void DrawSpriterInGame(std::string Streamedtexture, std::string textureName, float x, float y, float width, float height, float rotation, int r, int g, int b, int a);
 
 		extern const float SelectableInfoBoxY_Default;
 		extern const float SelectableInfoBoxX_Default;
