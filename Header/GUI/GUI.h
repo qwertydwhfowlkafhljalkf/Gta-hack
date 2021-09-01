@@ -180,7 +180,7 @@ namespace Cheat
 		extern int GUINavigationKey;
 		extern int SaveSelectableKey;
 		extern bool MenuOptionArrowAnimationState;
-		extern void DeleteCurrentTheme();
+		extern void DeleteLoadedTheme();
 		void MoveMenu(SubMenus menu);
 		void BackMenu();
 		void CloseGUI();

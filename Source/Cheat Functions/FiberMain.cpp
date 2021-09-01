@@ -23,7 +23,7 @@ int SetPedTexture_Torso = 0, SetPedTexture_TorsoTexture = 0, SetPedTexture_Face 
 
 
 void Cheat::FiberMain()
-{ 
+{
 	CheatFeatures::NonLooped();
 	while (true)
 	{
@@ -3131,7 +3131,7 @@ void Cheat::FiberMain()
 				}
 				if (GUI::Option("Delete Theme", "Delete loaded theme"))
 				{
-					GUI::DeleteCurrentTheme();
+					GUI::DeleteLoadedTheme();
 				}
 			}
 			else

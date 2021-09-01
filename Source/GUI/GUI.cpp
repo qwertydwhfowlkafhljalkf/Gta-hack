@@ -779,7 +779,7 @@ void Cheat::GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 	}
 }
 
-void Cheat::GUI::DeleteCurrentTheme()
+void Cheat::GUI::DeleteLoadedTheme()
 {
 	remove(CheatFunctions::StringToChar(CheatFunctions::ReturnThemeFilePath(CurrentTheme)));
 	CheatFunctions::IniFileRemoveKey(CheatFunctions::ReturnConfigFilePath(), "Settings", "Active Theme");
