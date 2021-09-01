@@ -106,10 +106,10 @@ enum SubMenus
 enum SelectableBitFlags
 {
 	SELECTABLE_DUMMY = 1,			//Placeholder
-	SELECTABLE_DISABLED = 2,		//The selectable is disabled, if the select key is pressed on the item a message appears informing the user about the disable state. When using this flag saving is also blocked (use of SELECTABLE_DISABLED than not needed)
+	SELECTABLE_DISABLED = 2,		//The selectable is disabled, if the select key is pressed on the selectable a message appears informing the user about the disable state. When using this flag saving is also blocked (use of SELECTABLE_DISABLED than not needed)
 	SELECTABLE_DISABLE_SAVE = 4,	//The selectable won't save when the corresponding key is pressed
 	SELECTABLE_CENTER_TEXT = 8,		//This currently only applies to the Break selectable. Text will be centered relative to menu GUI.
-	SELECTABLE_RETURN_VALUE_CHANGE = 16   //Currently used by Float and StringVector selectable. Function will return when a value is changed (e.g. left or right is pressed)
+	SELECTABLE_RETURN_VALUE_CHANGE = 16   //Currently used by Float and StringVector selectable. Function will also return when a value is changed (e.g. left or right is pressed)
 };
 
 
@@ -183,7 +183,7 @@ namespace Cheat
 		extern void DeleteLoadedTheme();
 		void MoveMenu(SubMenus menu);
 		void BackMenu();
-		void CloseGUI();
+		void CloseMenuGUI();
 		void End();
 		void ChangeControlsState(bool State);
 		void LoadTheme(std::string ThemeFileName, bool StartUp);

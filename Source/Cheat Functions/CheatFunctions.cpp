@@ -269,7 +269,7 @@ void LoadConfigThreadFunction()
 		Cheat::GUI::MoveMenu(static_cast<SubMenus>(SubMenuInt));
 		Sleep(150);
 	}
-	Cheat::GUI::CloseGUI();
+	Cheat::GUI::CloseMenuGUI();
 	Cheat::GUI::PreviousMenu = NOMENU;
 	Cheat::GUI::ChangeControlsState(true);
 	Cheat::GUI::HideGUIElements = false;

@@ -586,7 +586,7 @@ void Cheat::GUI::ControlsLoop()
 				else
 				{
 					Cheat::GameFunctions::PlayFrontendSoundDefault("NO");
-					GUI::CloseGUI();
+					GUI::CloseMenuGUI();
 				}
 				GUI::KeyPressPreviousTick = GetTickCount64();
 			}
@@ -658,7 +658,7 @@ void Cheat::GUI::MoveMenu(SubMenus menu)
 	GUI::currentOption = 1;
 }
 
-void Cheat::GUI::CloseGUI()
+void Cheat::GUI::CloseMenuGUI()
 {
 	if (Cheat::CheatFeatures::CursorGUINavigationEnabled) { Cheat::GameFunctions::EnableDisableCursorGUINavigation(); }
 	GUI::PreviousMenu = Cheat::GUI::currentMenu;
@@ -671,7 +671,7 @@ void Cheat::GUI::CloseGUI()
 
 void Cheat::GUI::BackMenu()
 {
-	if (GUI::currentMenu == MainMenu) { CloseGUI(); return; }
+	if (GUI::currentMenu == MainMenu) { CloseMenuGUI(); return; }
 	GUI::PreviousMenu = GUI::currentMenu;
 	GUI::PreviousMenuLevel = GUI::menuLevel;
 	GUI::previousOption = GUI::currentOption;
