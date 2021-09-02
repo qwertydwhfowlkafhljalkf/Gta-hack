@@ -1011,7 +1011,11 @@ char* Cheat::GameFunctions::ReturnOnlinePlayerPictureString(Player PlayerHandle)
 			int playerId = globalHandle(Index).At(x).As<int>();
 			if (playerId == PlayerHandle)
 			{
-				return PED::GET_PEDHEADSHOT_TXD_STRING(globalHandle(Index).At(x).At(1).As<int>());
+				int PedHeadshotHandle = globalHandle(Index).At(x).At(1).As<int>();
+				if (PED::IS_PEDHEADSHOT_VALID(PedHeadshotHandle))
+				{
+					return PED::GET_PEDHEADSHOT_TXD_STRING(PedHeadshotHandle);
+				}
 			}
 			if (playerId == -1)
 			{
@@ -1112,11 +1116,10 @@ std::string Cheat::GameFunctions::ReturnPlayerIPAddressAsString(Player PlayerHan
 	{
 		sprintf_s(IPBuffer, "Unavailable");
 	}
-	std::string IPBufferString = { IPBuffer };
-	return IPBufferString;
+	return IPBuffer;
 }
 
-std::string Cheat::GameFunctions::ReturnCurrentGTAOCharacter(int NumberOnly)
+std::string Cheat::GameFunctions::ReturnCurrentGTAOCharacter(bool NumberOnly)
 {
 	int CharacterID;
 	STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_LAST_MP_CHAR"), &CharacterID, -1);

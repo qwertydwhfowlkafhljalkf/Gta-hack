@@ -558,11 +558,10 @@ void Cheat::CheatFunctions::CheckCheatUpdate()
 	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(CHEAT_BUILD_NUMBER, ".");
 	std::string LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(ReturnLatestCheatBuildNumber(), "v.");
 
-	int CurrentLocalVersion, LatestOnlineVersion;
 	if (StringIsInteger(CurrentLocalVersionString) && StringIsInteger(LatestOnlineVersionString))
 	{
-		CurrentLocalVersion = StringToInt(CurrentLocalVersionString);
-		LatestOnlineVersion = StringToInt(LatestOnlineVersionString);
+		int CurrentLocalVersion = StringToInt(CurrentLocalVersionString);
+		int LatestOnlineVersion = StringToInt(LatestOnlineVersionString);
 
 		if (CurrentLocalVersion < LatestOnlineVersion)
 		{
@@ -652,10 +651,9 @@ Json::Value Cheat::CheatFunctions::ReadJsonFileAndReturnDataObject(std::string F
 		{
 			FileHandle >> JsonHandle;
 		}
-		catch (...) { goto Exit; }
+		catch (...) { }
 	}
 
-	Exit:
 	FileHandle.close();
 	return JsonHandle;
 }

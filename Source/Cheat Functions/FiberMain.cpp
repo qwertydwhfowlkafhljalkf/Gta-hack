@@ -1037,7 +1037,31 @@ void Cheat::FiberMain()
 		case SpawnMenu:
 		{
 			GUI::Title("Spawn");
+			GUI::MenuOption("Ped", PedSpawnMenu);
 			GUI::MenuOption("Vehicle", VehicleSpawnMenu);
+			GUI::MenuOption("Object", ObjectSpawnMenu);
+		}
+		break;
+		case ObjectSpawnMenu:
+		{
+			GUI::Title("Object Spawn");
+			GUI::Break("WIP", false);
+		}
+		break;
+		case PedSpawnMenu:
+		{
+			GUI::Title("Ped Spawn");
+			GUI::Break("WIP", false);
+			/*
+			GUI::Break("List", true);
+			for (auto const& i : GameArrays::PedModels)
+			{
+				if (GUI::Option(i, "Select to spawn"))
+				{
+
+				}
+			}
+			*/
 		}
 		break;
 		case DLCVehiclesMenu:

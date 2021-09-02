@@ -156,9 +156,9 @@ bool Cheat::GUI::VehicleOption(std::string option, std::string ModelName)
 		for (int i = 0; i < GameArrays::VehicleModelPictures.size(); i++)
 		{
 			if (GameArrays::VehicleModelPictures[i].PreviewName == ModelName)
-			{ 
-				VehiclePreviewDictName	= CheatFunctions::StringToChar(GameArrays::VehicleModelPictures[i].DictName);
-				VehiclePreviewName		= CheatFunctions::StringToChar(GameArrays::VehicleModelPictures[i].PreviewName);
+			{
+				VehiclePreviewDictName = GameArrays::VehicleModelPictures[i].DictName;
+				VehiclePreviewName = GameArrays::VehicleModelPictures[i].PreviewName;
 			}
 		}
 		
@@ -338,11 +338,33 @@ bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step,
 
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
-		DrawTextInGame(Text, TextColorAndFont, { Cheat::GUI::guiX + 0.075f, GUI::guiY + GUI::optionCount * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
+		if (_int < 100)
+		{
+			DrawTextInGame(Text, TextColorAndFont, { Cheat::GUI::guiX + 0.075f, GUI::guiY + GUI::optionCount * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
+		}
+		else if (_int < 999)
+		{
+			DrawTextInGame(Text, TextColorAndFont, { Cheat::GUI::guiX + 0.07f, GUI::guiY + GUI::optionCount * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
+		}
+		else
+		{
+			DrawTextInGame(Text, TextColorAndFont, { Cheat::GUI::guiX + 0.06f, GUI::guiY + GUI::optionCount * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
+		}
 	}
 	else if ((GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions)) && GUI::optionCount <= GUI::currentOption)
 	{
-		DrawTextInGame(Text, TextColorAndFont, { Cheat::GUI::guiX + 0.075f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
+		if (_int < 100)
+		{
+			DrawTextInGame(Text, TextColorAndFont, { Cheat::GUI::guiX + 0.075f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
+		}
+		else if (_int < 999)
+		{
+			DrawTextInGame(Text, TextColorAndFont, { Cheat::GUI::guiX + 0.07f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
+		}
+		else
+		{
+			DrawTextInGame(Text, TextColorAndFont, { Cheat::GUI::guiX + 0.06f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.32f, 0.32f }, false);
+		}
 	}
 
 	if (GUI::optionCount == GUI::currentOption)

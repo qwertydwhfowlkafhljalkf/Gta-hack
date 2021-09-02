@@ -69,7 +69,7 @@ namespace Cheat
 		void CopySelectedPlayerOutfit(Player SelectedPlayer);
 		int ReturnPlayerRockstarID(Player PlayerHandle);
 		std::string ReturnPlayerIPAddressAsString(Player PlayerHandle);
-		std::string ReturnCurrentGTAOCharacter(int NumberOnly = false);
+		std::string ReturnCurrentGTAOCharacter(bool NumberOnly = false);
 		void PlayFrontendSoundDefault(char* SoundName);
 		void PlayScenarioNearbyPeds(char* Scenario);
 		bool IsPlayerIDValid(Player ID);

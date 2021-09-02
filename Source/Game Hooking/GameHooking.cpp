@@ -30,7 +30,7 @@ bool IsDLCPresentHooked(std::uint32_t DLCHash)
 	if (Last != Current)
 	{
 		Last = Current;
-		GameHooking::onTickInit();
+		GameHooking::OnTickInit();
 	}
 	if (DLCHash == 2532323046 && Cheat::CheatFeatures::GTAODeveloperMode) { return true; }
 	return IsDLCPresentOriginal(DLCHash);
@@ -116,7 +116,7 @@ void ScriptFunction(LPVOID lpParameter)
 }
 
 DWORD WakeTime;
-void GameHooking::onTickInit()
+void GameHooking::OnTickInit()
 {
 	static HANDLE scriptFiber;
 	if (MainFiber == nullptr) { MainFiber = ConvertThreadToFiber(nullptr); }

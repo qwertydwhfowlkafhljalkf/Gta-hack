@@ -33,6 +33,8 @@ enum SubMenus
 	GlobalsMenu,
 	SpawnMenu,
 	VehicleSpawnMenu,
+	ObjectSpawnMenu,
+	PedSpawnMenu,
 	Super,
 	Sports,
 	smugglersrun,

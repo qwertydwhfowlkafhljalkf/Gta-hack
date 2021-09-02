@@ -1093,7 +1093,6 @@ const std::vector<VehicleModelPicturesStruct> Cheat::GameArrays::VehicleModelPic
 {"lgm_dlc_xmas2017","gt500_b"},
 {"lgm_dlc_specialraces","infernus2"},
 {"lgm_default","jb700"},
-{"lgm_default","jb700"},
 {"lgm_dlc_apartments","mamba"},
 {"sssa_dlc_assault","michelli"},
 {"lgm_default","monroe"},
