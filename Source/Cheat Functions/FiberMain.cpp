@@ -1,6 +1,5 @@
 ﻿#include "../Header/Cheat Functions/FiberMain.h"
 int Cheat::CheatFeatures::selectedPlayer;
-std::vector<PlayerListStruct> Cheat::GameArrays::PlayerList;
 float TeleportFoward = 1.f;																					//Used by Teleport Forward option
 int engine_multiplier, torque_multiplier;																	//Used by Vehicle Multipliers options
 int SetTimeHour = 0, SetTimeMinutes = 0, SetTimeSeconds = 0;												//Used by World Time options	
@@ -159,7 +158,7 @@ void Cheat::FiberMain()
 		case OnlineOptionsMenu:
 		{
 			GUI::Title("Online");
-			GUI::MenuOption("Player List", PlayerListMenu);
+			GUI::MenuOption("Players", PlayerListMenu);
 			GUI::MenuOption("All Players", AllPlayersMenu);
 			GUI::MenuOption("Protections", protections);
 			GUI::MenuOption("Recovery", RecoveryMenu);
@@ -2808,13 +2807,20 @@ void Cheat::FiberMain()
 		break;
 		case PlayerListMenu:
 		{
-			GUI::Title("Player List");
-			GUI::StringVector("Sort List", { "ID", "Alphabetical" }, CheatFeatures::PlayerListSortPosition, "", SELECTABLE_RETURN_VALUE_CHANGE);
-			GUI::Break("Players", true);
-			for (auto& Vector : GameArrays::PlayerList)
+			GUI::Title("Players");
+			GUI::Break("List", true);
+			for (int i = 0; i < 32; ++i)
 			{
-				GUI::MenuOptionPlayerList(Vector.PlayerName + Vector.PlayerTags) ? CheatFeatures::selectedPlayer = Vector.PlayerIndexID : NULL;
-				if (GUI::currentOption == GUI::optionCount) { GameFunctions::ShowPlayerInformationBox(Vector.PlayerIndexID); }
+				std::string PlayernameString = PLAYER::GET_PLAYER_NAME(i);
+				if (GameFunctions::IsPlayerIDValid(i))
+				{
+					if (GameFunctions::PlayerIsFreemodeScriptHost(i)) { PlayernameString.append(" ~o~[HOST]"); }
+					if (GameFunctions::IsPlayerFriend(i)) { PlayernameString.append("~b~[FRIEND]"); }
+					if (GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) { PlayernameString.append(" ~p~[INTERIOR]"); }
+					if (GameFunctions::PlayerID == i) { PlayernameString.append(" ~g~[SELF]"); }
+					GUI::MenuOptionPlayerList(PlayernameString) ? CheatFeatures::selectedPlayer = i : NULL;
+					if (GUI::currentOption == GUI::optionCount) { GameFunctions::ShowPlayerInformationBox(i); }
+				}
 			}
 		}
 		break;

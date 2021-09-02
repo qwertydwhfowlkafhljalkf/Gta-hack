@@ -38,13 +38,6 @@ struct AnimationsStruct
 	std::string AnimationName;
 };
 
-struct PlayerListStruct
-{
-	int PlayerIndexID;
-	std::string PlayerName;
-	std::string PlayerTags;
-};
-
 namespace Cheat
 {
 	namespace GameArrays
@@ -93,7 +86,6 @@ namespace Cheat
 		extern const std::vector<TeleportLocationStruct> TeleportLocationsUnderwater;
 		extern const std::vector<TeleportLocationStruct> TeleportLocationsLandmarks;
 		extern std::vector<Vehicle> SpawnedVehicles;
-		extern std::vector<PlayerListStruct> PlayerList;
 		extern const std::vector<WeatherTypesStruct> WeatherTypes;
 		extern const std::vector<MaxUpgradeWeaponComponentsStruct> MaxUpgradeWeaponComponents;
 		extern const std::vector<AnimationsStruct> Animations;

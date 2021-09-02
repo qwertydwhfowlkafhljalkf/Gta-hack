@@ -12,7 +12,6 @@ int Cheat::CheatFeatures::PedMovementVectorPosition = 0;
 int Cheat::CheatFeatures::OpenVehicleDoorPosition = 0;
 int Cheat::CheatFeatures::CloseVehicleDoorPosition = 0;
 int Cheat::CheatFeatures::FastSuperRunPosition = 0;
-int Cheat::CheatFeatures::PlayerListSortPosition = 0;
 int Cheat::CheatFeatures::PlayerOpacityInt = 250;
 bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
@@ -85,33 +84,6 @@ void Cheat::CheatFeatures::Looped()
 
 	//New Session Member Notification Feature
 	Cheat::GameFunctions::CheckNewSessionMembersLoop();
-
-	//Player List And Info
-	for (int PlayerListIteration = 0; PlayerListIteration < 32; ++PlayerListIteration)
-	{
-		if (0 <= PlayerListIteration && PlayerListIteration < GameArrays::PlayerList.size())
-		{
-			GameArrays::PlayerList.erase(GameArrays::PlayerList.begin() + PlayerListIteration);
-		}
-
-		if (GameFunctions::IsPlayerIDValid(PlayerListIteration))
-		{
-			Ped CurrentPlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerListIteration);
-			Vector3 CurrentPlayerPedCoords = ENTITY::GET_ENTITY_COORDS(CurrentPlayerPed, true);
-			std::string CurrentPlayerName = PLAYER::GET_PLAYER_NAME(PlayerListIteration);
-
-			std::string PlayerTags;
-			if (GameFunctions::PlayerIsFreemodeScriptHost(PlayerListIteration)) { PlayerTags.append(" ~o~[HOST]"); }
-			if (GameFunctions::IsPlayerFriend(PlayerListIteration)) { PlayerTags.append(" ~b~[FRIEND]"); }
-			if (GameFunctions::PlayerID == PlayerListIteration) { PlayerTags.append(" ~g~[SELF]"); }
-
-			GameArrays::PlayerList.insert(GameArrays::PlayerList.begin() + PlayerListIteration, { PlayerListIteration, CurrentPlayerName, PlayerTags });
-		}
-	}
-	if (CheatFeatures::PlayerListSortPosition != 0 && GUI::currentMenu == PlayerListMenu)
-	{
-		std::sort(GameArrays::PlayerList.begin(), GameArrays::PlayerList.end(), CheatFunctions::PlayerListSort);
-	}
 
 	//Speedometer
 	if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) 

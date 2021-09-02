@@ -16,7 +16,6 @@ namespace Cheat
 		extern int OpenVehicleDoorPosition;
 		extern int CloseVehicleDoorPosition;
 		extern int FastSuperRunPosition;
-		extern int PlayerListSortPosition;
 		extern int selectedPlayer;
 		extern int PlayerOpacityInt;
 		extern bool BlockMaliciousScriptEvents;

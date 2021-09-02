@@ -153,12 +153,12 @@ bool Cheat::GUI::VehicleOption(std::string option, std::string ModelName)
 		VehiclePreviewDictName = "Textures";
 		VehiclePreviewName	   = "NoVehiclePreviewAvailable";
 
-		for (int i = 0; i < GameArrays::VehicleModelPictures.size(); i++)
+		for (auto& Vector : GameArrays::VehicleModelPictures)
 		{
-			if (GameArrays::VehicleModelPictures[i].PreviewName == ModelName)
+			if (Vector.PreviewName == ModelName)
 			{
-				VehiclePreviewDictName = GameArrays::VehicleModelPictures[i].DictName;
-				VehiclePreviewName = GameArrays::VehicleModelPictures[i].PreviewName;
+				VehiclePreviewDictName = Vector.DictName;
+				VehiclePreviewName = Vector.PreviewName;
 			}
 		}
 		
