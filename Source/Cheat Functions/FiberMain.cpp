@@ -56,7 +56,7 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("All Players");
 			GUI::MenuOption("Exclutions", AllPlayersExclutionsMenu);
-			GUI::Break("Friendly", true);
+			GUI::Break("Friendly", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Give All Weapons", "Give all players all weapons"))
 			{
 				for (int i = 0; i < 32; i++)
@@ -72,7 +72,7 @@ void Cheat::FiberMain()
 					}
 				}
 			}
-			GUI::Break("Trolling", true);
+			GUI::Break("Trolling", SELECTABLE_CENTER_TEXT);
 			GUI::Toggle("Freeze", CheatFeatures::FreezeAllPlayersBool, "", SELECTABLE_DISABLE_SAVE);
 			if (GUI::Option("Kick Out Of Vehicle", ""))
 			{
@@ -138,7 +138,7 @@ void Cheat::FiberMain()
 					}
 				}
 			}
-			GUI::Break("Miscellaneous", true);
+			GUI::Break("Miscellaneous", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Host Kick", "Kick all players from session")) 
 			{
 				for (int i = 0; i < 32; i++)
@@ -180,8 +180,8 @@ void Cheat::FiberMain()
 		case RecoveryMenu:
 		{
 			GUI::Title("Recovery");
-			GUI::Break("~r~Features in this submenu can be risky", false);
-			GUI::Break("Unlocks", true);
+			GUI::Break("~r~Features in this submenu can be risky");
+			GUI::Break("Unlocks", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Unlock All", "Unlocks many unlockable GTA Online items"))
 			{
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_ADMIN_CLOTHES_GV_BS_1")), -1, true);
@@ -826,18 +826,18 @@ void Cheat::FiberMain()
 				STATS::STAT_SET_FLOAT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_LONGEST_WHEELIE_DIST")), 1000, 1);
 				GameFunctions::MinimapNotification("GTA Online Awards & Trophies unlocked");
 			}
-			GUI::Break("Rank", true);
+			GUI::Break("Rank", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Set Custom Rank", "Input a custom Rank"))
 			{
 				int Rank = GameFunctions::DisplayKeyboardAndReturnInputInteger(4, "Enter desired rank");
 				if (Rank != 0) { GameFunctions::SetRankRockstarGift(Rank); }
 			}
-			GUI::Break("Money", true);
+			GUI::Break("Money", SELECTABLE_CENTER_TEXT);
 			GUI::Break("Wallet balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_WALLET_BALANCE(-1)), false);
 			GUI::Break("Bank balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_BANK_BALANCE()), false);
 			GUI::Toggle("Drop Money", CheatFeatures::MoneyDropBool, "Only works for local player", SELECTABLE_DISABLE_SAVE | SELECTABLE_DISABLED);
 			GUI::Int("Drop Delay", CheatFeatures::MoneyDropDelay, 50, 2000, 50, "Set to 1500 to prevent transaction errors");
-			GUI::Break("Miscellaneous", true);
+			GUI::Break("Miscellaneous", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Set Max Nightclub Popularity", "Set NightClub Popularity to 100%"))
 			{
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CLUB_POPULARITY")), 9999, false);
@@ -862,7 +862,7 @@ void Cheat::FiberMain()
 				STATS::STAT_SET_FLOAT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PLAYER_MENTAL_STATE")), 0.0, true);
 				GameFunctions::MinimapNotification("Mental State Reset");
 			}
-			GUI::Break("ATM", true);
+			GUI::Break("ATM", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Move Wallet To Bank", ""))
 			{
 				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move");
@@ -932,7 +932,7 @@ void Cheat::FiberMain()
 					GameFunctions::ChangePedModelLocalPlayer(model);
 				}
 			}
-			GUI::Break("Ped List", true);
+			GUI::Break("Ped List", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Search", "Enter keywords to filter peds list"))
 			{
 				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter search term");
@@ -946,7 +946,7 @@ void Cheat::FiberMain()
 				{
 					ChangeModelPedSearchTerm.clear();
 				}
-				GUI::Break("Search Results", true);
+				GUI::Break("Search Results", SELECTABLE_CENTER_TEXT);
 			}
 			for (auto const& i : GameArrays::PedModels)
 			{
@@ -970,7 +970,7 @@ void Cheat::FiberMain()
 				for (Vehicle i : GameArrays::SpawnedVehicles)
 				{
 					if (!ENTITY::DOES_ENTITY_EXIST(i)) { GameArrays::SpawnedVehicles.erase(std::remove(GameArrays::SpawnedVehicles.begin(), GameArrays::SpawnedVehicles.end(), i), GameArrays::SpawnedVehicles.end()); }			
-					GUI::Break(std::to_string(i), true);
+					GUI::Break(std::to_string(i), SELECTABLE_CENTER_TEXT);
 					if (GUI::Option("Teleport To", ""))
 					{
 						GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, GameFunctions::GetEntityCoords(i), false, false);
@@ -992,7 +992,7 @@ void Cheat::FiberMain()
 			}
 			else
 			{
-				GUI::Break("No Vehicles Were Spawned Yet", false);
+				GUI::Break("No Vehicles Were Spawned Yet");
 			}
 		}
 		break;
@@ -1007,7 +1007,7 @@ void Cheat::FiberMain()
 				if (KeyboardInput == "0") { break; }
 				GameFunctions::SpawnVehicle(KeyboardInput);
 			}
-			GUI::Break("Categories", true);
+			GUI::Break("Categories", SELECTABLE_CENTER_TEXT);
 			GUI::MenuOption("DLC Vehicles", DLCVehiclesMenu);
 			GUI::MenuOption("Super", Super);
 			GUI::MenuOption("Sports", Sports);
@@ -1045,13 +1045,13 @@ void Cheat::FiberMain()
 		case ObjectSpawnMenu:
 		{
 			GUI::Title("Object Spawn");
-			GUI::Break("WIP", false);
+			GUI::Break("WIP");
 		}
 		break;
 		case PedSpawnMenu:
 		{
 			GUI::Title("Ped Spawn");
-			GUI::Break("WIP", false);
+			GUI::Break("WIP");
 			/*
 			GUI::Break("List", true);
 			for (auto const& i : GameArrays::PedModels)
@@ -1583,7 +1583,7 @@ void Cheat::FiberMain()
 				GUI::MenuOption("Color", VehicleCustomizerColorMenu);
 				GUI::MenuOption("Neon", vehicle_lsc_neon_options);
 				GUI::MenuOption("Multipliers", vehiclemultipliersmenus);
-				GUI::Break("Doors", true);
+				GUI::Break("Doors", SELECTABLE_CENTER_TEXT);
 				if (GUI::StringVector("Open", { "Front Left", "Front Right", "Back Left", "Back Right", "Hood", "Trunk", "Back", "Back2" }, CheatFeatures::OpenVehicleDoorPosition, "Select to open door"))
 				{
 					VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), CheatFeatures::PedMovementVectorPosition, false, false);
@@ -1595,7 +1595,7 @@ void Cheat::FiberMain()
 			}
 			else
 			{
-				GUI::Break("Player is not in a vehicle", false);
+				GUI::Break("Player is not in a vehicle");
 			}
 		}
 		break;
@@ -1647,7 +1647,7 @@ void Cheat::FiberMain()
 				}
 			}
 			GUI::MenuOption("Custom Color", VehicleCustomizerColorMenu);
-			GUI::Break("~bold~Color Presets", true);
+			GUI::Break("~bold~Color Presets", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Chrome", "")) 
 			{
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0);
@@ -1788,7 +1788,7 @@ void Cheat::FiberMain()
 					GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}
-			GUI::Break("Neon Presets", true);
+			GUI::Break("Neon Presets", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Red", "")) 
 			{
 				int VehID = PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0);
@@ -1890,15 +1890,15 @@ void Cheat::FiberMain()
 			GUI::Toggle("Show Lines", CheatFeatures::VehicleWeapons_DrawLaser, "Show lines in front of vehicle");
 			if (CheatFeatures::VehicleWeapons_TankRounds) 
 			{
-				GUI::Break("Current: ~c~Tank Rounds", false);
+				GUI::Break("Current: ~c~Tank Rounds");
 			}
 			if (CheatFeatures::VehicleWeapons_VehicleRockets) 
 			{
-				GUI::Break("Current: ~c~Vehicle Rockets", false);
+				GUI::Break("Current: ~c~Vehicle Rockets");
 			}
 			if (CheatFeatures::VehicleWeapons_Fireworks) 
 			{
-				GUI::Break("Current: ~c~Fireworks", false);
+				GUI::Break("Current: ~c~Fireworks");
 			}
 			if (GUI::Option("Tank Rounds", "")) 
 			{
@@ -2091,12 +2091,12 @@ void Cheat::FiberMain()
 			if (GUI::Int("Hour", SetTimeHour, 0, 23, 1, "", SELECTABLE_DISABLE_SAVE)) { NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(SetTimeHour, TIME::GET_CLOCK_MINUTES(), TIME::GET_CLOCK_SECONDS()); }
 			if (GUI::Int("Minutes", SetTimeMinutes, 0, 59, 1, "", SELECTABLE_DISABLE_SAVE)) { NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(TIME::GET_CLOCK_HOURS(), SetTimeMinutes, TIME::GET_CLOCK_SECONDS()); }
 			if (GUI::Int("Seconds", SetTimeSeconds, 0, 59, 1, "", SELECTABLE_DISABLE_SAVE)) { NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(TIME::GET_CLOCK_HOURS(), TIME::GET_CLOCK_MINUTES(), SetTimeSeconds); }
-			GUI::Break("Current Time", true);
+			GUI::Break("Current Time", SELECTABLE_CENTER_TEXT);
 			std::string CurrentGameTimeString = "Game Time: ~c~" + std::to_string(TIME::GET_CLOCK_HOURS()) + ":" + std::to_string(TIME::GET_CLOCK_MINUTES()) + ":" + std::to_string(TIME::GET_CLOCK_SECONDS());
 			GUI::Break(CurrentGameTimeString.c_str(), false);
 			std::string CurrentSystemTimeString = "System Time: ~c~" + CheatFunctions::ReturnDateTimeFormatAsString("%H:%M:%S");
-			GUI::Break(CurrentSystemTimeString.c_str(), false);
-			GUI::Break("Miscellaneous", true);
+			GUI::Break(CurrentSystemTimeString.c_str());
+			GUI::Break("Miscellaneous", SELECTABLE_CENTER_TEXT);
 			GUI::Toggle("Slow Motion", CheatFeatures::SlowMotionBool, "Slows Down Game Time");
 			GUI::Toggle("Pause Time", CheatFeatures::PauseTimeBool, "Pause Game Time");
 		}
@@ -2108,7 +2108,7 @@ void Cheat::FiberMain()
 			{
 				GAMEPLAY::CLEAR_OVERRIDE_WEATHER();
 			}
-			GUI::Break("Types", true);
+			GUI::Break("Types", SELECTABLE_CENTER_TEXT);
 			for (int i = 0; i < GameArrays::WeatherTypes.size(); i++)
 			{
 				if (GUI::Option(GameArrays::WeatherTypes[i].SelectableName, ""))
@@ -2414,7 +2414,7 @@ void Cheat::FiberMain()
 				if (CheatFeatures::AutoGiveAllWeaponsBool) { GameFunctions::MinimapNotification("Disable 'Auto Give All Weapons' to use this"); }
 				else { WEAPON::REMOVE_ALL_PED_WEAPONS(GameFunctions::PlayerPedID, true); }
 			}
-			GUI::Break("Upgrades", true);
+			GUI::Break("Upgrades", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Max Upgrade Current Weapon", ""))
 			{
 				Hash CurrentWeapon;
@@ -2431,10 +2431,10 @@ void Cheat::FiberMain()
 			{
 				GameFunctions::MaxUpgradeAllWeapons();
 			}
-			GUI::Break("Auto", true);
+			GUI::Break("Auto", SELECTABLE_CENTER_TEXT);
 			GUI::Toggle("Auto Get All Weapons", CheatFeatures::AutoGiveAllWeaponsBool, "");
 			GUI::Toggle("Auto Get All Weapon Upgrades", CheatFeatures::AutoGiveAllWeaponUpgradesBool, "");
-			GUI::Break("Color", true);
+			GUI::Break("Color", SELECTABLE_CENTER_TEXT);
 			GUI::Toggle("Rainbow Gun", CheatFeatures::RainbowGunBool, "");
 		}
 		break;
@@ -2462,12 +2462,12 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Ammo Modification", WeaponAmmoMenu);
 			GUI::MenuOption("Vehicle Gun", vehiclegunmenu);
 			GUI::MenuOption("Aimbot", aimbotsettingsmenu);		
-			GUI::Break("General", true);
+			GUI::Break("General", SELECTABLE_CENTER_TEXT);
 			GUI::Toggle("No Reload", CheatFeatures::NoWeaponReloadBool, "Always have max amount of ammo");
 			GUI::Toggle("Delete Gun", CheatFeatures::DeleteGunBool, "Use SNS Pistol with this option");
 			GUI::Toggle("Rapid Fire", CheatFeatures::WeaponRapidFireBool, "Shoot very fast");
 			GUI::Toggle("One Shot One Kill", CheatFeatures::OneHitKillBool, "");
-			GUI::Break("Entity Control", true);
+			GUI::Break("Entity Control", SELECTABLE_CENTER_TEXT);
 			GUI::Toggle("Gravity Gun", CheatFeatures::GravityGunBool, "");
 			GUI::Float("Entity Distance", CheatFeatures::GravityGunEntityDistance, 5.f, 25.f, 1.f, "Changing distance is also possible with the scroll wheel", 0);
 		}
@@ -2477,7 +2477,7 @@ void Cheat::FiberMain()
 			GUI::Title("Vehicle Gun");
 			GUI::Toggle("Toggle Vehicle Gun", CheatFeatures::VehicleGunBool, "Toggle Vehicle Gun");
 			GUI::Break("Current: ~t~" + CheatFeatures::VehicleGun_VehicleNameString, false);
-			GUI::Break("Vehicles", true);
+			GUI::Break("Vehicles", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Custom Input", "Custom Vehicle Gun Input"))
 			{
 				char* SpawnVehicle = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter custom vehicle model name");
@@ -2507,7 +2507,7 @@ void Cheat::FiberMain()
 			GUI::Title("Aimbot");
 			GUI::Toggle("Triggerbot", CheatFeatures::TriggerBotBool, "");
 			GUI::StringVector("Bone", { "Head", "Neck", "Right Hand", "Left Hand" }, CheatFeatures::AimbotBoneVectorPosition, "");
-			GUI::Break("Target", true);
+			GUI::Break("Target", SELECTABLE_CENTER_TEXT);
 			GUI::Toggle("Shoot NPC's", CheatFeatures::TriggerBot_ShootNPCBool, "Triggerbot shoots at NPC's");
 			GUI::Toggle("Shoot Players", CheatFeatures::TriggerBot_ShootPlayersBool, "Triggerbot shoots at players");
 		}
@@ -2552,7 +2552,7 @@ void Cheat::FiberMain()
 				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) { Handle = PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0); }
 				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Handle, Coords.x, Coords.y, Coords.z, 0, 0, 1);
 			}
-			GUI::Break("Custom Locations", true);
+			GUI::Break("Custom Locations", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Save current location", ""))
 			{
 				char* NewThemeFileName = GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Custom Teleport Location Name");
@@ -2561,7 +2561,7 @@ void Cheat::FiberMain()
 				GameFunctions::MinimapNotification("Custom Location Saved");
 			}
 			GUI::MenuOption("View locations", CustomTeleportLocations);
-			GUI::Break("Presets", true);
+			GUI::Break("Presets", SELECTABLE_CENTER_TEXT);
 			GUI::MenuOption("Landmarks", LandmarkTeleportLocations);
 			GUI::MenuOption("IPL's", iplteleports);
 			GUI::MenuOption("Safehouses", SafehousesTeleportLocations);
@@ -2579,7 +2579,7 @@ void Cheat::FiberMain()
 				for (auto it = JsonHandle.begin(); it != JsonHandle.end(); ++it)
 				{
 					NmbOfLocations++;
-					GUI::Break(it.key().asString(), true);
+					GUI::Break(it.key().asString(), SELECTABLE_CENTER_TEXT);
 					if (GUI::Option("Teleport To", ""))
 					{
 						Vector3 Target;
@@ -2595,7 +2595,7 @@ void Cheat::FiberMain()
 				}
 				if (NmbOfLocations == 0)
 				{
-					GUI::Break("No custom locations have been saved", false);
+					GUI::Break("No custom locations have been saved");
 				}
 				NmbOfLocations = 0;
 			}
@@ -2808,7 +2808,7 @@ void Cheat::FiberMain()
 		case PlayerListMenu:
 		{
 			GUI::Title("Players");
-			GUI::Break("List", true);
+			GUI::Break("List", SELECTABLE_CENTER_TEXT);
 			for (int i = 0; i < 32; ++i)
 			{
 				std::string PlayernameString = PLAYER::GET_PLAYER_NAME(i);
@@ -2818,7 +2818,7 @@ void Cheat::FiberMain()
 					if (GameFunctions::IsPlayerFriend(i)) { PlayernameString.append("~b~[FRIEND]"); }
 					if (GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) { PlayernameString.append(" ~p~[INTERIOR]"); }
 					if (GameFunctions::PlayerID == i) { PlayernameString.append(" ~g~[SELF]"); }
-					GUI::MenuOptionPlayerList(PlayernameString) ? CheatFeatures::selectedPlayer = i : NULL;
+					GUI::MenuOptionPlayerList(PlayernameString, SELECTABLE_HIDE_INFO_BOX) ? CheatFeatures::selectedPlayer = i : NULL;
 					if (GUI::currentOption == GUI::optionCount) { GameFunctions::ShowPlayerInformationBox(i); }
 				}
 			}
@@ -3016,7 +3016,7 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("Protections");	
 			if (GUI::Option("Enable/Disable Anti-Crash Camera", "Changes camera position to prevent entity crash")) { GameFunctions::EnableDisableAntiCrashCamera(); }
-			GUI::Break("Protection", true);
+			GUI::Break("Protection", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Enable All", "Enable all protection options")) {
 				CheatFeatures::ProtectionVoteKickBool = true;
 				CheatFeatures::ProtectionFreezeBool = true;
@@ -3084,7 +3084,7 @@ void Cheat::FiberMain()
 			GUI::Int("Max Visible Menu Options", GUI::maxVisOptions, 5, 16, 1);
 			GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu");
 			GUI::StringVector("Measurement System", { "Metric", "Imperial" }, CheatFeatures::MeasurementSystemVectorPosition, "Metric = KM/H, Imperial = MP/H", SELECTABLE_RETURN_VALUE_CHANGE);
-			GUI::Break("Keys", true);
+			GUI::Break("Keys", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Menu GUI: ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::OpenGUIKey), "Select to change"))
 			{
 				int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
@@ -3132,7 +3132,7 @@ void Cheat::FiberMain()
 		case AboutMenu:
 		{
 			GUI::Title("About");
-			GUI::Break("Author: HatchesPls", false);
+			GUI::Break("Author: HatchesPls");
 			if (GUI::Option("Support this project!", "Select to copy Bitcoin address to clipboard"))
 			{
 				CheatFunctions::CopyStringToClipboard("3BwCVtcJaNgUovcYQkDYFjrdy5YydTnjwc");
@@ -3150,7 +3150,7 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Saved Themes", ThemeFilesMenu);
 			if (!GUI::CurrentTheme.empty())
 			{
-				GUI::Break("Loaded Theme: ~c~" + GUI::CurrentTheme, false);
+				GUI::Break("Loaded Theme: ~c~" + GUI::CurrentTheme);
 				if (GUI::Option("Save To Current Theme", ""))
 				{
 					GUI::SaveTheme(GUI::CurrentTheme);
@@ -3162,7 +3162,7 @@ void Cheat::FiberMain()
 			}
 			else
 			{
-				GUI::Break("Loaded Theme: ~c~None", false);
+				GUI::Break("Loaded Theme: ~c~None");
 			}
 			if (GUI::Option("Save To New", ""))
 			{
@@ -3170,10 +3170,10 @@ void Cheat::FiberMain()
 				if (NewThemeFileName == "0") { break; }
 				GUI::SaveTheme(NewThemeFileName);
 			}
-			GUI::Break("Header", true);
+			GUI::Break("Header", SELECTABLE_CENTER_TEXT);
 			GUI::Toggle("Header Texture", GUI::ShowHeaderTexture, "", SELECTABLE_DISABLE_SAVE);
 			GUI::Toggle("Header Background", GUI::ShowHeaderBackground, "", SELECTABLE_DISABLE_SAVE);
-			GUI::Break("Color", true);
+			GUI::Break("Color", SELECTABLE_CENTER_TEXT);
 			GUI::Toggle("RGB Disco", CheatFeatures::RGBDiscoBool, "It's time to party!", SELECTABLE_DISABLE_SAVE);
 			if (GUI::Option("Primary", "Save is disabled while RGB Disco is enabled", CheatFeatures::RGBDiscoBool ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 			{
@@ -3189,7 +3189,7 @@ void Cheat::FiberMain()
 				GUI::TextColorAndFont.b = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter B-color"));
 				GameFunctions::MinimapNotification("Updated Text Color");
 			}
-			GUI::Break("Font", true);
+			GUI::Break("Font", SELECTABLE_CENTER_TEXT);
 			if (GUI::StringVector("Type", { "Chalet London", "House Script", "Monospace", "Wing Dings", "Chalet Comprime Cologne", "Pricedown" }, CheatFeatures::FontTypeVectorPosition, "", SELECTABLE_RETURN_VALUE_CHANGE))
 			{
 				if (CheatFeatures::FontTypeVectorPosition == 0)
@@ -3217,7 +3217,7 @@ void Cheat::FiberMain()
 					GUI::TextColorAndFont.f = FontPricedown;
 				}
 			}
-			GUI::Break("Menu", true);
+			GUI::Break("Menu", SELECTABLE_CENTER_TEXT);
 			GUI::Float("X-Axis", GUI::guiX, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
 			GUI::Float("Y-Axis", GUI::guiY, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
 			GUI::Float("Selectable Height", GUI::SelectableHeight, 0.035f, 0.045f, 0.001f, "This also slightly stretches the header element as a result of the rescale");
@@ -3226,7 +3226,7 @@ void Cheat::FiberMain()
 				GUI::guiX = GUI::guiX_Default;
 				GUI::guiY = GUI::guiY_Default;
 			}
-			GUI::Break("Selectable Information Box", true);
+			GUI::Break("Selectable Information Box", SELECTABLE_CENTER_TEXT);
 			GUI::Float("X-Axis", GUI::SelectableInfoBoxX, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
 			GUI::Float("Y-Axis", GUI::SelectableInfoBoxY, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
 			if (GUI::Option("Reset Position", ""))
@@ -3258,7 +3258,7 @@ void Cheat::FiberMain()
 			}
 			else
 			{
-				GUI::Break("No Theme Files Saved Yet", false);
+				GUI::Break("No Theme Files Saved Yet");
 			}
 		}
 		break;

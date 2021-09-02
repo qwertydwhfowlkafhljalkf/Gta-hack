@@ -105,7 +105,7 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, int Bit
 	if (OnCurrent)
 	{
 		//Selectable Information Box
-		if (!CheatFeatures::HideSelectableInformationBox)
+		if (!CheatFeatures::HideSelectableInformationBox && !(BitFlags & SELECTABLE_HIDE_INFO_BOX))
 		{
 			DrawRectInGame({ GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY + 0.042f }, { 0.25f, 0.005f });
 			DrawRectInGame({ 0, 0, 0, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY }, { 0.25f, 0.080f });
@@ -195,20 +195,32 @@ bool Cheat::GUI::VehicleOption(std::string option, std::string ModelName)
 	return false;
 }
 
-bool Cheat::GUI::Break(std::string option, bool TextCentered)
+bool Cheat::GUI::Break(std::string option, int BitFlags)
 {
 	GUI::optionCount++;
 
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
-		if (TextCentered) { DrawTextInGame("[ ~c~" + option + " ~s~]", { PrimaryColor.r, PrimaryColor.g, PrimaryColor.b, PrimaryColor.a, TextColorAndFont.f }, {Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount) * SelectableHeight - 0.174f}, {0.35f, 0.35f}, TextCentered, true); }
-		else { DrawTextInGame(option, TextColorAndFont, { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount)*SelectableHeight - 0.174f }, { 0.35f, 0.35f }, TextCentered); }
+		if (BitFlags & SELECTABLE_CENTER_TEXT) 
+		{ 
+			DrawTextInGame("[ ~c~" + option + " ~s~]", { PrimaryColor.r, PrimaryColor.g, PrimaryColor.b, PrimaryColor.a, TextColorAndFont.f }, {Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount) * SelectableHeight - 0.174f}, {0.35f, 0.35f}, true, true); 
+		}
+		else
+		{ 
+			DrawTextInGame(option, TextColorAndFont, { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount)*SelectableHeight - 0.174f }, { 0.35f, 0.35f }, false); 
+		}
 		DrawRectInGame({ 0, 0, 0, 150 }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount) * SelectableHeight - 0.1585f }, { Cheat::GUI::guiWidth, SelectableHeight });
 	}
 	else if (GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions) && GUI::optionCount <= GUI::currentOption)
 	{
-		if (TextCentered) { DrawTextInGame("[ ~c~" + option + " ~s~]", { PrimaryColor.r, PrimaryColor.g, PrimaryColor.b, PrimaryColor.a, TextColorAndFont.f }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, TextCentered, true); }
-		else { DrawTextInGame(option, TextColorAndFont, { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, TextCentered); }
+		if (BitFlags & SELECTABLE_CENTER_TEXT)
+		{ 
+			DrawTextInGame("[ ~c~" + option + " ~s~]", { PrimaryColor.r, PrimaryColor.g, PrimaryColor.b, PrimaryColor.a, TextColorAndFont.f }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, true, true); 
+		}
+		else 
+		{ 
+			DrawTextInGame(option, TextColorAndFont, { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, false); 
+		}
 		DrawRectInGame({ 0, 0, 0, 150 }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions))*SelectableHeight - 0.1585f }, { Cheat::GUI::guiWidth, SelectableHeight });
 	}
 
@@ -242,7 +254,7 @@ bool Cheat::GUI::Break(std::string option, bool TextCentered)
 bool Cheat::GUI::MenuOptionArrowAnimationState = false;
 bool Cheat::GUI::MenuOption(std::string option, SubMenus newSub, int BitFlags)
 {
-	if (Option(option, "", BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
+	if (Option(option, "", BitFlags))
 	{
 		GUI::MoveMenu(newSub);
 		return true;
@@ -259,9 +271,9 @@ bool Cheat::GUI::MenuOption(std::string option, SubMenus newSub, int BitFlags)
 	return false;
 }
 
-bool Cheat::GUI::MenuOptionPlayerList(std::string PlayerName)
+bool Cheat::GUI::MenuOptionPlayerList(std::string PlayerName, int BitFlags)
 {
-	if (Option("      " + PlayerName, ""))
+	if (Option("      " + PlayerName, "", BitFlags))
 	{
 		GUI::MoveMenu(SelectedPlayerMenu);
 		return true;
@@ -286,7 +298,7 @@ bool Cheat::GUI::Toggle(std::string option, bool & TargetBool, std::string Infor
 {
 	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, TargetBool); }
 
-	if (Option(option, InformationText, BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
+	if (Option(option, InformationText, BitFlags))
 	{
 		TargetBool ^= 1;
 		return true;
@@ -315,7 +327,7 @@ bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step,
 {
 	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, _int); }
 
-	if (Option(option, InformationText, BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
+	if (Option(option, InformationText, BitFlags))
 	{
 		int KeyBoardInput = Cheat::GameFunctions::DisplayKeyboardAndReturnInputInteger(CheatFunctions::ReturnNumberOfDigitsInValue(max), "Enter number");
 		if (KeyBoardInput >= min && KeyBoardInput <= max)
@@ -397,7 +409,7 @@ bool Cheat::GUI::Float(std::string option, float & _float, float min, float max,
 {
 	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, _float); }
 
-	if (Option(option, InformationText, BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
+	if (Option(option, InformationText, BitFlags))
 	{
 		return true;
 	}
@@ -442,7 +454,7 @@ bool Cheat::GUI::IntVector(std::string option, std::vector<int> Vector, int& pos
 {
 	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, position); }
 
-	if (Option(option, "", BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
+	if (Option(option, "", BitFlags))
 	{
 		return true;
 	}
@@ -479,7 +491,7 @@ bool Cheat::GUI::FloatVector(std::string option, std::vector<float> Vector, int&
 {
 	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, position); }
 
-	if (Option(option, "", BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
+	if (Option(option, "", BitFlags))
 	{
 		return true;
 	}
@@ -516,7 +528,7 @@ bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vecto
 {
 	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, position); }
 
-	if (Option(option, InformationText, BitFlags & SELECTABLE_DISABLED ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
+	if (Option(option, InformationText, BitFlags))
 	{
 		return true;
 	}

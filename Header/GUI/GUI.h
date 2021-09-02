@@ -108,10 +108,11 @@ enum SubMenus
 enum SelectableBitFlags
 {
 	SELECTABLE_DUMMY = 1,			//Placeholder
-	SELECTABLE_DISABLED = 2,		//The selectable is disabled, if the select key is pressed on the selectable a message appears informing the user about the disable state. When using this flag saving is also blocked (use of SELECTABLE_DISABLE_SAVE not needed)
-	SELECTABLE_DISABLE_SAVE = 4,	//The selectable won't save when the corresponding key is pressed
+	SELECTABLE_DISABLED = 2,		//The selectable is disabled, if the select key is pressed on the selectable a message appears informing the user about the disable state. When using this flag saving is also blocked (use of SELECTABLE_DISABLE_SAVE not needed).
+	SELECTABLE_DISABLE_SAVE = 4,	//The selectable won't save when the corresponding key is pressed.
 	SELECTABLE_CENTER_TEXT = 8,		//This currently only applies to the Break selectable. Text will be centered relative to menu GUI.
-	SELECTABLE_RETURN_VALUE_CHANGE = 16   //Currently used by Float and StringVector selectable. Function will also return when a value is changed (e.g. left or right is pressed)
+	SELECTABLE_RETURN_VALUE_CHANGE = 16,  //Currently used by Float and StringVector selectable. Function will also return when a value is changed (e.g. left or right is pressed).
+	SELECTABLE_HIDE_INFO_BOX = 32, //Forcefully (ignoring other settings) hides the Selectable Information Box for a given Selectable.
 };
 
 
@@ -191,11 +192,11 @@ namespace Cheat
 
 		void Title(std::string TitleName);
 		void AddPlayerInfoBoxTextEntry(std::string text, int Row1 = NULL, int Row2 = NULL, int Row3 = NULL, int Row4 = NULL);
-		bool Break(std::string option, bool TextCentered);
+		bool Break(std::string option, int BitFlags = NULL);
 		bool Option(std::string option, std::string InformationText, int BitFlags = NULL);
 		bool VehicleOption(std::string option, std::string ModelName);
 		bool MenuOption(std::string option, SubMenus newSub, int BitFlags = NULL);
-		bool MenuOptionPlayerList(std::string PlayerName);
+		bool MenuOptionPlayerList(std::string PlayerName, int BitFlags = NULL);
 		bool Toggle(std::string option, bool& TargetBool, std::string InformationText, int BitFlags = NULL);
 		bool Int(std::string option, int& _int, int min, int max, int step, std::string InformationText = "Select to change", int BitFlags = NULL);
 		bool Float(std::string option, float& _float, float min, float max, float steps, std::string InformationText = "", std::streamsize FloatPrecision = 3, int BitFlags = NULL);
