@@ -697,3 +697,8 @@ DWORD WINAPI Cheat::CheatFunctions::MenuSelectableAnimationThread(LPVOID lpParam
 		}
 	}
 }
+
+bool Cheat::CheatFunctions::PlayerListSort(const PlayerListStruct& DataLeft, const PlayerListStruct& DataRight)
+{
+	return DataLeft.PlayerName < DataRight.PlayerName;
+}

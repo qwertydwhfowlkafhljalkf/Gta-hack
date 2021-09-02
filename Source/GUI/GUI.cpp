@@ -259,11 +259,11 @@ bool Cheat::GUI::MenuOption(std::string option, SubMenus newSub, int BitFlags)
 	return false;
 }
 
-bool Cheat::GUI::MenuOptionPlayerList(std::string PlayerName, SubMenus newSub)
+bool Cheat::GUI::MenuOptionPlayerList(std::string PlayerName)
 {
 	if (Option("      " + PlayerName, ""))
 	{
-		GUI::MoveMenu(newSub);
+		GUI::MoveMenu(SelectedPlayerMenu);
 		return true;
 	}
 

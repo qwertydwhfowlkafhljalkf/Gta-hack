@@ -1218,3 +1218,16 @@ void Cheat::GameFunctions::FadeRGB(int& r, int& g, int& b)
 		b--;
 	}
 }
+
+std::string Cheat::GameFunctions::GetPlayerPedStatus(Ped TargetPed)
+{
+	if (AI::IS_PED_STILL(TargetPed)) { return "Player is still"; }
+	else if (AI::IS_PED_WALKING(TargetPed)) { return "Player is walking"; }
+	else if (AI::IS_PED_RUNNING(TargetPed)) { return "Player is running"; }
+	else if (AI::IS_PED_SPRINTING(TargetPed)) { return "Player is sprinting"; }
+	else if (PED::IS_PED_CLIMBING(TargetPed)) { return "Player is climbing"; }
+	else if (PED::IS_PED_DIVING(TargetPed)) { return "Player is diving"; }
+	else if (PED::IS_PED_FALLING(TargetPed)) { return  "Player is falling"; }
+	else if (PED::IS_PED_DEAD_OR_DYING(TargetPed, true)) { return "Player is dead"; }
+	return "~c~Unknown";
+}

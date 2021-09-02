@@ -79,5 +79,6 @@ namespace Cheat
 		void ToggleOffRadar(bool state);
 		void ToggleCopsTurnBlindEye(bool state);
 		void FadeRGB(int& r, int& g, int& b);
+		std::string GetPlayerPedStatus(Ped TargetPed);
 	}
 }

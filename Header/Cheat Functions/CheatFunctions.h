@@ -89,5 +89,6 @@ namespace Cheat
 		void AddCustomTeleportLocation(std::string CustomTeleportLocationName);
 		void DeleteCustomTeleportLocation(std::string CustomTeleportLocationName);
 		DWORD WINAPI MenuSelectableAnimationThread(LPVOID lpParam);
+		bool PlayerListSort(const PlayerListStruct& DataLeft, const PlayerListStruct& DataRight);
 	}
 }
