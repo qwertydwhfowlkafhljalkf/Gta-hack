@@ -161,7 +161,7 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Players", PlayerListMenu);
 			GUI::MenuOption("All Players", AllPlayersMenu);
 			GUI::MenuOption("Protections", protections);
-			GUI::MenuOption("Recovery", RecoveryMenu);
+			GUI::MenuOption("Recovery", RecoveryMenuWarning);
 			GUI::MenuOption("Session", sessionoptionsmenu);
 		}
 		break; 
@@ -177,10 +177,29 @@ void Cheat::FiberMain()
 			GUI::Toggle("Log Chat Messages", CheatFeatures::LogChatMessages, "Chat gets logged to console");
 		}
 		break;
+		case RecoveryMenuWarning:
+		{
+			if (CheatFunctions::LoadConfigThreadFunctionCompleted)
+			{
+				if (GameFunctions::ShowFullScreenMessage("Features in this submenu can be risky"))
+				{
+					GUI::CloseMenuGUI();
+					GUI::MoveMenu(MainMenu);
+					GUI::MoveMenu(OnlineOptionsMenu);
+					GUI::MoveMenu(RecoveryMenu);
+				}
+				else
+				{
+					GUI::CloseMenuGUI();
+					GUI::MoveMenu(MainMenu);
+					GUI::MoveMenu(OnlineOptionsMenu);
+				}
+			}
+		}
+		break;
 		case RecoveryMenu:
 		{
 			GUI::Title("Recovery");
-			GUI::Break("~r~Features in this submenu can be risky");
 			GUI::Break("Unlocks", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Unlock All", "Unlocks many unlockable GTA Online items"))
 			{
@@ -2808,12 +2827,13 @@ void Cheat::FiberMain()
 		case PlayerListMenu:
 		{
 			GUI::Title("Players");
+			GUI::StringVector("Show Player Marker", { "Player List & Menu", "Player List", "Disabled" }, CheatFeatures::PlayerListMarkerPosition, "Show Player Marker on selected player");
 			GUI::Break("List", SELECTABLE_CENTER_TEXT);
 			for (int i = 0; i < 32; ++i)
 			{
 				std::string PlayernameString = PLAYER::GET_PLAYER_NAME(i);
 				if (GameFunctions::IsPlayerIDValid(i))
-				{
+				{		
 					if (GameFunctions::PlayerIsFreemodeScriptHost(i)) { PlayernameString.append(" ~o~[HOST]"); }
 					if (GameFunctions::IsPlayerFriend(i)) { PlayernameString.append("~b~[FRIEND]"); }
 					if (GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) { PlayernameString.append(" ~p~[INTERIOR]"); }
@@ -2997,18 +3017,18 @@ void Cheat::FiberMain()
 			if (GUI::Option("Windmill", ""))			{ GameFunctions::AttachObjectToPed(CheatFeatures::selectedPlayer, "prop_windmill_01"); }
 			if (GUI::Option("Radar", ""))				{ GameFunctions::AttachObjectToPed(CheatFeatures::selectedPlayer, "prop_air_bigradar"); }
 
-			if (GUI::Option("Detach All Objects", "Only detaches above attached objects")) 
+			if (GUI::Option("Remove All Objects", "Only removes above attached objects")) 
 			{
 				const std::vector<std::string> ObjectsToRemoveArray = { 
 					"p_oil_slick_01",  "hei_prop_heist_emp", "prop_beach_fire",  "prop_juicestand",
 					"prop_weed_01",  "p_v_43_safe_s",  "p_spinning_anus_s",  "prop_ld_toilet_01",
 					"prop_xmas_tree_int",  "prop_windmill_01",  "prop_air_bigradar"
 				};
-				for (auto const& i : ObjectsToRemoveArray) 
+				for (auto const& i : ObjectsToRemoveArray)
 				{ 
-					GameFunctions::DetachObjectFromPed(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer), CheatFunctions::StringToChar(i));
+					GameFunctions::RemoveObjectFromPed(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer), CheatFunctions::StringToChar(i));
 				}			
-				GameFunctions::MinimapNotification("Objects Detached & Removed");
+				GameFunctions::MinimapNotification("Objects Removed");
 			}
 		}
 		break;

@@ -90,6 +90,7 @@ enum SubMenus
 	SessionChatMenu,
 	vehicleweaponsmenu,
 	RecoveryMenu,
+	RecoveryMenuWarning,
 	vehiclemultipliersmenus,
 	vehiclegunmenu,
 	aimbotsettingsmenu,

@@ -12,6 +12,7 @@ int Cheat::CheatFeatures::PedMovementVectorPosition = 0;
 int Cheat::CheatFeatures::OpenVehicleDoorPosition = 0;
 int Cheat::CheatFeatures::CloseVehicleDoorPosition = 0;
 int Cheat::CheatFeatures::FastSuperRunPosition = 0;
+int Cheat::CheatFeatures::PlayerListMarkerPosition = 0;
 int Cheat::CheatFeatures::PlayerOpacityInt = 250;
 bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
@@ -70,8 +71,8 @@ void Cheat::CheatFeatures::Looped()
 	//Post Init Scaleform Banner Notification
 	if (!GUI::CheatGUIHasBeenOpened && CheatFunctions::LoadConfigThreadFunctionCompleted)
 	{ 
-		GameFunctions::InGameHelpTextMessage = "Press " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::OpenGUIKey) + " to open cheat GUI";
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(PostInitBannerNotificationScaleformHandle, 255, 255, 255, 255, 0);
+		GameFunctions::InGameHelpTextMessage = "Press " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::OpenGUIKey) + " to open cheat GUI";
 		UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
 	}
 	GameFunctions::InGameKeyboardWindowTitle.clear();

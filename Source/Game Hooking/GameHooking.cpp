@@ -126,7 +126,7 @@ void GameHooking::OnTickInit()
 
 void GameHooking::PauseMainFiber(DWORD ms, bool ShowMessage)
 {
-	if (ShowMessage) { Cheat::GUI::DrawTextInGame("One moment please", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 1.5f, 1.5f }, true, true); }
+	if (ShowMessage) { Cheat::GUI::DrawTextInGame("One Moment Please", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 1.5f, 1.5f }, true, true); }
 	WakeTime = timeGetTime() + ms;
 	SwitchToFiber(MainFiber);
 }

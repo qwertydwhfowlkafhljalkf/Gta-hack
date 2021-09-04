@@ -470,11 +470,17 @@ void Cheat::GameFunctions::PlayScenarioNearbyPeds(char* Scenario)
 
 void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 {
-	if (!Cheat::CheatFeatures::HidePlayerInformationBox && GameFunctions::IsPlayerIDValid(PlayerID))
+	if (!Cheat::CheatFeatures::HidePlayerInformationBox)
 	{
 		//Definitions & error handling
 		Ped SelectedPlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerID);
 		RequestNetworkControlOfEntity(SelectedPlayerPed);
+
+		//Draw Player Marker
+		if (CheatFeatures::PlayerListMarkerPosition == 0 || CheatFeatures::PlayerListMarkerPosition == 1 && GUI::currentMenu == PlayerListMenu)
+		{
+			GameFunctions::DrawMarkerAbovePlayer(23, PlayerID, { 255, 255, 255, 150 });
+		}
 
 		//Draw Title and Background
 		if (Cheat::GUI::guiX < 0.54f)
@@ -757,14 +763,13 @@ void Cheat::GameFunctions::ApplyForceToEntity(Entity e, float x, float y, float 
 	ENTITY::APPLY_FORCE_TO_ENTITY(e, 1, x, y, z, 0, 0, 0, 0, 1, 1, 1, 0, 1);
 }
 
-void Cheat::GameFunctions::DetachObjectFromPed(Ped Ped, char* ObjectName)
+void Cheat::GameFunctions::RemoveObjectFromPed(Ped Ped, char* ObjectName)
 {
 	Vector3 PedCoords = ENTITY::GET_ENTITY_COORDS(Ped, true);
 	Object Object = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(PedCoords.x, PedCoords.y, PedCoords.z, 4.0, GAMEPLAY::GET_HASH_KEY(ObjectName), false, false, true);
 	if (ENTITY::DOES_ENTITY_EXIST(Object) && ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY(Object, Ped))
 	{
 		Cheat::GameFunctions::RequestNetworkControlOfEntity(Object);
-		ENTITY::DETACH_ENTITY(Object, true, true);
 		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(Object, true, true);
 		ENTITY::DELETE_ENTITY(&Object);
 		ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&Object);
@@ -1216,5 +1221,36 @@ void Cheat::GameFunctions::FadeRGB(int& r, int& g, int& b)
 	{
 		r++;
 		b--;
+	}
+}
+
+void Cheat::GameFunctions::DrawMarkerAbovePlayer(int Type, Player player, RGBA Color)
+{
+	Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player), true);
+	//GRAPHICS::DRAW_MARKER(Type, coords.x, coords.y, coords.z + 1.3f, 0.f, 0.f, 0.f, 0.f, 180.f, 0.f, 0.3f, 0.3f, 0.3f, Color.r, Color.g, Color.b, Color.a, false, false, 2, false, NULL, NULL, false);
+}
+
+/*
+Description: Shows a full-screen message with background rectangle.
+Note(s): ONLY used by Recovery warning right now, needs work to be used for other purposes.
+*/
+bool Cheat::GameFunctions::ShowFullScreenMessage(std::string Message)
+{
+	while (true)
+	{
+		GUI::DrawRectInGame({ GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 210 }, { 0.500f, 0.372f }, { 0.30f, 0.005f });
+		GUI::DrawRectInGame({ 0, 0, 0, 210 }, { 0.50f, 0.45f }, { 0.30f, 0.15f });
+		Cheat::GUI::DrawTextInGame("WARNING", { 255, 255, 255, 255, FontPricedown }, { 0.355f, 0.375f }, { 0.50f, 0.50f }, false);
+		Cheat::GUI::DrawTextInGame(Message, { 255, 255, 255, 255}, { 0.500f, 0.410f}, { 0.40f, 0.40f }, true, true);
+		Cheat::GUI::DrawTextInGame("Press ENTER to accept or BACKSPACE to decline", { 255, 255, 255, 255 }, { 0.355f, 0.495f }, { 0.30f, 0.30f }, false);
+		if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_ACCEPT))
+		{
+			return true;
+		}
+		if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_CANCEL))
+		{
+			return false;
+		}
+		GameHooking::PauseMainFiber(0, false);
 	}
 }

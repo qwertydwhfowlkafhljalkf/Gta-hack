@@ -533,30 +533,45 @@ bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vecto
 		return true;
 	}
 
-	if (GUI::optionCount == GUI::currentOption) 
+	if (GUI::optionCount == GUI::currentOption)
 	{
 		CheatFunctions::SaveOption(option, std::to_string(position), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
-		size_t max = static_cast<int>(Vector.size()) - 1;
-		int min = 0;
 		if (GUI::leftPressed)
 		{
-			position >= 1 ? position-- : position = static_cast<int>(max);
-			if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true; }
+			if (position > 0)
+			{
+				position--; 
+				if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true; }
+			}
 		}
-		if (GUI::rightPressed) 
+		if (GUI::rightPressed)
 		{
-			position < max ? position++ : position = static_cast<int>(min);
-			if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true; }
+			if (position < Vector.size() - 1)
+			{ 
+				position++; 
+				if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true; }
+			}
 		}
 	}
 
+	std::string Text;
+	if (position < Vector.size() - 1)
+	{
+		Text.append("< ");
+	}
+	Text.append(Vector[position]);
+	if (position > 0)
+	{
+		Text.append(" >");
+	}
+	
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions) 
 	{
-		DrawTextInGame("< " + (Vector[position]) + " >", TextColorAndFont, { Cheat::GUI::guiX + 0.055f, GUI::guiY + GUI::optionCount * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, true);
+		DrawTextInGame(Text, TextColorAndFont, { Cheat::GUI::guiX + 0.055f, GUI::guiY + GUI::optionCount * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, true);
 	}
 	else if (GUI::optionCount > GUI::currentOption - GUI::maxVisOptions && GUI::optionCount <= GUI::currentOption)
 	{
-		DrawTextInGame("< " + (Vector[position]) + " >", TextColorAndFont, { Cheat::GUI::guiX + 0.055f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, true);
+		DrawTextInGame(Text, TextColorAndFont, { Cheat::GUI::guiX + 0.055f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, true);
 	}
 	return false;
 }

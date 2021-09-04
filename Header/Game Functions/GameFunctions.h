@@ -50,7 +50,7 @@ namespace Cheat
 		void DoNearbyPedsAnimation(char* AnimationName, char* AnimationID);
 		void PlayPedAnimation(Ped TargetPed, char* AnimationName, char* AnimationID, bool Controllable);
 		void AttachObjectToPed(Ped Ped, char* ObjectName);
-		void DetachObjectFromPed(Ped Ped, char* ObjectName);
+		void RemoveObjectFromPed(Ped Ped, char* ObjectName);
 		void MinimapNotification(char* Message);
 		void AdvancedMinimapNotification(char* Message, char* PicName1, char* PicName2, bool Flash, int IconType, char* Sender, char* Subject, float Duration, char* ClanTag);
 		void AddBlipToVehicle(Vehicle Vehicle);
@@ -79,5 +79,7 @@ namespace Cheat
 		void ToggleOffRadar(bool state);
 		void ToggleCopsTurnBlindEye(bool state);
 		void FadeRGB(int& r, int& g, int& b);
+		void DrawMarkerAbovePlayer(int Type, Player player, RGBA Color);
+		bool ShowFullScreenMessage(std::string Message);
 	}
 }
