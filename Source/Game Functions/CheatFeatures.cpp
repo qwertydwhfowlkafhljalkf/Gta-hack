@@ -53,27 +53,47 @@ void Cheat::CheatFeatures::NonLooped()
 	LogFunctions::Message("GTAV Cheat Initialization Completed");
 
 	//Init Scaleform Banner Notification
-	std::string OpenGUIString = "Welcome " + (std::string)PLAYER::GET_PLAYER_NAME(GameFunctions::PlayerID) + ". Have fun!";
-	PostInitBannerNotificationScaleformHandle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("mp_big_message_freemode");
+	PostInitBannerNotificationScaleformHandle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_BIG_MESSAGE_FREEMODE");
 	while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(PostInitBannerNotificationScaleformHandle)) { GameHooking::PauseMainFiber(0, false); }
+
+	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "OVERRIDE_Y_POSITION");
+	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_FLOAT(-0.2f);
+	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "SHOW_SHARD_WASTED_MP_MESSAGE");
-	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING("<FONT FACE='$RockstarTAG'><FONT FACE='$gtaCash'>GTAV Cheat");
-	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING(CheatFunctions::StringToChar(OpenGUIString));
+	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING("<FONT FACE='$gtaCash'>GTAV Cheat");
+	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING("Welcome & have fun!");
 	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(5);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 
+	
 	//Load MP vehicles in SP bypass
 	globalHandle(4270934).As<BOOL>() = true;
 }
 
+bool PostInitBannerNotificationAnimationPlayed = false;
 void Cheat::CheatFeatures::Looped()
 {
 	//Post Init Scaleform Banner Notification
-	if (!GUI::CheatGUIHasBeenOpened && CheatFunctions::LoadConfigThreadFunctionCompleted)
+	if (CheatFunctions::LoadConfigThreadFunctionCompleted)
 	{ 
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(PostInitBannerNotificationScaleformHandle, 255, 255, 255, 255, 0);
 		GameFunctions::InGameHelpTextMessage = "Press " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::OpenGUIKey) + " to open cheat GUI";
-		UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
+		
+		if (GUI::CheatGUIHasBeenOpened)
+		{
+			if (!PostInitBannerNotificationAnimationPlayed)
+			{
+				GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "TRANSITION_OUT");
+				GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_FLOAT(3.f);
+				GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+				PostInitBannerNotificationAnimationPlayed = true;
+			}
+		}
+		else
+		{
+			UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
+		}
 	}
 	GameFunctions::InGameKeyboardWindowTitle.clear();
 
