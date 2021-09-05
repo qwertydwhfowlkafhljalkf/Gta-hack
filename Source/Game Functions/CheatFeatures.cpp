@@ -66,7 +66,6 @@ void Cheat::CheatFeatures::NonLooped()
 	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(5);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 
-	
 	//Load MP vehicles in SP bypass
 	globalHandle(4270934).As<BOOL>() = true;
 }
@@ -76,9 +75,9 @@ void Cheat::CheatFeatures::Looped()
 {
 	//Post Init Scaleform Banner Notification
 	if (CheatFunctions::LoadConfigThreadFunctionCompleted)
-	{ 
+	{
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(PostInitBannerNotificationScaleformHandle, 255, 255, 255, 255, 0);
-		GameFunctions::InGameHelpTextMessage = "Press " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::OpenGUIKey) + " to open cheat GUI";
+		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(GUI::OpenGUIKey) + " to open cheat GUI";
 		
 		if (GUI::CheatGUIHasBeenOpened)
 		{
@@ -1201,8 +1200,6 @@ void Cheat::CheatFeatures::DriveOnWater()
 			STREAMING::REQUEST_MODEL(model);
 			while (!STREAMING::HAS_MODEL_LOADED(model)) GameHooking::PauseMainFiber(0);
 			container = OBJECT::CREATE_OBJECT(model, pos.x, pos.y, pos.z, true, true, false);
-
-			//(container);
 			ENTITY::FREEZE_ENTITY_POSITION(container, 1);
 			ENTITY::SET_ENTITY_ALPHA(container, 0, 1);
 			ENTITY::SET_ENTITY_VISIBLE(container, 0, 0);

@@ -91,5 +91,6 @@ namespace Cheat
 		extern const std::vector<AnimationsStruct> Animations;
 		extern const std::vector<std::string> AnimationsDisplayNames;
 		extern const std::vector<std::string> Scenarios;
+		extern const std::vector<std::string> Objects;
 	}
 }

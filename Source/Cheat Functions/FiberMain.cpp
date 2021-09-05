@@ -9,6 +9,7 @@ int VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue;										/
 int WheelColorRed, WheelColorGreen, WheelColorBlue;															//Used by Vehicle Color features
 int PlayerWantedLevelInteger = 0;																			//Used by Set Wanted Level Option
 std::string ChangeModelPedSearchTerm;																		//Used by Change Model (Self)
+std::string ObjectSpawnSearchTerm;																			//Used by Object Spawn
 int intexploits, intoffensive, REPORTSTRENGTH, OFFENSIVETAGPLATE, OFFENSIVEUGC,								//Used by Report Stats		
     EXPLOITS, GRIEFING, COMMENDSTRENGTH, FRIENDLY, HELPFUL, VCANNOYINGME, VCHATE,						
 	BADCREWNAME, BADCREWMOTTO, BADCREWSTATUS, BADCREWEMBLEM, ISPUNISHED;		
@@ -1064,7 +1065,34 @@ void Cheat::FiberMain()
 		case ObjectSpawnMenu:
 		{
 			GUI::Title("Object Spawn");
-			GUI::Break("WIP");
+			GUI::Break("Object List", SELECTABLE_CENTER_TEXT);
+			if (GUI::Option("Search", "Enter keywords to filter object list"))
+			{
+				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter search term");
+				if (KeyboardInput == "0") { break; }
+				ObjectSpawnSearchTerm = KeyboardInput;
+				std::transform(ObjectSpawnSearchTerm.begin(), ObjectSpawnSearchTerm.end(), ObjectSpawnSearchTerm.begin(), tolower);
+			}
+			if (!ObjectSpawnSearchTerm.empty())
+			{
+				if (GUI::Option("Clear Search Results", ""))
+				{
+					ObjectSpawnSearchTerm.clear();
+				}
+				GUI::Break("Search Results", SELECTABLE_CENTER_TEXT);
+			}
+			for (auto& i : GameArrays::Objects)
+			{
+				std::string i_lowercase = i;
+				std::transform(i_lowercase.begin(), i_lowercase.end(), i_lowercase.begin(), tolower);
+				if (ObjectSpawnSearchTerm.empty() || i_lowercase.find(ObjectSpawnSearchTerm) != std::string::npos)
+				{
+					if (GUI::Option(i, "Select to spawn"))
+					{
+						
+					}
+				}
+			}
 		}
 		break;
 		case PedSpawnMenu:
@@ -3016,7 +3044,6 @@ void Cheat::FiberMain()
 			if (GUI::Option("Christmas Tree", ""))	{ GameFunctions::AttachObjectToPed(CheatFeatures::selectedPlayer, "prop_xmas_tree_int"); }
 			if (GUI::Option("Windmill", ""))			{ GameFunctions::AttachObjectToPed(CheatFeatures::selectedPlayer, "prop_windmill_01"); }
 			if (GUI::Option("Radar", ""))				{ GameFunctions::AttachObjectToPed(CheatFeatures::selectedPlayer, "prop_air_bigradar"); }
-
 			if (GUI::Option("Remove All Objects", "Only removes above attached objects")) 
 			{
 				const std::vector<std::string> ObjectsToRemoveArray = { 
@@ -3028,7 +3055,7 @@ void Cheat::FiberMain()
 				{ 
 					GameFunctions::RemoveObjectFromPed(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer), CheatFunctions::StringToChar(i));
 				}			
-				GameFunctions::MinimapNotification("Objects Removed");
+				GameFunctions::MinimapNotification("Object(s) Removed");
 			}
 		}
 		break;
