@@ -8,6 +8,7 @@ int VehicleSecondaryColorRed, VehicleSecondaryColorGreen, VehicleSecondaryColorB
 int VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue;										//Used by Vehicle Color features	
 int WheelColorRed, WheelColorGreen, WheelColorBlue;															//Used by Vehicle Color features
 int PlayerWantedLevelInteger = 0;																			//Used by Set Wanted Level Option
+int FakeWantedLevelInteger = 0;																				//Used by Fake Wanted Level
 std::string ChangeModelPedSearchTerm;																		//Used by Change Model (Self)
 std::string ObjectSpawnSearchTerm;																			//Used by Object Spawn
 int intexploits, intoffensive, REPORTSTRENGTH, OFFENSIVETAGPLATE, OFFENSIVEUGC,								//Used by Report Stats		
@@ -1991,14 +1992,14 @@ void Cheat::FiberMain()
 			if (GUI::Option("Clear Area", "Clear area of vehicles, objects etc")) 
 			{
 				Vector3 MyPos = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
-				GAMEPLAY::CLEAR_AREA(MyPos.x, MyPos.y, MyPos.z, 250, true, 0, 0, 0);
+				GAMEPLAY::CLEAR_AREA(MyPos.x, MyPos.y, MyPos.z, 250, true, false, false, false);
 				GAMEPLAY::CLEAR_AREA_OF_COPS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
 				GAMEPLAY::CLEAR_AREA_OF_OBJECTS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
-				GAMEPLAY::CLEAR_AREA_OF_VEHICLES(MyPos.x, MyPos.y, MyPos.z, 250, 0, 0, 0, 0, 0);
+				GAMEPLAY::CLEAR_AREA_OF_VEHICLES(MyPos.x, MyPos.y, MyPos.z, 250, false, false, false, false, false);
 				GAMEPLAY::CLEAR_AREA_OF_PEDS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
-				GAMEPLAY::CLEAR_AREA_OF_PROJECTILES(MyPos.x, MyPos.y, MyPos.z, 250, 0);
+				GAMEPLAY::CLEAR_AREA_OF_PROJECTILES(MyPos.x, MyPos.y, MyPos.z, 250, false);
 
-				//Seperate Remove Nearby Vehicles: for spawned vehicles
+				// Seperate Remove Nearby Vehicles: for spawned vehicles
 				const int ElementAmount = 10;
 				const int ArrSize = ElementAmount * 2 + 2;
 
@@ -2178,8 +2179,11 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Extra-sensory Perception", ESPMenu);
 			GUI::MenuOption("HUD", hudmenu); 
 			GUI::MenuOption("IPL Loader", iplloader);
+			if (GUI::Int("Fake Wanted Level", FakeWantedLevelInteger, 0, 6, 1, "Select to change", SELECTABLE_DISABLE_SAVE))
+			{
+				GAMEPLAY::SET_FAKE_WANTED_LEVEL(FakeWantedLevelInteger);
+			}
 			GUI::Toggle("Disable Phone", CheatFeatures::DisablePhoneBool, "Disable phone controls");
-			GUI::Toggle("Get 6 Fake Wanted Level Stars", CheatFeatures::FakeWantedLevelBool, "");
 			GUI::Toggle("No-Clip", CheatFeatures::NoClipBool, "Use W and mouse to control");
 			GUI::Toggle("Jump Around Mode", CheatFeatures::JumpAroundModeBool, "Nearby vehicles will 'jump around'");
 			GUI::Toggle("Free Cam", CheatFeatures::FreeCamBool, "Use W and S to control. Shift to go faster");
@@ -2200,22 +2204,22 @@ void Cheat::FiberMain()
 			}
 			if (GUI::Option("Drive To Waypoint", "A NPC drives you to waypoint"))
 			{
-				int WaypointHandle = UI::GET_FIRST_BLIP_INFO_ID(8);
+				int WaypointHandle = UI::GET_FIRST_BLIP_INFO_ID(SpriteWaypoint);
 				if (UI::DOES_BLIP_EXIST(WaypointHandle))
 				{
-					std::string VehicleName = "marshall";
-					Vector3 waypoint1 = UI::GET_BLIP_COORDS(UI::GET_FIRST_BLIP_INFO_ID(8));
+					std::string VehicleName = "MARSHALL";
+					Vector3 WayPointVector = UI::GET_BLIP_COORDS(WaypointHandle);
 					STREAMING::REQUEST_MODEL(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleName)));
 					while (!STREAMING::HAS_MODEL_LOADED(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleName)))) { GameHooking::PauseMainFiber(0); }
 					Vector3 pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(GameFunctions::PlayerPedID, 0.0, 5.0, 0);
-					Vehicle veh = VEHICLE::CREATE_VEHICLE(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleName)), pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(GameFunctions::PlayerPedID), 1, 1);
-					if (veh != 0)
+					Vehicle VehicleHandle = VEHICLE::CREATE_VEHICLE(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleName)), pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(GameFunctions::PlayerPedID), 1, 1);
+					if (VehicleHandle != 0)
 					{
-						Ped Driver = PED::CREATE_RANDOM_PED_AS_DRIVER(veh, false);
-						PED::SET_PED_INTO_VEHICLE(Driver, veh, -1);
-						PED::SET_PED_INTO_VEHICLE(GameFunctions::PlayerPedID, veh, 0);
-						AI::TASK_VEHICLE_DRIVE_TO_COORD(Driver, veh, waypoint1.x, waypoint1.y, waypoint1.z, 40, 1, ENTITY::GET_ENTITY_MODEL(veh), 7, 6, -1);
-						VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(veh, "CRUSADER");
+						Ped Driver = PED::CREATE_RANDOM_PED_AS_DRIVER(VehicleHandle, false);
+						PED::SET_PED_INTO_VEHICLE(Driver, VehicleHandle, -1);
+						PED::SET_PED_INTO_VEHICLE(GameFunctions::PlayerPedID, VehicleHandle, 0);
+						AI::TASK_VEHICLE_DRIVE_TO_COORD(Driver, VehicleHandle, WayPointVector.x, WayPointVector.y, WayPointVector.z, 40, 1, ENTITY::GET_ENTITY_MODEL(VehicleHandle), 7, 6, -1);
+						VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(VehicleHandle, "CRUSADER");
 						GameFunctions::MinimapNotification("NPC Driver Spawned");
 					}
 				}

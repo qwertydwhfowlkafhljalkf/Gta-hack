@@ -88,14 +88,14 @@
     <ClInclude Include="Header\Game Functions\GameArrays.h" />
     <ClInclude Include="Header\Game Functions\GameFunctions.h" />
     <ClInclude Include="Header\Game Hooking\CrossMapping.h" />
-    <ClInclude Include="Header\Game Hooking\enums.h" />
+    <ClInclude Include="Header\Game Hooking\Enums.h" />
     <ClInclude Include="Header\Game Hooking\GameHooking.h" />
     <ClInclude Include="Header\Game Hooking\Memory.h" />
-    <ClInclude Include="Header\Game Hooking\nativeCaller.h" />
+    <ClInclude Include="Header\Game Hooking\NativeCaller.h" />
     <ClInclude Include="Header\Game Hooking\NativeInvoker.h" />
     <ClInclude Include="Header\Game Hooking\Natives.h" />
     <ClInclude Include="Header\Game Hooking\Offsets.h" />
-    <ClInclude Include="Header\Game Hooking\types.h" />
+    <ClInclude Include="Header\Game Hooking\Types.h" />
     <ClInclude Include="Header\GUI\GUI.h" />
     <ClInclude Include="Header\resource.h" />
   </ItemGroup>

@@ -54,7 +54,7 @@
     <ClInclude Include="Header\Game Hooking\CrossMapping.h">
       <Filter>Header Files\Game Hooking</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Game Hooking\enums.h">
+    <ClInclude Include="Header\Game Hooking\Enums.h">
       <Filter>Header Files\Game Hooking</Filter>
     </ClInclude>
     <ClInclude Include="Header\Game Hooking\GameHooking.h">
@@ -63,7 +63,7 @@
     <ClInclude Include="Header\Game Hooking\Memory.h">
       <Filter>Header Files\Game Hooking</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Game Hooking\nativeCaller.h">
+    <ClInclude Include="Header\Game Hooking\NativeCaller.h">
       <Filter>Header Files\Game Hooking</Filter>
     </ClInclude>
     <ClInclude Include="Header\Game Hooking\NativeInvoker.h">
@@ -75,7 +75,7 @@
     <ClInclude Include="Header\Game Hooking\Offsets.h">
       <Filter>Header Files\Game Hooking</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Game Hooking\types.h">
+    <ClInclude Include="Header\Game Hooking\Types.h">
       <Filter>Header Files\Game Hooking</Filter>
     </ClInclude>
     <ClInclude Include="Header\Game Functions\GameArrays.h">

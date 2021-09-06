@@ -887,38 +887,38 @@ static FileRegister RegisterTextureFile = (FileRegister)(Memory::pattern("48 89 
 void Cheat::GUI::LoadTextureFile()
 {
 	Cheat::LogFunctions::Message("Loading Texture File");
-	remove(CheatFunctions::StringToChar(Cheat::CheatFunctions::TextureFilePath()));
+	remove(CheatFunctions::StringToChar(Cheat::CheatFunctions::ReturnTextureFilePath()));
 
-	//Find and load the resource
+	// Find and load the resource
 	HRSRC hResource = FindResourceA(CheatModuleHandle, MAKEINTRESOURCEA(140), "CHEAT_DATA");
 	if (!hResource) { goto Error; }
 	HGLOBAL hFileResource = LoadResource(CheatModuleHandle, hResource);
 	if (!hFileResource) { goto Error; }
 
-	//Open and map this to a disk file
+	// Open and map this to a disk file
 	LPVOID lpFile = LockResource(hFileResource);
 	DWORD dwSize = SizeofResource(CheatModuleHandle, hResource);
 
-	//Open the file and filemap
-	HANDLE hFile = CreateFileA(CheatFunctions::StringToChar(CheatFunctions::TextureFilePath()), GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	// Open the file and filemap
+	HANDLE hFile = CreateFileA(CheatFunctions::StringToChar(CheatFunctions::ReturnTextureFilePath()), GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	HANDLE hFileMap = CreateFileMapping(hFile, NULL, PAGE_READWRITE, 0, dwSize, NULL);
 	if (!hFileMap) { goto Error; }
 
 	LPVOID lpAddress = MapViewOfFile(hFileMap, FILE_MAP_WRITE, 0, 0, 0);
 	if (!lpAddress) { goto Error; }
 
-	//Write the file
+	// Write the file
 	CopyMemory(lpAddress, lpFile, dwSize);
 
-	//Un-map the file and close the handles
+	// Un-map the file and close the handles
 	UnmapViewOfFile(lpAddress);
 	CloseHandle(hFileMap);
 	CloseHandle(hFile);
 
 	int textureID;
-	if (CheatFunctions::FileOrDirectoryExists(CheatFunctions::TextureFilePath()))
+	if (CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnTextureFilePath()))
 	{
-		RegisterTextureFile(&textureID, CheatFunctions::StringToChar(CheatFunctions::TextureFilePath()), true, "Textures.ytd", false);
+		RegisterTextureFile(&textureID, CheatFunctions::StringToChar(CheatFunctions::ReturnTextureFilePath()), true, "Textures.ytd", false);
 		return;
 	}
 	else

@@ -93,8 +93,6 @@ namespace Cheat
 		void JumpAroundMode();
 		extern bool VehicleHornBoostBool;
 		void VehicleHornBoost();
-		extern bool FakeWantedLevelBool;
-		void FakeWantedLevel(bool toggle);
 		extern bool VehicleGodmodeBool;
 		void VehicleGodmode(bool toggle);
 		extern bool VehicleInvisibleBool;

@@ -62,6 +62,11 @@ const std::string Cheat::CheatFunctions::ReturnThemeFilePath(std::string ThemeNa
 	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes\\" + ThemeName + ".ini";
 }
 
+std::string Cheat::CheatFunctions::ReturnTextureFilePath()
+{
+	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Textures.ytd";
+}
+
 bool Cheat::CheatFunctions::FileOrDirectoryExists(std::string Path)
 {
 	if (std::filesystem::exists(Path))
@@ -85,19 +90,18 @@ std::string Cheat::CheatFunctions::GetLastErrorAsString()
 	return message;
 }
 
-
 Player Cheat::GameFunctions::PlayerID;
 Ped Cheat::GameFunctions::PlayerPedID;
 void Cheat::CheatFunctions::LoopedFunctions()
 {
-	//Player ID and Player Ped ID
+	// Player ID & Player Ped ID
 	GameFunctions::PlayerID = PLAYER::PLAYER_ID();
 	GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
 
-	//Features
+	// Features
 	CheatFeatures::Looped();
 
-	//Controls
+	// Controls
 	GUI::ControlsLoop();
 
 	//Submenu handlers - additional submenu logic is looped here
@@ -134,13 +138,13 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		}
 	}
 
-	//Show subtitle message in-game while config file is loading
+	// Show subtitle message in-game while config file is loading
 	if (!CheatFunctions::LoadConfigThreadFunctionCompleted)
 	{
 		GameFunctions::SubtitleNotification("Loading configuration file, one moment please", 1);
 	}
 
-	//Cursor Navigation Handler
+	// Cursor Navigation Handler
 	if (CheatFeatures::CursorGUINavigationEnabled)
 	{
 		PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, false, 0);
@@ -199,26 +203,13 @@ bool Cheat::CheatFunctions::IsGameWindowFocussed()
 	if (FindWindowA("grcWindow", "Grand Theft Auto V") == GetForegroundWindow())
 	{ 
 		return true;
-	} 
-	else 
-	{ 
-		return false; 
 	}
+	return false;
 }
 
-bool Cheat::CheatFunctions::StringIsInteger(const std::string& s)
+bool Cheat::CheatFunctions::StringIsInteger(std::string String)
 {
-	return !s.empty() && std::find_if(s.begin(), s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
-}
-
-bool Cheat::CheatFunctions::IsIntegerInRange(unsigned low, unsigned high, unsigned x)
-{
-	return  ((x - low) <= (high - low));
-}
-
-std::string Cheat::CheatFunctions::TextureFilePath()
-{
-	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Textures.ytd";
+	return !String.empty() && std::find_if(String.begin(), String.end(), [](unsigned char c) { return !std::isdigit(c); }) == String.end();
 }
 
 int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
@@ -394,7 +385,6 @@ void Cheat::CheatFunctions::CreateConsole()
 	std::wcin.clear();
 	std::cin.clear();
 }
-
 
 int Cheat::CheatFunctions::ReturnNumberOfDigitsInValue(double Number) 
 {

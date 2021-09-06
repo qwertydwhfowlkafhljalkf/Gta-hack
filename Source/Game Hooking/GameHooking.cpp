@@ -326,7 +326,6 @@ void setFn(std::string name, char* pat, char* mask, T* out, int skip = 0)
 	return;
 }
 
-
 void GameHooking::Initialize()
 {
 	GameHooking::get_label_text					 = static_cast<GetLabelText>(Memory::pattern("48 89 5C 24 ? 57 48 83 EC 20 48 8B DA 48 8B F9 48 85 D2 75 44 E8").count(1).get(0).get<void>(0));
@@ -441,7 +440,6 @@ void GameHooking::Initialize()
 	Cheat::LogFunctions::DebugMessage("Hook 'IS_DLC_PRESENT'");
 	status = MH_CreateHook(GameHooking::is_dlc_present, IsDLCPresentHooked, (void**)&IsDLCPresentOriginal);
 	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::is_dlc_present) != MH_OK) { Cheat::LogFunctions::Error("Failed to hook IS_DLC_PRESENT", true);  std::exit(EXIT_SUCCESS); }
-
 }
 
 static GameHooking::NativeHandler _Handler(uint64_t origHash)

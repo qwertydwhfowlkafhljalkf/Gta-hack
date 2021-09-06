@@ -61,9 +61,8 @@ namespace Cheat
 		std::string GetLastErrorAsString();
 		void LoopedFunctions();
 		bool IsGameWindowFocussed();
-		bool StringIsInteger(const std::string& s);
-		bool IsIntegerInRange(unsigned low, unsigned high, unsigned x);
-		std::string TextureFilePath();
+		bool StringIsInteger(std::string String);
+		std::string ReturnTextureFilePath();
 		int WaitForAndReturnPressedKey();
 		char* StringToChar(std::string String);
 		const char* StringToConstChar(std::string String);
