@@ -3136,37 +3136,37 @@ void Cheat::FiberMain()
 			GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu");
 			GUI::StringVector("Measurement System", { "Metric", "Imperial" }, CheatFeatures::MeasurementSystemVectorPosition, "Metric = KM/H, Imperial = MP/H", SELECTABLE_RETURN_VALUE_CHANGE);
 			GUI::Break("Keys", SELECTABLE_CENTER_TEXT);
-			if (GUI::Option("Menu GUI: ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::OpenGUIKey), "Select to change"))
+			if (GUI::Option("Menu GUI: ~c~" + CheatFunctions::VirtualKeyCodeToString(Controls::OpenGUIKey), "Select to change"))
 			{
 				int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
 				if (PressedKey != 0)
 				{
-					GUI::OpenGUIKey = PressedKey;
+					Controls::OpenGUIKey = PressedKey;
 					CheatFunctions::IniFileWriteString(std::to_string(PressedKey), CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Menu GUI Key");
 					GameFunctions::MinimapNotification("Menu GUI key has been set");
 				}
 			}
-			if (GUI::Option("Cursor Navigation: ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::GUINavigationKey), "Select to change"))
+			if (GUI::Option("Cursor Navigation: ~c~" + CheatFunctions::VirtualKeyCodeToString(Controls::GUINavigationKey), "Select to change"))
 			{
 				int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
 				if (PressedKey != 0)
 				{ 
-					GUI::GUINavigationKey = PressedKey;
+					Controls::GUINavigationKey = PressedKey;
 					CheatFunctions::IniFileWriteString(std::to_string(PressedKey), CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
 					GameFunctions::MinimapNotification("Cursor Navigation key has been set");
 				}
 			}
-			if (GUI::Option("Save Selectable: ~c~" + CheatFunctions::VirtualKeyCodeToString(GUI::SaveSelectableKey), "Select to change"))
+			if (GUI::Option("Save Selectable: ~c~" + CheatFunctions::VirtualKeyCodeToString(Controls::SaveSelectableKey), "Select to change"))
 			{
 				int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
 				if (PressedKey != 0)
 				{
-					GUI::SaveSelectableKey = PressedKey;
+					Controls::SaveSelectableKey = PressedKey;
 					CheatFunctions::IniFileWriteString(std::to_string(PressedKey), CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Save Selectable Key");
 					GameFunctions::MinimapNotification("Cursor Navigation key has been set");
 				}
 			}
-			GUI::Int("Key Press Delay", GUI::GUIKeyPressDelay, 1, 250, 5);
+			GUI::Int("Key Press Delay", Controls::GUIKeyPressDelay, 1, 250, 5);
 			GUI::Int("Menu Arrow Animation Delay", GUI::MenuArrowAnimationDelay, 250, 2500, 25);
 			GUI::MenuOption("About", AboutMenu);
 		}

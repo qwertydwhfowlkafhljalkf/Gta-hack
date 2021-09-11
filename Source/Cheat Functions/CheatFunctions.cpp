@@ -102,7 +102,7 @@ void Cheat::CheatFunctions::LoopedFunctions()
 	CheatFeatures::Looped();
 
 	// Controls
-	GUI::ControlsLoop();
+	Controls::Loop();
 
 	//Submenu handlers - additional submenu logic is looped here
 	if (GUI::currentMenu == SelectedPlayerMenu ||
@@ -235,7 +235,7 @@ int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 void Cheat::CheatFunctions::SaveOption(std::string OptionName, std::string OptionValue, bool IsSavable)
 {
 	GUI::CurrentOptionIsSavable = IsSavable;
-	if (IsKeyCurrentlyPressed(GUI::SaveSelectableKey))
+	if (IsKeyCurrentlyPressed(Controls::SaveSelectableKey))
 	{
 		if (IsSavable)
 		{
@@ -253,7 +253,7 @@ std::string Cheat::CheatFunctions::GetOptionValueFromConfig(std::string OptionNa
 
 void LoadConfigThreadFunction()
 {
-	Cheat::GUI::ChangeControlsState(false);
+	Cheat::Controls::ChangeControlsState(false);
 	Cheat::GUI::HideGUIElements = true;
 	for (int SubMenuInt = MainMenu; SubMenuInt != SUBMENUS_END; SubMenuInt++)
 	{
@@ -262,7 +262,7 @@ void LoadConfigThreadFunction()
 	}
 	Cheat::GUI::CloseMenuGUI();
 	Cheat::GUI::PreviousMenu = NOMENU;
-	Cheat::GUI::ChangeControlsState(true);
+	Cheat::Controls::ChangeControlsState(true);
 	Cheat::GUI::HideGUIElements = false;
 	Cheat::CheatFunctions::LoadConfigThreadFunctionCompleted = true;
 }
@@ -277,13 +277,13 @@ void Cheat::CheatFunctions::LoadConfig()
 
 	//Load keys
 	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Menu GUI Key");
-	if (!MenuGUIKey.empty()) { GUI::OpenGUIKey = StringToInt(MenuGUIKey); }
+	if (!MenuGUIKey.empty()) { Controls::OpenGUIKey = StringToInt(MenuGUIKey); }
 	
 	std::string CursorNavigationKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
-	if (!CursorNavigationKey.empty()) { GUI::OpenGUIKey = StringToInt(CursorNavigationKey); }
+	if (!CursorNavigationKey.empty()) { Controls::OpenGUIKey = StringToInt(CursorNavigationKey); }
 
 	std::string SaveSelectableKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Save Selectable Key");
-	if (!SaveSelectableKey.empty()) { GUI::OpenGUIKey = StringToInt(SaveSelectableKey); }
+	if (!SaveSelectableKey.empty()) { Controls::OpenGUIKey = StringToInt(SaveSelectableKey); }
 
 	//Load Active Theme
 	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Active Theme");
@@ -451,7 +451,7 @@ bool Cheat::CheatFunctions::StringToBool(std::string String)
 
 bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool PressedOnce)
 {
-	if (Cheat::CheatFunctions::IsGameWindowFocussed() && !Cheat::GUI::ControlsDisabled)
+	if (IsGameWindowFocussed() && !Controls::ControlsDisabled)
 	{
 		if (PressedOnce)
 		{

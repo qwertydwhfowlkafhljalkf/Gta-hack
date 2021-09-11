@@ -116,7 +116,6 @@ enum SelectableBitFlags
 	SELECTABLE_HIDE_INFO_BOX = 32, //Forcefully (ignoring other settings) hides the Selectable Information Box for a given Selectable.
 };
 
-
 typedef struct VECTOR2 { float x, y; };
 typedef struct VECTOR2_2 { float w, h; };
 typedef struct RGBAF { int r, g, b, a, f; };
@@ -127,7 +126,6 @@ namespace Cheat
 {
 	namespace GUI
 	{
-		extern void ControlsLoop();
 		void LoadTextureFile();
 		void DrawTextInGame(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center, bool Outline = false);
 		void DrawRectInGame(RGBA rgba, VECTOR2 position, VECTOR2_2 size);
@@ -151,11 +149,7 @@ namespace Cheat
 		extern bool CheatGUIHasBeenOpened;
 		extern bool CurrentOptionIsSavable;
 		extern std::string CurrentTheme;
-		extern bool ControlsDisabled;
-		extern bool selectPressed;
-		extern bool leftPressed;
-		extern bool rightPressed;
-		extern bool center;
+		//extern bool center;
 		extern bool RestorePreviousSubmenu;
 		extern int maxVisOptions;
 		extern int currentOption;
@@ -174,11 +168,12 @@ namespace Cheat
 		extern RGBA scroller;
 		extern RGBA PrimaryColor;
 		extern RGBAF TextColorAndFont;
-		extern int GUIKeyPressDelay;
-		extern int KeyPressPreviousTick;
-		extern int OpenGUIKey;
-		extern int GUINavigationKey;
-		extern int SaveSelectableKey;
+		extern int SelectableTransparency;
+		extern int HeaderBackgroundTransparency;
+		extern int TitleAndEndTransparency;
+		extern int ToggleSelectableTransparency;
+		extern int HeaderTextureTransparency;
+		extern int EndSmallLogoTransparency;
 		extern int MenuArrowAnimationDelay;
 		extern bool MenuOptionArrowAnimationState;
 		extern void DeleteLoadedTheme();
@@ -186,7 +181,6 @@ namespace Cheat
 		void BackMenu();
 		void CloseMenuGUI();
 		void End();
-		void ChangeControlsState(bool State);
 		void LoadTheme(std::string ThemeFileName, bool StartUp);
 		void SaveTheme(std::string ThemeFileName);
 		extern bool SelectableHandler(bool DisabledState);

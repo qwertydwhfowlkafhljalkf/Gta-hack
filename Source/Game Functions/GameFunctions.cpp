@@ -1046,17 +1046,17 @@ bool Cheat::GameFunctions::IsCursorAtXYPosition(VECTOR2 const& boxCentre, VECTOR
 bool Cheat::CheatFeatures::CursorGUINavigationEnabled = false;
 void Cheat::GameFunctions::EnableDisableCursorGUINavigation()
 {
-	if (GUI::menuLevel != 0 && !GUI::ControlsDisabled)
+	if (GUI::menuLevel != 0 && !Controls::ControlsDisabled)
 	{
-		if (Cheat::CheatFeatures::CursorGUINavigationEnabled)
+		if (CheatFeatures::CursorGUINavigationEnabled)
 		{
-			Cheat::CheatFeatures::CursorGUINavigationEnabled = false;
-			PLAYER::SET_PLAYER_CONTROL(Cheat::GameFunctions::PlayerID, true, 0);
+			CheatFeatures::CursorGUINavigationEnabled = false;
+			PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, true, 0);
 		}
 		else
 		{
-			Cheat::CheatFeatures::CursorGUINavigationEnabled = true;
-			PLAYER::SET_PLAYER_CONTROL(Cheat::GameFunctions::PlayerID, false, 0);
+			CheatFeatures::CursorGUINavigationEnabled = true;
+			PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, false, 0);
 		}
 	}
 }

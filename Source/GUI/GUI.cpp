@@ -11,10 +11,6 @@ float Cheat::GUI::guiWidth				= 0.21f; //Do not use (scalling not properly imple
 float Cheat::GUI::SelectableInfoBoxX	= 0.50f;
 float Cheat::GUI::SelectableInfoBoxY	= 0.840f;
 float Cheat::GUI::SelectableHeight		= 0.040f;
-bool Cheat::GUI::ControlsDisabled		= false; //All cheat input is ignored when True
-bool Cheat::GUI::selectPressed			= false;
-bool Cheat::GUI::leftPressed			= false;
-bool Cheat::GUI::rightPressed			= false;
 bool Cheat::GUI::ShowHeaderBackground	= true;
 bool Cheat::GUI::ShowHeaderTexture		= true;
 bool Cheat::GUI::HideGUIElements		= false; //Prevents all GUI elements from being visible when True
@@ -40,22 +36,22 @@ std::vector <std::string> Cheat::GUI::ThemeFilesVector;
                  
 RGBA Cheat::GUI::PrimaryColor               { 0, 0, 255, 255 };
 RGBAF Cheat::GUI::TextColorAndFont			{ 255, 255, 255, 255, FontChaletLondon };
-
-int Cheat::GUI::GUIKeyPressDelay			= 150;
-int Cheat::GUI::KeyPressPreviousTick		= GetTickCount64();
-int Cheat::GUI::OpenGUIKey					= VK_F4;
-int Cheat::GUI::GUINavigationKey			= VK_F5;
-int Cheat::GUI::SaveSelectableKey			= VK_F12;
+int Cheat::GUI::SelectableTransparency		= 150;
+int Cheat::GUI::HeaderBackgroundTransparency  = 200;
+int Cheat::GUI::TitleAndEndTransparency		= 210;
+int Cheat::GUI::ToggleSelectableTransparency = 255;
+int Cheat::GUI::HeaderTextureTransparency	 = 255;
+int Cheat::GUI::EndSmallLogoTransparency	 = 255;
 
 int Cheat::GUI::MenuArrowAnimationDelay		= 1000;
 
 
 void Cheat::GUI::Title(std::string TitleName)
 {
-	if (ShowHeaderBackground) { DrawRectInGame({ PrimaryColor.r, PrimaryColor.g, PrimaryColor.b, 200 }, { guiX, GUI::guiY - SelectableHeight - 0.181f }, { guiWidth, SelectableHeight + 0.045f }); }
-	if (ShowHeaderTexture) { DrawSpriterInGame("Textures", "HeaderDefaultTransparent", guiX, GUI::guiY - SelectableHeight - 0.181f, guiWidth, SelectableHeight + 0.045f, 0, 255, 255, 255, 255); }
+	if (ShowHeaderBackground) { DrawRectInGame({ PrimaryColor.r, PrimaryColor.g, PrimaryColor.b, HeaderBackgroundTransparency }, { guiX, GUI::guiY - SelectableHeight - 0.181f }, { guiWidth, SelectableHeight + 0.045f }); }
+	if (ShowHeaderTexture) { DrawSpriterInGame("Textures", "HeaderDefaultTransparent", guiX, GUI::guiY - SelectableHeight - 0.181f, guiWidth, SelectableHeight + 0.045f, 0, 255, 255, 255, HeaderTextureTransparency); }
 	DrawTextInGame(TitleName, TextColorAndFont, { GUI::guiX, GUI::guiY - 0.174f }, { 0.40f, 0.38f }, true, true);
-	DrawRectInGame({ 0, 0, 0, 210 }, { guiX, GUI::guiY - 0.1585f }, { guiWidth, SelectableHeight });
+	DrawRectInGame({ 0, 0, 0, TitleAndEndTransparency }, { guiX, GUI::guiY - 0.1585f }, { guiWidth, SelectableHeight });
 
 	if (CheatFeatures::CursorGUINavigationEnabled)
 	{
@@ -90,7 +86,7 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, int Bit
 	{
 		TextPosition = { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount) * SelectableHeight - 0.174f };
 		RectPosition = { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount) * SelectableHeight - 0.1585f };
-		OnCurrent ? RectColor = PrimaryColor : RectColor = { 0, 0, 0, 150 };
+		OnCurrent ? RectColor = PrimaryColor : RectColor = { 0, 0, 0, SelectableTransparency };
 		DrawTextInGame(option, TextColorAndFont, TextPosition, { 0.35f, 0.35f }, false);
 		DrawRectInGame(RectColor, RectPosition, { Cheat::GUI::guiWidth, SelectableHeight });
 	}
@@ -98,8 +94,8 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, int Bit
 	{
 		TextPosition = { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f };
 		RectPosition = { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.1585f };
-		OnCurrent ? RectColor = PrimaryColor : RectColor = { 0, 0, 0, 150 };
-		DrawTextInGame(option, TextColorAndFont, TextPosition, {0.35f, 0.35f}, false);
+		OnCurrent ? RectColor = PrimaryColor : RectColor = { 0, 0, 0, SelectableTransparency };
+		DrawTextInGame(option, TextColorAndFont, TextPosition, { 0.35f, 0.35f }, false);
 		DrawRectInGame(RectColor, RectPosition, { Cheat::GUI::guiWidth, SelectableHeight });
 	}
 	if (OnCurrent)
@@ -110,7 +106,7 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, int Bit
 			DrawRectInGame({ GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY + 0.042f }, { 0.25f, 0.005f });
 			DrawRectInGame({ 0, 0, 0, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY }, { 0.25f, 0.080f });
 			DrawTextInGame(SelectableInformationText != "" ? CheatFunctions::TextWrap(SelectableInformationText, 30) : option, TextColorAndFont, { SelectableInfoBoxX - 0.12f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false);
-			if (GUI::CurrentOptionIsSavable) { DrawTextInGame("Save Option: " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::SaveSelectableKey), TextColorAndFont, { SelectableInfoBoxX + 0.04f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false); }
+			if (GUI::CurrentOptionIsSavable) { DrawTextInGame("Save Option: " + Cheat::CheatFunctions::VirtualKeyCodeToString(Controls::SaveSelectableKey), TextColorAndFont, { SelectableInfoBoxX + 0.04f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false); }
 		}
 		
 		GUI::currentOptionVisible = GUI::optionCount - (GUI::optionCount - GUI::optionCountVisible);
@@ -118,7 +114,7 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, int Bit
 		GUI::previousOption = GUI::currentOption;
 		if (InformationText == "") { SelectableInformationText.clear(); }
 		else { SelectableInformationText = InformationText; }
-		if (GUI::selectPressed)
+		if (Controls::SelectPressed)
 		{
 			DoSelectAction:
 			if (GUI::SelectableHandler(BitFlags & SELECTABLE_DISABLED ? true : false))
@@ -209,7 +205,7 @@ bool Cheat::GUI::Break(std::string option, int BitFlags)
 		{ 
 			DrawTextInGame(option, TextColorAndFont, { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount)*SelectableHeight - 0.174f }, { 0.35f, 0.35f }, false); 
 		}
-		DrawRectInGame({ 0, 0, 0, 150 }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount) * SelectableHeight - 0.1585f }, { Cheat::GUI::guiWidth, SelectableHeight });
+		DrawRectInGame({ 0, 0, 0, SelectableTransparency }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount) * SelectableHeight - 0.1585f }, { Cheat::GUI::guiWidth, SelectableHeight });
 	}
 	else if (GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions) && GUI::optionCount <= GUI::currentOption)
 	{
@@ -217,11 +213,11 @@ bool Cheat::GUI::Break(std::string option, int BitFlags)
 		{ 
 			DrawTextInGame("[ ~c~" + option + " ~s~]", { PrimaryColor.r, PrimaryColor.g, PrimaryColor.b, PrimaryColor.a, TextColorAndFont.f }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, true, true); 
 		}
-		else 
+		else
 		{ 
 			DrawTextInGame(option, TextColorAndFont, { Cheat::GUI::guiX - 0.100f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.174f }, { 0.35f, 0.35f }, false); 
 		}
-		DrawRectInGame({ 0, 0, 0, 150 }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions))*SelectableHeight - 0.1585f }, { Cheat::GUI::guiWidth, SelectableHeight });
+		DrawRectInGame({ 0, 0, 0, SelectableTransparency }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions))*SelectableHeight - 0.1585f }, { Cheat::GUI::guiWidth, SelectableHeight });
 	}
 
 	if (GUI::optionCount == GUI::currentOption)
@@ -309,11 +305,11 @@ bool Cheat::GUI::Toggle(std::string option, bool & TargetBool, std::string Infor
 
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
-		DrawSpriterInGame("Textures", ToggleString, Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount * SelectableHeight - 0.159f), 0.025f, 0.025f, 0, 255, 255, 255, 255);
+		DrawSpriterInGame("Textures", ToggleString, Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount * SelectableHeight - 0.159f), 0.025f, 0.025f, 0, 255, 255, 255, ToggleSelectableTransparency);
 	}
 	else if ((GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions)) && GUI::optionCount <= GUI::currentOption)
 	{
-		DrawSpriterInGame("Textures", ToggleString, Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.159f, 0.025f, 0.025f, 0, 255, 255, 255, 255);
+		DrawSpriterInGame("Textures", ToggleString, Cheat::GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.159f, 0.025f, 0.025f, 0, 255, 255, 255, ToggleSelectableTransparency);
 	}
 
 	if (GUI::optionCount == GUI::currentOption)
@@ -381,7 +377,7 @@ bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step,
 
 	if (GUI::optionCount == GUI::currentOption)
 	{
-		if (GUI::leftPressed && !(BitFlags & SELECTABLE_DISABLED))
+		if (Controls::LeftPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			if (_int < max)
 			{
@@ -390,7 +386,7 @@ bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step,
 			}
 			return true;
 		}
-		if (GUI::rightPressed && !(BitFlags & SELECTABLE_DISABLED))
+		if (Controls::RightPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			if (_int > min)
 			{
@@ -418,7 +414,7 @@ bool Cheat::GUI::Float(std::string option, float & _float, float min, float max,
 	if (GUI::optionCount == GUI::currentOption) 
 	{	
 		CheatFunctions::SaveOption(option, std::to_string(_float), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
-		if (GUI::leftPressed && !(BitFlags & SELECTABLE_DISABLED))
+		if (Controls::LeftPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			if (_float < max || IgnoreMinMax)
 			{
@@ -426,7 +422,7 @@ bool Cheat::GUI::Float(std::string option, float & _float, float min, float max,
 			}
 			if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true;  }
 		}
-		if (GUI::rightPressed && !(BitFlags & SELECTABLE_DISABLED))
+		if (Controls::RightPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			if (_float > min || IgnoreMinMax)
 			{
@@ -463,12 +459,12 @@ bool Cheat::GUI::IntVector(std::string option, std::vector<int> Vector, int& pos
 	{
 		int max = static_cast<int>(Vector.size()) - 1;
 		int min = 0;
-		if (GUI::leftPressed && !(BitFlags & SELECTABLE_DISABLED))
+		if (Controls::LeftPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			position >= 1 ? position-- : position = max;
 			return true;
 		}
-		if (GUI::rightPressed && !(BitFlags & SELECTABLE_DISABLED))
+		if (Controls::RightPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			position < max ? position++ : position = min;
 			return true;
@@ -501,12 +497,12 @@ bool Cheat::GUI::FloatVector(std::string option, std::vector<float> Vector, int&
 		CheatFunctions::SaveOption(option, std::to_string(position), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 		size_t max = static_cast<int>(Vector.size()) - 1;
 		int min = 0;
-		if (GUI::leftPressed && !(BitFlags & SELECTABLE_DISABLED))
+		if (Controls::LeftPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			position >= 1 ? position-- : position = static_cast<int>(max);
 			return true;
 		}
-		if (GUI::rightPressed && !(BitFlags & SELECTABLE_DISABLED))
+		if (Controls::RightPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			position < max ? position++ : position = static_cast<int>(min);
 			return true;
@@ -536,7 +532,7 @@ bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vecto
 	if (GUI::optionCount == GUI::currentOption)
 	{
 		CheatFunctions::SaveOption(option, std::to_string(position), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
-		if (GUI::leftPressed)
+		if (Controls::LeftPressed)
 		{
 			if (position > 0)
 			{
@@ -544,7 +540,7 @@ bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vecto
 				if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true; }
 			}
 		}
-		if (GUI::rightPressed)
+		if (Controls::RightPressed)
 		{
 			if (position < Vector.size() - 1)
 			{ 
@@ -583,112 +579,18 @@ void Cheat::GUI::End()
 	{
 		DrawTextInGame(std::to_string(GUI::currentOptionVisible) + "/" + std::to_string(GUI::optionCountVisible), TextColorAndFont, { Cheat::GUI::guiX - 0.088f, GUI::guiY + ((GUI::maxVisOptions + 1) * SelectableHeight - 0.172f) }, { 0.30f, 0.30f }, true);
 		DrawTextInGame(CHEAT_BUILD_NUMBER, TextColorAndFont, { Cheat::GUI::guiX + 0.085f, GUI::guiY + ((GUI::maxVisOptions + 1) * SelectableHeight - 0.172f) }, { 0.30f, 0.30f }, true);
-		DrawRectInGame({ 0, 0, 0, 210 }, { Cheat::GUI::guiX, GUI::guiY + ((GUI::maxVisOptions + 1) * SelectableHeight - 0.1585f) }, { Cheat::GUI::guiWidth, SelectableHeight });
-		DrawSpriterInGame("Textures", "LogoSmall", Cheat::GUI::guiX, GUI::guiY + ((GUI::maxVisOptions + 1) * SelectableHeight - 0.159f), 0.030f, 0.045f, 0, GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 255);
+		DrawRectInGame({ 0, 0, 0, TitleAndEndTransparency }, { Cheat::GUI::guiX, GUI::guiY + ((GUI::maxVisOptions + 1) * SelectableHeight - 0.1585f) }, { Cheat::GUI::guiWidth, SelectableHeight });
+		DrawSpriterInGame("Textures", "LogoSmall", Cheat::GUI::guiX, GUI::guiY + ((GUI::maxVisOptions + 1) * SelectableHeight - 0.159f), 0.030f, 0.045f, 0, GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, EndSmallLogoTransparency);
 	}
 	else if (GUI::optionCount > 0)
 	{
 		DrawTextInGame(std::to_string(GUI::currentOptionVisible) + "/" + std::to_string(GUI::optionCountVisible), TextColorAndFont, { Cheat::GUI::guiX - 0.088f, GUI::guiY + (GUI::optionCount + 1) * SelectableHeight - 0.172f }, { 0.30f, 0.30f }, true);
 		DrawTextInGame(CHEAT_BUILD_NUMBER, TextColorAndFont, { Cheat::GUI::guiX + 0.085f, GUI::guiY + (GUI::optionCount + 1) * SelectableHeight - 0.172f }, { 0.30f, 0.30f }, true);
-		DrawRectInGame({ 0, 0, 0, 210 }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount + 1) * SelectableHeight - 0.1585f }, { Cheat::GUI::guiWidth, SelectableHeight });
-		DrawSpriterInGame("Textures", "LogoSmall", Cheat::GUI::guiX, GUI::guiY + ((GUI::optionCount + 1) * SelectableHeight - 0.159f), 0.030f, 0.045f, 0, GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 255);
+		DrawRectInGame({ 0, 0, 0, TitleAndEndTransparency }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount + 1) * SelectableHeight - 0.1585f }, { Cheat::GUI::guiWidth, SelectableHeight });
+		DrawSpriterInGame("Textures", "LogoSmall", Cheat::GUI::guiX, GUI::guiY + ((GUI::optionCount + 1) * SelectableHeight - 0.159f), 0.030f, 0.045f, 0, GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, EndSmallLogoTransparency);
 	}
 }
 
-void Cheat::GUI::ControlsLoop()
-{
-	if (CheatFunctions::IsKeyCurrentlyPressed(GUI::GUINavigationKey, true)) { GameFunctions::EnableDisableCursorGUINavigation(); }
-	if (!ControlsDisabled)
-	{
-		GUI::selectPressed = false;
-		GUI::leftPressed = false;
-		GUI::rightPressed = false;
-
-		if (GetTickCount64() - GUI::KeyPressPreviousTick > GUI::GUIKeyPressDelay)
-		{
-			if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(GUI::OpenGUIKey))
-			{
-				Cheat::GUI::CheatGUIHasBeenOpened = true;
-				if (GUI::menuLevel == 0)
-				{
-					Cheat::GameFunctions::PlayFrontendSoundDefault("YES");
-					if (GUI::PreviousMenu != NOMENU && Cheat::GUI::RestorePreviousSubmenu)
-					{
-						GUI::MoveMenu(GUI::PreviousMenu);
-						GUI::menuLevel = GUI::PreviousMenuLevel;
-						GUI::currentOption = GUI::previousOption;
-					}
-					else
-					{
-						GUI::MoveMenu(SubMenus::MainMenu);
-					}
-				}
-				else
-				{
-					Cheat::GameFunctions::PlayFrontendSoundDefault("NO");
-					GUI::CloseMenuGUI();
-				}
-				GUI::KeyPressPreviousTick = GetTickCount64();
-			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD0))
-			{
-				if (GUI::menuLevel > 0) 
-				{
-					GUI::BackMenu();
-					Cheat::GameFunctions::PlayFrontendSoundDefault("BACK"); 
-				}
-				GUI::KeyPressPreviousTick = GetTickCount64();
-			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD8))
-			{
-				GUI::currentOption > 1 ? GUI::currentOption-- : GUI::currentOption = GUI::optionCount;
-				if (GUI::menuLevel > 0)
-				{
-					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
-				}
-				GUI::KeyPressPreviousTick = GetTickCount64();
-			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD2))
-			{
-				GUI::currentOption < GUI::optionCount ? GUI::currentOption++ : GUI::currentOption = 1;
-				if (GUI::menuLevel > 0)
-				{
-					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
-				}
-				GUI::KeyPressPreviousTick = GetTickCount64();
-			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD6))
-			{
-				GUI::leftPressed = true;
-				if (GUI::menuLevel > 0)
-				{
-					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
-				}
-				GUI::KeyPressPreviousTick = GetTickCount64();
-			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD4))
-			{
-				GUI::rightPressed = true;
-				if (GUI::menuLevel > 0)
-				{
-					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
-				}
-				GUI::KeyPressPreviousTick = GetTickCount64();
-			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD5))
-			{
-				GUI::selectPressed = true;
-				if (GUI::menuLevel > 0)
-				{
-					Cheat::GameFunctions::PlayFrontendSoundDefault("SELECT");
-				}
-				GUI::KeyPressPreviousTick = GetTickCount64();
-			}
-		}
-		GUI::optionCount = 0;
-		GUI::optionCountVisible = 0;
-	}
-}
 void Cheat::GUI::MoveMenu(SubMenus menu)
 {
 	GUI::menusArray[GUI::menuLevel] = GUI::currentMenu;
@@ -826,20 +728,6 @@ void Cheat::GUI::DeleteLoadedTheme()
 	GUI::CurrentTheme.clear();
 	GUI::currentOption = 1;
 	Cheat::GameFunctions::MinimapNotification("Theme Removed");
-}
-
-void Cheat::GUI::ChangeControlsState(bool State)
-{
-	if (State)
-	{
-		Cheat::LogFunctions::DebugMessage("Enabled Controls");
-		ControlsDisabled = false;
-	}
-	else
-	{
-		Cheat::LogFunctions::DebugMessage("Disabled Controls");
-		ControlsDisabled = true;
-	}
 }
 
 void Cheat::GUI::SaveTheme(std::string ThemeFileName)

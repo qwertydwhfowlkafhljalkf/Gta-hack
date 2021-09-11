@@ -100,6 +100,7 @@
     <ClInclude Include="Header\resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Header\GUI\Controls.h" />
     <ClCompile Include="Source\Cheat Functions\CheatFunctions.cpp" />
     <ClCompile Include="Source\Cheat Functions\Entry.cpp" />
     <ClCompile Include="Source\Cheat Functions\FiberMain.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="Source\Game Hooking\GameHooking.cpp" />
     <ClCompile Include="Source\Game Hooking\Memory.cpp" />
     <ClCompile Include="Source\Game Hooking\NativeInvoker.cpp" />
+    <ClCompile Include="Source\GUI\Controls.cpp" />
     <ClCompile Include="Source\GUI\GUI.cpp" />
     <ClCompile Include="ThirdParty\JsonCpp\json_reader.cpp" />
     <ClCompile Include="ThirdParty\JsonCpp\json_value.cpp" />

@@ -43,17 +43,17 @@ void Cheat::CheatFeatures::NonLooped()
 	// Check if this cheat build is compatible with injected GTA5.exe build (by checking if _GET_ONLINE_VERSION() works)
 	if (!UNK3::_GET_ONLINE_VERSION())
 	{
-		LogFunctions::Error("The cheat does not work with this version of the game. This is most likely the result of a recent game patch. Check GitHub for the latest release", true);
+		LogFunctions::Error("The cheat does not work with this version of the game. This is most likely the result of a recent game patch. Check GitHub for the latest release.", true);
 		std::exit(EXIT_SUCCESS);
 	}
 
-	//Create Menu Selectable Arrow Animation Thread - no point creating a thread handle rn, no interaction required
+	// Create Menu Selectable Arrow Animation Thread - no point creating a thread handle right now, no interaction required
 	CreateThread(NULL, NULL, CheatFunctions::MenuSelectableAnimationThread, CheatModuleHandle, NULL, NULL);
 
-	//Load texture file
+	// Load texture file
 	GUI::LoadTextureFile();
 
-	//Load configuration file
+	// Load configuration file
 	CheatFunctions::LoadConfig();
 
 	// Init Scaleform Banner Notification
@@ -65,12 +65,12 @@ void Cheat::CheatFeatures::NonLooped()
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "SHOW_SHARD_WASTED_MP_MESSAGE");
-	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING("<FONT FACE='$gtaCash'>GTAV Cheat");
+	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING("<FONT FACE='$gtaCash'>GTAV CHEAT");
 	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING("Welcome & have fun!");
 	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(5);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 
-	//Load 'multiplayer vehicles in Single Player' bypass
+	// Load 'multiplayer vehicles in Single Player' bypass
 	globalHandle(4270934).As<BOOL>() = true;
 
 	// Log POST initialization completion
@@ -84,14 +84,14 @@ void Cheat::CheatFeatures::Looped()
 	if (CheatFunctions::LoadConfigThreadFunctionCompleted)
 	{
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(PostInitBannerNotificationScaleformHandle, 255, 255, 255, 255, 0);
-		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(GUI::OpenGUIKey) + " to open cheat GUI";
+		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenGUIKey) + " to open cheat GUI";
 		
 		if (GUI::CheatGUIHasBeenOpened)
 		{
 			if (!PostInitBannerNotificationAnimationPlayed)
 			{
 				GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "TRANSITION_OUT");
-				GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_FLOAT(3.f);
+				GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_FLOAT(2.f);
 				GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 				PostInitBannerNotificationAnimationPlayed = true;
 			}

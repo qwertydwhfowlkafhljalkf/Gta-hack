@@ -46,6 +46,12 @@
     <ClCompile Include="Source\Cheat Functions\Entry.cpp">
       <Filter>Source Files\Cheat Functions</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GUI\Controls.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Header\GUI\Controls.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\resource.h">
