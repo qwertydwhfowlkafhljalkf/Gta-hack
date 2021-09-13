@@ -2863,7 +2863,7 @@ void Cheat::FiberMain()
 		case PlayerListMenu:
 		{
 			GUI::Title("Players");
-			GUI::StringVector("Show Player Marker", { "Player List & Menu", "Player List", "Disabled" }, CheatFeatures::PlayerListMarkerPosition, "Show Player Marker on selected player");
+			//GUI::StringVector("Show Player Marker", { "Player List & Menu", "Player List", "Disabled" }, CheatFeatures::PlayerListMarkerPosition, "Show Player Marker on selected player");
 			GUI::Break("List", SELECTABLE_CENTER_TEXT);
 			for (int i = 0; i < 32; ++i)
 			{
@@ -3193,7 +3193,7 @@ void Cheat::FiberMain()
 				CheatFunctions::CopyStringToClipboard("3BwCVtcJaNgUovcYQkDYFjrdy5YydTnjwc");
 				GameFunctions::MinimapNotification("~g~Bitcoin adr copied to clipboard.~n~Thank you for your support!");
 			}
-			if (GUI::Option("Visit Github Page", ""))
+			if (GUI::Option("Visit GitHub Page", ""))
 			{
 				system("start https://github.com/HatchesPls/GrandTheftAutoV-Cheat");
 			}

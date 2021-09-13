@@ -80,6 +80,8 @@ void Cheat::CheatFeatures::NonLooped()
 
 bool PostInitBannerNotificationAnimationPlayed = false;
 bool LoadConfigInstructionalButtonInitialized = false;
+bool PostInitBannerNotificationCleanupComplete = false;
+int PostInitBannerNotificationCleanupTimer;
 int LoadConfigInstructionalButtonHandle;
 void Cheat::CheatFeatures::Looped()
 {
@@ -97,7 +99,16 @@ void Cheat::CheatFeatures::Looped()
 				GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "TRANSITION_OUT");
 				GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_FLOAT(2.f);
 				GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+				PostInitBannerNotificationCleanupTimer = GetTickCount64();
 				PostInitBannerNotificationAnimationPlayed = true;
+			}
+			else
+			{
+				if (GetTickCount64() - PostInitBannerNotificationCleanupTimer > 2500 && !PostInitBannerNotificationCleanupComplete)
+				{
+					GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&PostInitBannerNotificationScaleformHandle);
+					PostInitBannerNotificationCleanupComplete = true;
+				}		
 			}
 		}
 		else
@@ -118,13 +129,6 @@ void Cheat::CheatFeatures::Looped()
 			GRAPHICS::BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
 			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Loading configuration file, one moment please");
 			GRAPHICS::END_TEXT_COMMAND_SCALEFORM_STRING();
-			GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
-
-			GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(LoadConfigInstructionalButtonHandle, "SET_BACKGROUND_COLOUR");
-			GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(0);
-			GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(0);
-			GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(0);
-			GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(255);
 			GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 
 			GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(LoadConfigInstructionalButtonHandle, "DRAW_INSTRUCTIONAL_BUTTONS");
