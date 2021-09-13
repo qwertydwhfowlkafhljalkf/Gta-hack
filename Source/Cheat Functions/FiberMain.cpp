@@ -2532,18 +2532,19 @@ void Cheat::FiberMain()
 			if (GUI::Option("Custom Input", "Custom Vehicle Gun Input"))
 			{
 				char* SpawnVehicle = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter custom vehicle model name");
-				if (SpawnVehicle == "0") { break; }
-
-				Hash model = GAMEPLAY::GET_HASH_KEY(SpawnVehicle);
-				if (!STREAMING::IS_MODEL_A_VEHICLE(model))
-				{ 
-					GameFunctions::MinimapNotification("~r~Not a valid vehicle model"); 
-				}
-				else
+				if (SpawnVehicle != "0")
 				{
-					CheatFeatures::VehicleGun_VehicleNameString = SpawnVehicle;
-					GameFunctions::MinimapNotification("Custom Vehicle Set");
-				}
+					Hash model = GAMEPLAY::GET_HASH_KEY(SpawnVehicle);
+					if (!STREAMING::IS_MODEL_A_VEHICLE(model))
+					{
+						GameFunctions::MinimapNotification("~r~Not a valid vehicle model");
+					}
+					else
+					{
+						CheatFeatures::VehicleGun_VehicleNameString = SpawnVehicle;
+						GameFunctions::MinimapNotification("Custom Vehicle Set");
+					}
+				}		
 			}
 			if (GUI::Option("Rhino Tank", "")) { CheatFeatures::VehicleGun_VehicleNameString = "RHINO"; }
 			if (GUI::Option("Hydra", "")) { CheatFeatures::VehicleGun_VehicleNameString = "HYDRA"; }
@@ -2608,9 +2609,11 @@ void Cheat::FiberMain()
 			if (GUI::Option("Save current location", ""))
 			{
 				char* NewThemeFileName = GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Custom Teleport Location Name");
-				if (NewThemeFileName == "0") { break; }
-				CheatFunctions::AddCustomTeleportLocation(NewThemeFileName);
-				GameFunctions::MinimapNotification("Custom Location Saved");
+				if (NewThemeFileName != "0")
+				{
+					CheatFunctions::AddCustomTeleportLocation(NewThemeFileName);
+					GameFunctions::MinimapNotification("Custom Location Saved");
+				}
 			}
 			GUI::MenuOption("View locations", CustomTeleportLocations);
 			GUI::Break("Presets", SELECTABLE_CENTER_TEXT);

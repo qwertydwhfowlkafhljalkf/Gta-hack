@@ -138,12 +138,6 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		}
 	}
 
-	// Show subtitle message in-game while config file is loading
-	if (!CheatFunctions::LoadConfigThreadFunctionCompleted)
-	{
-		GameFunctions::SubtitleNotification("Loading configuration file, one moment please", 1);
-	}
-
 	// Cursor Navigation Handler
 	if (CheatFeatures::CursorGUINavigationEnabled)
 	{
@@ -269,9 +263,7 @@ void LoadConfigThreadFunction()
 
 void Cheat::CheatFunctions::LoadConfig()
 {
-	Cheat::LogFunctions::Message("Loading Config");
-
-	GameFunctions::SubtitleNotification("Loading configuration file, one moment please", 100);
+	Cheat::LogFunctions::Message("Loading Configuration");
 	std::thread LoadConfigThreadHandle(LoadConfigThreadFunction);
 	LoadConfigThreadHandle.detach();
 

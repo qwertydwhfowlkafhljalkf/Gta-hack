@@ -79,14 +79,17 @@ void Cheat::CheatFeatures::NonLooped()
 }
 
 bool PostInitBannerNotificationAnimationPlayed = false;
+bool LoadConfigInstructionalButtonInitialized = false;
+int LoadConfigInstructionalButtonHandle;
 void Cheat::CheatFeatures::Looped()
 {
 	// POST initialization notification
 	if (CheatFunctions::LoadConfigThreadFunctionCompleted)
 	{
+		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&LoadConfigInstructionalButtonHandle);
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(PostInitBannerNotificationScaleformHandle, 255, 255, 255, 255, 0);
 		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenGUIKey) + " to open cheat GUI";
-		
+
 		if (GUI::CheatGUIHasBeenOpened)
 		{
 			if (!PostInitBannerNotificationAnimationPlayed)
@@ -101,6 +104,34 @@ void Cheat::CheatFeatures::Looped()
 		{
 			UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
 		}
+	}
+	else
+	{
+		if (!LoadConfigInstructionalButtonInitialized)
+		{
+			LoadConfigInstructionalButtonHandle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("INSTRUCTIONAL_BUTTONS");
+			while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(LoadConfigInstructionalButtonHandle)) { GameHooking::PauseMainFiber(0, false); }
+
+			GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(LoadConfigInstructionalButtonHandle, "SET_DATA_SLOT");
+			GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(0);
+			GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(50);
+			GRAPHICS::BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
+			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Loading configuration file, one moment please");
+			GRAPHICS::END_TEXT_COMMAND_SCALEFORM_STRING();
+			GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+
+			GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(LoadConfigInstructionalButtonHandle, "SET_BACKGROUND_COLOUR");
+			GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(0);
+			GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(0);
+			GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(0);
+			GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(255);
+			GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+
+			GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(LoadConfigInstructionalButtonHandle, "DRAW_INSTRUCTIONAL_BUTTONS");
+			GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+			LoadConfigInstructionalButtonInitialized = true;
+		}
+		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(LoadConfigInstructionalButtonHandle, 255, 255, 255, 255, 0);
 	}
 	GameFunctions::InGameKeyboardWindowTitle.clear();
 
