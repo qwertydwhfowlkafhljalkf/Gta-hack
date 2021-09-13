@@ -79,7 +79,6 @@ namespace Cheat
 		void ToggleOffRadar(bool state);
 		void ToggleCopsTurnBlindEye(bool state);
 		void FadeRGB(int& r, int& g, int& b);
-		void DrawMarkerAbovePlayer(int Type, Player player, RGBA Color);
 		bool ShowFullScreenMessage(std::string Message);
 	}
 }

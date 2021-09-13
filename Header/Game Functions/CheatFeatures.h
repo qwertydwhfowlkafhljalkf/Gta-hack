@@ -39,6 +39,7 @@ namespace Cheat
 		extern bool AllPlayersExclutionsSelf;
 		extern bool AllPlayersExclutionsFriends;
 		extern bool AllPlayersExclutionsHost;
+		extern bool TeleportTransitionBool;
 
 		void NonLooped();
 		void Looped();

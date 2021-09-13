@@ -92,7 +92,7 @@ enum SubMenus
 	RecoveryMenu,
 	RecoveryMenuWarning,
 	vehiclemultipliersmenus,
-	vehiclegunmenu,
+	ShootEntitiesMenu,
 	aimbotsettingsmenu,
 	SelectedPlayerTeleportMenu,
 	sessionoptionsmenu,

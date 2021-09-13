@@ -244,6 +244,7 @@ int Cheat::GameFunctions::ReturnRandomInteger(int start, int end)
 
 void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicle)
 {
+	if (CheatFeatures::TeleportTransitionBool) { STREAMING::_SWITCH_OUT_PLAYER(GameFunctions::PlayerPedID, 1, 2); }
 	Entity TargetEntity = e;
 
 	if (ENTITY::IS_ENTITY_A_PED(TargetEntity))
@@ -264,22 +265,22 @@ void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoC
 	}
 	else
 	{
-		bool groundFound = false;
-		static std::array<float, 21> groundCheckHeight = { 0.0, 50.0, 100.0, 150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.00 };
+		bool GroundFound = false;
+		static std::array<float, 21> GroundCheckHeight = { 0.0, 50.0, 100.0, 150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.00 };
 
-		for (const float& CurrentHeight : groundCheckHeight)
+		for (const float& CurrentHeight : GroundCheckHeight)
 		{
 			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, CurrentHeight, false, false, true);
-			GameHooking::PauseMainFiber(50);
+			GameHooking::PauseMainFiber(50, false);
 			if (GAMEPLAY::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, CurrentHeight, &coords.z, false))
 			{
-				groundFound = true;
+				GroundFound = true;
 				coords.z += 3.0;
 				break;
 			}
 		}
 
-		if (!groundFound) 
+		if (!GroundFound)
 		{ 
 			Vector3 ClosestRoadCoord;
 			if (PATHFIND::GET_CLOSEST_ROAD(coords.x, coords.y, coords.z, 1.f, 1, 
@@ -291,6 +292,7 @@ void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoC
 		}
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
 	}
+	if (CheatFeatures::TeleportTransitionBool) { STREAMING::_SWITCH_IN_PLAYER(GameFunctions::PlayerPedID); }
 }
 
 void Cheat::GameFunctions::GetCameraDirection(float* dirX, float* dirY, float* dirZ)
@@ -324,10 +326,9 @@ void Cheat::GameFunctions::RequestNetworkControlOfEntity(Entity entity)
 			NETWORK::NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(netID);
 			IdTick++;
 		}
-		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netID, 1);
+		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netID, true);
 	}
 }
-
 
 void Cheat::GameFunctions::ClonePed(Ped ped)
 {
@@ -409,11 +410,7 @@ void Cheat::GameFunctions::ClearNearbyPedAnimations()
 void Cheat::GameFunctions::PlayPedAnimation(Ped TargetPed, char* AnimationName, char* AnimationID, bool Controllable)
 {
 	Cheat::GameFunctions::RequestNetworkControlOfEntity(TargetPed);
-	while (!STREAMING::HAS_ANIM_DICT_LOADED((AnimationName)))
-	{
-		STREAMING::REQUEST_ANIM_DICT(AnimationName);
-		GameHooking::PauseMainFiber(0, false);
-	}
+	while (!STREAMING::HAS_ANIM_DICT_LOADED((AnimationName))) { STREAMING::REQUEST_ANIM_DICT(AnimationName); GameHooking::PauseMainFiber(0, false); }
 	int Flags = 0;
 	if (Controllable) { Flags = ANIM_FLAG_UPPERBODY | ANIM_FLAG_ENABLE_PLAYER_CONTROL | ANIM_FLAG_STOP_LAST_FRAME;  }
 	AI::TASK_PLAY_ANIM(TargetPed, AnimationName, AnimationID, 8.0f, 0.0f, -1, Flags, 0, false, false, false);
@@ -479,7 +476,8 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		//Draw Player Marker
 		if (CheatFeatures::PlayerListMarkerPosition == 0 || CheatFeatures::PlayerListMarkerPosition == 1 && GUI::currentMenu == PlayerListMenu)
 		{
-			GameFunctions::DrawMarkerAbovePlayer(23, PlayerID, { 255, 255, 255, 150 });
+			//Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerID), true);
+			//GRAPHICS::DRAW_MARKER(23, coords.x, coords.y, coords.z + 1.3f, 0.f, 0.f, 0.f, 0.f, 180.f, 0.f, 0.3f, 0.3f, 0.3f, 255, 255, 255, 255, false, false, 2, false, NULL, NULL, false);
 		}
 
 		//Draw Title and Background
@@ -794,7 +792,7 @@ void Cheat::GameFunctions::AttachObjectToPed(Ped Ped, char* ObjectName)
 				attachobj[nuattach] = OBJECT::CREATE_OBJECT(hash, pos.x, pos.y, pos.z, 1, 1, 1);
 				if (ENTITY::DOES_ENTITY_EXIST(attachobj[nuattach]))
 				{
-					ENTITY::ATTACH_ENTITY_TO_ENTITY(attachobj[nuattach], PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped), 31086, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 2, 1);
+					ENTITY::ATTACH_ENTITY_TO_ENTITY(attachobj[nuattach], PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped), 31086, 0, 0, 0, 0, 0, 0, true, false, false, false, 2, true);
 					nuattach++;
 					if (nuattach >= 101) { nuattach = 1; }
 				}
@@ -1086,11 +1084,14 @@ bool Cheat::GameFunctions::PlayerIsFreemodeScriptHost(Player Player)
 
 void Cheat::GameFunctions::CopySelectedPlayerOutfit(Player SelectedPlayer)
 {
-	Ped SelectedPlayerPedHandle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(SelectedPlayer);
-	for (int i = 0; i < 12; i++)
+	if (SelectedPlayer != PlayerID)
 	{
-		PED::SET_PED_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, i, PED::GET_PED_DRAWABLE_VARIATION(SelectedPlayerPedHandle, i), PED::GET_PED_TEXTURE_VARIATION(SelectedPlayerPedHandle, i), PED::GET_PED_PALETTE_VARIATION(SelectedPlayerPedHandle, i));
-		GameHooking::PauseMainFiber(0, true);
+		Ped SelectedPlayerPedHandle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(SelectedPlayer);
+		for (int i = 0; i < 12; i++)
+		{
+			PED::SET_PED_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, i, PED::GET_PED_DRAWABLE_VARIATION(SelectedPlayerPedHandle, i), PED::GET_PED_TEXTURE_VARIATION(SelectedPlayerPedHandle, i), PED::GET_PED_PALETTE_VARIATION(SelectedPlayerPedHandle, i));
+			GameHooking::PauseMainFiber(0, true);
+		}
 	}
 }
 
@@ -1099,7 +1100,7 @@ int Cheat::GameFunctions::ReturnPlayerRockstarID(Player PlayerHandle)
 	char* RockstarIDBuffer;
 	int NETWORK_HANDLE[76];
 	NETWORK::NETWORK_HANDLE_FROM_PLAYER(PlayerHandle, &NETWORK_HANDLE[0], 13);
-	if (NETWORK::NETWORK_IS_HANDLE_VALID(&NETWORK_HANDLE[0], 13)) 
+	if (NETWORK::NETWORK_IS_HANDLE_VALID(&NETWORK_HANDLE[0], 13))
 	{
 		RockstarIDBuffer = NETWORK::NETWORK_MEMBER_ID_FROM_GAMER_HANDLE(&NETWORK_HANDLE[0]);
 	}
@@ -1137,10 +1138,6 @@ void Cheat::GameFunctions::PlayFrontendSoundDefault(char* SoundName)
 	AUDIO::PLAY_SOUND_FRONTEND(-1, SoundName, "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
 }
 
-/*
-Description: Check whether or not the provided integer correspondents to a valid Player Ped.
-Note(s): This function assumes the player has a Ped.
-*/
 bool Cheat::GameFunctions::IsPlayerIDValid(Player ID)
 {
 	if (ENTITY::DOES_ENTITY_EXIST(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(ID)))
@@ -1222,12 +1219,6 @@ void Cheat::GameFunctions::FadeRGB(int& r, int& g, int& b)
 		r++;
 		b--;
 	}
-}
-
-void Cheat::GameFunctions::DrawMarkerAbovePlayer(int Type, Player player, RGBA Color)
-{
-	Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player), true);
-	//GRAPHICS::DRAW_MARKER(Type, coords.x, coords.y, coords.z + 1.3f, 0.f, 0.f, 0.f, 0.f, 180.f, 0.f, 0.3f, 0.3f, 0.3f, Color.r, Color.g, Color.b, Color.a, false, false, 2, false, NULL, NULL, false);
 }
 
 /*

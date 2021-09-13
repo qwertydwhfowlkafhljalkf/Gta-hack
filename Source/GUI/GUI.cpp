@@ -401,7 +401,7 @@ bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step,
 	return false;
 }
 
-bool Cheat::GUI::Float(std::string option, float & _float, float min, float max, float steps, std::string InformationText, std::streamsize FloatPrecision, int BitFlags)
+bool Cheat::GUI::Float(std::string option, float& _float, float min, float max, float steps, std::string InformationText, std::streamsize FloatPrecision, int BitFlags)
 {
 	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, _float); }
 
@@ -411,7 +411,7 @@ bool Cheat::GUI::Float(std::string option, float & _float, float min, float max,
 	}
 
 	bool IgnoreMinMax = min == 0.0f && max == 0.0f;
-	if (GUI::optionCount == GUI::currentOption) 
+	if (GUI::optionCount == GUI::currentOption)
 	{	
 		CheatFunctions::SaveOption(option, std::to_string(_float), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 		if (Controls::LeftPressed && !(BitFlags & SELECTABLE_DISABLED))

@@ -2511,7 +2511,7 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Weapons", WeaponsMenu);
 			GUI::MenuOption("Visuals", WeaponVisualsMenu);
 			GUI::MenuOption("Ammo Modification", WeaponAmmoMenu);
-			GUI::MenuOption("Vehicle Gun", vehiclegunmenu);
+			GUI::MenuOption("Shoot Entities", ShootEntitiesMenu);
 			GUI::MenuOption("Aimbot", aimbotsettingsmenu);		
 			GUI::Break("General", SELECTABLE_CENTER_TEXT);
 			GUI::Toggle("No Reload", CheatFeatures::NoWeaponReloadBool, "Always have max amount of ammo");
@@ -2523,9 +2523,9 @@ void Cheat::FiberMain()
 			GUI::Float("Entity Distance", CheatFeatures::GravityGunEntityDistance, 5.f, 25.f, 1.f, "Changing distance is also possible with the scroll wheel", 0);
 		}
 		break; 
-		case vehiclegunmenu:
+		case ShootEntitiesMenu:
 		{
-			GUI::Title("Vehicle Gun");
+			GUI::Title("Shoot Entities");
 			GUI::Toggle("Toggle Vehicle Gun", CheatFeatures::VehicleGunBool, "Toggle Vehicle Gun");
 			GUI::Break("Current: ~t~" + CheatFeatures::VehicleGun_VehicleNameString, false);
 			GUI::Break("Vehicles", SELECTABLE_CENTER_TEXT);
@@ -2601,8 +2601,9 @@ void Cheat::FiberMain()
 				Vector3 Coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(GameFunctions::PlayerPedID, 0.0, TeleportFoward, 0.0);
 				int Handle = GameFunctions::PlayerPedID;
 				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) { Handle = PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0); }
-				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Handle, Coords.x, Coords.y, Coords.z, 0, 0, 1);
+				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Handle, Coords.x, Coords.y, Coords.z, false, false, true);
 			}
+			GUI::Toggle("Show Transition Effect", CheatFeatures::TeleportTransitionBool, "");
 			GUI::Break("Custom Locations", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Save current location", ""))
 			{
@@ -3222,10 +3223,10 @@ void Cheat::FiberMain()
 				GUI::SaveTheme(NewThemeFileName);
 			}
 			GUI::Break("Header", SELECTABLE_CENTER_TEXT);
-			GUI::Toggle("Header Texture", GUI::ShowHeaderTexture, "", SELECTABLE_DISABLE_SAVE);
-			GUI::Toggle("Header Background", GUI::ShowHeaderBackground, "", SELECTABLE_DISABLE_SAVE);
+			GUI::Toggle("Texture", GUI::ShowHeaderTexture, "", SELECTABLE_DISABLE_SAVE);
+			GUI::Toggle("Background", GUI::ShowHeaderBackground, "", SELECTABLE_DISABLE_SAVE);
 			GUI::Break("Color", SELECTABLE_CENTER_TEXT);
-			GUI::Toggle("RGB Disco", CheatFeatures::RGBDiscoBool, "It's time to party!", SELECTABLE_DISABLE_SAVE);
+			GUI::Toggle("RGB Disco", CheatFeatures::RGBDiscoBool, "It's party time!", SELECTABLE_DISABLE_SAVE);
 			if (GUI::Option("Primary", "Save is disabled while RGB Disco is enabled", CheatFeatures::RGBDiscoBool ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 			{
 				GUI::PrimaryColor.r = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter R-color"));

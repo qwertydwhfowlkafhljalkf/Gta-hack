@@ -33,6 +33,7 @@ bool Cheat::CheatFeatures::ControllableAnimations = false;
 bool Cheat::CheatFeatures::AllPlayersExclutionsSelf = true;
 bool Cheat::CheatFeatures::AllPlayersExclutionsFriends = false;
 bool Cheat::CheatFeatures::AllPlayersExclutionsHost = false;
+bool Cheat::CheatFeatures::TeleportTransitionBool = true;
 
 int PostInitBannerNotificationScaleformHandle;
 void Cheat::CheatFeatures::NonLooped()
@@ -311,7 +312,6 @@ void Cheat::CheatFeatures::Looped()
 	RGBDiscoBool ? RGBDisco() : !RGBDiscoFirstCall ? RGBDiscoFirstCall = true : NULL;
 }
 
-
 bool Cheat::CheatFeatures::GodmodeBool = false;
 void Cheat::CheatFeatures::Godmode(bool toggle)
 {
@@ -351,7 +351,6 @@ void Cheat::CheatFeatures::NoWeaponReload()
 	}
 }
 
-
 bool Cheat::CheatFeatures::SlowMotionBool = false;
 void Cheat::CheatFeatures::SlowMotion(bool toggle)
 {
@@ -365,13 +364,11 @@ void Cheat::CheatFeatures::SlowMotion(bool toggle)
 	}
 }
 
-
 bool Cheat::CheatFeatures::WorldBlackoutBool = false;
 void Cheat::CheatFeatures::WorldBlackout(bool toggle)
 {
 	GRAPHICS::_SET_BLACKOUT(toggle);
 }
-
 
 float Cheat::CheatFeatures::GravityGunEntityDistance = 5.f;
 bool Cheat::CheatFeatures::GravityGunBool = false;
@@ -436,7 +433,6 @@ void Cheat::CheatFeatures::GravityGun()
 		PLAYER::DISABLE_PLAYER_FIRING(tempPed, false);
 	}
 }
-
 
 bool Cheat::CheatFeatures::HideHUDBool = false;
 void Cheat::CheatFeatures::HideHUD()
@@ -515,7 +511,6 @@ void Cheat::CheatFeatures::PauseTime(bool toggle)
 	}
 }
 
-
 bool Cheat::CheatFeatures::ExplosiveMeleeBool = false;
 void Cheat::CheatFeatures::ExplosiveMelee()
 {
@@ -527,7 +522,6 @@ void Cheat::CheatFeatures::OrbitalCannonCooldownBypass()
 {
 	if (NETWORK::NETWORK_IS_SESSION_STARTED()) { STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_ORBITAL_CANNON_COOLDOWN"), 0, 0); STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP1_ORBITAL_CANNON_COOLDOWN"), 0, 0); }
 }
-
 
 bool Cheat::CheatFeatures::ProtectionVoteKickBool = false;
 void Cheat::CheatFeatures::ProtectionVoteKick(bool toggle)
@@ -757,11 +751,11 @@ void Cheat::CheatFeatures::PlayerInvisible(bool toggle)
 {
 	if (toggle)
 	{
-		ENTITY::SET_ENTITY_VISIBLE(Cheat::GameFunctions::PlayerPedID, false, true);
+		ENTITY::SET_ENTITY_VISIBLE(GameFunctions::PlayerPedID, false, true);
 	}
 	else
 	{
-		ENTITY::SET_ENTITY_VISIBLE(Cheat::GameFunctions::PlayerPedID, true, true);
+		ENTITY::SET_ENTITY_VISIBLE(GameFunctions::PlayerPedID, true, true);
 	}
 }
 
@@ -1336,18 +1330,31 @@ void Cheat::CheatFeatures::VehicleWeapons()
 bool Cheat::CheatFeatures::ShowSessionInformationBool = false;
 void Cheat::CheatFeatures::ShowSessionInformation()
 {
-	Vector3 playerCoord = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, 0);
+	Vector3 PlayerCoord = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
 	std::string NumbConnectedPlayers;
-	NumbConnectedPlayers = "Connected Players: " + std::to_string(NETWORK::NETWORK_GET_NUM_CONNECTED_PLAYERS());
-	std::string xMsg = " X " + std::to_string(playerCoord.x);
-	std::string yMsg = " Y " + std::to_string(playerCoord.y);
-	std::string zMsg = " Z " + std::to_string(playerCoord.z);
+	NumbConnectedPlayers = "Connected Players: ";
 
-	GUI::DrawTextInGame("Local Player Coords", { 255, 255, 255, 255, FontChaletLondon }, { 0.162f, 0.8100f }, { 0.25f, 0.25f }, false);
-	GUI::DrawTextInGame(xMsg, { 255, 255, 255, 255, FontChaletLondon }, { 0.16f, 0.8225f }, { 0.25f, 0.25f }, false);
-	GUI::DrawTextInGame(yMsg, { 255, 255, 255, 255, FontChaletLondon }, { 0.16f, 0.8350f }, { 0.25f, 0.25f }, false);
-	GUI::DrawTextInGame(zMsg, { 255, 255, 255, 255, FontChaletLondon }, { 0.16f, 0.8475f }, { 0.25f, 0.25f }, false);
-	if (NETWORK::NETWORK_IS_SESSION_STARTED()) { GUI::DrawTextInGame(NumbConnectedPlayers, { 255, 255, 255, 255, FontChaletLondon }, { 0.1615f, 0.8650f }, { 0.25f, 0.25f }, false); }
+	if (NETWORK::NETWORK_IS_SESSION_STARTED())
+	{
+		NumbConnectedPlayers.append(std::to_string(NETWORK::NETWORK_GET_NUM_CONNECTED_PLAYERS()));
+	}
+	else
+	{
+		NumbConnectedPlayers.append("N/A");
+	}
+
+	std::ostringstream PlayerCoordX, PlayerCoordY, PlayerCoordZ;
+	PlayerCoordX.precision(2);
+	PlayerCoordX << std::fixed << PlayerCoord.x;
+	PlayerCoordY.precision(2);
+	PlayerCoordY << std::fixed << PlayerCoord.y;
+	PlayerCoordZ.precision(2);
+	PlayerCoordZ << std::fixed << PlayerCoord.z;
+
+	GUI::DrawTextInGame("X " + PlayerCoordX.str(), { 255, 255, 255, 255, FontChaletLondon }, { 0.18f, 0.8225f }, { 0.25f, 0.25f }, false);
+	GUI::DrawTextInGame("Y " + PlayerCoordY.str(), { 255, 255, 255, 255, FontChaletLondon }, { 0.18f, 0.8350f }, { 0.25f, 0.25f }, false);
+	GUI::DrawTextInGame("Z " + PlayerCoordZ.str(), { 255, 255, 255, 255, FontChaletLondon }, { 0.18f, 0.8475f }, { 0.25f, 0.25f }, false);
+	GUI::DrawTextInGame(NumbConnectedPlayers, { 255, 255, 255, 255, FontChaletLondon }, { 0.18f, 0.8600f }, { 0.25f, 0.25f }, false);
 }
 
 bool Cheat::CheatFeatures::AutoGiveAllWeaponsBool = false;
