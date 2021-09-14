@@ -33,7 +33,6 @@ bool Cheat::CheatFeatures::ControllableAnimations = false;
 bool Cheat::CheatFeatures::AllPlayersExclutionsSelf = true;
 bool Cheat::CheatFeatures::AllPlayersExclutionsFriends = false;
 bool Cheat::CheatFeatures::AllPlayersExclutionsHost = false;
-bool Cheat::CheatFeatures::TeleportTransitionBool = true;
 
 int PostInitBannerNotificationScaleformHandle;
 void Cheat::CheatFeatures::NonLooped()

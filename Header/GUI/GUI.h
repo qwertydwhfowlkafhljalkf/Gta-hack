@@ -150,7 +150,6 @@ namespace Cheat
 		extern bool CheatGUIHasBeenOpened;
 		extern bool CurrentOptionIsSavable;
 		extern std::string CurrentTheme;
-		//extern bool center;
 		extern bool RestorePreviousSubmenu;
 		extern int maxVisOptions;
 		extern int currentOption;
@@ -165,8 +164,6 @@ namespace Cheat
 		extern SubMenus PreviousMenu;
 		extern int optionsArray[1000];
 		extern SubMenus menusArray[1000];
-		extern RGBA selectedText;
-		extern RGBA scroller;
 		extern RGBA PrimaryColor;
 		extern RGBAF TextColorAndFont;
 		extern int SelectableTransparency;

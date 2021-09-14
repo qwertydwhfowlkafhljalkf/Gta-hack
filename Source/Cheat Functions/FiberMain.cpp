@@ -2626,7 +2626,6 @@ void Cheat::FiberMain()
 				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) { Handle = PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0); }
 				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Handle, Coords.x, Coords.y, Coords.z, false, false, true);
 			}
-			GUI::Toggle("Show Transition Effect", CheatFeatures::TeleportTransitionBool, "");
 			GUI::Break("Custom Locations", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Save current location", ""))
 			{

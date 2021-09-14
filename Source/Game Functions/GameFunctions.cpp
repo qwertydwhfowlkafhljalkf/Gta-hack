@@ -244,7 +244,6 @@ int Cheat::GameFunctions::ReturnRandomInteger(int start, int end)
 
 void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicle)
 {
-	if (CheatFeatures::TeleportTransitionBool) { STREAMING::_SWITCH_OUT_PLAYER(GameFunctions::PlayerPedID, 1, 2); }
 	Entity TargetEntity = e;
 
 	if (ENTITY::IS_ENTITY_A_PED(TargetEntity))
@@ -275,7 +274,7 @@ void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoC
 			if (GAMEPLAY::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, CurrentHeight, &coords.z, false))
 			{
 				GroundFound = true;
-				coords.z += 3.0;
+				coords.z += 3.0f;
 				break;
 			}
 		}
@@ -283,16 +282,15 @@ void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoC
 		if (!GroundFound)
 		{ 
 			Vector3 ClosestRoadCoord;
-			if (PATHFIND::GET_CLOSEST_ROAD(coords.x, coords.y, coords.z, 1.f, 1, 
-										   &ClosestRoadCoord, &ClosestRoadCoord, NULL, NULL, NULL, 0))
+			if (PATHFIND::GET_CLOSEST_ROAD(coords.x, coords.y, coords.z, 1.0f, 1, 
+										   &ClosestRoadCoord, &ClosestRoadCoord, NULL, NULL, NULL, NULL))
 			{
 				coords = ClosestRoadCoord;
 			}
-			GameFunctions::SubtitleNotification("~r~Ground not found; teleported to nearby road", 6000);
+			GameFunctions::SubtitleNotification("~r~Ground not found, teleporting to nearby road", 4000);
 		}
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
 	}
-	if (CheatFeatures::TeleportTransitionBool) { STREAMING::_SWITCH_IN_PLAYER(GameFunctions::PlayerPedID); }
 }
 
 void Cheat::GameFunctions::GetCameraDirection(float* dirX, float* dirY, float* dirZ)
