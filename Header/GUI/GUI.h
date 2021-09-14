@@ -103,6 +103,7 @@ enum SubMenus
 	ESPMenu,
 	VehicleCustomizerMenu,
 	DLCVehiclesMenu,
+	RadioMenu,
 	SUBMENUS_END //Used to get total size of SubMenus (SUBMENUS_END - 2) 
 };
 

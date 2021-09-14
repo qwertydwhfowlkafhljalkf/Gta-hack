@@ -13,6 +13,7 @@ int Cheat::CheatFeatures::OpenVehicleDoorPosition = 0;
 int Cheat::CheatFeatures::CloseVehicleDoorPosition = 0;
 int Cheat::CheatFeatures::FastSuperRunPosition = 0;
 int Cheat::CheatFeatures::PlayerListMarkerPosition = 0;
+int Cheat::CheatFeatures::HUDColorPosition = 0;
 int Cheat::CheatFeatures::PlayerOpacityInt = 250;
 bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
@@ -301,7 +302,7 @@ void Cheat::CheatFeatures::Looped()
 	SlowMotionBool ? SlowMotion(true) : SlowMotion(false);
 	WorldBlackoutBool ? WorldBlackout(true) : WorldBlackout(false);
 	GravityGunBool ? GravityGun() : NULL;
-	HideHUDBool ? HideHUD() : NULL;
+	DisableHUDBool ? DisableHUD() : NULL;
 	NoGravityBool ? NoGravity(true) : NoGravity(false);
 	WorldSnowLocalBool ? WorldSnowLocal(true) : WorldSnowLocal(false);
 	AutoTeleportToWaypointBool ? AutoTeleportToWaypoint() : NULL;
@@ -358,6 +359,8 @@ void Cheat::CheatFeatures::Looped()
 	EntityInformationGunBool ? EntityInformationGun() : NULL;
 	CrossHairBool ? CrossHair() : NULL;
 	RGBDiscoBool ? RGBDisco() : !RGBDiscoFirstCall ? RGBDiscoFirstCall = true : NULL;
+	FreezeStationBool ? FreezeStation() : FreezeStationWasEnabled ? AUDIO::UNFREEZE_RADIO_STATION(AUDIO::GET_PLAYER_RADIO_STATION_NAME()), FreezeStationWasEnabled = false : NULL;
+	HideMinimapBool ? HideMinimap() : HideMinimapWasEnabled ? UI::DISPLAY_RADAR(true), HideMinimapWasEnabled = false : NULL;
 }
 
 bool Cheat::CheatFeatures::GodmodeBool = false;
@@ -482,10 +485,18 @@ void Cheat::CheatFeatures::GravityGun()
 	}
 }
 
-bool Cheat::CheatFeatures::HideHUDBool = false;
-void Cheat::CheatFeatures::HideHUD()
+bool Cheat::CheatFeatures::DisableHUDBool = false;
+void Cheat::CheatFeatures::DisableHUD()
 {
 	UI::HIDE_HUD_AND_RADAR_THIS_FRAME();
+}
+
+bool Cheat::CheatFeatures::HideMinimapBool = false;
+bool Cheat::CheatFeatures::HideMinimapWasEnabled = false;
+void Cheat::CheatFeatures::HideMinimap()
+{
+	UI::DISPLAY_RADAR(false);
+	HideMinimapWasEnabled = true;
 }
 
 bool Cheat::CheatFeatures::NoGravityBool = false;
@@ -821,6 +832,14 @@ void Cheat::CheatFeatures::MobileRadio(bool toggle)
 		AUDIO::SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(false);
 		AUDIO::SET_MOBILE_PHONE_RADIO_STATE(false);
 	}
+}
+
+bool Cheat::CheatFeatures::FreezeStationBool = false;
+bool Cheat::CheatFeatures::FreezeStationWasEnabled = false;
+void Cheat::CheatFeatures::FreezeStation()
+{
+	AUDIO::FREEZE_RADIO_STATION(AUDIO::GET_PLAYER_RADIO_STATION_NAME());
+	FreezeStationWasEnabled = true;
 }
 
 

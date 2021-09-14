@@ -17,6 +17,7 @@ namespace Cheat
 		extern int CloseVehicleDoorPosition;
 		extern int FastSuperRunPosition;
 		extern int PlayerListMarkerPosition;
+		extern int HUDColorPosition;
 		extern int selectedPlayer;
 		extern int PlayerOpacityInt;
 		extern bool BlockMaliciousScriptEvents;
@@ -56,8 +57,11 @@ namespace Cheat
 		extern float GravityGunEntityDistance;
 		extern bool GravityGunBool;
 		void GravityGun();
-		extern bool HideHUDBool;
-		void HideHUD();
+		extern bool DisableHUDBool;
+		void DisableHUD();
+		extern bool HideMinimapBool;
+		extern bool HideMinimapWasEnabled;
+		void HideMinimap();
 		extern bool NoGravityBool;
 		void NoGravity(bool toggle);
 		extern bool WorldSnowLocalBool;
@@ -102,6 +106,9 @@ namespace Cheat
 		void PlayerInvisible(bool toggle);
 		extern bool MobileRadioBool;
 		void MobileRadio(bool toggle);
+		extern bool FreezeStationBool;
+		extern bool FreezeStationWasEnabled;
+		void FreezeStation();
 		extern bool WeaponRapidFireBool;
 		void WeaponRapidFire();
 		extern bool PlayerIgnoredBool;

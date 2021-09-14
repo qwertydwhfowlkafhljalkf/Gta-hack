@@ -1,20 +1,21 @@
 ﻿#include "../Header/Cheat Functions/FiberMain.h"
 int Cheat::CheatFeatures::selectedPlayer;
-float TeleportFoward = 1.f;																					//Used by Teleport Forward option
-int engine_multiplier, torque_multiplier;																	//Used by Vehicle Multipliers options
-int SetTimeHour = 0, SetTimeMinutes = 0, SetTimeSeconds = 0;												//Used by World Time options	
-int VehiclePrimaryColorRed, VehiclePrimaryColorGreen, VehiclePrimaryColorBlue;								//Used by Vehicle Color features
-int VehicleSecondaryColorRed, VehicleSecondaryColorGreen, VehicleSecondaryColorBlue;						//Used by Vehicle Color features	
-int VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue;										//Used by Vehicle Color features	
-int WheelColorRed, WheelColorGreen, WheelColorBlue;															//Used by Vehicle Color features
-int PlayerWantedLevelInteger = 0;																			//Used by Set Wanted Level Option
-int FakeWantedLevelInteger = 0;																				//Used by Fake Wanted Level
-std::string ChangeModelPedSearchTerm;																		//Used by Change Model (Self)
-std::string ObjectSpawnSearchTerm;																			//Used by Object Spawn
-int intexploits, intoffensive, REPORTSTRENGTH, OFFENSIVETAGPLATE, OFFENSIVEUGC,								//Used by Report Stats		
+float TeleportFoward = 1.f;																					// Used by Teleport Forward option
+int engine_multiplier, torque_multiplier;																	// Used by Vehicle Multipliers options
+int SetTimeHour = 0, SetTimeMinutes = 0, SetTimeSeconds = 0;												// Used by World Time options	
+int VehiclePrimaryColorRed, VehiclePrimaryColorGreen, VehiclePrimaryColorBlue;								// Used by Vehicle Color features
+int VehicleSecondaryColorRed, VehicleSecondaryColorGreen, VehicleSecondaryColorBlue;						// Used by Vehicle Color features	
+int VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue;										// Used by Vehicle Color features	
+int WheelColorRed, WheelColorGreen, WheelColorBlue;															// Used by Vehicle Color features
+int PlayerWantedLevelInteger = 0;																			// Used by Set Wanted Level Option
+int FakeWantedLevelInteger = 0;																				// Used by Fake Wanted Level
+std::string ChangeModelPedSearchTerm;																		// Used by Change Model (Self)
+std::string ObjectSpawnSearchTerm;																			// Used by Object Spawn
+int HUDColorRed, HUDColorGreen, HUDColorBlue, HUDColorAlpha;												// Used by HUD
+int intexploits, intoffensive, REPORTSTRENGTH, OFFENSIVETAGPLATE, OFFENSIVEUGC,								// Used by Report Stats	
     EXPLOITS, GRIEFING, COMMENDSTRENGTH, FRIENDLY, HELPFUL, VCANNOYINGME, VCHATE,						
 	BADCREWNAME, BADCREWMOTTO, BADCREWSTATUS, BADCREWEMBLEM, ISPUNISHED;		
-int SetPedTexture_Torso = 0, SetPedTexture_TorsoTexture = 0, SetPedTexture_Face = 0,						//Used by SetPedTexture
+int SetPedTexture_Torso = 0, SetPedTexture_TorsoTexture = 0, SetPedTexture_Face = 0,						// Used by SetPedTexture
     SetPedTexture_FaceTexture = 0, SetPedTexture_Head = 0, SetPedTexture_HeadTexture = 0, 
 	SetPedTexture_Hair = 0, SetPedTexture_HairTexture = 0, SetPedTexture_Legs = 0, 
 	SetPedTexture_LegsTexture = 0, SetPedTexture_Hands = 0, SetPedTexture_HandsTexture = 0, 
@@ -2172,10 +2173,19 @@ void Cheat::FiberMain()
 			GUI::Toggle("Basic Player ESP", CheatFeatures::PlayerESPBool, "");
 		}
 		break;
+		case RadioMenu:
+		{
+			GUI::Title("Radio");
+			if (GUI::Option("Skip Track", "")) { AUDIO::SKIP_RADIO_FORWARD(); }
+			GUI::Toggle("Freeze Station", CheatFeatures::FreezeStationBool, "");
+			GUI::Toggle("Mobile Radio", CheatFeatures::MobileRadioBool, "");
+		}
+		break;
 		case miscmenu:
 		{
 			GUI::Title("Miscellaneous");
 			GUI::MenuOption("Report Stats", reportsmenu_stats);
+			GUI::MenuOption("Radio", RadioMenu);
 			GUI::MenuOption("Extra-sensory Perception", ESPMenu);
 			GUI::MenuOption("HUD", hudmenu); 
 			GUI::MenuOption("IPL Loader", iplloader);
@@ -2193,7 +2203,6 @@ void Cheat::FiberMain()
 			GUI::Toggle("Auto Teleport To Waypoint", CheatFeatures::AutoTeleportToWaypointBool, "");
 			GUI::Toggle("Show Session Information", CheatFeatures::ShowSessionInformationBool, "Show session info (next to radar)");
 			GUI::Toggle("Show FPS", CheatFeatures::ShowFPSBool, "");
-			GUI::Toggle("Mobile Radio", CheatFeatures::MobileRadioBool, "");
 			if (GUI::Option("Stop Cutscene", ""))
 			{
 				CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
@@ -2233,7 +2242,20 @@ void Cheat::FiberMain()
 		case hudmenu:
 		{
 			GUI::Title("HUD");
-			GUI::Toggle("Hide All HUD Elements", CheatFeatures::HideHUDBool, "");
+			GUI::Toggle("Disable HUD", CheatFeatures::DisableHUDBool, "Prevents all HUD elements from being visible");
+			GUI::Toggle("Hide Minimap", CheatFeatures::HideMinimapBool, "Not needed when Disable HUD is enabled");
+			GUI::Break("Color", SELECTABLE_CENTER_TEXT);
+			GUI::Int("Red", HUDColorRed, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE);
+			GUI::Int("Green", HUDColorGreen, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE);
+			GUI::Int("Blue", HUDColorBlue, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE);
+			GUI::Int("Alpha", HUDColorAlpha, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE);
+			if (GUI::Option("Change", ""))
+			{
+				for (int i = 0; i <= 223; i++)
+				{
+					UI::_SET_HUD_COLOUR(i, HUDColorRed, HUDColorGreen, HUDColorBlue, HUDColorAlpha);
+				}		
+			}
 		}
 		break; 
 		case iplloader:
