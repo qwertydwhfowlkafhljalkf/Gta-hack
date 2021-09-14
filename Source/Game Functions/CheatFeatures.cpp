@@ -48,8 +48,19 @@ void Cheat::CheatFeatures::NonLooped()
 		std::exit(EXIT_SUCCESS);
 	}
 
-	// Create Menu Selectable Arrow Animation Thread - no point creating a thread handle right now, no interaction required
-	CreateThread(NULL, NULL, CheatFunctions::MenuSelectableAnimationThread, CheatModuleHandle, NULL, NULL);
+	// Create Menu Selectable Arrow Animation Thread
+	std::thread MenuSelectableAnimationThreadHandle([]()
+	{
+		while (true)
+		{
+			if (GUI::menuLevel > 0)
+			{
+				GUI::MenuOptionArrowAnimationState = !GUI::MenuOptionArrowAnimationState;
+				Sleep(GUI::MenuArrowAnimationDelay);
+			}
+		}
+	});
+	MenuSelectableAnimationThreadHandle.detach();
 
 	// Load texture file
 	GUI::LoadTextureFile();
@@ -88,10 +99,12 @@ void Cheat::CheatFeatures::Looped()
 	// POST initialization notification
 	if (CheatFunctions::LoadConfigThreadFunctionCompleted)
 	{
-		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&LoadConfigInstructionalButtonHandle);
-		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(PostInitBannerNotificationScaleformHandle, 255, 255, 255, 255, 0);
-		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenGUIKey) + " to open cheat GUI";
-
+		if (!PostInitBannerNotificationCleanupComplete)
+		{
+			GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenGUIKey) + " to open cheat GUI";
+			GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&LoadConfigInstructionalButtonHandle);
+			GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(PostInitBannerNotificationScaleformHandle, 255, 255, 255, 255, 0);
+		}
 		if (GUI::CheatGUIHasBeenOpened)
 		{
 			if (!PostInitBannerNotificationAnimationPlayed)
@@ -104,7 +117,7 @@ void Cheat::CheatFeatures::Looped()
 			}
 			else
 			{
-				if (GetTickCount64() - PostInitBannerNotificationCleanupTimer > 2500 && !PostInitBannerNotificationCleanupComplete)
+				if (GetTickCount64() - PostInitBannerNotificationCleanupTimer == 2500)
 				{
 					GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&PostInitBannerNotificationScaleformHandle);
 					PostInitBannerNotificationCleanupComplete = true;

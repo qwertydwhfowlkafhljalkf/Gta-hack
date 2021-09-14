@@ -665,17 +665,3 @@ void Cheat::CheatFunctions::DeleteCustomTeleportLocation(std::string CustomTelep
 	FileHandle << JsonHandle;
 	FileHandle.close();
 }
-
-DWORD WINAPI Cheat::CheatFunctions::MenuSelectableAnimationThread(LPVOID lpParam)
-{
-	while (true)
-	{
-		if (GUI::menuLevel != 0)
-		{
-			GUI::MenuOptionArrowAnimationState = true;
-			Sleep(GUI::MenuArrowAnimationDelay);
-			GUI::MenuOptionArrowAnimationState = false;
-			Sleep(GUI::MenuArrowAnimationDelay);
-		}
-	}
-}

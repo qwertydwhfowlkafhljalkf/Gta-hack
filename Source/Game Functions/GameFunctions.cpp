@@ -494,6 +494,9 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 			GUI::DrawRectInGame({ 0, 0, 0, 210 }, { Cheat::GUI::guiX - 0.266f,GUI::guiY - 0.156f }, { 0.32f, 0.030f });
 		}
 
+		//Draw World Map
+		//GUI::DrawSpriterInGame("mp_freemode_mc", "debugmap", 0.60f, 0.50f, 0.15f, 0.4f, 0, 255, 255, 255, 255);
+
 		//Text Entry's
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Name", 1);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(PLAYER::GET_PLAYER_NAME(PlayerID), NULL, 1);
@@ -516,7 +519,6 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 			Cheat::GUI::AddPlayerInfoBoxTextEntry("Unavailable", NULL, 3);
 		}
 
-
 		//Health
 		std::ostringstream Health;
 		float health = ENTITY::GET_ENTITY_HEALTH(SelectedPlayerPed);
@@ -532,7 +534,6 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 			Cheat::GUI::AddPlayerInfoBoxTextEntry(Health.str(), NULL, 4);
 		}
 		
-
 		//Armor
 		std::ostringstream Armor;
 		int ArmorValue = PED::GET_PED_ARMOUR(SelectedPlayerPed) * 100 / PLAYER::GET_PLAYER_MAX_ARMOUR(PlayerID);
