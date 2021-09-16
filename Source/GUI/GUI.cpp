@@ -577,20 +577,29 @@ bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vecto
 void Cheat::GUI::End()
 {
 	GUI::TotalOptionsCount = GUI::optionCount;
+	float OptionCountPositionX = Cheat::GUI::guiX - 0.088f;
+	float BuildNumberPositionX = Cheat::GUI::guiX + 0.085f;
+	float OptionCountAndBuildNumberY, RectY, LogoSmall;
 	if (GUI::optionCount >= GUI::maxVisOptions)
 	{
-		DrawTextInGame(std::to_string(GUI::currentOptionVisible) + "/" + std::to_string(GUI::optionCountVisible), TextColorAndFont, { Cheat::GUI::guiX - 0.088f, GUI::guiY + ((GUI::maxVisOptions + 1) * SelectableHeight - 0.172f) }, { 0.30f, 0.30f }, true);
-		DrawTextInGame(CHEAT_BUILD_NUMBER, TextColorAndFont, { Cheat::GUI::guiX + 0.085f, GUI::guiY + ((GUI::maxVisOptions + 1) * SelectableHeight - 0.172f) }, { 0.30f, 0.30f }, true);
-		DrawRectInGame({ 0, 0, 0, TitleAndEndTransparency }, { Cheat::GUI::guiX, GUI::guiY + ((GUI::maxVisOptions + 1) * SelectableHeight - 0.1585f) }, { Cheat::GUI::guiWidth, SelectableHeight });
-		DrawSpriterInGame("Textures", "LogoSmall", Cheat::GUI::guiX, GUI::guiY + ((GUI::maxVisOptions + 1) * SelectableHeight - 0.159f), 0.030f, 0.045f, 0, GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, EndSmallLogoTransparency);
+		OptionCountAndBuildNumberY = GUI::guiY + ((GUI::maxVisOptions + 1) * SelectableHeight - 0.172f);
+		RectY = GUI::guiY + ((GUI::maxVisOptions + 1) * SelectableHeight - 0.1585f);
+		LogoSmall = GUI::guiY + ((GUI::maxVisOptions + 1) * SelectableHeight - 0.159f);
 	}
 	else if (GUI::optionCount > 0)
 	{
-		DrawTextInGame(std::to_string(GUI::currentOptionVisible) + "/" + std::to_string(GUI::optionCountVisible), TextColorAndFont, { Cheat::GUI::guiX - 0.088f, GUI::guiY + (GUI::optionCount + 1) * SelectableHeight - 0.172f }, { 0.30f, 0.30f }, true);
-		DrawTextInGame(CHEAT_BUILD_NUMBER, TextColorAndFont, { Cheat::GUI::guiX + 0.085f, GUI::guiY + (GUI::optionCount + 1) * SelectableHeight - 0.172f }, { 0.30f, 0.30f }, true);
-		DrawRectInGame({ 0, 0, 0, TitleAndEndTransparency }, { Cheat::GUI::guiX, GUI::guiY + (GUI::optionCount + 1) * SelectableHeight - 0.1585f }, { Cheat::GUI::guiWidth, SelectableHeight });
-		DrawSpriterInGame("Textures", "LogoSmall", Cheat::GUI::guiX, GUI::guiY + ((GUI::optionCount + 1) * SelectableHeight - 0.159f), 0.030f, 0.045f, 0, GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, EndSmallLogoTransparency);
+		OptionCountAndBuildNumberY = GUI::guiY + (GUI::optionCount + 1) * SelectableHeight - 0.172f;
+		RectY = GUI::guiY + (GUI::optionCount + 1) * SelectableHeight - 0.1585f;
+		LogoSmall = GUI::guiY + ((GUI::optionCount + 1) * SelectableHeight - 0.159f);
 	}
+
+	if (GUI::currentOptionVisible != 0 && GUI::optionCountVisible != 0)
+	{
+		DrawTextInGame(std::to_string(GUI::currentOptionVisible) + "/" + std::to_string(GUI::optionCountVisible), TextColorAndFont, { OptionCountPositionX, OptionCountAndBuildNumberY }, { 0.30f, 0.30f }, true);
+	}
+	DrawTextInGame(CHEAT_BUILD_NUMBER, TextColorAndFont, { BuildNumberPositionX, OptionCountAndBuildNumberY }, { 0.30f, 0.30f }, true);
+	DrawRectInGame({ 0, 0, 0, TitleAndEndTransparency }, { Cheat::GUI::guiX, RectY }, { Cheat::GUI::guiWidth, SelectableHeight });
+	DrawSpriterInGame("Textures", "LogoSmall", Cheat::GUI::guiX, LogoSmall, 0.030f, 0.045f, 0, GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, EndSmallLogoTransparency);
 }
 
 void Cheat::GUI::MoveMenu(SubMenus menu)
