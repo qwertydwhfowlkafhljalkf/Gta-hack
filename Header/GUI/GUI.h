@@ -109,12 +109,12 @@ enum SubMenus
 
 enum SelectableBitFlags
 {
-	SELECTABLE_DUMMY = 1,			//Placeholder
-	SELECTABLE_DISABLED = 2,		//The selectable is disabled, if the select key is pressed on the selectable a message appears informing the user about the disable state. When using this flag saving is also blocked (use of SELECTABLE_DISABLE_SAVE not needed).
-	SELECTABLE_DISABLE_SAVE = 4,	//The selectable won't save when the corresponding key is pressed.
-	SELECTABLE_CENTER_TEXT = 8,		//This currently only applies to the Break selectable. Text will be centered relative to menu GUI.
-	SELECTABLE_RETURN_VALUE_CHANGE = 16,  //Currently used by Float and StringVector selectable. Function will also return when a value is changed (e.g. left or right is pressed).
-	SELECTABLE_HIDE_INFO_BOX = 32, //Forcefully (ignoring other settings) hides the Selectable Information Box for a given Selectable.
+	SELECTABLE_DUMMY = 1,					//Placeholder
+	SELECTABLE_DISABLED = 2,				//The selectable is disabled, if the select key is pressed on the selectable a message appears informing the user about the disable state. When using this flag saving is also blocked (use of SELECTABLE_DISABLE_SAVE not needed).
+	SELECTABLE_DISABLE_SAVE = 4,			//The selectable won't save when the corresponding key is pressed.
+	SELECTABLE_CENTER_TEXT = 8,				//This currently only applies to the Break selectable. Text will be centered relative to menu GUI.
+	SELECTABLE_RETURN_VALUE_CHANGE = 16,	//Currently used by Float and StringVector selectable. Function will also return when a value is changed (e.g. left or right is pressed).
+	SELECTABLE_HIDE_INFO_BOX = 32,			//Forcefully (ignoring other settings) hides the Selectable Information Box for a given Selectable.
 };
 
 typedef struct VECTOR2 { float x, y; };
@@ -181,7 +181,6 @@ namespace Cheat
 		void End();
 		void LoadTheme(std::string ThemeFileName, bool StartUp);
 		void SaveTheme(std::string ThemeFileName);
-		extern bool SelectableHandler(bool DisabledState);
 
 		void Title(std::string TitleName);
 		void AddPlayerInfoBoxTextEntry(std::string text, int Row1 = NULL, int Row2 = NULL, int Row3 = NULL, int Row4 = NULL);

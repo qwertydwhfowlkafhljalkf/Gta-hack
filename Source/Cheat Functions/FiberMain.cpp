@@ -1,6 +1,6 @@
 ﻿#include "../Header/Cheat Functions/FiberMain.h"
 int Cheat::CheatFeatures::selectedPlayer;
-float TeleportFoward = 1.f;																					// Used by Teleport Forward option
+int TeleportFoward = 1;																					// Used by Teleport Forward option
 int engine_multiplier, torque_multiplier;																	// Used by Vehicle Multipliers options
 int SetTimeHour = 0, SetTimeMinutes = 0, SetTimeSeconds = 0;												// Used by World Time options	
 int VehiclePrimaryColorRed, VehiclePrimaryColorGreen, VehiclePrimaryColorBlue;								// Used by Vehicle Color features
@@ -2613,18 +2613,17 @@ void Cheat::FiberMain()
 				}
 
 			CanceledCustomTeleport:
-				GameFunctions::MinimapNotification("Canceled custom coordinate teleporting");
+				break;
 			} 
 			if (GUI::Option("Teleport Into Last Used Vehicle", ""))
 			{
 				PED::SET_PED_INTO_VEHICLE(GameFunctions::PlayerPedID, VEHICLE::GET_LAST_DRIVEN_VEHICLE(), -1);
 			}
-			if (GUI::Float("Teleport Forward", TeleportFoward, 1.f, 10.f, 1.f, "Select to teleport", 0))
+			if (GUI::Int("Teleport Forward", TeleportFoward, 1, 10, 1))
 			{
-				Vector3 Coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(GameFunctions::PlayerPedID, 0.0, TeleportFoward, 0.0);
-				int Handle = GameFunctions::PlayerPedID;
-				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) { Handle = PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0); }
-				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Handle, Coords.x, Coords.y, Coords.z, false, false, true);
+				Vector3 Coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(GameFunctions::PlayerPedID, 0.0f, static_cast<float>(TeleportFoward), 0.0f);
+				if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false)) { GameFunctions::PlayerPedID = PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, false); }
+				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(GameFunctions::PlayerPedID, Coords.x, Coords.y, Coords.z, false, false, true);
 			}
 			GUI::Break("Custom Locations", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Save current location", ""))

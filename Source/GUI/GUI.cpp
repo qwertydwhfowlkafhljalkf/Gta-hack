@@ -116,20 +116,22 @@ bool Cheat::GUI::Option(std::string option, std::string InformationText, int Bit
 		else { SelectableInformationText = InformationText; }
 		if (Controls::SelectPressed)
 		{
-			DoSelectAction:
-			if (GUI::SelectableHandler(BitFlags & SELECTABLE_DISABLED ? true : false))
+			SelectAction:
+			if (BitFlags & SELECTABLE_DISABLED)
 			{
-				return true;
+				Cheat::GameFunctions::AdvancedMinimapNotification("This selectable is currently disabled", "Textures", "AdvancedNotificationImage", false, 4, "Cheat", "", 0.5f, "");
+				return false;
 			}
+			return true;
 		}
 	}
 
 	if (GameFunctions::IsCursorAtXYPosition(RectPosition, { Cheat::GUI::guiWidth, SelectableHeight }) && CheatFeatures::CursorGUINavigationEnabled)
 	{
 		UI::_SET_CURSOR_SPRITE(PreGrab);
-		if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, INPUT_CURSOR_ACCEPT) && !(BitFlags & SELECTABLE_DISABLED))
+		if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, INPUT_CURSOR_ACCEPT))
 		{
-			goto DoSelectAction;
+			goto SelectAction;
 		}
 	}
 	return false;
@@ -753,17 +755,6 @@ void Cheat::GUI::SaveTheme(std::string ThemeFileName)
 	CheatFunctions::IniFileWriteString(std::to_string(GUI::TextColorAndFont.f), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Font", "text_font");
 
 	GameFunctions::MinimapNotification("Theme Saved");
-}
-
-bool Cheat::GUI::SelectableHandler(bool DisabledState)
-{
-	//Handle selectable disable state
-	if (DisabledState)
-	{
-		Cheat::GameFunctions::AdvancedMinimapNotification("This selectable is currently disabled", "Textures", "AdvancedNotificationImage", false, 4, "Cheat", "", 0.5f, "");
-		return false;
-	}
-	return true;
 }
 
 static FileRegister RegisterTextureFile = (FileRegister)(Memory::pattern("48 89 5C 24 ? 48 89 6C 24 ? 48 89 7C 24 ? 41 54 41 56 41 57 48 83 EC 50 48 8B EA 4C 8B FA 48 8B D9 4D 85 C9").count(1).get(0).get<decltype(RegisterTextureFile)>());
