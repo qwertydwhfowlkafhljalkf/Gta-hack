@@ -236,7 +236,7 @@ void Cheat::CheatFeatures::Looped()
 	}
 
 	// Fast/super run
-	if (FastSuperRunPosition != 0 && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlSprint) && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlScriptPadUp))
+	if (FastSuperRunPosition != 0 && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlSprint) && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlScriptPadUp) && !PED::IS_PED_SWIMMING(GameFunctions::PlayerPedID))
 	{
 		if (FastSuperRunPosition == 1)
 		{
