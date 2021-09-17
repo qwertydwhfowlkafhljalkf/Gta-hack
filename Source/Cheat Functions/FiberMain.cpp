@@ -2913,7 +2913,7 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Teleport", SelectedPlayerTeleportMenu);
 			GUI::MenuOption("Friendly", SelectedPlayerFriendlyMenu);
 			GUI::MenuOption("Trolling", SelectedPlayerTrollMenu);
-			GUI::MenuOption("Script Events", SelectedPlayerRemoteOptions, SELECTABLE_DISABLED);
+			GUI::MenuOption("Script Events", SelectedPlayerRemoteOptions);
 			if (GUI::Option("Copy Outfit", "Get Selected Player Outfit")) { GameFunctions::CopySelectedPlayerOutfit(CheatFeatures::selectedPlayer); }
 			if (GUI::Option("View Profile", "View Selected Player Social Club Profile")) { int playerHandle; NETWORK::NETWORK_HANDLE_FROM_PLAYER(CheatFeatures::selectedPlayer, &playerHandle, 13); NETWORK::NETWORK_SHOW_PROFILE_UI(&playerHandle); }
 		}
@@ -2927,14 +2927,24 @@ void Cheat::FiberMain()
 		case SelectedPlayerRemoteOptions:
 		{
 			GUI::Title("Script Events");
-			if (GUI::Option("Kick To Single Player", "Kick Selected Player to SP")) 
+			if (GUI::Option("Kick To Single Player", "")) 
 			{
 				if (NETWORK::NETWORK_IS_SESSION_STARTED())
 				{
-					//uint64_t kick_sp[4] = { 1667907776, CheatFeatures::selectedPlayer, 0, 0 };
-					//SCRIPT::TRIGGER_SCRIPT_EVENT(1, kick_sp, 4, 1 << CheatFeatures::selectedPlayer);
+					uint64_t singleplayer_kick[4] = { -1382676328, CheatFeatures::selectedPlayer, 0, 0 };
+					SCRIPT::TRIGGER_SCRIPT_EVENT(1, singleplayer_kick, 4, (1 << CheatFeatures::selectedPlayer));
 				}
 			}
+			/*
+			if (GUI::Option("Teleport", ""))
+			{
+				if (NETWORK::NETWORK_IS_SESSION_STARTED())
+				{
+					uint64_t teleport[9] = { 1249026189, CheatFeatures::selectedPlayer, 0, -1, 1, 44, 0, 0, 0 };
+					SCRIPT::TRIGGER_SCRIPT_EVENT(1, teleport, 9, (1 << CheatFeatures::selectedPlayer));
+				}
+			}
+			*/
 		}
 		break; 
 		case SelectedPlayerTeleportMenu:

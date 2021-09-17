@@ -69,30 +69,30 @@ const char* GetLabelTextHooked(void* this_, const char* label)
 
 //https://www.unknowncheats.me/forum/3012992-post2712.html
 
-/*
-__int64 MiscScriptsArray[] = { 1317868303, -1243454584, -1212832151, -1252906024, -1890951223, -442306200, -966559987, 1977655521, 1998625272,
-							   -171207973, 393068387, 1097312011, -1162153263, -116602735, -738295409, -1949011582, -545396442, 1070934291, 
-							   392501634, -2029779863, -1648921703, -1333236192, 1302185744, 575518757, 1120313136 };
-*/
 
-__int64 MiscScriptsArray[] = { 0 };
+std::vector <int> MaliciousScriptsArray = { 1355230914, -316948135, 153488394, -1656474008, -1147284669, 1249026189, 1537221257, -1813981910,
+											-2041535807, 639032041, -1320260596, 1427741376, -272926713, 1337820848, 299217086, -148441291, 
+											1187364773, -151720011, -397188359, 1152266822, -81613951, -1906146218, -2105858993, -1005623606, 
+											315658550, 297912845, 888578819, -1002348481, 1694315389, 1337206479, -1264708915, -44054089, 27493799,
+											247151081, 1385748752, 1871141598, 1069230108, 1163167720, 220852783, -1857757712, -989654618, 
+											-1382676328, 1256866538, -1753084819, 1119864805, -1833002148, 202252150, -1503282114, 243981125,
+											-1836118977, -169685950, -2071141142, -149227625, 1433396036, 1608876738, 458875017, 987018372, 
+											-1587276086, 1954846099, 813647057 };
 void* GetEventDataOriginal = nullptr;
 bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argStructSize)
 {
 	auto result = static_cast<decltype(&GetEventDataHooked)>(GetEventDataOriginal)(eventGroup, eventIndex, argStruct, argStructSize);
 	if (result)
 	{
-		bool IsBlackListedScript = std::find(std::begin(MiscScriptsArray), std::end(MiscScriptsArray), argStruct[0]) != std::end(MiscScriptsArray);
-		char* SenderName = PLAYER::GET_PLAYER_NAME(argStruct[1]);
+		bool IsBlackListedScript = std::find(std::begin(MaliciousScriptsArray), std::end(MaliciousScriptsArray), argStruct[0]) != std::end(MaliciousScriptsArray);
 		if (Cheat::CheatFeatures::BlockAllScriptEvents)
 		{
 			return false;
 		}
 		else if (Cheat::CheatFeatures::BlockMaliciousScriptEvents && IsBlackListedScript)
 		{
-			Cheat::LogFunctions::DebugMessage("Blocked Script Event " + argStruct[0]);
-			std::string MessageString = "Blocked Script Event " + std::to_string(argStruct[0]);
-			Cheat::GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Remote Events Protection", "", .5, "");
+			std::string MessageString = "~r~Blocked Malicious Script Event " + std::to_string(argStruct[0]);
+			Cheat::GameFunctions::MinimapNotification(MessageString.data());
 			return false;
 		}
 	}
@@ -338,7 +338,7 @@ void GameHooking::Initialize()
 	setFn<GetEventData>("get_event_data", "\x48\x89\x5C\x24\x00\x57\x48\x83\xEC\x20\x49\x8B\xF8\x4C\x8D\x05\x00\x00\x00\x00\x41\x8B\xD9\xE8\x00\x00\x00\x00\x48\x85\xC0\x74\x14\x4C\x8B\x10\x44\x8B\xC3\x48\x8B\xD7\x41\xC1\xE0\x03\x48\x8B\xC8\x41\xFF\x52\x30\x48\x8B\x5C\x24\x00", "xxxx?xxxxxxxxxxx????xxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxx?", &GameHooking::get_event_data);
 	setFn<GetPlayerAddress>("get_player_address", "\x40\x53\x48\x83\xEC\x20\x33\xDB\x38\x1D\x00\x00\x00\x00\x74\x1C", "xxxxxxxxxx????xx", &GameHooking::get_player_address);
 	setFn<GetChatData>("get_chat_data", "\x4D\x85\xC9\x0F\x84\x00\x00\x00\x00\x48\x8B\xC4\x48\x89\x58\x08\x48\x89\x70\x10\x48\x89\x78\x18\x4C\x89\x48\x20\x55\x41\x54\x41\x55\x41\x56\x41\x57\x48\x8D\xA8", "xxxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", &get_chat_data);
-	
+
 	char* c_location = nullptr;
 	void* v_location = nullptr;
 
