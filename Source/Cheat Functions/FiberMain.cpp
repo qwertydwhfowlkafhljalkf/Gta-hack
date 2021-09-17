@@ -857,7 +857,7 @@ void Cheat::FiberMain()
 			GUI::Break("Money", SELECTABLE_CENTER_TEXT);
 			GUI::Break("Wallet balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_WALLET_BALANCE(-1)), false);
 			GUI::Break("Bank balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_BANK_BALANCE()), false);
-			GUI::Toggle("Drop Money", CheatFeatures::MoneyDropBool, "Only works for local player", SELECTABLE_DISABLE_SAVE | SELECTABLE_DISABLED);
+			GUI::Toggle("Drop Money", CheatFeatures::MoneyDropBool, "Only works for local player");
 			GUI::Int("Drop Delay", CheatFeatures::MoneyDropDelay, 50, 2000, 50, "Set to 1500 to prevent transaction errors");
 			GUI::Break("Miscellaneous", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Set Max Nightclub Popularity", "Set NightClub Popularity to 100%"))
