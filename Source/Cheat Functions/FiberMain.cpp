@@ -3217,6 +3217,10 @@ void Cheat::FiberMain()
 			{
 				system("start https://github.com/HatchesPls/GrandTheftAutoV-Cheat");
 			}
+			if (GUI::Option("Unload", "WIP"))
+			{
+				GameHooking::Unload();
+			}
 		}
 		break;
 		case ThemeMenu:
