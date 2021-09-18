@@ -67,10 +67,7 @@ const char* GetLabelTextHooked(void* this_, const char* label)
 	return GetLabelTextOriginal(this_, label);
 }
 
-//https://www.unknowncheats.me/forum/3012992-post2712.html
-
-
-std::vector <int> MaliciousScriptsArray = { 1355230914, -316948135, 153488394, -1656474008, -1147284669, 1249026189, 1537221257, -1813981910,
+const std::vector <int> MaliciousScriptsArray = { 1355230914, -316948135, 153488394, -1656474008, -1147284669, 1249026189, 1537221257, -1813981910,
 											-2041535807, 639032041, -1320260596, 1427741376, -272926713, 1337820848, 299217086, -148441291, 
 											1187364773, -151720011, -397188359, 1152266822, -81613951, -1906146218, -2105858993, -1005623606, 
 											315658550, 297912845, 888578819, -1002348481, 1694315389, 1337206479, -1264708915, -44054089, 27493799,
@@ -84,12 +81,12 @@ bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argS
 	auto result = static_cast<decltype(&GetEventDataHooked)>(GetEventDataOriginal)(eventGroup, eventIndex, argStruct, argStructSize);
 	if (result)
 	{
-		bool IsBlackListedScript = std::find(std::begin(MaliciousScriptsArray), std::end(MaliciousScriptsArray), argStruct[0]) != std::end(MaliciousScriptsArray);
+		bool IsBlackListedEvent = std::find(std::begin(MaliciousScriptsArray), std::end(MaliciousScriptsArray), argStruct[0]) != std::end(MaliciousScriptsArray);
 		if (Cheat::CheatFeatures::BlockAllScriptEvents)
 		{
 			return false;
 		}
-		else if (Cheat::CheatFeatures::BlockMaliciousScriptEvents && IsBlackListedScript)
+		else if (Cheat::CheatFeatures::BlockMaliciousScriptEvents && IsBlackListedEvent)
 		{
 			std::string MessageString = "~r~Blocked Malicious Script Event " + std::to_string(argStruct[0]);
 			Cheat::GameFunctions::MinimapNotification(MessageString.data());
