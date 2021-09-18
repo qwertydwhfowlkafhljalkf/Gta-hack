@@ -38,11 +38,15 @@ struct AnimationsStruct
 	std::string AnimationName;
 };
 
+struct TSEPropertyListStruct
+{
+	std::string PropertyName;
+	int Index;
+};
 namespace Cheat
 {
 	namespace GameArrays
 	{
-		extern const int RankPointsArray[8000];
 		extern const std::vector<std::string> LosSantosTunersModels;
 		extern const std::vector<std::string> CayoPericoHeistModels;
 		extern const std::vector<std::string> SummerSpecialModels;
@@ -92,5 +96,6 @@ namespace Cheat
 		extern const std::vector<std::string> AnimationsDisplayNames;
 		extern const std::vector<std::string> Scenarios;
 		extern const std::vector<std::string> Objects;
+		extern const std::vector<TSEPropertyListStruct> TSEPropertyList;
 	}
 }

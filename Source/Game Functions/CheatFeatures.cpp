@@ -985,8 +985,8 @@ void Cheat::CheatFeatures::SpectatePlayer(bool toggle)
 {
 	if (toggle)
 	{
-		NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(GameFunctions::PlayerPedID, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(selectedPlayer));
-		std::string String = "Spectating '" + (std::string)PLAYER::GET_PLAYER_NAME(selectedPlayer) + "'";
+		NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(GameFunctions::PlayerPedID, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(SelectedPlayer));
+		std::string String = "Spectating '" + (std::string)PLAYER::GET_PLAYER_NAME(SelectedPlayer) + "'";
 		GameFunctions::SubtitleNotification(CheatFunctions::StringToChar(String), 1);
 	}
 	else
@@ -1017,7 +1017,7 @@ void Cheat::CheatFeatures::NoRagdollAndSeatbelt(bool toggle)
 bool Cheat::CheatFeatures::FreezeSelectedPlayerBool = false;
 void Cheat::CheatFeatures::FreezeSelectedPlayer()
 {
-	Ped Player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(selectedPlayer);
+	Ped Player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(SelectedPlayer);
 	AI::CLEAR_PED_TASKS_IMMEDIATELY(Player);
 	AI::CLEAR_PED_TASKS(Player);
 	AI::CLEAR_PED_SECONDARY_TASK(Player);
@@ -1207,7 +1207,7 @@ void Cheat::CheatFeatures::CopsTurnBlindEye()
 bool Cheat::CheatFeatures::ExplodeLoopSelectedPlayerBool = false;
 void Cheat::CheatFeatures::ExplodeLoopSelectedPlayer()
 {
-	Vector3 SelectedPlayerPedCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer), false);
+	Vector3 SelectedPlayerPedCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
 	FIRE::ADD_EXPLOSION(SelectedPlayerPedCoords.x, SelectedPlayerPedCoords.y, SelectedPlayerPedCoords.z, 0, 0.0f, true, false, 10.0f);
 }
 
@@ -1290,7 +1290,7 @@ void Cheat::CheatFeatures::SuperMan()
 bool Cheat::CheatFeatures::ShakeCamSelectedPlayerBool = false;
 void Cheat::CheatFeatures::ShakeCamSelectedPlayer()
 {
-	Vector3 targetCords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::selectedPlayer), false);
+	Vector3 targetCords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
 	FIRE::ADD_EXPLOSION(targetCords.x, targetCords.y, targetCords.z, 4, 0.f, false, true, 1000.f);
 }
 

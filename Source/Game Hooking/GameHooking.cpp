@@ -74,7 +74,7 @@ const std::vector <int> MaliciousScriptsArray = { 1355230914, -316948135, 153488
 											247151081, 1385748752, 1871141598, 1069230108, 1163167720, 220852783, -1857757712, -989654618, 
 											-1382676328, 1256866538, -1753084819, 1119864805, -1833002148, 202252150, -1503282114, 243981125,
 											-1836118977, -169685950, -2071141142, -149227625, 1433396036, 1608876738, 458875017, 987018372, 
-											-1587276086, 1954846099, 813647057 };
+											-1587276086, 1954846099, 813647057, -1479371259 };
 void* GetEventDataOriginal = nullptr;
 bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argStructSize)
 {
@@ -88,8 +88,8 @@ bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argS
 		}
 		else if (Cheat::CheatFeatures::BlockMaliciousScriptEvents && IsBlackListedEvent)
 		{
-			std::string MessageString = "~r~Blocked Malicious Script Event " + std::to_string(argStruct[0]);
-			Cheat::GameFunctions::MinimapNotification(MessageString.data());
+			std::string MessageString = "Remote Event: Blocked ~n~ID: " + std::to_string(argStruct[0]) + " ~n~Sender: " + PLAYER::GET_PLAYER_NAME(argStruct[1]);
+			Cheat::GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Remote Events Protection", "", 0.8f, "");
 			return false;
 		}
 	}

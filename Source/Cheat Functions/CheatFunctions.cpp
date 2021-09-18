@@ -113,9 +113,9 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		GUI::currentMenu == SelectedPlayerTrollMenu ||
 		GUI::currentMenu == SelectedPlayerRemoteOptions)
 	{
-		if (GameFunctions::IsPlayerIDValid(CheatFeatures::selectedPlayer))
+		if (GameFunctions::IsPlayerIDValid(CheatFeatures::SelectedPlayer))
 		{
-			GameFunctions::ShowPlayerInformationBox(CheatFeatures::selectedPlayer);
+			GameFunctions::ShowPlayerInformationBox(CheatFeatures::SelectedPlayer);
 		}
 		else
 		{

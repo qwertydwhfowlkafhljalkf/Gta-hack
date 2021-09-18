@@ -134,7 +134,6 @@ Vector3 Cheat::GameFunctions::AddVector(Vector3 vector, Vector3 vector2)
 	return vector;
 }
 
-
 double Cheat::GameFunctions::DegreeToRadian(double n) 
 {
 	return n * 0.017453292519943295;
@@ -150,15 +149,24 @@ Vector3 Cheat::GameFunctions::RotationToDirection(Vector3 rot)
 	rot.y = (float)(cos(num) * num3);
 	rot.z = (float)sin(num2);
 	return rot;
-
-
 }
 
-void Cheat::GameFunctions::SetRankRockstarGift(int RPValue)
+void Cheat::GameFunctions::SetRankRockstarGift(int Rank)
 {
-	if (RPValue < 0 || RPValue > 8000) { Cheat::GameFunctions::MinimapNotification("Invalid Rank Inputted"); return; }
-	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(Cheat::GameFunctions::ReturnCurrentGTAOCharacter() + "_CHAR_SET_RP_GIFT_ADMIN")), Cheat::GameArrays::RankPointsArray[RPValue - 1], 0);
-	Cheat::GameFunctions::MinimapNotification("Join a new GTAO session for the new ranked to be applied");
+	if (Rank > 0 && Rank <= 8000)
+	{ 
+		STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ReturnCurrentGTAOCharacter() + "_CHAR_SET_RP_GIFT_ADMIN")), ReturnReputationPointsAmount(Rank), true);
+		MinimapNotification("Join a new GTAO session for the new Rank to be applied");
+	}
+	else
+	{
+		MinimapNotification("Invalid Rank Inputted");
+	}
+}
+
+int Cheat::GameFunctions::ReturnReputationPointsAmount(int Level)
+{
+	return globalHandle(GLOBAL_LEVEL_TO_RP).At(1, Level).As<int>();
 }
 
 Vector3 Cheat::GameFunctions::RotToDirection(Vector3* rot) 
@@ -663,15 +671,22 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		float distance = Get3DDistance(SelectedPlayerPedCoords, ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, true));
 		std::ostringstream Distance;
 
-		if (distance > 1000)
+		if (PlayerID != GameFunctions::PlayerID)
 		{
-			distance = round((distance / 1000) * 100) / 100;
-			Distance << distance << " KM";
+			if (distance > 1000)
+			{
+				distance = round((distance / 1000) * 100) / 100;
+				Distance << distance << " KM";
+			}
+			else
+			{
+				distance = round(distance * 1000) / 100;
+				Distance << distance << " M";
+			}
 		}
 		else
 		{
-			distance = round(distance * 1000) / 100;
-			Distance << distance << " M";
+			Distance << "N/A";
 		}
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Distance", NULL, NULL, 1);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(Distance.str(), NULL, NULL, NULL, 1);
@@ -1007,7 +1022,7 @@ char* Cheat::GameFunctions::ReturnOnlinePlayerPictureString(Player PlayerHandle)
 {
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
-		int Index = ONLINE_PLAYER_PICTURE_INDEX + 2;
+		int Index = GLOBAL_PLAYER_PICTURE_INDEX + 2;
 		for (int x = 0; x <= 150; x += 5)
 		{
 			int playerId = globalHandle(Index).At(x).As<int>();

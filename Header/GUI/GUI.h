@@ -95,6 +95,7 @@ enum SubMenus
 	ShootEntitiesMenu,
 	aimbotsettingsmenu,
 	SelectedPlayerTeleportMenu,
+	SelectedPlayerApartmentTeleport,
 	sessionoptionsmenu,
 	hudmenu,
 	HideElementsMenu,
