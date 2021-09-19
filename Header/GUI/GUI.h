@@ -90,6 +90,7 @@ enum SubMenus
 	SessionChatMenu,
 	vehicleweaponsmenu,
 	RecoveryMenu,
+	RecoveryStatsMenu,
 	RecoveryMenuWarning,
 	vehiclemultipliersmenus,
 	ShootEntitiesMenu,
@@ -173,6 +174,7 @@ namespace Cheat
 		extern int ToggleSelectableTransparency;
 		extern int HeaderTextureTransparency;
 		extern int EndSmallLogoTransparency;
+		extern int OnlinePlayerPictureTransparency;
 		extern int MenuArrowAnimationDelay;
 		extern bool MenuOptionArrowAnimationState;
 		extern void DeleteLoadedTheme();

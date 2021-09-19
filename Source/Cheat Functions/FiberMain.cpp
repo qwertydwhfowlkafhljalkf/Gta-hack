@@ -214,9 +214,26 @@ void Cheat::FiberMain()
 			}
 		}
 		break;
+		case RecoveryStatsMenu:
+		{
+			GUI::Title("Stats");
+			if (GUI::Option("Max All Skills", ""))
+			{
+				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_STAM")), 100, true);
+				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_STRN")), 100, true);
+				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_LUNG")), 100, true);
+				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_DRIV")), 100, true);
+				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_FLY")), 100, true);
+				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_SHO")), 100, true);
+				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_STL")), 100, true);
+				GameFunctions::MinimapNotification("Maxed out all skill values for your current character");
+			}
+		}
+		break;
 		case RecoveryMenu:
 		{
 			GUI::Title("Recovery");
+			GUI::MenuOption("Skill", RecoverySkillMenu);
 			GUI::Break("Unlocks", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Unlock All", "Unlocks many unlockable GTA Online items"))
 			{
@@ -676,17 +693,6 @@ void Cheat::FiberMain()
 
 				GameFunctions::MinimapNotification("'Unlocked All' completed");
 			}
-			if (GUI::Option("Max Skills", "Max out all skill levels"))
-			{
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_STAM")), 100, 0);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_STRN")), 100, 0);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_LUNG")), 100, 0);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_DRIV")), 100, 0);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_FLY")), 100, 0);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_SHO")), 100, 0);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_STL")), 100, 0);
-				GameFunctions::MinimapNotification("Maxed out all skill values for your current character");
-			}
 			if (GUI::Option("Unlock Tattoo's", "Unlock most tattoo's"))
 			{
 				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_AWD_FM_DM_WINS")), 50, 1);
@@ -863,14 +869,14 @@ void Cheat::FiberMain()
 				GameFunctions::MinimapNotification("GTA Online Awards & Trophies unlocked");
 			}
 			GUI::Break("Rank", SELECTABLE_CENTER_TEXT);
-			if (GUI::Option("Set Custom Rank", "Input a custom Rank"))
+			if (GUI::Option("Set Rank", "Input a custom Rank"))
 			{
 				int Rank = GameFunctions::DisplayKeyboardAndReturnInputInteger(4, "Enter desired rank");
 				if (Rank != 0) { GameFunctions::SetRankRockstarGift(Rank); }
 			}
 			GUI::Break("Money", SELECTABLE_CENTER_TEXT);
-			GUI::Break("Wallet balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_WALLET_BALANCE(-1)), false);
-			GUI::Break("Bank balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_BANK_BALANCE()), false);
+			GUI::Break("Wallet balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_WALLET_BALANCE(-1)));
+			GUI::Break("Bank balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_BANK_BALANCE()));
 			GUI::Toggle("Drop Money", CheatFeatures::MoneyDropBool, "Only works for local player");
 			GUI::Int("Drop Delay", CheatFeatures::MoneyDropDelay, 50, 2000, 50, "Set to 1500 to prevent transaction errors");
 			GUI::Break("Miscellaneous", SELECTABLE_CENTER_TEXT);
@@ -899,11 +905,20 @@ void Cheat::FiberMain()
 				GameFunctions::MinimapNotification("Mental State Reset");
 			}
 			GUI::Break("ATM", SELECTABLE_CENTER_TEXT);
+
+			if (GUI::Option("Move All Wallet To Bank", ""))
+			{
+				UNK3::_NETWORK_TRANSFER_WALLET_TO_BANK(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), NETWORKCASH::NETWORK_GET_VC_WALLET_BALANCE(-1));
+			}
+			if (GUI::Option("Move All Bank To Wallet", ""))
+			{
+				UNK3::_NETWORK_TRANSFER_BANK_TO_WALLET(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), NETWORKCASH::NETWORK_GET_VC_BANK_BALANCE());
+			}
 			if (GUI::Option("Move Wallet To Bank", ""))
 			{
 				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move");
 				if (KeyboardInput == "0") { break; }
-				UNK3::_NETWORK_TRANSFER_WALLET_TO_BANK(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), CheatFunctions::StringToInt(KeyboardInput));
+				UNK3::_NETWORK_TRANSFER_BANK_TO_WALLET(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), CheatFunctions::StringToInt(KeyboardInput));
 			}
 			if (GUI::Option("Move Bank To Wallet", ""))
 			{
@@ -2928,7 +2943,6 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Teleport", SelectedPlayerTeleportMenu);
 			GUI::MenuOption("Friendly", SelectedPlayerFriendlyMenu);
 			GUI::MenuOption("Griefing", SelectedPlayerTrollMenu);
-			if (GUI::Option("Copy Outfit", "Get Selected Player Outfit")) { GameFunctions::CopySelectedPlayerOutfit(CheatFeatures::SelectedPlayer); }
 			if (GUI::Option("View Profile", "View Selected Player Social Club Profile")) { int playerHandle; NETWORK::NETWORK_HANDLE_FROM_PLAYER(CheatFeatures::SelectedPlayer, &playerHandle, 13); NETWORK::NETWORK_SHOW_PROFILE_UI(&playerHandle); }
 		}
 		break;
@@ -2936,6 +2950,12 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("Friendly");
 			if (GUI::Option("Give All Weapons", "Give all weapons to selected player")) { GameFunctions::GiveAllWeaponsToPlayer(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer)); }
+			if (GUI::Option("Copy Outfit", "")) { GameFunctions::CopySelectedPlayerOutfit(CheatFeatures::SelectedPlayer); }
+			if (GUI::Option("Set Waypoint", "Sets waypoint to Selected player location"))
+			{
+				Vector3 TargetCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
+				UI::SET_NEW_WAYPOINT(TargetCoords.x, TargetCoords.y);
+			}
 		}
 		break;
 		case SelectedPlayerRemoteOptions:

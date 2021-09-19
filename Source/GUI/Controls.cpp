@@ -133,6 +133,7 @@ void Cheat::Controls::DoMenuGUIFade(bool FadeIn)
 		GUI::ToggleSelectableTransparency = 0;
 		GUI::HeaderTextureTransparency = 0;
 		GUI::EndSmallLogoTransparency = 0;
+		GUI::OnlinePlayerPictureTransparency = 0;
 	}
 	for (int i = 0; i <= 3; ++i)
 	{
@@ -155,6 +156,7 @@ void Cheat::Controls::MenuGUIFadeFunction(int Type, bool FadeIn)
 				GUI::ToggleSelectableTransparency = i;
 				GUI::HeaderTextureTransparency = i;
 				GUI::EndSmallLogoTransparency = i;
+				GUI::OnlinePlayerPictureTransparency = i;
 				Sleep(Delay);
 			}
 		}
@@ -167,6 +169,7 @@ void Cheat::Controls::MenuGUIFadeFunction(int Type, bool FadeIn)
 				GUI::ToggleSelectableTransparency = i;
 				GUI::HeaderTextureTransparency = i;
 				GUI::EndSmallLogoTransparency = i;
+				GUI::OnlinePlayerPictureTransparency = i;
 				Sleep(Delay);
 			}
 		}

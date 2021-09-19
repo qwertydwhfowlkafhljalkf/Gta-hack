@@ -42,6 +42,7 @@ int Cheat::GUI::TitleAndEndTransparency		= 210;
 int Cheat::GUI::ToggleSelectableTransparency = 255;
 int Cheat::GUI::HeaderTextureTransparency	 = 255;
 int Cheat::GUI::EndSmallLogoTransparency	 = 255;
+int Cheat::GUI::OnlinePlayerPictureTransparency = 255;
 
 int Cheat::GUI::MenuArrowAnimationDelay		= 1000;
 
@@ -288,7 +289,7 @@ bool Cheat::GUI::MenuOptionPlayerList(std::string PlayerName, int BitFlags)
 	{
 		Position = { Cheat::GUI::guiX - 0.093f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.158f };
 	}
-	DrawSpriterInGame(CurrentOnlinePlayerPictureName, CurrentOnlinePlayerPictureName, Position.x, Position.y, 0.02f, 0.03f, 0, 255, 255, 255, 255);
+	DrawSpriterInGame(CurrentOnlinePlayerPictureName, CurrentOnlinePlayerPictureName, Position.x, Position.y, 0.02f, 0.03f, 0, 255, 255, 255, OnlinePlayerPictureTransparency);
 	return false;
 }
 
