@@ -1237,7 +1237,7 @@ void Cheat::GameFunctions::FadeRGB(int& r, int& g, int& b)
 
 /*
 Description: Shows a full-screen message with background rectangle.
-Note(s): ONLY used by Recovery warning right now, needs work to be used for other purposes.
+Note(s): Used by Recovery warning and Unload, needs work to be used for other purposes.
 */
 bool Cheat::GameFunctions::ShowFullScreenMessage(std::string Message)
 {
