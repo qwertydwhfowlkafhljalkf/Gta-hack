@@ -85,7 +85,7 @@ void Cheat::FiberMain()
 
 					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
-						uint64_t teleport[9] = { TSE_PROPERTY_TELEPORT, CheatFeatures::SelectedPlayer, 0, -1, 1, 1, 0, 0, 0 };
+						uint64_t teleport[9] = { TSE_PROPERTY_TELEPORT, i, 0, -1, 1, 1, 0, 0, 0 };
 						SCRIPT::TRIGGER_SCRIPT_EVENT(1, teleport, 9, (1 << i));
 					}
 				}	
@@ -217,23 +217,53 @@ void Cheat::FiberMain()
 		case RecoveryStatsMenu:
 		{
 			GUI::Title("Stats");
+			std::vector <std::string> SkillStats = { "STAM", "STRN", "LUNG", "DRIV", "FLY", "SHO", "STL" };
 			if (GUI::Option("Max All Skills", ""))
 			{
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_STAM")), 100, true);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_STRN")), 100, true);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_LUNG")), 100, true);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_DRIV")), 100, true);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_FLY")), 100, true);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_SHO")), 100, true);
-				STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_STL")), 100, true);
-				GameFunctions::MinimapNotification("Maxed out all skill values for your current character");
+				for (const auto& i : SkillStats)
+				{
+					GameFunctions::SetCharacterSkillStat(i, 100);
+				}
+				GameFunctions::MinimapNotification("Maxed out all skill stats for your current character");
+			}
+			if (GUI::Option("Max Stamina", ""))
+			{
+				GameFunctions::SetCharacterSkillStat(SkillStats[0], 100);
+			}
+			if (GUI::Option("Max Stamina", ""))
+			{
+				GameFunctions::SetCharacterSkillStat(SkillStats[1], 100);
+			}
+			if (GUI::Option("Max Strength", ""))
+			{
+				GameFunctions::SetCharacterSkillStat(SkillStats[2], 100);
+			}
+			if (GUI::Option("Max Lung Capacity", ""))
+			{
+				GameFunctions::SetCharacterSkillStat(SkillStats[3], 100);
+			}
+			if (GUI::Option("Max Driving", ""))
+			{
+				GameFunctions::SetCharacterSkillStat(SkillStats[4], 100);
+			}
+			if (GUI::Option("Max Flying", ""))
+			{
+				GameFunctions::SetCharacterSkillStat(SkillStats[5], 100);
+			}
+			if (GUI::Option("Max Shooting", ""))
+			{
+				GameFunctions::SetCharacterSkillStat(SkillStats[6], 100);
+			}
+			if (GUI::Option("Max Stealth", ""))
+			{
+				GameFunctions::SetCharacterSkillStat(SkillStats[7], 100);
 			}
 		}
 		break;
 		case RecoveryMenu:
 		{
 			GUI::Title("Recovery");
-			GUI::MenuOption("Skill", RecoverySkillMenu);
+			GUI::MenuOption("Stats", RecoveryStatsMenu);
 			GUI::Break("Unlocks", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Unlock All", "Unlocks many unlockable GTA Online items"))
 			{
@@ -901,30 +931,35 @@ void Cheat::FiberMain()
 			}
 			if (GUI::Option("Clear Mental State", "Clear current mental state"))
 			{
-				STATS::STAT_SET_FLOAT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PLAYER_MENTAL_STATE")), 0.0, true);
+				STATS::STAT_SET_FLOAT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PLAYER_MENTAL_STATE")), 0.0f, true);
 				GameFunctions::MinimapNotification("Mental State Reset");
 			}
 			GUI::Break("ATM", SELECTABLE_CENTER_TEXT);
-
-			if (GUI::Option("Move All Wallet To Bank", ""))
-			{
-				UNK3::_NETWORK_TRANSFER_WALLET_TO_BANK(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), NETWORKCASH::NETWORK_GET_VC_WALLET_BALANCE(-1));
-			}
-			if (GUI::Option("Move All Bank To Wallet", ""))
-			{
-				UNK3::_NETWORK_TRANSFER_BANK_TO_WALLET(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), NETWORKCASH::NETWORK_GET_VC_BANK_BALANCE());
-			}
 			if (GUI::Option("Move Wallet To Bank", ""))
 			{
-				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move");
-				if (KeyboardInput == "0") { break; }
-				UNK3::_NETWORK_TRANSFER_BANK_TO_WALLET(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), CheatFunctions::StringToInt(KeyboardInput));
+				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move. Type \"all\" to move all money.");
+				if (KeyboardInput != "0")
+				{
+					int Amount = CheatFunctions::StringToInt(KeyboardInput);
+					if (KeyboardInput == "all")
+					{
+						Amount = NETWORKCASH::NETWORK_GET_VC_WALLET_BALANCE(-1);
+					}
+					UNK3::_NETWORK_TRANSFER_WALLET_TO_BANK(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), Amount);
+				}		
 			}
 			if (GUI::Option("Move Bank To Wallet", ""))
 			{
-				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move");
-				if (KeyboardInput == "0") { break; }
-				UNK3::_NETWORK_TRANSFER_BANK_TO_WALLET(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), CheatFunctions::StringToInt(KeyboardInput));
+				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move. Type \"all\" to move all money.");
+				if (KeyboardInput != "0") 
+				{ 
+					int Amount = CheatFunctions::StringToInt(KeyboardInput);
+					if (KeyboardInput == "all")
+					{
+						Amount = NETWORKCASH::NETWORK_GET_VC_BANK_BALANCE();
+					}
+					UNK3::_NETWORK_TRANSFER_BANK_TO_WALLET(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), Amount);
+				}
 			}
 		}
 		break; 

@@ -81,5 +81,6 @@ namespace Cheat
 		void ToggleCopsTurnBlindEye(bool state);
 		void FadeRGB(int& r, int& g, int& b);
 		bool ShowFullScreenMessage(std::string Message);
+		void SetCharacterSkillStat(std::string Skill, int Level);
 	}
 }

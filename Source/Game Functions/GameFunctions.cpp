@@ -1259,3 +1259,8 @@ bool Cheat::GameFunctions::ShowFullScreenMessage(std::string Message)
 		GameHooking::PauseMainFiber(0, false);
 	}
 }
+
+void Cheat::GameFunctions::SetCharacterSkillStat(std::string Skill, int Level)
+{
+	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_" + Skill)), Level, true);
+}
