@@ -129,7 +129,7 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		GUI::ThemeFilesVector.clear();
 		std::string ThemeFolderPath = CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
 		if (!Cheat::CheatFunctions::FileOrDirectoryExists(ThemeFolderPath)) { CheatFunctions::CreateNewDirectory(ThemeFolderPath); }
-		for (const auto& file : std::filesystem::directory_iterator(ThemeFolderPath.c_str()))
+		for (const auto& file : std::filesystem::directory_iterator(ThemeFolderPath))
 		{
 			if (file.path().extension() == ".ini")
 			{

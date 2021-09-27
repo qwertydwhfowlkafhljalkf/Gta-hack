@@ -11,11 +11,11 @@ void Cheat::GameFunctions::GiveAllWeaponsToPlayer(Ped Player)
 void Cheat::GameFunctions::RepairAndCleanVehicle(Vehicle vehicle)
 {
 	ENTITY::SET_ENTITY_HEALTH(vehicle, ENTITY::GET_ENTITY_MAX_HEALTH(vehicle));
-	VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0);
-	VEHICLE::SET_VEHICLE_ENGINE_HEALTH(vehicle, 1000);
+	VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0.f);
+	VEHICLE::SET_VEHICLE_ENGINE_HEALTH(vehicle, 1000.f);
 	VEHICLE::SET_VEHICLE_FIXED(vehicle);
 	VEHICLE::SET_VEHICLE_ENGINE_ON(vehicle, true, true, false);
-	Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Fixed & Cleaned", "Textures", "AdvancedNotificationImage", false, 4, "Los Santos Customs", "", 1.0, "");
+	Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Repaired & Cleaned", "Textures", "AdvancedNotificationImage", false, 4, "Los Santos Customs", "", 1.0, "");
 }
 
 void Cheat::GameFunctions::SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID)
@@ -88,14 +88,11 @@ void Cheat::GameFunctions::BurstSelectedPlayerTires(Ped selectedPed)
 
 void Cheat::GameFunctions::SetOffAlarmPlayerVehicle(Ped selectedPed)
 {
-	if (PED::IS_PED_IN_ANY_VEHICLE(selectedPed, false))
-	{
-		Entity selectedVehicle = PED::GET_VEHICLE_PED_IS_USING(selectedPed);
-		RequestNetworkControlOfEntity(PED::GET_VEHICLE_PED_IS_USING(selectedPed));
-		VEHICLE::SET_VEHICLE_ALARM(selectedVehicle, true);
-		VEHICLE::START_VEHICLE_ALARM(selectedVehicle);
-		Cheat::GameFunctions::MinimapNotification("~g~Set off alarm of vehicle!");
-	}
+	Entity selectedVehicle = PED::GET_VEHICLE_PED_IS_USING(selectedPed);
+	RequestNetworkControlOfEntity(PED::GET_VEHICLE_PED_IS_USING(selectedPed));
+	VEHICLE::SET_VEHICLE_ALARM(selectedVehicle, true);
+	VEHICLE::START_VEHICLE_ALARM(selectedVehicle);
+	Cheat::GameFunctions::MinimapNotification("~g~Set off alarm of vehicle!");
 }
 
 bool Cheat::GameFunctions::IsPlayerFriend(Player player)

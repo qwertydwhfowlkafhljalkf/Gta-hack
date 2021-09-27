@@ -11,7 +11,7 @@ int FakeWantedLevelInteger = 0;																				// Used by Fake Wanted Level
 std::string ChangeModelPedSearchTerm;																		// Used by Change Model (Self)
 std::string ObjectSpawnSearchTerm;																			// Used by Object Spawn
 int HUDColorRed, HUDColorGreen, HUDColorBlue, HUDColorAlpha;												// Used by HUD
-int intexploits, intoffensive, REPORTSTRENGTH, OFFENSIVETAGPLATE, OFFENSIVEUGC,								// Used by Report Stats	
+int intexploits, intoffensive, REPORTSTRENGTH, OFFENSIVETAGPLATE, OFFENSIVEUGC,								// Used by Report Statistics	
     EXPLOITS, GRIEFING, COMMENDSTRENGTH, FRIENDLY, HELPFUL, VCANNOYINGME, VCHATE,						
 	BADCREWNAME, BADCREWMOTTO, BADCREWSTATUS, BADCREWEMBLEM, ISPUNISHED;		
 int SetPedTexture_Torso = 0, SetPedTexture_TorsoTexture = 0, SetPedTexture_Face = 0,						// Used by SetPedTexture
@@ -946,13 +946,13 @@ void Cheat::FiberMain()
 						Amount = NETWORKCASH::NETWORK_GET_VC_WALLET_BALANCE(-1);
 					}
 					UNK3::_NETWORK_TRANSFER_WALLET_TO_BANK(CheatFunctions::StringToInt(GameFunctions::ReturnCurrentGTAOCharacter(true)), Amount);
-				}		
+				}
 			}
 			if (GUI::Option("Move Bank To Wallet", ""))
 			{
 				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move. Type \"all\" to move all money.");
 				if (KeyboardInput != "0") 
-				{ 
+				{
 					int Amount = CheatFunctions::StringToInt(KeyboardInput);
 					if (KeyboardInput == "all")
 					{
@@ -965,7 +965,7 @@ void Cheat::FiberMain()
 		break; 
 		case reportsmenu_stats:
 		{
-			GUI::Title("Reports"); 
+			GUI::Title("Report Statistics"); 
 			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_REPORT_STRENGTH"),	&REPORTSTRENGTH,	-1);
 			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_GAME_EXPLOITS"),		&intexploits,		-1);
 			STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_OFFENSIVE_LANGUAGE"), &intoffensive,		-1);
@@ -2248,7 +2248,7 @@ void Cheat::FiberMain()
 		case miscmenu:
 		{
 			GUI::Title("Miscellaneous");
-			GUI::MenuOption("Report Stats", reportsmenu_stats);
+			GUI::MenuOption("Report Statistics", reportsmenu_stats);
 			GUI::MenuOption("Radio", RadioMenu);
 			GUI::MenuOption("Extra-sensory Perception", ESPMenu);
 			GUI::MenuOption("HUD", hudmenu); 
@@ -2587,11 +2587,11 @@ void Cheat::FiberMain()
 		case WeaponAmmoMenu:
 		{
 			GUI::Title("Ammo Modification");
-			GUI::StringVector("Impact Ammo", { "Disabled", "Money Bags (2.5k)", "Money Bags (Classic)", "Fire", "Airstrike", "Teleport To", "Explosion", "Show bullet coord" }, CheatFeatures::ImpactAmmoVectorPosition, "Money can only be picked up by you");
+			GUI::StringVector("Impact Ammo", { "Disabled", "Money Bags (2.5k)", "Money Bags (Classic)", "Fire", "Airstrike", "Teleport To", "Explosion", "Show Bullet Coord" }, CheatFeatures::ImpactAmmoVectorPosition, "Money can only be picked up by you");
 			GUI::StringVector("Custom Ammo", { "Disabled", "Valkyrie", "Rhino Tank", "RPG", "Firework" }, CheatFeatures::CustomAmmoVectorPosition, "");
 		}
 		break;
-		case weaponmenu: 
+		case weaponmenu:
 		{
 			GUI::Title("Weapon");
 			GUI::MenuOption("Weapons", WeaponsMenu);
@@ -2804,9 +2804,9 @@ void Cheat::FiberMain()
 			if (GUI::Option("Set Off Car Alarm", "Enable Car Alarm of Selected Player"))
 			{
 				int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
-				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) 
+				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, false))
 				{
-					GameFunctions::SetOffAlarmPlayerVehicle(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
+					GameFunctions::SetOffAlarmPlayerVehicle(Handle);
 				}
 				else 
 				{

@@ -523,7 +523,7 @@ bool Cheat::GUI::FloatVector(std::string option, std::vector<float> Vector, int&
 	return false;
 }
 
-bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vector, int & position, std::string InformationText, int BitFlags)
+bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vector, int& position, std::string InformationText, int BitFlags)
 {
 	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, position); }
 
@@ -537,29 +537,29 @@ bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vecto
 		CheatFunctions::SaveOption(option, std::to_string(position), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 		if (Controls::LeftPressed)
 		{
-			if (position > 0)
+			if (position < Vector.size() - 1)
 			{
-				position--; 
+				position++;
 				if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true; }
 			}
 		}
 		if (Controls::RightPressed)
-		{
-			if (position < Vector.size() - 1)
-			{ 
-				position++; 
+		{		
+			if (position > 0)
+			{
+				position--;
 				if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true; }
 			}
 		}
 	}
 
 	std::string Text;
-	if (position < Vector.size() - 1)
+	if (position > 0)
 	{
 		Text.append("< ");
 	}
 	Text.append(Vector[position]);
-	if (position > 0)
+	if (position < Vector.size() - 1)
 	{
 		Text.append(" >");
 	}
