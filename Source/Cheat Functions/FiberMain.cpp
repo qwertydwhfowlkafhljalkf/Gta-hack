@@ -118,7 +118,7 @@ void Cheat::FiberMain()
 
 					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
-						Vector3 Coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), 1);
+						Vector3 Coords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
 						Coords.z += 15;
 						GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35, Coords.x, Coords.y, Coords.z, 250, 1, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), 1, 1, 500);
 						GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 30, Coords.x, Coords.y, Coords.z, 250, 0, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), 0, 1, 1, 500);
@@ -136,7 +136,7 @@ void Cheat::FiberMain()
 
 					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
-						Vector3 remotePos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), false);
+						Vector3 remotePos = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
 						OBJECT::CREATE_OBJECT(GAMEPLAY::GET_HASH_KEY("prop_gold_cont_01"), remotePos.x, remotePos.y, remotePos.z - 1.f, true, false, false);
 					}
 				}
@@ -2056,7 +2056,7 @@ void Cheat::FiberMain()
 			GUI::Toggle("Blackout", CheatFeatures::WorldBlackoutBool, "Disable All Map Lights");
 			if (GUI::Option("Clear Area", "Clear area of vehicles, objects etc")) 
 			{
-				Vector3 MyPos = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
+				Vector3 MyPos = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
 				GAMEPLAY::CLEAR_AREA(MyPos.x, MyPos.y, MyPos.z, 250, true, false, false, false);
 				GAMEPLAY::CLEAR_AREA_OF_COPS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
 				GAMEPLAY::CLEAR_AREA_OF_OBJECTS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
@@ -2105,7 +2105,7 @@ void Cheat::FiberMain()
 					GameFunctions::RequestNetworkControlOfEntity(peds[OffsetID]);
 					if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && GameFunctions::PlayerPedID != peds[OffsetID])
 					{
-						Vector3 pos = ENTITY::GET_ENTITY_COORDS(peds[OffsetID], false);
+						Vector3 pos = GameFunctions::GetEntityCoords(peds[OffsetID]);
 						FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 0, 1000.f, true, false, 0.f);
 					}
 				}
@@ -2150,7 +2150,7 @@ void Cheat::FiberMain()
 					if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, false))
 					{
 						GameFunctions::RequestNetworkControlOfEntity(vehs[OffsetID]);
-						Vector3 coords = ENTITY::GET_ENTITY_COORDS(vehs[OffsetID], false);
+						Vector3 coords = GameFunctions::GetEntityCoords(vehs[OffsetID]);
 						FIRE::ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1000.f, true, false, 0.f);
 					}
 				}
@@ -2827,7 +2827,7 @@ void Cheat::FiberMain()
 			}
 			if (GUI::Option("Airstrike Player", "Airstrike selected player"))
 			{
-				Vector3 Coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), true);
+				Vector3 Coords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
 				Coords.z += 15;
 				GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35, Coords.x, Coords.y, Coords.z, 250, 1, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), 1, 1, 500);
 				GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 30, Coords.x, Coords.y, Coords.z, 250, 0, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), 0, 1, 1, 500);
@@ -2869,7 +2869,7 @@ void Cheat::FiberMain()
 					{
 						STREAMING::REQUEST_MODEL(model);
 						while (!STREAMING::HAS_MODEL_LOADED(model)) GameHooking::PauseMainFiber(0);
-						Vector3 ourCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
+						Vector3 ourCoords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
 						float forward = 10.f;
 						float heading = ENTITY::GET_ENTITY_HEADING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
 						float xVector = forward * sin(GameFunctions::DegreesToRadians(heading)) * -1.f;
@@ -2883,7 +2883,7 @@ void Cheat::FiberMain()
 			}
 			if (GUI::Option("Trap Player", "Trap selected player"))
 			{
-				Vector3 remotePos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), 0);
+				Vector3 remotePos = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
 				Object obj = OBJECT::CREATE_OBJECT(GAMEPLAY::GET_HASH_KEY("prop_gold_cont_01"), remotePos.x, remotePos.y, remotePos.z - 1.f, true, false, false);
 			}
 			if (GUI::Option("Clone Player", "Clone selected player"))
@@ -2905,7 +2905,7 @@ void Cheat::FiberMain()
 				Ped SelectedPlayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
 				if (!ENTITY::DOES_ENTITY_EXIST(SelectedPlayer)) return;
 				Hash railgun = GAMEPLAY::GET_HASH_KEY("WEAPON_RAILGUN");
-				Vector3 pos = ENTITY::GET_ENTITY_COORDS(SelectedPlayer, 1);
+				Vector3 pos = GameFunctions::GetEntityCoords(SelectedPlayer);
 				Hash pedm = GAMEPLAY::GET_HASH_KEY("u_m_m_jesus_01");
 				STREAMING::REQUEST_MODEL(pedm);
 				while (!STREAMING::HAS_MODEL_LOADED(pedm)) { GameHooking::PauseMainFiber(0); }
@@ -2926,7 +2926,7 @@ void Cheat::FiberMain()
 				Ped SelectedPlayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
 				if (!ENTITY::DOES_ENTITY_EXIST(SelectedPlayer)) return;
 				Hash railgun = GAMEPLAY::GET_HASH_KEY("WEAPON_RAILGUN");
-				Vector3 pos = ENTITY::GET_ENTITY_COORDS(SelectedPlayer, 1);
+				Vector3 pos = GameFunctions::GetEntityCoords(SelectedPlayer);
 				Hash pedm = GAMEPLAY::GET_HASH_KEY("u_m_m_jesus_01");
 				STREAMING::REQUEST_MODEL(pedm);
 				while (!STREAMING::HAS_MODEL_LOADED(pedm)) { GameHooking::PauseMainFiber(0); }
@@ -2948,7 +2948,7 @@ void Cheat::FiberMain()
 		case PlayerListMenu:
 		{
 			GUI::Title("Players");
-			//GUI::StringVector("Show Player Marker", { "Player List & Menu", "Player List", "Disabled" }, CheatFeatures::PlayerListMarkerPosition, "Show Player Marker on selected player");
+			GUI::StringVector("Show Selected Player", { "Player List & Menu", "Player List", "Disabled" }, CheatFeatures::PlayerListMarkerPosition, "Show Player Marker on selected player");
 			GUI::Break("List", SELECTABLE_CENTER_TEXT);
 			for (int i = 0; i < 32; ++i)
 			{
@@ -2972,7 +2972,7 @@ void Cheat::FiberMain()
 			if (GUI::Option("Host Kick", "Kick selected player - Host only")) { NETWORK::NETWORK_SESSION_KICK_PLAYER(CheatFeatures::SelectedPlayer); }
 			if (GUI::Option("Teleport To", ""))
 			{
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false), 
+				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer)),
 					                                   false, false);
 			}
 			GUI::MenuOption("Teleport", SelectedPlayerTeleportMenu);
@@ -2988,7 +2988,7 @@ void Cheat::FiberMain()
 			if (GUI::Option("Copy Outfit", "")) { GameFunctions::CopySelectedPlayerOutfit(CheatFeatures::SelectedPlayer); }
 			if (GUI::Option("Set Waypoint", "Sets waypoint to Selected player location"))
 			{
-				Vector3 TargetCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
+				Vector3 TargetCoords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
 				UI::SET_NEW_WAYPOINT(TargetCoords.x, TargetCoords.y);
 			}
 		}
@@ -3066,7 +3066,7 @@ void Cheat::FiberMain()
 			{
 				if (CheatFeatures::FastSuperRunPosition == 0)
 				{
-					PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(GameFunctions::PlayerID, 1.00f);
+					PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(GameFunctions::PlayerID, 1.f);
 				}
 			}
 			GUI::Toggle("Fast Run", CheatFeatures::FastRunBool, "Multiplies run speed");
@@ -3093,6 +3093,11 @@ void Cheat::FiberMain()
 		case componentschangermenu:
 		{
 			GUI::Title("Components Changer");
+			//int ComponentInt;
+			//int TextureInt;
+			//GUI::StringVector("Component", { "Face", "Mask", "Hair", "Torso", "Leg", "Parachute", "Shoes", "Accessory", "Undershirt", "Kevlar", "Badge", "Torso 2" }, ComponentInt, "", SELECTABLE_RETURN_VALUE_CHANGE);
+			//GUI::Int("Texture", TextureInt, 0, PED::GET_NUMBER_OF_PED_TEXTURE_VARIATIONS(GameFunctions::PlayerPedID, ComponentInt, 0), 1);
+			GUI::Break("To Be Reworked");
 			if (GUI::Int("Face", SetPedTexture_Face, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 0, SetPedTexture_Face, 0); }
 			if (GUI::Int("Face Texture", SetPedTexture_FaceTexture, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 0, SetPedTexture_Face, SetPedTexture_Face); }
 			if (GUI::Int("Head", SetPedTexture_Head, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE)) { GameFunctions::SetPedTexture(GameFunctions::PlayerPedID, 0, SetPedTexture_Head, 0); }
@@ -3122,7 +3127,6 @@ void Cheat::FiberMain()
 		case outfitsmenu:
 		{
 			GUI::Title("Outfits");
-			if (GUI::Option("Random Outfit", "Get random outfit")) { PED::SET_PED_RANDOM_COMPONENT_VARIATION(GameFunctions::PlayerPedID, true); }
 			if (GUI::Option("Police Uniform", "Get police uniform"))
 			{
 				PED::SET_PED_PROP_INDEX(GameFunctions::PlayerPedID, 0, 45, 0, 0);
@@ -3138,7 +3142,7 @@ void Cheat::FiberMain()
 			}
 			if (GUI::Option("Random Variation", "Get random pedmodel variation"))
 			{
-				PED::SET_PED_RANDOM_COMPONENT_VARIATION(GameFunctions::PlayerPedID, true);
+				PED::SET_PED_RANDOM_COMPONENT_VARIATION(GameFunctions::PlayerPedID, false);
 			}
 			if (GUI::Option("Random Accessories", "")) 
 			{
@@ -3152,7 +3156,6 @@ void Cheat::FiberMain()
 				PED::SET_PED_COMPONENT_VARIATION(GameFunctions::PlayerPedID, 5, 0, 0, 0);
 				PED::SET_PED_COMPONENT_VARIATION(GameFunctions::PlayerPedID, 9, 0, 0, 0);
 			}
-
 		}
 		break; 
 		case SelectedPlayerAttachmentOptions:

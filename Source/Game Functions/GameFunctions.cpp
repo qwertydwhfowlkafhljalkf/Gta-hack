@@ -10,15 +10,15 @@ void Cheat::GameFunctions::GiveAllWeaponsToPlayer(Ped Player)
 
 void Cheat::GameFunctions::RepairAndCleanVehicle(Vehicle vehicle)
 {
-	VEHICLE::SET_VEHICLE_FIXED(vehicle);
 	ENTITY::SET_ENTITY_HEALTH(vehicle, ENTITY::GET_ENTITY_MAX_HEALTH(vehicle));
 	VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0);
 	VEHICLE::SET_VEHICLE_ENGINE_HEALTH(vehicle, 1000);
-	VEHICLE::SET_VEHICLE_ENGINE_ON(vehicle, true, true, true);
+	VEHICLE::SET_VEHICLE_FIXED(vehicle);
+	VEHICLE::SET_VEHICLE_ENGINE_ON(vehicle, true, true, false);
 	Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Fixed & Cleaned", "Textures", "AdvancedNotificationImage", false, 4, "Los Santos Customs", "", 1.0, "");
 }
 
-void Cheat::GameFunctions::SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID) 
+void Cheat::GameFunctions::SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID)
 { 
 	PED::SET_PED_COMPONENT_VARIATION(Ped, ComponentID, DrawableID, TextureID, 0);
 }
@@ -134,23 +134,6 @@ Vector3 Cheat::GameFunctions::AddVector(Vector3 vector, Vector3 vector2)
 	return vector;
 }
 
-double Cheat::GameFunctions::DegreeToRadian(double n) 
-{
-	return n * 0.017453292519943295;
-}
-
-Vector3 Cheat::GameFunctions::RotationToDirection(Vector3 rot) 
-{
-	double num = DegreeToRadian(rot.z);
-	double num2 = DegreeToRadian(rot.x);
-	double val = cos(num2);
-	double num3 = abs(val);
-	rot.x = (float)(-(float)sin(num) * num3);
-	rot.y = (float)(cos(num) * num3);
-	rot.z = (float)sin(num2);
-	return rot;
-}
-
 void Cheat::GameFunctions::SetRankRockstarGift(int Rank)
 {
 	if (Rank > 0 && Rank <= 8000)
@@ -169,7 +152,7 @@ int Cheat::GameFunctions::ReturnReputationPointsAmount(int Level)
 	return globalHandle(GLOBAL_LEVEL_TO_RP).At(1, Level).As<int>();
 }
 
-Vector3 Cheat::GameFunctions::RotToDirection(Vector3* rot) 
+Vector3 Cheat::GameFunctions::RotationToDirection(Vector3* rot)
 {
 	float radiansZ = rot->z * 0.0174532924f;
 	float radiansX = rot->x * 0.0174532924f;
@@ -236,7 +219,7 @@ float Cheat::GameFunctions::DegreesToRadians(float degs)
 
 Vector3 Cheat::GameFunctions::GetEntityCoords(Entity entity) 
 {
-	return ENTITY::GET_ENTITY_COORDS(entity, 1);
+	return ENTITY::GET_ENTITY_COORDS(entity, false);
 }
 
 float Cheat::GameFunctions::GetDistanceBetweenTwoPoints(Vector3 A, Vector3 B) 
@@ -248,7 +231,6 @@ int Cheat::GameFunctions::ReturnRandomInteger(int start, int end)
 {
 	return GAMEPLAY::GET_RANDOM_INT_IN_RANGE(start, end);
 }
-
 
 void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicle)
 {
@@ -351,18 +333,6 @@ void Cheat::GameFunctions::MinimapNotification(char* Message)
 	UI::_DRAW_NOTIFICATION(false, false);
 }
 
-/*
-Icon Types:
-1 : Chat Box
-2 : Email
-3 : Add Friend Request
-4 : Nothing
-5 : Nothing
-6 : Nothing
-7 : Right Jumping Arrow
-8 : RP Icon
-9 : $ Icon
-*/
 void Cheat::GameFunctions::AdvancedMinimapNotification(char* Message, char* PicName1, char* PicName2, bool Flash, int IconType, char* Sender, char* Subject, float Duration, char* ClanTag)
 {
 	UI::_SET_NOTIFICATION_TEXT_ENTRY("STRING");
@@ -448,7 +418,6 @@ void Cheat::GameFunctions::DoNearbyPedsAnimation(char* AnimationName, char* Anim
 	}
 }
 
-
 void Cheat::GameFunctions::PlayScenarioNearbyPeds(char* Scenario)
 {
 	const int ElementAmount = 10;
@@ -475,15 +444,15 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 {
 	if (!Cheat::CheatFeatures::HidePlayerInformationBox)
 	{
-		//Definitions & error handling
+		//Definitions
 		Ped SelectedPlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerID);
 		RequestNetworkControlOfEntity(SelectedPlayerPed);
 
 		//Draw Player Marker
 		if (CheatFeatures::PlayerListMarkerPosition == 0 || CheatFeatures::PlayerListMarkerPosition == 1 && GUI::currentMenu == PlayerListMenu)
 		{
-			//Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerID), true);
-			//GRAPHICS::DRAW_MARKER(23, coords.x, coords.y, coords.z + 1.3f, 0.f, 0.f, 0.f, 0.f, 180.f, 0.f, 0.3f, 0.3f, 0.3f, 255, 255, 255, 255, false, false, 2, false, NULL, NULL, false);
+			Vector3 coords = GetEntityCoords(SelectedPlayerPed);
+			GRAPHICS::DRAW_LIGHT_WITH_RANGE(coords.x, coords.y, coords.z + 2.f, 255, 255, 255, 5.f, 10.f);
 		}
 
 		//Draw Title and Background
@@ -638,7 +607,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 
 
 		//Coords
-		Vector3 SelectedPlayerPedCoords = ENTITY::GET_ENTITY_COORDS(SelectedPlayerPed, true);
+		Vector3 SelectedPlayerPedCoords = GetEntityCoords(SelectedPlayerPed);
 		std::ostringstream CoordX;
 		std::ostringstream CoordY;
 		std::ostringstream CoordZ;
@@ -668,7 +637,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		Street << UI::GET_STREET_NAME_FROM_HASH_KEY(streetName);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(Street.str(), NULL, 15);
 
-		float distance = Get3DDistance(SelectedPlayerPedCoords, ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, true));
+		float distance = Get3DDistance(SelectedPlayerPedCoords, GetEntityCoords(Cheat::GameFunctions::PlayerPedID));
 		std::ostringstream Distance;
 
 		if (PlayerID != GameFunctions::PlayerID)
@@ -777,7 +746,7 @@ void Cheat::GameFunctions::ApplyForceToEntity(Entity e, float x, float y, float 
 
 void Cheat::GameFunctions::RemoveObjectFromPed(Ped Ped, char* ObjectName)
 {
-	Vector3 PedCoords = ENTITY::GET_ENTITY_COORDS(Ped, true);
+	Vector3 PedCoords = GetEntityCoords(Ped);
 	Object Object = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(PedCoords.x, PedCoords.y, PedCoords.z, 4.0, GAMEPLAY::GET_HASH_KEY(ObjectName), false, false, true);
 	if (ENTITY::DOES_ENTITY_EXIST(Object) && ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY(Object, Ped))
 	{
@@ -792,7 +761,7 @@ void Cheat::GameFunctions::AttachObjectToPed(Ped Ped, char* ObjectName)
 {
 	int attachobj[100];
 	int nuattach = 1;
-	Vector3 pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped), true);
+	Vector3 pos = GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped));
 	int hash = GAMEPLAY::GET_HASH_KEY(ObjectName);
 	if (STREAMING::IS_MODEL_IN_CDIMAGE(hash))
 	{

@@ -75,9 +75,10 @@ void Cheat::CheatFeatures::NonLooped()
 	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_FLOAT(-0.2f);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 
+	std::string MessageString = "Welcome " + (std::string)SOCIALCLUB::_SC_GET_NICKNAME() + ", have fun!";
 	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "SHOW_SHARD_WASTED_MP_MESSAGE");
 	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING("<FONT FACE='$gtaCash'>GTAV CHEAT");
-	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING("Welcome & have fun!");
+	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING(CheatFunctions::StringToChar(MessageString));
 	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(5);
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 
@@ -254,9 +255,9 @@ void Cheat::CheatFeatures::Looped()
 	if (CustomAmmoVectorPosition != 0)
 	{
 		Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
-		Vector3 dir = GameFunctions::RotToDirection(&rot);
+		Vector3 dir = GameFunctions::RotationToDirection(&rot);
 		Vector3 camPosition = CAM::GET_GAMEPLAY_CAM_COORD();
-		Vector3 playerPosition = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, 1);
+		Vector3 playerPosition = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
 		float spawnDistance = GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &playerPosition);
 		spawnDistance += 0.25;
 		Vector3 spawnPosition = GameFunctions::AddTwoVectors(&camPosition, &GameFunctions::MultiplyVector(&dir, spawnDistance));
@@ -364,7 +365,7 @@ void Cheat::CheatFeatures::Looped()
 bool Cheat::CheatFeatures::GodmodeBool = false;
 void Cheat::CheatFeatures::Godmode(bool toggle)
 {
-	ENTITY::SET_ENTITY_INVINCIBLE(Cheat::GameFunctions::PlayerPedID, toggle);
+	ENTITY::SET_ENTITY_INVINCIBLE(GameFunctions::PlayerPedID, toggle);
 }
 
 bool Cheat::CheatFeatures::NeverWantedBool = false;
@@ -445,16 +446,16 @@ void Cheat::CheatFeatures::GravityGun()
 	DWORD equippedWeapon;
 	WEAPON::GET_CURRENT_PED_WEAPON(GameFunctions::PlayerPedID, &equippedWeapon, true);
 
-	Vector3 dir = Cheat::GameFunctions::RotToDirection(&CAM::GET_GAMEPLAY_CAM_ROT(0));
+	Vector3 dir = Cheat::GameFunctions::RotationToDirection(&CAM::GET_GAMEPLAY_CAM_ROT(0));
 	Vector3 camPosition = CAM::GET_GAMEPLAY_CAM_COORD();
-	float spawnDistance = GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, true));
+	float spawnDistance = GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID));
 	spawnDistance += GravityGunEntityDistance;
 	Vector3 spawnPosition = GameFunctions::AddTwoVectors(&camPosition, &GameFunctions::MultiplyVector(&dir, spawnDistance));
 
 	Player tempPed = GameFunctions::PlayerID;
 	if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(GameFunctions::PlayerID, &EntityTarget) && CheatFunctions::IsKeyCurrentlyPressed(VK_RBUTTON))
 	{
-		Vector3 EntityTargetPos = ENTITY::GET_ENTITY_COORDS(EntityTarget, 0);
+		Vector3 EntityTargetPos = GameFunctions::GetEntityCoords(EntityTarget);
 		PLAYER::DISABLE_PLAYER_FIRING(tempPed, true);
 		if (ENTITY::IS_ENTITY_A_PED(EntityTarget) && PED::IS_PED_IN_ANY_VEHICLE(EntityTarget, false))
 		{
@@ -727,7 +728,7 @@ void Cheat::CheatFeatures::FreeCam(bool toggle)
 		CAM::SET_CAM_ACTIVE(FreeCamHandle, 1);
 		CAM::SET_CAM_ROT(FreeCamHandle, rot.x, rot.y, rot.z, 0);
 
-		p_coord = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, true);
+		p_coord = GameFunctions::GetEntityCoords(Cheat::GameFunctions::PlayerPedID);
 
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(GameFunctions::PlayerPedID, p_coord.x, p_coord.y, p_coord.z, 0, 0, 0);
 		PLAYER::DISABLE_PLAYER_FIRING(GameFunctions::PlayerPedID, true);
@@ -742,13 +743,13 @@ void Cheat::CheatFeatures::FreeCam(bool toggle)
 		if (CheatFunctions::IsKeyCurrentlyPressed(0x53)) // S key
 		{
 			speed /= -1;
-			Vector3 c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(FreeCamHandle), &Cheat::GameFunctions::MultiplyVector(&Cheat::GameFunctions::RotToDirection(&rot), speed));
+			Vector3 c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(FreeCamHandle), &Cheat::GameFunctions::MultiplyVector(&GameFunctions::RotationToDirection(&rot), speed));
 			CAM::SET_CAM_COORD(FreeCamHandle, c.x, c.y, c.z);
 		}
 
 		if (CheatFunctions::IsKeyCurrentlyPressed(0x57)) // W key
 		{
-			Vector3 c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(FreeCamHandle), &Cheat::GameFunctions::MultiplyVector(&Cheat::GameFunctions::RotToDirection(&rot), speed));
+			Vector3 c = Cheat::GameFunctions::AddTwoVectors(&CAM::GET_CAM_COORD(FreeCamHandle), &Cheat::GameFunctions::MultiplyVector(&GameFunctions::RotationToDirection(&rot), speed));
 			CAM::SET_CAM_COORD(FreeCamHandle, c.x, c.y, c.z);
 		}
 	}
@@ -849,7 +850,7 @@ void Cheat::CheatFeatures::WeaponRapidFire()
 		PLAYER::DISABLE_PLAYER_FIRING(Cheat::GameFunctions::PlayerPedID, 1);
 		Vector3 gameplayCam = CAM::_GET_GAMEPLAY_CAM_COORDS();
 		Vector3 gameplayCamRot = CAM::GET_GAMEPLAY_CAM_ROT(0);
-		Vector3 gameplayCamDirection = Cheat::GameFunctions::RotationToDirection(gameplayCamRot);
+		Vector3 gameplayCamDirection = Cheat::GameFunctions::RotationToDirection(&gameplayCamRot);
 		Vector3 startCoords = Cheat::GameFunctions::AddVector(gameplayCam, (Cheat::GameFunctions::MultiplyVector(gameplayCamDirection, 1.0f)));
 		Vector3 endCoords = Cheat::GameFunctions::AddVector(startCoords, Cheat::GameFunctions::MultiplyVector(gameplayCamDirection, 500.0f));
 		Hash weaponhash;
@@ -881,7 +882,7 @@ void Cheat::CheatFeatures::NoClip()
 	if (!PED::IS_PED_ON_FOOT(Cheat::GameFunctions::PlayerPedID))
 	{
 		int currentCar = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false);
-		Vector3 Pos = ENTITY::GET_ENTITY_COORDS(currentCar, false);
+		Vector3 Pos = GameFunctions::GetEntityCoords(currentCar);
 		Vector3 rotation = CAM::GET_GAMEPLAY_CAM_ROT(0);
 
 		ENTITY::SET_ENTITY_COLLISION(currentCar, true, true);
@@ -898,7 +899,7 @@ void Cheat::CheatFeatures::NoClip()
 	}
 	else
 	{
-		Vector3 Pos = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, false);
+		Vector3 Pos = GameFunctions::GetEntityCoords(Cheat::GameFunctions::PlayerPedID);
 
 		Vector3 rotation = CAM::GET_GAMEPLAY_CAM_ROT(0);
 		ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, true, true);
@@ -929,7 +930,7 @@ void Cheat::CheatFeatures::EntityInformationGun()
 	Entity AimedEntityHandle;
 	if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &AimedEntityHandle))
 	{
-		Vector3 AimedEntityCoords = ENTITY::GET_ENTITY_COORDS(AimedEntityHandle, false);
+		Vector3 AimedEntityCoords = GameFunctions::GetEntityCoords(AimedEntityHandle);
 		std::string AimedEntityHealth = "Entity Health: " + std::to_string(ENTITY::GET_ENTITY_HEALTH(AimedEntityHandle));
 		std::string AimedEntityHash = "Entity Hash: " + std::to_string(ENTITY::GET_ENTITY_MODEL(AimedEntityHandle));
 		GUI::DrawTextInGame("~bold~Aimed Entity Information", { 255, 255, 255, 255, 0 }, { 0.500f, 0.380f }, { 0.35f, 0.35f }, false);
@@ -1129,11 +1130,11 @@ void Cheat::CheatFeatures::VehicleGun()
 			offset = dim2.y * 1.6;
 
 			Vector3 dir = ENTITY::GET_ENTITY_FORWARD_VECTOR(playerPed);
-			Vector3 pCoords = ENTITY::GET_ENTITY_COORDS(playerPed, 1);
+			Vector3 pCoords = GameFunctions::GetEntityCoords(playerPed);
 			float rot = (ENTITY::GET_ENTITY_ROTATION(playerPed, 0)).z;
 			Vector3 gameplayCam = CAM::_GET_GAMEPLAY_CAM_COORDS();
 			Vector3 gameplayCamRot = CAM::GET_GAMEPLAY_CAM_ROT(0);
-			Vector3 gameplayCamDirection = GameFunctions::RotationToDirection(gameplayCamRot);
+			Vector3 gameplayCamDirection = GameFunctions::RotationToDirection(&gameplayCamRot);
 			Vector3 startCoords = GameFunctions::AddVector(gameplayCam, (GameFunctions::MultiplyVector(gameplayCamDirection, 10)));
 			Vector3 endCoords = GameFunctions::AddVector(gameplayCam, (GameFunctions::MultiplyVector(gameplayCamDirection, 500.0f)));
 
@@ -1156,7 +1157,7 @@ void Cheat::CheatFeatures::PlayerESP()
 		{
 			if (GameFunctions::PlayerID != i) 
 			{
-				Vector3 entitylocation = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), false);
+				Vector3 entitylocation = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
 				Vector3 top1world = { entitylocation.x + 0.3f, NULL, entitylocation.y + 0.3f, NULL, entitylocation.z + .8f, NULL };
 				Vector3 top2world = { entitylocation.x - 0.3f, NULL, entitylocation.y + 0.3f, NULL, entitylocation.z + .8f, NULL };
 				Vector3 top3world = { entitylocation.x + 0.3f, NULL, entitylocation.y - 0.3f, NULL, entitylocation.z + .8f, NULL };
@@ -1181,8 +1182,8 @@ void Cheat::CheatFeatures::PlayerESP()
 				GRAPHICS::DRAW_LINE(top3world.x, top3world.y, top3world.z, bottom3world.x, bottom3world.y, bottom3world.z, 0, 0, 255, 255);
 				GRAPHICS::DRAW_LINE(top4world.x, top4world.y, top4world.z, bottom4world.x, bottom4world.y, bottom4world.z, 0, 0, 255, 255);
 
-				Vector3 locationOne = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), false);
-				Vector3 locationTwo = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
+				Vector3 locationOne = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
+				Vector3 locationTwo = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
 				GRAPHICS::DRAW_LINE(locationOne.x, locationOne.y, locationOne.z, locationTwo.x, locationTwo.y, locationTwo.z, 0, 0, 255, 255);
 			}
 		}
@@ -1207,7 +1208,7 @@ void Cheat::CheatFeatures::CopsTurnBlindEye()
 bool Cheat::CheatFeatures::ExplodeLoopSelectedPlayerBool = false;
 void Cheat::CheatFeatures::ExplodeLoopSelectedPlayer()
 {
-	Vector3 SelectedPlayerPedCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
+	Vector3 SelectedPlayerPedCoords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
 	FIRE::ADD_EXPLOSION(SelectedPlayerPedCoords.x, SelectedPlayerPedCoords.y, SelectedPlayerPedCoords.z, 0, 0.0f, true, false, 10.0f);
 }
 
@@ -1216,7 +1217,7 @@ void Cheat::CheatFeatures::DriveOnWater()
 {
 	Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, false);
 	DWORD model = ENTITY::GET_ENTITY_MODEL(veh);
-	Vector3 pos = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
+	Vector3 pos = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
 	float height = 0.f;
 	WATER::_SET_CURRENT_INTENSITY(height);
 	if (!VEHICLE::IS_THIS_MODEL_A_PLANE(ENTITY::GET_ENTITY_MODEL(veh)) && WATER::GET_WATER_HEIGHT_NO_WAVES(pos.x, pos.y, pos.z, &height)) 
@@ -1229,7 +1230,7 @@ void Cheat::CheatFeatures::DriveOnWater()
 			GameFunctions::RequestNetworkControlOfEntity(container);
 			ENTITY::SET_ENTITY_COORDS(container, pos.x, pos.y, height - 1.5f, false, false, false, 1);
 			ENTITY::SET_ENTITY_ROTATION(container, 0, 0, pRot.z, 0, 1);
-			Vector3 containerCoords = ENTITY::GET_ENTITY_COORDS(container, 1);
+			Vector3 containerCoords = GameFunctions::GetEntityCoords(container);
 			if (pos.z < containerCoords.z) 
 			{
 				if (!PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false))
@@ -1239,7 +1240,7 @@ void Cheat::CheatFeatures::DriveOnWater()
 				else 
 				{
 					GameFunctions::RequestNetworkControlOfEntity(veh);
-					Vector3 vehc = ENTITY::GET_ENTITY_COORDS(veh, 1);
+					Vector3 vehc = GameFunctions::GetEntityCoords(veh);
 					ENTITY::SET_ENTITY_COORDS(veh, vehc.x, vehc.y, containerCoords.z + 2.0f, 0, 0, 0, 1);
 				}
 			}
@@ -1290,7 +1291,7 @@ void Cheat::CheatFeatures::SuperMan()
 bool Cheat::CheatFeatures::ShakeCamSelectedPlayerBool = false;
 void Cheat::CheatFeatures::ShakeCamSelectedPlayer()
 {
-	Vector3 targetCords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
+	Vector3 targetCords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
 	FIRE::ADD_EXPLOSION(targetCords.x, targetCords.y, targetCords.z, 4, 0.f, false, true, 1000.f);
 }
 
@@ -1395,7 +1396,7 @@ void Cheat::CheatFeatures::VehicleWeapons()
 bool Cheat::CheatFeatures::ShowSessionInformationBool = false;
 void Cheat::CheatFeatures::ShowSessionInformation()
 {
-	Vector3 PlayerCoord = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
+	Vector3 PlayerCoord = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
 	std::string NumbConnectedPlayers;
 	NumbConnectedPlayers = "Connected Players: ";
 

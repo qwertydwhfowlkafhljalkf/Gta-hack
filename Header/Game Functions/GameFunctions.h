@@ -16,13 +16,11 @@ namespace Cheat
 		void BurstSelectedPlayerTires(Ped selectedPed);
 		void SetOffAlarmPlayerVehicle(Ped selectedPed);
 		bool IsPlayerFriend(Player player);
-		double DegreeToRadian(double n);
 		Vector3 MultiplyVector(Vector3 vector, float inc);
 		Vector3 AddVector(Vector3 vector, Vector3 vector2);
-		Vector3 RotationToDirection(Vector3 rot);
 		void SetRankRockstarGift(int Rank);
 		int ReturnReputationPointsAmount(int Level);
-		Vector3 RotToDirection(Vector3* rot);
+		Vector3 RotationToDirection(Vector3* rot);
 		Vector3 AddTwoVectors(Vector3* vectorA, Vector3* vectorB);
 		Vector3 MultiplyVector(Vector3* vector, float x);
 		float GetDistanceBetweenTwoVectors(Vector3* pointA, Vector3* pointB);

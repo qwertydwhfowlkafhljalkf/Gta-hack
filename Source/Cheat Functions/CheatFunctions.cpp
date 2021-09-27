@@ -120,7 +120,7 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		else
 		{
 			GUI::PreviousMenu = NOMENU;
-			GUI::MoveMenu(MainMenu);
+			GUI::MoveMenu(OnlineOptionsMenu);
 			GameFunctions::MinimapNotification("~r~Invalid Player ID");
 		}
 	}
@@ -646,7 +646,7 @@ void Cheat::CheatFunctions::AddCustomTeleportLocation(std::string CustomTeleport
 	remove(StringToConstChar(ReturnCustomTeleportLocationsFilePath()));
 	if (JsonHandle.isMember(CustomTeleportLocationName)) { JsonHandle.removeMember(CustomTeleportLocationName); }
 
-	Vector3 LocalPlayerCoords = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, true);
+	Vector3 LocalPlayerCoords = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
 	JsonHandle[CustomTeleportLocationName]["X"] = LocalPlayerCoords.x;
 	JsonHandle[CustomTeleportLocationName]["Y"] = LocalPlayerCoords.y;
 	JsonHandle[CustomTeleportLocationName]["Z"] = LocalPlayerCoords.z;
