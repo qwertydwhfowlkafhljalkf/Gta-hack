@@ -298,6 +298,7 @@ void Cheat::CheatFeatures::Looped()
 	GodmodeBool ? Godmode(true) : Godmode(false);
 	NeverWantedBool ? NeverWanted(true) : NeverWanted(false);
 	NoWeaponReloadBool ? NoWeaponReload() : NULL;
+	InfiniteAmmoBool ? InfiniteAmmo(true) : InfiniteAmmo(false);
 	SlowMotionBool ? SlowMotion(true) : SlowMotion(false);
 	WorldBlackoutBool ? WorldBlackout(true) : WorldBlackout(false);
 	GravityGunBool ? GravityGun() : NULL;
@@ -385,19 +386,22 @@ void Cheat::CheatFeatures::NeverWanted(bool toggle)
 bool Cheat::CheatFeatures::NoWeaponReloadBool = false;
 void Cheat::CheatFeatures::NoWeaponReload()
 {
-	Hash cur;
-	if (WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &cur, true))
+	Hash EquippedWeapon;
+	if (WEAPON::GET_CURRENT_PED_WEAPON(GameFunctions::PlayerPedID, &EquippedWeapon, false))
 	{
-		if (WEAPON::IS_WEAPON_VALID(cur))
+		if (EquippedWeapon != 0xB62D1F67) //Skip if Widowmaker; it won't shoot when this is looped
 		{
-			int maxAmmo;
-			if (WEAPON::GET_MAX_AMMO(Cheat::GameFunctions::PlayerPedID, cur, &maxAmmo))
-			{
-				WEAPON::SET_PED_AMMO(Cheat::GameFunctions::PlayerPedID, cur, maxAmmo);
-				maxAmmo = WEAPON::GET_MAX_AMMO_IN_CLIP(Cheat::GameFunctions::PlayerPedID, cur, 1);
-				if (maxAmmo > 0) { WEAPON::SET_AMMO_IN_CLIP(Cheat::GameFunctions::PlayerPedID, cur, maxAmmo); }
-			}
+			WEAPON::_PED_SKIP_NEXT_RELOADING(GameFunctions::PlayerPedID);
 		}
+	}
+}
+
+bool Cheat::CheatFeatures::InfiniteAmmoBool = false;
+void Cheat::CheatFeatures::InfiniteAmmo(bool toggle)
+{
+	for (auto const& i : GameArrays::WeaponsHashList)
+	{
+		WEAPON::SET_PED_INFINITE_AMMO(GameFunctions::PlayerPedID, toggle, i.WeaponHash);
 	}
 }
 
@@ -845,19 +849,17 @@ void Cheat::CheatFeatures::FreezeStation()
 bool Cheat::CheatFeatures::WeaponRapidFireBool = false;
 void Cheat::CheatFeatures::WeaponRapidFire()
 {
-	if (!PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 1)) 
+	if (!PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, false)) 
 	{
-		PLAYER::DISABLE_PLAYER_FIRING(Cheat::GameFunctions::PlayerPedID, 1);
-		Vector3 gameplayCam = CAM::_GET_GAMEPLAY_CAM_COORDS();
-		Vector3 gameplayCamRot = CAM::GET_GAMEPLAY_CAM_ROT(0);
-		Vector3 gameplayCamDirection = Cheat::GameFunctions::RotationToDirection(&gameplayCamRot);
-		Vector3 startCoords = Cheat::GameFunctions::AddVector(gameplayCam, (Cheat::GameFunctions::MultiplyVector(gameplayCamDirection, 1.0f)));
-		Vector3 endCoords = Cheat::GameFunctions::AddVector(startCoords, Cheat::GameFunctions::MultiplyVector(gameplayCamDirection, 500.0f));
+		PLAYER::DISABLE_PLAYER_FIRING(Cheat::GameFunctions::PlayerPedID, true);
+		Vector3 GameplayCamDirection = Cheat::GameFunctions::RotationToDirection(&CAM::GET_GAMEPLAY_CAM_ROT(0));
+		Vector3 StartCoords = Cheat::GameFunctions::AddVector(CAM::_GET_GAMEPLAY_CAM_COORDS(), Cheat::GameFunctions::MultiplyVector(GameplayCamDirection, 1.0f));
+		Vector3 EndCoords = Cheat::GameFunctions::AddVector(StartCoords, Cheat::GameFunctions::MultiplyVector(GameplayCamDirection, 500.0f));
 		Hash weaponhash;
-		WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &weaponhash, 1);
-		if (CONTROLS::IS_CONTROL_PRESSED(2, 208) || CheatFunctions::IsKeyCurrentlyPressed(VK_LBUTTON))
+		WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &weaponhash, false);
+		if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlAttack) && !UI::IS_PAUSE_MENU_ACTIVE())
 		{
-			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(startCoords.x, startCoords.y, startCoords.z, endCoords.x, endCoords.y, endCoords.z, 50, 1, weaponhash, Cheat::GameFunctions::PlayerPedID, 1, 1, 0xbf800000);
+			GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(StartCoords.x, StartCoords.y, StartCoords.z, EndCoords.x, EndCoords.y, EndCoords.z, 50, true, weaponhash, Cheat::GameFunctions::PlayerPedID, true, false, 0xbf800000);
 		}
 	}
 }
@@ -1298,9 +1300,9 @@ void Cheat::CheatFeatures::ShakeCamSelectedPlayer()
 bool Cheat::CheatFeatures::RainbowGunBool = false;
 void Cheat::CheatFeatures::RainbowGun()
 {
-	for (int i = 0; i < GameArrays::WeaponsHashList.size(); i++)
+	for (auto const& i : GameArrays::WeaponsHashList)
 	{
-		Hash CurrentHash = GameArrays::WeaponsHashList[i].WeaponHash;
+		Hash CurrentHash = i.WeaponHash;
 		if (WEAPON::HAS_PED_GOT_WEAPON(GameFunctions::PlayerPedID, CurrentHash, 0))
 		{
 			WEAPON::SET_PED_WEAPON_TINT_INDEX(GameFunctions::PlayerPedID, CurrentHash, rand() % 8);
@@ -1428,9 +1430,9 @@ void Cheat::CheatFeatures::AutoGiveAllWeapons()
 {
 	if (PLAYER::IS_PLAYER_PLAYING(GameFunctions::PlayerID)) 
 	{ 
-		for (int i = 0; i < GameArrays::WeaponsHashList.size(); i++)
+		for (auto const& i : GameArrays::WeaponsHashList)
 		{
-			Hash CurrentHash = GameArrays::WeaponsHashList[i].WeaponHash;
+			Hash CurrentHash = i.WeaponHash;
 			if (!WEAPON::HAS_PED_GOT_WEAPON(GameFunctions::PlayerPedID, CurrentHash, false))
 			{
 				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(GameFunctions::PlayerPedID, CurrentHash, 9999, false);

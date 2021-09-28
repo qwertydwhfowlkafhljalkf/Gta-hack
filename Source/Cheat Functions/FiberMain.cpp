@@ -2600,7 +2600,8 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Shoot Entities", ShootEntitiesMenu);
 			GUI::MenuOption("Aimbot", aimbotsettingsmenu);		
 			GUI::Break("General", SELECTABLE_CENTER_TEXT);
-			GUI::Toggle("No Reload", CheatFeatures::NoWeaponReloadBool, "Always have max amount of ammo");
+			GUI::Toggle("No Reload", CheatFeatures::NoWeaponReloadBool, "Disables the reload animation of all weapons");
+			GUI::Toggle("Infinite Ammo", CheatFeatures::InfiniteAmmoBool, "Never run out of ammo again");
 			GUI::Toggle("Delete Gun", CheatFeatures::DeleteGunBool, "Use SNS Pistol with this option");
 			GUI::Toggle("Rapid Fire", CheatFeatures::WeaponRapidFireBool, "Shoot very fast");
 			GUI::Toggle("One Shot One Kill", CheatFeatures::OneHitKillBool, "");

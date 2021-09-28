@@ -97,7 +97,7 @@ const std::vector<WeaponHashesStruct> Cheat::GameArrays::WeaponsHashList = {
 	{ "Marksman Rifle", 0xC734385A			}, //WeaponMarksmanRifle
 	{ "Marksman Rifle Mk2", 0x6A6C02E0		}, //WeaponMarksmanRifleMk2
 	{ "Compact Launcher", 0x0781FE4A		}, //WeaponCompactLauncher
-	{ "Ray Minigun", 0xB62D1F67				}, //WeaponRayMinigun
+	{ "Widowmaker", 0xB62D1F67				}, //WeaponWidowmaker
 	{ "Pipe Bomb", 0xBA45E8B8				}, //WeaponPipeBomb
 	{ "Ball", 0x23C9F95C					}, //WeaponBall
 	{ "Flare", 0x497FACC3					}, //WeaponFlare

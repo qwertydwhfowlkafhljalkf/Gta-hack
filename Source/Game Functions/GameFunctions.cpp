@@ -2,9 +2,9 @@
 
 void Cheat::GameFunctions::GiveAllWeaponsToPlayer(Ped Player)
 {
-	for (int i = 0; i < GameArrays::WeaponsHashList.size(); i++)
+	for (auto const& i : GameArrays::WeaponsHashList)
 	{
-		WEAPON::GIVE_WEAPON_TO_PED(Player, GameArrays::WeaponsHashList[i].WeaponHash, 9999, false, false);
+		WEAPON::GIVE_WEAPON_TO_PED(Player, i.WeaponHash, 9999, false, false);
 	}
 }
 
@@ -587,11 +587,11 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		std::string WeaponName;
 		if (WEAPON::GET_CURRENT_PED_WEAPON(SelectedPlayerPed, &WeaponHash, true))
 		{
-			for (int i = 0; i < Cheat::GameArrays::WeaponsHashList.size(); i++)
+			for (auto const& i : GameArrays::WeaponsHashList)
 			{
-				if (WeaponHash == Cheat::GameArrays::WeaponsHashList[i].WeaponHash)
+				if (WeaponHash == i.WeaponHash)
 				{
-					WeaponName = Cheat::GameArrays::WeaponsHashList[i].WeaponName;
+					WeaponName = i.WeaponName;
 				}
 			}
 			

@@ -48,6 +48,8 @@ namespace Cheat
 		void NeverWanted(bool toggle);
 		extern bool NoWeaponReloadBool;
 		void NoWeaponReload();
+		extern bool InfiniteAmmoBool;
+		void InfiniteAmmo(bool toggle);
 		extern bool SlowMotionBool;
 		void SlowMotion(bool toggle);
 		extern bool WorldBlackoutBool;
