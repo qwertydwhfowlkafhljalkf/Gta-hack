@@ -374,7 +374,7 @@ void Cheat::CheatFeatures::NeverWanted(bool toggle)
 {
 	if (toggle)
 	{
-		PLAYER::CLEAR_PLAYER_WANTED_LEVEL(Cheat::GameFunctions::PlayerID);
+		PLAYER::CLEAR_PLAYER_WANTED_LEVEL(GameFunctions::PlayerID);
 		PLAYER::SET_MAX_WANTED_LEVEL(0);
 	}
 	else
@@ -389,7 +389,7 @@ void Cheat::CheatFeatures::NoWeaponReload()
 	Hash EquippedWeapon;
 	if (WEAPON::GET_CURRENT_PED_WEAPON(GameFunctions::PlayerPedID, &EquippedWeapon, false))
 	{
-		if (EquippedWeapon != 0xB62D1F67) //Skip if Widowmaker; it won't shoot when this is looped
+		if (EquippedWeapon != 0xB62D1F67 && EquippedWeapon != 0x42BF8A85) //Skip if Widowmaker or Minigun; it won't shoot when this is looped
 		{
 			WEAPON::_PED_SKIP_NEXT_RELOADING(GameFunctions::PlayerPedID);
 		}
@@ -518,7 +518,7 @@ void Cheat::CheatFeatures::NoGravity(bool toggle)
 bool Cheat::CheatFeatures::WorldSnowLocalBool = false;
 void Cheat::CheatFeatures::WorldSnowLocal(bool toggle)
 {
-	globalHandle(262145).At(4723).As<BOOL>() = toggle;
+	globalHandle(262145).At(4724).As<BOOL>() = toggle;
 }
 
 bool Cheat::CheatFeatures::AutoTeleportToWaypointBool = false;
