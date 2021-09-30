@@ -1,6 +1,6 @@
 ﻿#include "../Header/Cheat Functions/FiberMain.h"
 int Cheat::CheatFeatures::SelectedPlayer;
-int TeleportFoward = 1;																					// Used by Teleport Forward option
+int TeleportFoward = 1;																						// Used by Teleport Forward option
 int engine_multiplier, torque_multiplier;																	// Used by Vehicle Multipliers options
 int SetTimeHour = 0, SetTimeMinutes = 0, SetTimeSeconds = 0;												// Used by World Time options	
 int VehiclePrimaryColorRed, VehiclePrimaryColorGreen, VehiclePrimaryColorBlue;								// Used by Vehicle Color features
@@ -8,6 +8,7 @@ int VehicleSecondaryColorRed, VehicleSecondaryColorGreen, VehicleSecondaryColorB
 int VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue;										// Used by Vehicle Color features
 int PlayerWantedLevelInteger = 0;																			// Used by Set Wanted Level Option
 int FakeWantedLevelInteger = 0;																				// Used by Fake Wanted Level
+float SelfHealth = 200.f;																					// Used by Self Health
 std::string ChangeModelPedSearchTerm;																		// Used by Change Model (Self)
 std::string ObjectSpawnSearchTerm;																			// Used by Object Spawn
 int HUDColorRed, HUDColorGreen, HUDColorBlue, HUDColorAlpha;												// Used by HUD
@@ -907,8 +908,6 @@ void Cheat::FiberMain()
 			GUI::Break("Money", SELECTABLE_CENTER_TEXT);
 			GUI::Break("Wallet balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_WALLET_BALANCE(-1)));
 			GUI::Break("Bank balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_BANK_BALANCE()));
-			GUI::Toggle("Drop Money", CheatFeatures::MoneyDropBool, "Only works for local player");
-			GUI::Int("Drop Delay", CheatFeatures::MoneyDropDelay, 50, 2000, 50, "Set to 1500 to prevent transaction errors");
 			GUI::Break("Miscellaneous", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Set Max Nightclub Popularity", "Set NightClub Popularity to 100%"))
 			{
@@ -1089,7 +1088,7 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Spawned Vehicles", SpawnedVehiclesMenu);
 			if (GUI::Option("Custom Input", "Input custom vehicle model name"))
 			{
-				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter custom vehicle model name");
+				char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter Vehicle Model Name");
 				if (KeyboardInput == "0") { break; }
 				GameFunctions::SpawnVehicle(KeyboardInput);
 			}
@@ -2262,7 +2261,6 @@ void Cheat::FiberMain()
 			GUI::Toggle("Jump Around Mode", CheatFeatures::JumpAroundModeBool, "Nearby vehicles will 'jump around'");
 			GUI::Toggle("Free Cam", CheatFeatures::FreeCamBool, "Use W and S to control. Shift to go faster");
 			GUI::Toggle("Show Joining Players Notification", CheatFeatures::ShowJoiningPlayersNotification, "");
-			GUI::Toggle("No Orbital Cannon Cooldown", CheatFeatures::OrbitalCannonCooldownBypassBool, "");
 			GUI::Toggle("Rockstar Developer Mode", CheatFeatures::GTAODeveloperMode, "Toggles GTAO Spectator Options");
 			GUI::Toggle("Auto Teleport To Waypoint", CheatFeatures::AutoTeleportToWaypointBool, "");
 			GUI::Toggle("Show Session Information", CheatFeatures::ShowSessionInformationBool, "Show session info (next to radar)");
@@ -2587,7 +2585,7 @@ void Cheat::FiberMain()
 		case WeaponAmmoMenu:
 		{
 			GUI::Title("Ammo Modification");
-			GUI::StringVector("Impact Ammo", { "Disabled", "Money Bags (2.5k)", "Money Bags (Classic)", "Fire", "Airstrike", "Teleport To", "Explosion", "Show Bullet Coord" }, CheatFeatures::ImpactAmmoVectorPosition, "Money can only be picked up by you");
+			GUI::StringVector("Impact Ammo", { "Disabled", "Fire", "Airstrike", "Teleport To", "Explosion", "Show Bullet Coord" }, CheatFeatures::ImpactAmmoVectorPosition, "");
 			GUI::StringVector("Custom Ammo", { "Disabled", "Valkyrie", "Rhino Tank", "RPG", "Firework" }, CheatFeatures::CustomAmmoVectorPosition, "");
 		}
 		break;
@@ -3051,6 +3049,7 @@ void Cheat::FiberMain()
 			GUI::Toggle("Off Radar", CheatFeatures::OffRadarBool, "Enables Lester Off Radar Feature");
 			GUI::Toggle("No Idle Kick", CheatFeatures::NoIdleKickBool, "Does not work when out of game focus");
 			GUI::Toggle("Cops Turn Blind Eye", CheatFeatures::CopsTurnBlindEyeBool, "Enables Bribe Authorities");
+			GUI::Toggle("No Orbital Cannon Cooldown", CheatFeatures::OrbitalCannonCooldownBypassBool, "");
 		}
 		break;
 		case SelfOptionsMenu:
@@ -3061,7 +3060,13 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Animations", AnimationsMenu);
 			GUI::MenuOption("Clothing", clothingmenu);
 			GUI::Toggle("Invincible", CheatFeatures::GodmodeBool, "Gives your character God Mode");
+			if (GUI::Float("Health", SelfHealth, 1.f, ENTITY::GET_ENTITY_MAX_HEALTH(GameFunctions::PlayerPedID), 1.f, "", 2, SELECTABLE_RETURN_VALUE_CHANGE))
+			{
+				ENTITY::SET_ENTITY_HEALTH(GameFunctions::PlayerPedID, SelfHealth);
+			}
 			GUI::Toggle("No Ragdoll & Seatbelt", CheatFeatures::NoRagdollAndSeatbeltBool, "Disables ragdoll on your character");
+			GUI::Toggle("Invisibility", CheatFeatures::PlayerInvisibleBool, "Makes your character invisible");
+			if (GUI::Int("Opacity", CheatFeatures::PlayerOpacityInt, 50, 250, 50, "Changes local player opacity")) { ENTITY::SET_ENTITY_ALPHA(GameFunctions::PlayerPedID, (CheatFeatures::PlayerOpacityInt), false); }
 			GUI::Toggle("Super Jump", CheatFeatures::SuperJumpBool, "Makes your character jump higher");
 			if (GUI::StringVector("Fast/Super Run", { "Disabled", "Fast", "Super" }, CheatFeatures::FastSuperRunPosition, "", SELECTABLE_RETURN_VALUE_CHANGE))
 			{
@@ -3074,11 +3079,9 @@ void Cheat::FiberMain()
 			GUI::Toggle("Ignored By Everyone", CheatFeatures::PlayerIgnoredBool, "NPC's will (mostly) ignore you");
 			GUI::Toggle("Never Wanted", CheatFeatures::NeverWantedBool, "Never get a wanted level");
 			if (GUI::Int("Wanted Level", PlayerWantedLevelInteger, 0, 5, 1, "Set Wanted Level", SELECTABLE_DISABLE_SAVE)) { CheatFeatures::NeverWantedBool = false; PLAYER::SET_PLAYER_WANTED_LEVEL(GameFunctions::PlayerID, PlayerWantedLevelInteger, false); PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(GameFunctions::PlayerID, false); }
-			GUI::Toggle("Invisibility", CheatFeatures::PlayerInvisibleBool, "Makes your character invisible");
 			GUI::Toggle("Explosive Melee", CheatFeatures::ExplosiveMeleeBool, "Objects you hit with melee explode");
 			GUI::Toggle("Tiny Player", CheatFeatures::TinyPlayerBool, "Lowers your character's scaling");
 			GUI::Toggle("Super Man", CheatFeatures::SuperManBool, "Fly around like a superman!");
-			if (GUI::Int("Opacity", CheatFeatures::PlayerOpacityInt, 50, 250, 50, "Changes local player opacity")) { ENTITY::SET_ENTITY_ALPHA(GameFunctions::PlayerPedID, (CheatFeatures::PlayerOpacityInt), false); }
 			if (GUI::Option("Suicide", "Kill your character")) { PED::APPLY_DAMAGE_TO_PED(GameFunctions::PlayerPedID, 300, true); }
 			if (GUI::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(2441237).At(4013).As<bool>() = true; }
 			if (GUI::Option("Clean", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(GameFunctions::PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(GameFunctions::PlayerPedID); GameFunctions::MinimapNotification("Player Cleaned"); }	

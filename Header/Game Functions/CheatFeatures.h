@@ -165,10 +165,6 @@ namespace Cheat
 		extern bool CopsTurnBlindEyeBool;
 		extern bool CopsTurnBlindEyeWasEnabled;
 		void CopsTurnBlindEye();
-		extern bool MoneyDropBool;
-		extern int MoneyDropDelay;
-		extern int MoneyDropDelayPreviousTick;
-		void MoneyDrop();
 		extern bool VehicleWeaponsBool;
 		extern bool VehicleWeapons_TankRounds;
 		extern bool VehicleWeapons_VehicleRockets;

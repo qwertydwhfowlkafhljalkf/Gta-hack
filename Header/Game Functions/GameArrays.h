@@ -43,6 +43,7 @@ struct TSEPropertyListStruct
 	std::string PropertyName;
 	int Index;
 };
+
 namespace Cheat
 {
 	namespace GameArrays

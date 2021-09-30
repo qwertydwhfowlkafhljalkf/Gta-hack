@@ -9,6 +9,7 @@
 //Globals (These change with each major patch, see <Project Root>/Resources/TSE_Globals for information on function location)
 #define GLOBAL_PLAYER_PICTURE_INDEX		1391551
 #define GLOBAL_LEVEL_TO_RP				293361
+const int GLOBAL_SNOW[]					= { 262145, 4724 };
 
 //Script Events
 #define TSE_KICK_TO_SP					-1382676328

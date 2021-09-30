@@ -180,26 +180,11 @@ void Cheat::CheatFeatures::Looped()
 	// Impact ammo
 	if (ImpactAmmoVectorPosition != 0)
 	{
-		if (ImpactAmmoVectorPosition == 1 || ImpactAmmoVectorPosition == 2)
-		{
-			bool IsClassicBag = ImpactAmmoVectorPosition == 2 ? true : false;
-			if (PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
-			{
-				Vector3 coords;
-				if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(Cheat::GameFunctions::PlayerPedID, &coords))
-				{
-					Hash PolyBag = GAMEPLAY::GET_HASH_KEY(IsClassicBag ? "prop_money_bag_01" : "p_poly_bag_01_s");
-					STREAMING::REQUEST_MODEL(PolyBag);
-					while (!STREAMING::HAS_MODEL_LOADED(PolyBag)) { GameHooking::PauseMainFiber(0, false); }
-					if (STREAMING::HAS_MODEL_LOADED(PolyBag)) { OBJECT::CREATE_AMBIENT_PICKUP(0xCE6FDD6B, coords.x, coords.y, coords.z + 1.f, 0, IsClassicBag ? 2000 : 2500, PolyBag, false, true); STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(PolyBag); }
-				}
-			}
-		}
-		else if (ImpactAmmoVectorPosition == 3)
+		if (ImpactAmmoVectorPosition == 1)
 		{
 			Memory::set_value<int>({ OFFSET_PLAYER, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, FrameFlagFireAmmo);
 		}
-		else if (ImpactAmmoVectorPosition == 4)
+		else if (ImpactAmmoVectorPosition == 2)
 		{
 			if (PED::IS_PED_SHOOTING(Cheat::GameFunctions::PlayerPedID))
 			{
@@ -210,7 +195,7 @@ void Cheat::CheatFeatures::Looped()
 				}
 			}
 		}
-		else if (ImpactAmmoVectorPosition == 5)
+		else if (ImpactAmmoVectorPosition == 3)
 		{
 			if (PED::IS_PED_SHOOTING(GameFunctions::PlayerPedID))
 			{
@@ -221,11 +206,11 @@ void Cheat::CheatFeatures::Looped()
 				}
 			}
 		}
-		else if (ImpactAmmoVectorPosition == 6)
+		else if (ImpactAmmoVectorPosition == 4)
 		{
 			Memory::set_value<int>({ OFFSET_PLAYER, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, FrameFlagExplosiveAmmo);
 		}
-		else if (ImpactAmmoVectorPosition == 7)
+		else if (ImpactAmmoVectorPosition == 5)
 		{
 			Vector3 iCoord;
 			if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(GameFunctions::PlayerPedID, &iCoord))
@@ -349,7 +334,6 @@ void Cheat::CheatFeatures::Looped()
 	DisablePhoneBool ? DisablePhone() : NULL;
 	NoIdleKickBool ? NoIdleKick() : NULL;
 	CopsTurnBlindEyeBool ? CopsTurnBlindEye() : CopsTurnBlindEyeWasEnabled ? GameFunctions::ToggleCopsTurnBlindEye(false), CopsTurnBlindEyeWasEnabled = false : NULL;
-	MoneyDropBool ? MoneyDrop() : NULL;
 	VehicleWeaponsBool ? VehicleWeapons() : NULL;
 	ShowSessionInformationBool ? ShowSessionInformation() : NULL;
 	AutoGiveAllWeaponsBool ? AutoGiveAllWeapons() : NULL;
@@ -518,7 +502,7 @@ void Cheat::CheatFeatures::NoGravity(bool toggle)
 bool Cheat::CheatFeatures::WorldSnowLocalBool = false;
 void Cheat::CheatFeatures::WorldSnowLocal(bool toggle)
 {
-	globalHandle(262145).At(4724).As<BOOL>() = toggle;
+	globalHandle(GLOBAL_SNOW[0]).At(GLOBAL_SNOW[1]).As<BOOL>() = toggle;
 }
 
 bool Cheat::CheatFeatures::AutoTeleportToWaypointBool = false;
@@ -1277,7 +1261,7 @@ bool Cheat::CheatFeatures::SuperManBool = false;
 void Cheat::CheatFeatures::SuperMan()
 {
 	if(!Cheat::CheatFeatures::NoRagdollAndSeatbeltBool) { CheatFeatures::NoRagdollAndSeatbeltBool = true; GameFunctions::MinimapNotification("No Ragdoll & Seatbelt feature enabled for this feature"); }
-	WEAPON::GIVE_DELAYED_WEAPON_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("GADGET_PARACHUTE"), 1, true);
+	WEAPON::GIVE_WEAPON_TO_PED(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("GADGET_PARACHUTE"), 1, false, true);
 	ENTITY::SET_ENTITY_INVINCIBLE(GameFunctions::PlayerPedID, true);
 	PED::SET_PED_TO_RAGDOLL_WITH_FALL(GameFunctions::PlayerPedID, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0);
 
@@ -1323,26 +1307,6 @@ void Cheat::CheatFeatures::NoIdleKick()
 {
 	globalHandle(1379108).At(1165).As<int>() = -1;
 	globalHandle(1379108).At(1149).As<int>() = -1;
-}
-
-int Cheat::CheatFeatures::MoneyDropDelay = 50;
-int Cheat::CheatFeatures::MoneyDropDelayPreviousTick;
-bool Cheat::CheatFeatures::MoneyDropBool = false;
-void Cheat::CheatFeatures::MoneyDrop()
-{
-	if (GetTickCount64() - MoneyDropDelayPreviousTick > MoneyDropDelay)
-	{
-		Hash PolyBag = GAMEPLAY::GET_HASH_KEY("p_poly_bag_01_s");
-		Vector3 pp = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(GameFunctions::PlayerPedID, 0.0, 0.0, 1.0);
-		STREAMING::REQUEST_MODEL(PolyBag);
-		while (!STREAMING::HAS_MODEL_LOADED(PolyBag)) { GameHooking::PauseMainFiber(0); }
-		if (STREAMING::HAS_MODEL_LOADED(PolyBag))
-		{
-			OBJECT::CREATE_AMBIENT_PICKUP(0xCE6FDD6B, pp.x, pp.y, pp.z, 0, 2500, PolyBag, false, true);
-			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(PolyBag);
-		}
-		MoneyDropDelayPreviousTick = GetTickCount64();
-	}
 }
 
 DWORD VehicleWeapons_LastTick = 0;
