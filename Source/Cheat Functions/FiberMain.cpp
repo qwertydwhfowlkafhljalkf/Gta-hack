@@ -1122,9 +1122,9 @@ void Cheat::FiberMain()
 		case SpawnMenu:
 		{
 			GUI::Title("Spawn");
-			GUI::MenuOption("Ped", PedSpawnMenu);
+			//GUI::MenuOption("Ped", PedSpawnMenu);
 			GUI::MenuOption("Vehicle", VehicleSpawnMenu);
-			GUI::MenuOption("Object", ObjectSpawnMenu);
+			//GUI::MenuOption("Object", ObjectSpawnMenu);
 		}
 		break;
 		case ObjectSpawnMenu:
@@ -2611,32 +2611,15 @@ void Cheat::FiberMain()
 		case ShootEntitiesMenu:
 		{
 			GUI::Title("Shoot Entities");
-			GUI::Toggle("Toggle Vehicle Gun", CheatFeatures::VehicleGunBool, "Toggle Vehicle Gun");
-			GUI::Break("Current: ~t~" + CheatFeatures::VehicleGun_VehicleNameString, false);
+			GUI::Toggle("Toggle", CheatFeatures::ShootEntitiesBool, "", SELECTABLE_DISABLE_SAVE);
+			GUI::Break("Current: ~t~" + CheatFeatures::ShootEntitiesCurrent, false);
 			GUI::Break("Vehicles", SELECTABLE_CENTER_TEXT);
-			if (GUI::Option("Custom Input", "Custom Vehicle Gun Input"))
-			{
-				char* SpawnVehicle = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter custom vehicle model name");
-				if (SpawnVehicle != "0")
-				{
-					Hash model = GAMEPLAY::GET_HASH_KEY(SpawnVehicle);
-					if (!STREAMING::IS_MODEL_A_VEHICLE(model))
-					{
-						GameFunctions::MinimapNotification("~r~Not a valid vehicle model");
-					}
-					else
-					{
-						CheatFeatures::VehicleGun_VehicleNameString = SpawnVehicle;
-						GameFunctions::MinimapNotification("Custom Vehicle Set");
-					}
-				}		
-			}
-			if (GUI::Option("Rhino Tank", "")) { CheatFeatures::VehicleGun_VehicleNameString = "RHINO"; }
-			if (GUI::Option("Hydra", "")) { CheatFeatures::VehicleGun_VehicleNameString = "HYDRA"; }
-			if (GUI::Option("Airport Bus", "")) { CheatFeatures::VehicleGun_VehicleNameString = "AIRBUS"; }
-			if (GUI::Option("Brickade", "")) { CheatFeatures::VehicleGun_VehicleNameString = "BRICKADE"; }
-			if (GUI::Option("Cargo Plane", "")) { CheatFeatures::VehicleGun_VehicleNameString = "CARGOPLANE"; }
-			if (GUI::Option("Dump", "")) { CheatFeatures::VehicleGun_VehicleNameString = "DUMP"; }
+			if (GUI::Option("Rhino Tank", "")) { CheatFeatures::ShootEntitiesCurrent = "RHINO"; }
+			if (GUI::Option("Hydra", "")) { CheatFeatures::ShootEntitiesCurrent = "HYDRA"; }
+			if (GUI::Option("Airport Bus", "")) { CheatFeatures::ShootEntitiesCurrent = "AIRBUS"; }
+			if (GUI::Option("Brickade", "")) { CheatFeatures::ShootEntitiesCurrent = "BRICKADE"; }
+			if (GUI::Option("Cargo Plane", "")) { CheatFeatures::ShootEntitiesCurrent = "CARGOPLANE"; }
+			if (GUI::Option("Dump", "")) { CheatFeatures::ShootEntitiesCurrent = "DUMP"; }
 		}
 		break;
 		case aimbotsettingsmenu:
@@ -2797,10 +2780,10 @@ void Cheat::FiberMain()
 			GUI::Title("Griefing");
 			GUI::MenuOption("Remote Events", SelectedPlayerRemoteOptions);
 			GUI::MenuOption("Attachments", SelectedPlayerAttachmentOptions);
-			GUI::Toggle("Explode Loop", CheatFeatures::ExplodeLoopSelectedPlayerBool, "Run explode loop on selected player", SELECTABLE_DISABLE_SAVE);
-			GUI::Toggle("Freeze Player", CheatFeatures::FreezeSelectedPlayerBool, "Freeze character of selected player", SELECTABLE_DISABLE_SAVE);
-			GUI::Toggle("Shake Cam", CheatFeatures::ShakeCamSelectedPlayerBool, "Shake selected player character camera", SELECTABLE_DISABLE_SAVE);
-			if (GUI::Option("Set Off Car Alarm", "Enable Car Alarm of Selected Player"))
+			GUI::Toggle("Explode", CheatFeatures::ExplodeLoopSelectedPlayerBool, "", SELECTABLE_DISABLE_SAVE);
+			GUI::Toggle("Freeze", CheatFeatures::FreezeSelectedPlayerBool, "", SELECTABLE_DISABLE_SAVE);
+			GUI::Toggle("Shake Camera", CheatFeatures::ShakeCamSelectedPlayerBool, "", SELECTABLE_DISABLE_SAVE);
+			if (GUI::Option("Set Off Vehicle Alarm", ""))
 			{
 				int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
 				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, false))
@@ -2812,7 +2795,7 @@ void Cheat::FiberMain()
 					GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}
 			}
-			if (GUI::Option("Burst Vehicle Tires", "Burst selected player vehicle tires"))
+			if (GUI::Option("Burst Vehicle Tires", ""))
 			{
 				int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
 				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) 
@@ -2824,34 +2807,31 @@ void Cheat::FiberMain()
 					GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 				}			
 			}
-			if (GUI::Option("Airstrike Player", "Airstrike selected player"))
+			if (GUI::Option("Airstrike", ""))
 			{
 				Vector3 Coords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
-				Coords.z += 15;
-				GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35, Coords.x, Coords.y, Coords.z, 250, 1, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), 1, 1, 500);
-				GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 30, Coords.x, Coords.y, Coords.z, 250, 0, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), 0, 1, 1, 500);
-				GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 55, Coords.x, Coords.y, Coords.z, 100, false, 0xF8A3939F, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), true, true, 600);
+				GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35.f, Coords.x, Coords.y, Coords.z, 250, true, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), true, false, 500.f);
 			}
-			if (GUI::Option("Attach to player", "Attach to selected player"))
+			if (GUI::Option("Attach To", ""))
 			{
 				if (PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer) != GameFunctions::PlayerPedID)
 				{
 					ENTITY::ATTACH_ENTITY_TO_ENTITY(GameFunctions::PlayerPedID, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), 0, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, true, true, false, true, 2, true);
 				}
 			}
-			if (GUI::Option("Detach from player", "Detach from selected player"))
+			if (GUI::Option("Detach From", ""))
 			{
 				ENTITY::DETACH_ENTITY(GameFunctions::PlayerPedID, true, true);
 			}
-			if (GUI::Option("Slingshot Vehicle", "Slingshot selected player vehicle"))
+			if (GUI::Option("Slingshot Vehicle", ""))
 			{
-				int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
-				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) 
+				Ped Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
+				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, false)) 
 				{
-					NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), true));
-					if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), true)))
+					NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(Handle, true));
+					if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(Handle, true)))
 					{
-						ENTITY::APPLY_FORCE_TO_ENTITY(PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), true), 1, 0, 0, 20, 0, 0, 0, 1, false, true, true, true, true);
+						ENTITY::APPLY_FORCE_TO_ENTITY(PED::GET_VEHICLE_PED_IS_IN(Handle, true), 1, 0, 0, 20, 0, 0, 0, 1, false, true, true, true, true);
 					}
 				}
 				else 
@@ -2859,7 +2839,7 @@ void Cheat::FiberMain()
 					GameFunctions::MinimapNotification("~r~Player is not in a vehicle"); 
 				}
 			}
-			if (GUI::Option("Ram With Vehicle", "Ram selected player with vehicle"))
+			if (GUI::Option("Ram With Vehicle", ""))
 			{
 				Hash model = GAMEPLAY::GET_HASH_KEY("trophytruck2");
 				if (STREAMING::IS_MODEL_VALID(model))
@@ -2867,7 +2847,7 @@ void Cheat::FiberMain()
 					for (int i = 0; i < 3; i++)
 					{
 						STREAMING::REQUEST_MODEL(model);
-						while (!STREAMING::HAS_MODEL_LOADED(model)) GameHooking::PauseMainFiber(0);
+						while (!STREAMING::HAS_MODEL_LOADED(model)) { GameHooking::PauseMainFiber(0, false); }
 						Vector3 ourCoords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
 						float forward = 10.f;
 						float heading = ENTITY::GET_ENTITY_HEADING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
@@ -2880,29 +2860,26 @@ void Cheat::FiberMain()
 					}
 				}
 			}
-			if (GUI::Option("Trap Player", "Trap selected player"))
+			if (GUI::Option("Cage Trap", ""))
 			{
 				Vector3 remotePos = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
 				Object obj = OBJECT::CREATE_OBJECT(GAMEPLAY::GET_HASH_KEY("prop_gold_cont_01"), remotePos.x, remotePos.y, remotePos.z - 1.f, true, false, false);
 			}
-			if (GUI::Option("Clone Player", "Clone selected player"))
+			if (GUI::Option("Clone Ped", ""))
 			{
 				GameFunctions::ClonePed(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
 			}
-			if (GUI::Option("Kick out of vehicle", "Kick selected player out of vehicle"))
+			if (GUI::Option("Kick out of vehicle", ""))
 			{
 				Ped playerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
 				GameFunctions::RequestNetworkControlOfEntity(playerPed);
 				GameFunctions::StopAllPedAnimations(playerPed);
-				AI::CLEAR_PED_TASKS(playerPed);
-				AI::CLEAR_PED_SECONDARY_TASK(playerPed);
 			}
-			if (GUI::Option("Spawn Enemy", "Spawn enemy to attack selected player"))
+			if (GUI::Option("Spawn Enemy", ""))
 			{
 				int eclone[1000];
 				int egcount = 1;
 				Ped SelectedPlayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
-				if (!ENTITY::DOES_ENTITY_EXIST(SelectedPlayer)) return;
 				Hash railgun = GAMEPLAY::GET_HASH_KEY("WEAPON_RAILGUN");
 				Vector3 pos = GameFunctions::GetEntityCoords(SelectedPlayer);
 				Hash pedm = GAMEPLAY::GET_HASH_KEY("u_m_m_jesus_01");
@@ -2918,7 +2895,7 @@ void Cheat::FiberMain()
 				PED::SET_PED_COMBAT_RANGE(eclone[egcount], 1000);
 				egcount++;
 			}
-			if (GUI::Option("Spawn Bodyguard", "Spawn Bodyguard for selected player")) 
+			if (GUI::Option("Spawn Bodyguard", "")) 
 			{
 				int clone[1000];
 				int gcount = 1;
@@ -2947,7 +2924,7 @@ void Cheat::FiberMain()
 		case PlayerListMenu:
 		{
 			GUI::Title("Players");
-			GUI::StringVector("Show Selected Player", { "Player List & Menu", "Player List", "Disabled" }, CheatFeatures::PlayerListMarkerPosition, "Show Player Marker on selected player");
+			GUI::StringVector("Show Selected Player", { "Player List & Menu", "Player List", "Disabled" }, CheatFeatures::PlayerListMarkerPosition, "");
 			GUI::Break("List", SELECTABLE_CENTER_TEXT);
 			for (int i = 0; i < 32; ++i)
 			{
@@ -2983,7 +2960,7 @@ void Cheat::FiberMain()
 		case SelectedPlayerFriendlyMenu:
 		{
 			GUI::Title("Friendly");
-			if (GUI::Option("Give All Weapons", "Give all weapons to selected player")) { GameFunctions::GiveAllWeaponsToPlayer(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer)); }
+			if (GUI::Option("Give All Weapons", "")) { GameFunctions::GiveAllWeaponsToPlayer(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer)); }
 			if (GUI::Option("Copy Outfit", "")) { GameFunctions::CopySelectedPlayerOutfit(CheatFeatures::SelectedPlayer); }
 			if (GUI::Option("Set Waypoint", "Sets waypoint to Selected player location"))
 			{

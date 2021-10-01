@@ -140,9 +140,9 @@ namespace Cheat
 		void TinyPlayer(bool toggle);
 		extern bool UnlimitedRocketBoostBool;
 		void UnlimitedRocketBoost();
-		extern bool VehicleGunBool;
-		extern std::string VehicleGun_VehicleNameString;
-		void VehicleGun();
+		extern bool ShootEntitiesBool;
+		extern std::string ShootEntitiesCurrent;
+		void ShootEntities();
 		extern bool PlayerESPBool;
 		void PlayerESP();
 		extern bool OffRadarBool;

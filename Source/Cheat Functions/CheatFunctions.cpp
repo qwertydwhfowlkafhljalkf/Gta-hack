@@ -111,6 +111,7 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		GUI::currentMenu == SelectedPlayerTeleportMenu ||
 		GUI::currentMenu == SelectedPlayerAttachmentOptions ||
 		GUI::currentMenu == SelectedPlayerTrollMenu ||
+		GUI::currentMenu == SelectedPlayerApartmentTeleport ||
 		GUI::currentMenu == SelectedPlayerRemoteOptions)
 	{
 		if (GameFunctions::IsPlayerIDValid(CheatFeatures::SelectedPlayer))
