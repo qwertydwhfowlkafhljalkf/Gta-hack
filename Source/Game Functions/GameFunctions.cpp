@@ -240,7 +240,7 @@ void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoC
 			TargetEntity = PED::GET_VEHICLE_PED_IS_USING(TargetEntity);
 		}
 	}
-	if (ENTITY::IS_ENTITY_A_VEHICLE(TargetEntity))
+	if (ENTITY::IS_AN_ENTITY(TargetEntity))
 	{
 		GameFunctions::RequestNetworkControlOfEntity(TargetEntity);
 	}

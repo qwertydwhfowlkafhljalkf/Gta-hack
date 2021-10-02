@@ -90,8 +90,6 @@ namespace Cheat
 		void ProtectionGiveRemoveWeapons(bool toggle);
 		extern bool SuperJumpBool;
 		void SuperJump();
-		extern bool FastRunBool;
-		void FastRun(bool toggle);
 		extern bool ShowFPSBool;
 		void ShowFPS();
 		extern bool JumpAroundModeBool;
@@ -187,5 +185,7 @@ namespace Cheat
 		extern bool RGBDiscoBool;
 		extern bool RGBDiscoFirstCall;
 		void RGBDisco();
+		extern bool WeaponInvisibilityBool;
+		void WeaponInvisibility(bool toggle);
 	}
 }

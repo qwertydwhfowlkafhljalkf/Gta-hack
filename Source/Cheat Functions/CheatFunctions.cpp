@@ -94,7 +94,7 @@ Player Cheat::GameFunctions::PlayerID;
 Ped Cheat::GameFunctions::PlayerPedID;
 void Cheat::CheatFunctions::LoopedFunctions()
 {
-	// Player ID & Player Ped ID
+	// Player ID and Player Ped ID
 	GameFunctions::PlayerID = PLAYER::PLAYER_ID();
 	GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
 

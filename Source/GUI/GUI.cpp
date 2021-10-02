@@ -387,7 +387,7 @@ bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step,
 				if (step == 1) { _int++; }
 				else { _int = _int + step; }
 			}
-			return true;
+			if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true; }
 		}
 		if (Controls::RightPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
@@ -396,7 +396,7 @@ bool Cheat::GUI::Int(std::string option, int & _int, int min, int max, int step,
 				if (step == 1) { _int--; }
 				else { _int = _int - step; }
 			}
-			return true;
+			if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true; }
 		}
 
 		CheatFunctions::SaveOption(option, std::to_string(_int), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
@@ -544,7 +544,7 @@ bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vecto
 			}
 		}
 		if (Controls::RightPressed)
-		{		
+		{
 			if (position > 0)
 			{
 				position--;
@@ -559,6 +559,10 @@ bool Cheat::GUI::StringVector(std::string option, std::vector<std::string> Vecto
 		Text.append("< ");
 	}
 	Text.append(Vector[position]);
+	std::stringstream Total;
+	Total << " [" << position + 1 << "/" << Vector.size() << "]";
+	Text.append(Total.str());
+	
 	if (position < Vector.size() - 1)
 	{
 		Text.append(" >");

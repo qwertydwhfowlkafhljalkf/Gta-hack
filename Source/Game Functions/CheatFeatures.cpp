@@ -221,7 +221,7 @@ void Cheat::CheatFeatures::Looped()
 		}
 	}
 
-	// Fast/super run
+	// Sprint Speed
 	if (FastSuperRunPosition != 0 && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlSprint) && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlScriptPadUp) && !PED::IS_PED_SWIMMING(GameFunctions::PlayerPedID))
 	{
 		if (FastSuperRunPosition == 1)
@@ -230,9 +230,8 @@ void Cheat::CheatFeatures::Looped()
 		}
 		else if (FastSuperRunPosition == 2)
 		{
-			Ped TargetPed = GameFunctions::PlayerPedID;
-			Vector3 offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(TargetPed, 0.f, 0.6f, 0.f);
-			ENTITY::APPLY_FORCE_TO_ENTITY(TargetPed, 1, 0.0f, 1.3f, 0.f, 0.0f, 0.0f, 0.0f, 0, true, true, true, false, true);
+			Vector3 offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(GameFunctions::PlayerPedID, 0.f, 0.6f, 0.f);
+			ENTITY::APPLY_FORCE_TO_ENTITY(GameFunctions::PlayerPedID, 1, 0.0f, 1.3f, 0.f, 0.0f, 0.0f, 0.0f, 0, true, true, true, false, true);
 		}
 	}
 
@@ -302,7 +301,6 @@ void Cheat::CheatFeatures::Looped()
 	ProtectionAlterWantedLevelBool ? ProtectionAlterWantedLevel(true) : ProtectionAlterWantedLevel(false);
 	ProtectionGiveRemoveWeaponsBool ? ProtectionGiveRemoveWeapons(true) : ProtectionGiveRemoveWeapons(false);
 	SuperJumpBool ? SuperJump() : NULL;
-	FastRunBool ? FastRun(true) : FastRun(false);
 	ShowFPSBool ? ShowFPS() : NULL;
 	JumpAroundModeBool ? JumpAroundMode() : NULL;
 	VehicleHornBoostBool ? VehicleHornBoost() : NULL;
@@ -345,6 +343,7 @@ void Cheat::CheatFeatures::Looped()
 	RGBDiscoBool ? RGBDisco() : !RGBDiscoFirstCall ? RGBDiscoFirstCall = true : NULL;
 	FreezeStationBool ? FreezeStation() : FreezeStationWasEnabled ? AUDIO::UNFREEZE_RADIO_STATION(AUDIO::GET_PLAYER_RADIO_STATION_NAME()), FreezeStationWasEnabled = false : NULL;
 	HideMinimapBool ? HideMinimap() : HideMinimapWasEnabled ? UI::DISPLAY_RADAR(true), HideMinimapWasEnabled = false : NULL;
+	WeaponInvisibilityBool ? WeaponInvisibility(true) : WeaponInvisibility(false);
 }
 
 bool Cheat::CheatFeatures::GodmodeBool = false;
@@ -634,20 +633,6 @@ void Cheat::CheatFeatures::SuperJump()
 	GAMEPLAY::SET_SUPER_JUMP_THIS_FRAME(Cheat::GameFunctions::PlayerID);
 }
 
-bool Cheat::CheatFeatures::FastRunBool = false;
-void Cheat::CheatFeatures::FastRun(bool toggle)
-{
-	if (toggle)
-	{
-		PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(Cheat::GameFunctions::PlayerID, 1.39f);
-	}
-	else
-	{
-		PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(Cheat::GameFunctions::PlayerID, 1.00f);
-	}
-}
-
-
 bool Cheat::CheatFeatures::ShowFPSBool = false;
 void Cheat::CheatFeatures::ShowFPS()
 {
@@ -782,43 +767,21 @@ void Cheat::CheatFeatures::VehicleGodmode(bool toggle)
 bool Cheat::CheatFeatures::VehicleInvisibleBool = false;
 void Cheat::CheatFeatures::VehicleInvisible(bool toggle)
 {
-	if (toggle)
-	{
-		ENTITY::SET_ENTITY_VISIBLE(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), false, true);
-	}
-	else
-	{
-		ENTITY::SET_ENTITY_VISIBLE(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), true, true);
-	}
+	ENTITY::SET_ENTITY_VISIBLE(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), !toggle, false);
 }
 
 bool Cheat::CheatFeatures::PlayerInvisibleBool = false;
 void Cheat::CheatFeatures::PlayerInvisible(bool toggle)
 {
-	if (toggle)
-	{
-		ENTITY::SET_ENTITY_VISIBLE(GameFunctions::PlayerPedID, false, true);
-	}
-	else
-	{
-		ENTITY::SET_ENTITY_VISIBLE(GameFunctions::PlayerPedID, true, true);
-	}
+	ENTITY::SET_ENTITY_VISIBLE(GameFunctions::PlayerPedID, !toggle, false);
 }
 
 bool Cheat::CheatFeatures::MobileRadioBool = false;
 void Cheat::CheatFeatures::MobileRadio(bool toggle)
 {
-	if (toggle)
-	{
-		AUDIO::SET_RADIO_TO_STATION_INDEX(AUDIO::GET_PLAYER_RADIO_STATION_INDEX());
-		AUDIO::SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(true);
-		AUDIO::SET_MOBILE_PHONE_RADIO_STATE(true);
-	}
-	else
-	{
-		AUDIO::SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(false);
-		AUDIO::SET_MOBILE_PHONE_RADIO_STATE(false);
-	}
+	AUDIO::SET_RADIO_TO_STATION_INDEX(AUDIO::GET_PLAYER_RADIO_STATION_INDEX());
+	AUDIO::SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(toggle);
+	AUDIO::SET_MOBILE_PHONE_RADIO_STATE(toggle);
 }
 
 bool Cheat::CheatFeatures::FreezeStationBool = false;
@@ -987,27 +950,25 @@ void Cheat::CheatFeatures::NoRagdollAndSeatbelt(bool toggle)
 {
 	if (toggle)
 	{
-		PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(GameFunctions::PlayerPedID, false);
 		PED::SET_PED_CAN_RAGDOLL(GameFunctions::PlayerPedID, false);
-		PED::SET_PED_CONFIG_FLAG(GameFunctions::PlayerPedID, 32, true);
-		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(GameFunctions::PlayerPedID, false);
+		PED::SET_PED_CONFIG_FLAG(GameFunctions::PlayerPedID, 32, false);
+		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(GameFunctions::PlayerPedID, 1);
 	}
 	else
 	{
-		PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(GameFunctions::PlayerPedID, true);
 		PED::SET_PED_CAN_RAGDOLL(GameFunctions::PlayerPedID, true);
-		PED::SET_PED_CONFIG_FLAG(GameFunctions::PlayerPedID, 32, false);
-		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(GameFunctions::PlayerPedID, true);
+		PED::SET_PED_CONFIG_FLAG(GameFunctions::PlayerPedID, 32, true);
+		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(GameFunctions::PlayerPedID, 0);
 	}
 }
 
 bool Cheat::CheatFeatures::FreezeSelectedPlayerBool = false;
 void Cheat::CheatFeatures::FreezeSelectedPlayer()
 {
-	Ped Player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(SelectedPlayer);
-	AI::CLEAR_PED_TASKS_IMMEDIATELY(Player);
-	AI::CLEAR_PED_TASKS(Player);
-	AI::CLEAR_PED_SECONDARY_TASK(Player);
+	Ped PlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(SelectedPlayer);
+	AI::CLEAR_PED_TASKS_IMMEDIATELY(PlayerPed);
+	AI::CLEAR_PED_TASKS(PlayerPed);
+	AI::CLEAR_PED_SECONDARY_TASK(PlayerPed);
 }
 
 bool Cheat::CheatFeatures::FreezeAllPlayersBool = false;
@@ -1021,10 +982,10 @@ void Cheat::CheatFeatures::FreezeAllPlayers()
 
 		if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 		{
-			Ped Player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i);
-			AI::CLEAR_PED_TASKS_IMMEDIATELY(Player);
-			AI::CLEAR_PED_TASKS(Player);
-			AI::CLEAR_PED_SECONDARY_TASK(Player);
+			Ped PlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i);
+			AI::CLEAR_PED_TASKS_IMMEDIATELY(PlayerPed);
+			AI::CLEAR_PED_TASKS(PlayerPed);
+			AI::CLEAR_PED_SECONDARY_TASK(PlayerPed);
 		}
 	}
 }
@@ -1122,7 +1083,7 @@ void Cheat::CheatFeatures::ShootEntities()
 			Vector3 startCoords = GameFunctions::AddVector(gameplayCam, (GameFunctions::MultiplyVector(gameplayCamDirection, 10)));
 			Vector3 endCoords = GameFunctions::AddVector(gameplayCam, (GameFunctions::MultiplyVector(gameplayCamDirection, 500.0f)));
 			Vehicle veh = VEHICLE::CREATE_VEHICLE(vehmodel, pCoords.x + (dir.x * offset), pCoords.y + (dir.y * offset), startCoords.z, rot, 1, 1);
-			ENTITY::SET_ENTITY_VISIBLE(veh, false, 0);
+			ENTITY::SET_ENTITY_VISIBLE(veh, false, false);
 			ENTITY::APPLY_FORCE_TO_ENTITY(veh, 1, 0.0f, 500.0f, 2.0f + endCoords.z, 0.0f, 0.0f, 0.0f, 0, 1, 1, 1, 0, 1);
 			ENTITY::SET_VEHICLE_AS_NO_LONGER_NEEDED(&veh);
 		}
@@ -1235,7 +1196,7 @@ void Cheat::CheatFeatures::DriveOnWater()
 			container = OBJECT::CREATE_OBJECT(model, pos.x, pos.y, pos.z, true, true, false);
 			ENTITY::FREEZE_ENTITY_POSITION(container, 1);
 			ENTITY::SET_ENTITY_ALPHA(container, 0, 1);
-			ENTITY::SET_ENTITY_VISIBLE(container, 0, 0);
+			ENTITY::SET_ENTITY_VISIBLE(container, false, false);
 		}
 	}
 	else 
@@ -1436,4 +1397,10 @@ void Cheat::CheatFeatures::RGBDisco()
 	}
 	GameFunctions::FadeRGB(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 	GameFunctions::FadeRGB(GUI::TextColorAndFont.r, GUI::TextColorAndFont.g, GUI::TextColorAndFont.b);
+}
+
+bool Cheat::CheatFeatures::WeaponInvisibilityBool = false;
+void Cheat::CheatFeatures::WeaponInvisibility(bool toggle)
+{
+	ENTITY::SET_ENTITY_VISIBLE(WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX(GameFunctions::PlayerPedID), !toggle, false);
 }

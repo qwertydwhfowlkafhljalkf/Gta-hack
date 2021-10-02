@@ -29,7 +29,7 @@ enum SubMenus
 	SpawnedVehiclesMenu,
 	AllPlayersMenu,
 	AllPlayersExclutionsMenu,
-	ModelChangerMenu,
+	SelfModelMenu,
 	GlobalsMenu,
 	SpawnMenu,
 	VehicleSpawnMenu,
@@ -83,9 +83,8 @@ enum SubMenus
 	SelectedPlayerTrollMenu,
 	SelectedPlayerFriendlyMenu,
 	protections,
-	clothingmenu,
-	outfitsmenu,
-	componentschangermenu,
+	WardrobeMenu,
+	VisionMenu,
 	SelectedPlayerRemoteOptions,
 	SessionChatMenu,
 	vehicleweaponsmenu,
@@ -115,7 +114,7 @@ enum SelectableBitFlags
 	SELECTABLE_DISABLED = 2,				//The selectable is disabled, if the select key is pressed on the selectable a message appears informing the user about the disable state. When using this flag saving is also blocked (use of SELECTABLE_DISABLE_SAVE not needed).
 	SELECTABLE_DISABLE_SAVE = 4,			//The selectable won't save when the corresponding key is pressed.
 	SELECTABLE_CENTER_TEXT = 8,				//This currently only applies to the Break selectable. Text will be centered relative to menu GUI.
-	SELECTABLE_RETURN_VALUE_CHANGE = 16,	//Currently used by Float and StringVector selectable. Function will also return when a value is changed (e.g. left or right is pressed).
+	SELECTABLE_RETURN_VALUE_CHANGE = 16,	//Currently used by Float, StringVector and Int selectable. Function will also return when a value is changed (e.g. left or right is pressed).
 	SELECTABLE_HIDE_INFO_BOX = 32,			//Forcefully (ignoring other settings) hides the Selectable Information Box for a given Selectable.
 };
 
