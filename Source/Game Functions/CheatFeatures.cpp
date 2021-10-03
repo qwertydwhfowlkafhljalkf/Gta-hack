@@ -222,7 +222,7 @@ void Cheat::CheatFeatures::Looped()
 	}
 
 	// Sprint Speed
-	if (FastSuperRunPosition != 0 && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlSprint) && CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, ControlScriptPadUp) && !PED::IS_PED_SWIMMING(GameFunctions::PlayerPedID))
+	if (FastSuperRunPosition != 0 && (AI::IS_PED_SPRINTING(GameFunctions::PlayerPedID) || AI::IS_PED_RUNNING(GameFunctions::PlayerPedID)))
 	{
 		if (FastSuperRunPosition == 1)
 		{
@@ -230,7 +230,6 @@ void Cheat::CheatFeatures::Looped()
 		}
 		else if (FastSuperRunPosition == 2)
 		{
-			Vector3 offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(GameFunctions::PlayerPedID, 0.f, 0.6f, 0.f);
 			ENTITY::APPLY_FORCE_TO_ENTITY(GameFunctions::PlayerPedID, 1, 0.0f, 1.3f, 0.f, 0.0f, 0.0f, 0.0f, 0, true, true, true, false, true);
 		}
 	}

@@ -10,6 +10,7 @@ int PlayerWantedLevelInteger = 0;																			// Used by Set Wanted Level 
 int FakeWantedLevelInteger = 0;																				// Used by Fake Wanted Level
 float SelfHealth = 200.f;																					// Used by Self Health
 int HairColor;																								// Used by Wardrobe
+int CustomLocationsAmount;																					// Used by Custom Locations
 std::string ChangeModelPedSearchTerm;																		// Used by Model (Self)
 std::string ObjectSpawnSearchTerm;																			// Used by Object Spawn
 int HUDColorRed, HUDColorGreen, HUDColorBlue, HUDColorAlpha;												// Used by HUD
@@ -121,10 +122,7 @@ void Cheat::FiberMain()
 					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
 						Vector3 Coords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
-						Coords.z += 15;
-						GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35, Coords.x, Coords.y, Coords.z, 250, 1, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), 1, 1, 500);
-						GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 30, Coords.x, Coords.y, Coords.z, 250, 0, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), 0, 1, 1, 500);
-						GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 55, Coords.x, Coords.y, Coords.z, 100, false, 0xF8A3939F, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), true, true, 600);
+						GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35.f, Coords.x, Coords.y, Coords.z, 250, true, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), true, false, 500.f);
 					}
 				}
 			}
@@ -2697,11 +2695,10 @@ void Cheat::FiberMain()
 			GUI::Title("Custom Locations");
 			if (CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnCustomTeleportLocationsFilePath()))
 			{
-				int NmbOfLocations = 0;
 				Json::Value JsonHandle = CheatFunctions::ReadJsonFileAndReturnDataObject(CheatFunctions::ReturnCustomTeleportLocationsFilePath());
 				for (auto it = JsonHandle.begin(); it != JsonHandle.end(); ++it)
 				{
-					NmbOfLocations++;
+					CustomLocationsAmount++;
 					GUI::Break(it.key().asString(), SELECTABLE_CENTER_TEXT);
 					if (GUI::Option("Teleport To", ""))
 					{
@@ -2716,12 +2713,12 @@ void Cheat::FiberMain()
 						CheatFunctions::DeleteCustomTeleportLocation(it.key().asString());
 					}
 				}
-				if (NmbOfLocations == 0)
-				{
-					GUI::Break("No custom locations have been saved");
-				}
-				NmbOfLocations = 0;
 			}
+			if (CustomLocationsAmount == 0)
+			{
+				GUI::Break("No custom locations have been saved");
+			}
+			CustomLocationsAmount = 0;
 		}
 		break;
 		case UnderwaterTeleportLocations:
@@ -3012,11 +3009,20 @@ void Cheat::FiberMain()
 			GUI::Title("Teleport"); 
 			if (GUI::Option("Parachute To", ""))
 			{
+				int TimeoutTick;
 				WEAPON::GIVE_WEAPON_TO_PED(GameFunctions::PlayerPedID, 0xFBAB5776, 0, false, true);
 				Vector3 TargetCoords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
 				TargetCoords.z += 50.f;
 				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, TargetCoords, false, true);
-				while (PED::GET_PED_PARACHUTE_STATE(GameFunctions::PlayerPedID) != 0) { GameHooking::PauseMainFiber(0, false); }
+				while (PED::GET_PED_PARACHUTE_STATE(GameFunctions::PlayerPedID) != 0) 
+				{ 
+					TimeoutTick++;
+					GameHooking::PauseMainFiber(0, false);
+					if (TimeoutTick >= 100)
+					{
+						break;
+					}
+				}
 				PED::FORCE_PED_TO_OPEN_PARACHUTE(GameFunctions::PlayerPedID);
 			}
 			if (GUI::Option("Teleport To", ""))

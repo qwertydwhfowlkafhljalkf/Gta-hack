@@ -121,6 +121,7 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		else
 		{
 			GUI::PreviousMenu = NOMENU;
+			GUI::MoveMenu(MainMenu);
 			GUI::MoveMenu(OnlineOptionsMenu);
 			GameFunctions::MinimapNotification("~r~Invalid Player ID");
 		}
