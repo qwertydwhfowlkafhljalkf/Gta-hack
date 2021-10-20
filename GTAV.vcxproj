@@ -55,7 +55,7 @@
       <BrowseInformation>true</BrowseInformation>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -88,18 +88,19 @@
     <ClInclude Include="Header\Game Functions\GameArrays.h" />
     <ClInclude Include="Header\Game Functions\GameFunctions.h" />
     <ClInclude Include="Header\Game Hooking\CrossMapping.h" />
-    <ClInclude Include="Header\Game Hooking\enums.h" />
+    <ClInclude Include="Header\Game Hooking\Enums.h" />
     <ClInclude Include="Header\Game Hooking\GameHooking.h" />
     <ClInclude Include="Header\Game Hooking\Memory.h" />
-    <ClInclude Include="Header\Game Hooking\nativeCaller.h" />
+    <ClInclude Include="Header\Game Hooking\NativeCaller.h" />
     <ClInclude Include="Header\Game Hooking\NativeInvoker.h" />
     <ClInclude Include="Header\Game Hooking\Natives.h" />
     <ClInclude Include="Header\Game Hooking\Offsets.h" />
-    <ClInclude Include="Header\Game Hooking\types.h" />
+    <ClInclude Include="Header\Game Hooking\Types.h" />
     <ClInclude Include="Header\GUI\GUI.h" />
     <ClInclude Include="Header\resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Header\GUI\Controls.h" />
     <ClCompile Include="Source\Cheat Functions\CheatFunctions.cpp" />
     <ClCompile Include="Source\Cheat Functions\Entry.cpp" />
     <ClCompile Include="Source\Cheat Functions\FiberMain.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="Source\Game Hooking\GameHooking.cpp" />
     <ClCompile Include="Source\Game Hooking\Memory.cpp" />
     <ClCompile Include="Source\Game Hooking\NativeInvoker.cpp" />
+    <ClCompile Include="Source\GUI\Controls.cpp" />
     <ClCompile Include="Source\GUI\GUI.cpp" />
     <ClCompile Include="ThirdParty\JsonCpp\json_reader.cpp" />
     <ClCompile Include="ThirdParty\JsonCpp\json_value.cpp" />

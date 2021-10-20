@@ -2,23 +2,23 @@
 
 void Cheat::GameFunctions::GiveAllWeaponsToPlayer(Ped Player)
 {
-	for (int i = 0; i < GameArrays::WeaponsHashList.size(); i++)
+	for (auto const& i : GameArrays::WeaponsHashList)
 	{
-		WEAPON::GIVE_WEAPON_TO_PED(Player, GameArrays::WeaponsHashList[i].WeaponHash, 9999, false, false);
+		WEAPON::GIVE_WEAPON_TO_PED(Player, i.WeaponHash, 9999, false, false);
 	}
 }
 
 void Cheat::GameFunctions::RepairAndCleanVehicle(Vehicle vehicle)
 {
-	VEHICLE::SET_VEHICLE_FIXED(vehicle);
 	ENTITY::SET_ENTITY_HEALTH(vehicle, ENTITY::GET_ENTITY_MAX_HEALTH(vehicle));
-	VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0);
-	VEHICLE::SET_VEHICLE_ENGINE_HEALTH(vehicle, 1000);
-	VEHICLE::SET_VEHICLE_ENGINE_ON(vehicle, true, true, true);
-	Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Fixed & Cleaned", "Textures", "AdvancedNotificationImage", false, 4, "Los Santos Customs", "", 1.0, "");
+	VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0.f);
+	VEHICLE::SET_VEHICLE_ENGINE_HEALTH(vehicle, 1000.f);
+	VEHICLE::SET_VEHICLE_FIXED(vehicle);
+	VEHICLE::SET_VEHICLE_ENGINE_ON(vehicle, true, true, false);
+	Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Repaired & Cleaned", "Textures", "AdvancedNotificationImage", false, 4, "Los Santos Customs", "", 1.0, "");
 }
 
-void Cheat::GameFunctions::SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID) 
+void Cheat::GameFunctions::SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID)
 { 
 	PED::SET_PED_COMPONENT_VARIATION(Ped, ComponentID, DrawableID, TextureID, 0);
 }
@@ -88,14 +88,11 @@ void Cheat::GameFunctions::BurstSelectedPlayerTires(Ped selectedPed)
 
 void Cheat::GameFunctions::SetOffAlarmPlayerVehicle(Ped selectedPed)
 {
-	if (PED::IS_PED_IN_ANY_VEHICLE(selectedPed, false))
-	{
-		Entity selectedVehicle = PED::GET_VEHICLE_PED_IS_USING(selectedPed);
-		RequestNetworkControlOfEntity(PED::GET_VEHICLE_PED_IS_USING(selectedPed));
-		VEHICLE::SET_VEHICLE_ALARM(selectedVehicle, true);
-		VEHICLE::START_VEHICLE_ALARM(selectedVehicle);
-		Cheat::GameFunctions::MinimapNotification("~g~Set off alarm of vehicle!");
-	}
+	Entity selectedVehicle = PED::GET_VEHICLE_PED_IS_USING(selectedPed);
+	RequestNetworkControlOfEntity(PED::GET_VEHICLE_PED_IS_USING(selectedPed));
+	VEHICLE::SET_VEHICLE_ALARM(selectedVehicle, true);
+	VEHICLE::START_VEHICLE_ALARM(selectedVehicle);
+	Cheat::GameFunctions::MinimapNotification("~g~Set off alarm of vehicle!");
 }
 
 bool Cheat::GameFunctions::IsPlayerFriend(Player player)
@@ -134,34 +131,25 @@ Vector3 Cheat::GameFunctions::AddVector(Vector3 vector, Vector3 vector2)
 	return vector;
 }
 
-
-double Cheat::GameFunctions::DegreeToRadian(double n) 
+void Cheat::GameFunctions::SetRankRockstarGift(int Rank)
 {
-	return n * 0.017453292519943295;
+	if (Rank > 0 && Rank <= 8000)
+	{ 
+		STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ReturnCurrentGTAOCharacter() + "_CHAR_SET_RP_GIFT_ADMIN")), ReturnReputationPointsAmount(Rank), true);
+		MinimapNotification("Join a new GTAO session for the new Rank to be applied");
+	}
+	else
+	{
+		MinimapNotification("Invalid Rank Inputted");
+	}
 }
 
-Vector3 Cheat::GameFunctions::RotationToDirection(Vector3 rot) 
+int Cheat::GameFunctions::ReturnReputationPointsAmount(int Level)
 {
-	double num = DegreeToRadian(rot.z);
-	double num2 = DegreeToRadian(rot.x);
-	double val = cos(num2);
-	double num3 = abs(val);
-	rot.x = (float)(-(float)sin(num) * num3);
-	rot.y = (float)(cos(num) * num3);
-	rot.z = (float)sin(num2);
-	return rot;
-
-
+	return globalHandle(GLOBAL_LEVEL_TO_RP).At(1, Level).As<int>();
 }
 
-void Cheat::GameFunctions::SetRankRockstarGift(int RPValue)
-{
-	if (RPValue < 0 || RPValue > 8000) { Cheat::GameFunctions::MinimapNotification("Invalid Rank Inputted"); return; }
-	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(Cheat::GameFunctions::ReturnCurrentGTAOCharacter() + "_CHAR_SET_RP_GIFT_ADMIN")), Cheat::GameArrays::RankPointsArray[RPValue - 1], 0);
-	Cheat::GameFunctions::MinimapNotification("Join a new GTAO session for the new ranked to be applied");
-}
-
-Vector3 Cheat::GameFunctions::RotToDirection(Vector3* rot) 
+Vector3 Cheat::GameFunctions::RotationToDirection(Vector3* rot)
 {
 	float radiansZ = rot->z * 0.0174532924f;
 	float radiansX = rot->x * 0.0174532924f;
@@ -228,7 +216,7 @@ float Cheat::GameFunctions::DegreesToRadians(float degs)
 
 Vector3 Cheat::GameFunctions::GetEntityCoords(Entity entity) 
 {
-	return ENTITY::GET_ENTITY_COORDS(entity, 1);
+	return ENTITY::GET_ENTITY_COORDS(entity, false);
 }
 
 float Cheat::GameFunctions::GetDistanceBetweenTwoPoints(Vector3 A, Vector3 B) 
@@ -241,7 +229,6 @@ int Cheat::GameFunctions::ReturnRandomInteger(int start, int end)
 	return GAMEPLAY::GET_RANDOM_INT_IN_RANGE(start, end);
 }
 
-
 void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicle)
 {
 	Entity TargetEntity = e;
@@ -253,7 +240,7 @@ void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoC
 			TargetEntity = PED::GET_VEHICLE_PED_IS_USING(TargetEntity);
 		}
 	}
-	if (ENTITY::IS_ENTITY_A_VEHICLE(TargetEntity))
+	if (ENTITY::IS_AN_ENTITY(TargetEntity))
 	{
 		GameFunctions::RequestNetworkControlOfEntity(TargetEntity);
 	}
@@ -264,30 +251,30 @@ void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoC
 	}
 	else
 	{
-		bool groundFound = false;
-		static std::array<float, 21> groundCheckHeight = { 0.0, 50.0, 100.0, 150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.00 };
+		bool GroundFound = false;
+		static std::array<float, 21> GroundCheckHeight = { 0.0, 50.0, 100.0, 150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.00 };
 
-		for (const float& CurrentHeight : groundCheckHeight)
+		for (const float& CurrentHeight : GroundCheckHeight)
 		{
 			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, CurrentHeight, false, false, true);
-			GameHooking::PauseMainFiber(50);
+			GameHooking::PauseMainFiber(50, false);
 			if (GAMEPLAY::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, CurrentHeight, &coords.z, false))
 			{
-				groundFound = true;
-				coords.z += 3.0;
+				GroundFound = true;
+				coords.z += 3.0f;
 				break;
 			}
 		}
 
-		if (!groundFound) 
+		if (!GroundFound)
 		{ 
 			Vector3 ClosestRoadCoord;
-			if (PATHFIND::GET_CLOSEST_ROAD(coords.x, coords.y, coords.z, 1.f, 1, 
-										   &ClosestRoadCoord, &ClosestRoadCoord, NULL, NULL, NULL, 0))
+			if (PATHFIND::GET_CLOSEST_ROAD(coords.x, coords.y, coords.z, 1.0f, 1, 
+										   &ClosestRoadCoord, &ClosestRoadCoord, NULL, NULL, NULL, NULL))
 			{
 				coords = ClosestRoadCoord;
 			}
-			GameFunctions::SubtitleNotification("~r~Ground not found; teleported to nearby road", 6000);
+			GameFunctions::SubtitleNotification("~r~Ground not found, teleporting to nearby road", 4000);
 		}
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
 	}
@@ -324,10 +311,9 @@ void Cheat::GameFunctions::RequestNetworkControlOfEntity(Entity entity)
 			NETWORK::NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(netID);
 			IdTick++;
 		}
-		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netID, 1);
+		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netID, true);
 	}
 }
-
 
 void Cheat::GameFunctions::ClonePed(Ped ped)
 {
@@ -344,18 +330,6 @@ void Cheat::GameFunctions::MinimapNotification(char* Message)
 	UI::_DRAW_NOTIFICATION(false, false);
 }
 
-/*
-Icon Types:
-1 : Chat Box
-2 : Email
-3 : Add Friend Request
-4 : Nothing
-5 : Nothing
-6 : Nothing
-7 : Right Jumping Arrow
-8 : RP Icon
-9 : $ Icon
-*/
 void Cheat::GameFunctions::AdvancedMinimapNotification(char* Message, char* PicName1, char* PicName2, bool Flash, int IconType, char* Sender, char* Subject, float Duration, char* ClanTag)
 {
 	UI::_SET_NOTIFICATION_TEXT_ENTRY("STRING");
@@ -409,11 +383,7 @@ void Cheat::GameFunctions::ClearNearbyPedAnimations()
 void Cheat::GameFunctions::PlayPedAnimation(Ped TargetPed, char* AnimationName, char* AnimationID, bool Controllable)
 {
 	Cheat::GameFunctions::RequestNetworkControlOfEntity(TargetPed);
-	while (!STREAMING::HAS_ANIM_DICT_LOADED((AnimationName)))
-	{
-		STREAMING::REQUEST_ANIM_DICT(AnimationName);
-		GameHooking::PauseMainFiber(0, false);
-	}
+	while (!STREAMING::HAS_ANIM_DICT_LOADED((AnimationName))) { STREAMING::REQUEST_ANIM_DICT(AnimationName); GameHooking::PauseMainFiber(0, false); }
 	int Flags = 0;
 	if (Controllable) { Flags = ANIM_FLAG_UPPERBODY | ANIM_FLAG_ENABLE_PLAYER_CONTROL | ANIM_FLAG_STOP_LAST_FRAME;  }
 	AI::TASK_PLAY_ANIM(TargetPed, AnimationName, AnimationID, 8.0f, 0.0f, -1, Flags, 0, false, false, false);
@@ -445,7 +415,6 @@ void Cheat::GameFunctions::DoNearbyPedsAnimation(char* AnimationName, char* Anim
 	}
 }
 
-
 void Cheat::GameFunctions::PlayScenarioNearbyPeds(char* Scenario)
 {
 	const int ElementAmount = 10;
@@ -470,25 +439,35 @@ void Cheat::GameFunctions::PlayScenarioNearbyPeds(char* Scenario)
 
 void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 {
-	if (!Cheat::CheatFeatures::HidePlayerInformationBox && GameFunctions::IsPlayerIDValid(PlayerID))
+	if (!Cheat::CheatFeatures::HidePlayerInformationBox)
 	{
-		//Definitions & error handling
+		//Definitions
 		Ped SelectedPlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerID);
 		RequestNetworkControlOfEntity(SelectedPlayerPed);
+
+		//Draw Player Marker
+		if (CheatFeatures::PlayerListMarkerPosition == 0 || CheatFeatures::PlayerListMarkerPosition == 1 && GUI::currentMenu == PlayerListMenu)
+		{
+			Vector3 coords = GetEntityCoords(SelectedPlayerPed);
+			GRAPHICS::DRAW_LIGHT_WITH_RANGE(coords.x, coords.y, coords.z + 2.f, 255, 255, 255, 5.f, 10.f);
+		}
 
 		//Draw Title and Background
 		if (Cheat::GUI::guiX < 0.54f)
 		{
-			GUI::Drawing::Rect(GUI::PrimaryColor, { Cheat::GUI::guiX + 0.266f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
-			GUI::Drawing::Text("Player Information", { GUI::TextColorAndFont }, { Cheat::GUI::guiX + 0.260f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
-			GUI::Drawing::Rect({ 0, 0, 0, 210 }, { Cheat::GUI::guiX + 0.266f, GUI::guiY - 0.156f }, { 0.32f, 0.030f });
+			GUI::DrawRectInGame(GUI::PrimaryColor, { Cheat::GUI::guiX + 0.266f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
+			GUI::DrawTextInGame("Player Information", { GUI::TextColorAndFont }, { Cheat::GUI::guiX + 0.260f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
+			GUI::DrawRectInGame({ 0, 0, 0, 210 }, { Cheat::GUI::guiX + 0.266f, GUI::guiY - 0.156f }, { 0.32f, 0.030f });
 		}
 		else
 		{
-			GUI::Drawing::Rect(GUI::PrimaryColor, { Cheat::GUI::guiX - 0.266f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
-			GUI::Drawing::Text("Player Information", { GUI::TextColorAndFont }, { Cheat::GUI::guiX - 0.260f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
-			GUI::Drawing::Rect({ 0, 0, 0, 210 }, { Cheat::GUI::guiX - 0.266f,GUI::guiY - 0.156f }, { 0.32f, 0.030f });
+			GUI::DrawRectInGame(GUI::PrimaryColor, { Cheat::GUI::guiX - 0.266f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
+			GUI::DrawTextInGame("Player Information", { GUI::TextColorAndFont }, { Cheat::GUI::guiX - 0.260f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
+			GUI::DrawRectInGame({ 0, 0, 0, 210 }, { Cheat::GUI::guiX - 0.266f,GUI::guiY - 0.156f }, { 0.32f, 0.030f });
 		}
+
+		//Draw World Map
+		//GUI::DrawSpriterInGame("mp_freemode_mc", "debugmap", 0.60f, 0.50f, 0.15f, 0.4f, 0, 255, 255, 255, 255);
 
 		//Text Entry's
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Name", 1);
@@ -512,7 +491,6 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 			Cheat::GUI::AddPlayerInfoBoxTextEntry("Unavailable", NULL, 3);
 		}
 
-
 		//Health
 		std::ostringstream Health;
 		float health = ENTITY::GET_ENTITY_HEALTH(SelectedPlayerPed);
@@ -528,7 +506,6 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 			Cheat::GUI::AddPlayerInfoBoxTextEntry(Health.str(), NULL, 4);
 		}
 		
-
 		//Armor
 		std::ostringstream Armor;
 		int ArmorValue = PED::GET_PED_ARMOUR(SelectedPlayerPed) * 100 / PLAYER::GET_PLAYER_MAX_ARMOUR(PlayerID);
@@ -610,11 +587,11 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		std::string WeaponName;
 		if (WEAPON::GET_CURRENT_PED_WEAPON(SelectedPlayerPed, &WeaponHash, true))
 		{
-			for (int i = 0; i < Cheat::GameArrays::WeaponsHashList.size(); i++)
+			for (auto const& i : GameArrays::WeaponsHashList)
 			{
-				if (WeaponHash == Cheat::GameArrays::WeaponsHashList[i].WeaponHash)
+				if (WeaponHash == i.WeaponHash)
 				{
-					WeaponName = Cheat::GameArrays::WeaponsHashList[i].WeaponName;
+					WeaponName = i.WeaponName;
 				}
 			}
 			
@@ -627,7 +604,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 
 
 		//Coords
-		Vector3 SelectedPlayerPedCoords = ENTITY::GET_ENTITY_COORDS(SelectedPlayerPed, true);
+		Vector3 SelectedPlayerPedCoords = GetEntityCoords(SelectedPlayerPed);
 		std::ostringstream CoordX;
 		std::ostringstream CoordY;
 		std::ostringstream CoordZ;
@@ -657,18 +634,25 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		Street << UI::GET_STREET_NAME_FROM_HASH_KEY(streetName);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(Street.str(), NULL, 15);
 
-		float distance = Get3DDistance(SelectedPlayerPedCoords, ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, true));
+		float distance = Get3DDistance(SelectedPlayerPedCoords, GetEntityCoords(Cheat::GameFunctions::PlayerPedID));
 		std::ostringstream Distance;
 
-		if (distance > 1000)
+		if (PlayerID != GameFunctions::PlayerID)
 		{
-			distance = round((distance / 1000) * 100) / 100;
-			Distance << distance << " KM";
+			if (distance > 1000)
+			{
+				distance = round((distance / 1000) * 100) / 100;
+				Distance << distance << " KM";
+			}
+			else
+			{
+				distance = round(distance * 1000) / 100;
+				Distance << distance << " M";
+			}
 		}
 		else
 		{
-			distance = round(distance * 1000) / 100;
-			Distance << distance << " M";
+			Distance << "N/A";
 		}
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Distance", NULL, NULL, 1);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(Distance.str(), NULL, NULL, NULL, 1);
@@ -757,14 +741,13 @@ void Cheat::GameFunctions::ApplyForceToEntity(Entity e, float x, float y, float 
 	ENTITY::APPLY_FORCE_TO_ENTITY(e, 1, x, y, z, 0, 0, 0, 0, 1, 1, 1, 0, 1);
 }
 
-void Cheat::GameFunctions::DetachObjectFromPed(Ped Ped, char* ObjectName)
+void Cheat::GameFunctions::RemoveObjectFromPed(Ped Ped, char* ObjectName)
 {
-	Vector3 PedCoords = ENTITY::GET_ENTITY_COORDS(Ped, true);
+	Vector3 PedCoords = GetEntityCoords(Ped);
 	Object Object = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(PedCoords.x, PedCoords.y, PedCoords.z, 4.0, GAMEPLAY::GET_HASH_KEY(ObjectName), false, false, true);
 	if (ENTITY::DOES_ENTITY_EXIST(Object) && ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY(Object, Ped))
 	{
 		Cheat::GameFunctions::RequestNetworkControlOfEntity(Object);
-		ENTITY::DETACH_ENTITY(Object, true, true);
 		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(Object, true, true);
 		ENTITY::DELETE_ENTITY(&Object);
 		ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&Object);
@@ -775,7 +758,7 @@ void Cheat::GameFunctions::AttachObjectToPed(Ped Ped, char* ObjectName)
 {
 	int attachobj[100];
 	int nuattach = 1;
-	Vector3 pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped), true);
+	Vector3 pos = GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped));
 	int hash = GAMEPLAY::GET_HASH_KEY(ObjectName);
 	if (STREAMING::IS_MODEL_IN_CDIMAGE(hash))
 	{
@@ -789,7 +772,7 @@ void Cheat::GameFunctions::AttachObjectToPed(Ped Ped, char* ObjectName)
 				attachobj[nuattach] = OBJECT::CREATE_OBJECT(hash, pos.x, pos.y, pos.z, 1, 1, 1);
 				if (ENTITY::DOES_ENTITY_EXIST(attachobj[nuattach]))
 				{
-					ENTITY::ATTACH_ENTITY_TO_ENTITY(attachobj[nuattach], PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped), 31086, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 2, 1);
+					ENTITY::ATTACH_ENTITY_TO_ENTITY(attachobj[nuattach], PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped), 31086, 0, 0, 0, 0, 0, 0, true, false, false, false, 2, true);
 					nuattach++;
 					if (nuattach >= 101) { nuattach = 1; }
 				}
@@ -1005,13 +988,17 @@ char* Cheat::GameFunctions::ReturnOnlinePlayerPictureString(Player PlayerHandle)
 {
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
-		int Index = ONLINE_PLAYER_PICTURE_INDEX + 2;
+		int Index = GLOBAL_PLAYER_PICTURE_INDEX + 2;
 		for (int x = 0; x <= 150; x += 5)
 		{
 			int playerId = globalHandle(Index).At(x).As<int>();
 			if (playerId == PlayerHandle)
 			{
-				return PED::GET_PEDHEADSHOT_TXD_STRING(globalHandle(Index).At(x).At(1).As<int>());
+				int PedHeadshotHandle = globalHandle(Index).At(x).At(1).As<int>();
+				if (PED::IS_PEDHEADSHOT_VALID(PedHeadshotHandle))
+				{
+					return PED::GET_PEDHEADSHOT_TXD_STRING(PedHeadshotHandle);
+				}
 			}
 			if (playerId == -1)
 			{
@@ -1037,17 +1024,17 @@ bool Cheat::GameFunctions::IsCursorAtXYPosition(VECTOR2 const& boxCentre, VECTOR
 bool Cheat::CheatFeatures::CursorGUINavigationEnabled = false;
 void Cheat::GameFunctions::EnableDisableCursorGUINavigation()
 {
-	if (GUI::menuLevel != 0 && !GUI::ControlsDisabled)
+	if (GUI::menuLevel != 0 && !Controls::ControlsDisabled)
 	{
-		if (Cheat::CheatFeatures::CursorGUINavigationEnabled)
+		if (CheatFeatures::CursorGUINavigationEnabled)
 		{
-			Cheat::CheatFeatures::CursorGUINavigationEnabled = false;
-			PLAYER::SET_PLAYER_CONTROL(Cheat::GameFunctions::PlayerID, true, 0);
+			CheatFeatures::CursorGUINavigationEnabled = false;
+			PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, true, 0);
 		}
 		else
 		{
-			Cheat::CheatFeatures::CursorGUINavigationEnabled = true;
-			PLAYER::SET_PLAYER_CONTROL(Cheat::GameFunctions::PlayerID, false, 0);
+			CheatFeatures::CursorGUINavigationEnabled = true;
+			PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, false, 0);
 		}
 	}
 }
@@ -1077,11 +1064,14 @@ bool Cheat::GameFunctions::PlayerIsFreemodeScriptHost(Player Player)
 
 void Cheat::GameFunctions::CopySelectedPlayerOutfit(Player SelectedPlayer)
 {
-	Ped SelectedPlayerPedHandle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(SelectedPlayer);
-	for (int i = 0; i < 12; i++)
+	if (SelectedPlayer != PlayerID)
 	{
-		PED::SET_PED_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, i, PED::GET_PED_DRAWABLE_VARIATION(SelectedPlayerPedHandle, i), PED::GET_PED_TEXTURE_VARIATION(SelectedPlayerPedHandle, i), PED::GET_PED_PALETTE_VARIATION(SelectedPlayerPedHandle, i));
-		GameHooking::PauseMainFiber(0, true);
+		Ped SelectedPlayerPedHandle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(SelectedPlayer);
+		for (int i = 0; i < 12; i++)
+		{
+			PED::SET_PED_COMPONENT_VARIATION(Cheat::GameFunctions::PlayerPedID, i, PED::GET_PED_DRAWABLE_VARIATION(SelectedPlayerPedHandle, i), PED::GET_PED_TEXTURE_VARIATION(SelectedPlayerPedHandle, i), PED::GET_PED_PALETTE_VARIATION(SelectedPlayerPedHandle, i));
+			GameHooking::PauseMainFiber(0, true);
+		}
 	}
 }
 
@@ -1090,7 +1080,7 @@ int Cheat::GameFunctions::ReturnPlayerRockstarID(Player PlayerHandle)
 	char* RockstarIDBuffer;
 	int NETWORK_HANDLE[76];
 	NETWORK::NETWORK_HANDLE_FROM_PLAYER(PlayerHandle, &NETWORK_HANDLE[0], 13);
-	if (NETWORK::NETWORK_IS_HANDLE_VALID(&NETWORK_HANDLE[0], 13)) 
+	if (NETWORK::NETWORK_IS_HANDLE_VALID(&NETWORK_HANDLE[0], 13))
 	{
 		RockstarIDBuffer = NETWORK::NETWORK_MEMBER_ID_FROM_GAMER_HANDLE(&NETWORK_HANDLE[0]);
 	}
@@ -1112,11 +1102,10 @@ std::string Cheat::GameFunctions::ReturnPlayerIPAddressAsString(Player PlayerHan
 	{
 		sprintf_s(IPBuffer, "Unavailable");
 	}
-	std::string IPBufferString = { IPBuffer };
-	return IPBufferString;
+	return IPBuffer;
 }
 
-std::string Cheat::GameFunctions::ReturnCurrentGTAOCharacter(int NumberOnly)
+std::string Cheat::GameFunctions::ReturnCurrentGTAOCharacter(bool NumberOnly)
 {
 	int CharacterID;
 	STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_LAST_MP_CHAR"), &CharacterID, -1);
@@ -1129,10 +1118,6 @@ void Cheat::GameFunctions::PlayFrontendSoundDefault(char* SoundName)
 	AUDIO::PLAY_SOUND_FRONTEND(-1, SoundName, "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
 }
 
-/*
-Description: Check whether or not the provided integer correspondents to a valid Player Ped.
-Note(s): This function assumes the player has a Ped.
-*/
 bool Cheat::GameFunctions::IsPlayerIDValid(Player ID)
 {
 	if (ENTITY::DOES_ENTITY_EXIST(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(ID)))
@@ -1214,4 +1199,34 @@ void Cheat::GameFunctions::FadeRGB(int& r, int& g, int& b)
 		r++;
 		b--;
 	}
+}
+
+/*
+Description: Shows a full-screen message with background rectangle.
+Note(s): Used by Recovery warning and Unload, needs work to be used for other purposes.
+*/
+bool Cheat::GameFunctions::ShowFullScreenMessage(std::string Message)
+{
+	while (true)
+	{
+		GUI::DrawRectInGame({ GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 210 }, { 0.500f, 0.372f }, { 0.30f, 0.005f });
+		GUI::DrawRectInGame({ 0, 0, 0, 210 }, { 0.50f, 0.45f }, { 0.30f, 0.15f });
+		Cheat::GUI::DrawTextInGame("WARNING", { 255, 255, 255, 255, FontPricedown }, { 0.355f, 0.375f }, { 0.50f, 0.50f }, false);
+		Cheat::GUI::DrawTextInGame(Message, { 255, 255, 255, 255}, { 0.500f, 0.410f}, { 0.40f, 0.40f }, true, true);
+		Cheat::GUI::DrawTextInGame("Press ENTER to accept or BACKSPACE to decline", { 255, 255, 255, 255 }, { 0.355f, 0.495f }, { 0.30f, 0.30f }, false);
+		if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_ACCEPT))
+		{
+			return true;
+		}
+		if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_CANCEL))
+		{
+			return false;
+		}
+		GameHooking::PauseMainFiber(0, false);
+	}
+}
+
+void Cheat::GameFunctions::SetCharacterSkillStat(std::string Skill, int Level)
+{
+	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_" + Skill)), Level, true);
 }

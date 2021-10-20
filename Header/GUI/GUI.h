@@ -29,10 +29,12 @@ enum SubMenus
 	SpawnedVehiclesMenu,
 	AllPlayersMenu,
 	AllPlayersExclutionsMenu,
-	ModelChangerMenu,
+	SelfModelMenu,
 	GlobalsMenu,
 	SpawnMenu,
 	VehicleSpawnMenu,
+	ObjectSpawnMenu,
+	PedSpawnMenu,
 	Super,
 	Sports,
 	smugglersrun,
@@ -81,36 +83,40 @@ enum SubMenus
 	SelectedPlayerTrollMenu,
 	SelectedPlayerFriendlyMenu,
 	protections,
-	clothingmenu,
-	outfitsmenu,
-	componentschangermenu,
+	WardrobeMenu,
+	VisionMenu,
 	SelectedPlayerRemoteOptions,
 	SessionChatMenu,
 	vehicleweaponsmenu,
 	RecoveryMenu,
+	RecoveryStatsMenu,
+	RecoveryMenuWarning,
 	vehiclemultipliersmenus,
-	vehiclegunmenu,
+	ShootEntitiesMenu,
 	aimbotsettingsmenu,
 	SelectedPlayerTeleportMenu,
+	SelectedPlayerApartmentTeleport,
 	sessionoptionsmenu,
 	hudmenu,
 	HideElementsMenu,
 	AboutMenu,
 	reportsmenu_stats,
+	ESPMenu,
 	VehicleCustomizerMenu,
 	DLCVehiclesMenu,
+	RadioMenu,
 	SUBMENUS_END //Used to get total size of SubMenus (SUBMENUS_END - 2) 
 };
 
 enum SelectableBitFlags
 {
-	SELECTABLE_DUMMY = 1,			//Placeholder
-	SELECTABLE_DISABLED = 2,		//The selectable is disabled, if the select key is pressed on the item a message appears informing the user about the disable state. When using this flag saving is also blocked (use of SELECTABLE_DISABLED than not needed)
-	SELECTABLE_DISABLE_SAVE = 4,	//The selectable won't save when the corresponding key is pressed
-	SELECTABLE_CENTER_TEXT = 8,		//This currently only applies to the Break selectable. Text will be centered relative to menu GUI.
-	SELECTABLE_RETURN_VALUE_CHANGE = 16   //Currently used by Float and StringVector selectable. Function will return when a value is changed (e.g. left or right is pressed)
+	SELECTABLE_DUMMY = 1,					//Placeholder
+	SELECTABLE_DISABLED = 2,				//The selectable is disabled, if the select key is pressed on the selectable a message appears informing the user about the disable state. When using this flag saving is also blocked (use of SELECTABLE_DISABLE_SAVE not needed).
+	SELECTABLE_DISABLE_SAVE = 4,			//The selectable won't save when the corresponding key is pressed.
+	SELECTABLE_CENTER_TEXT = 8,				//This currently only applies to the Break selectable. Text will be centered relative to menu GUI.
+	SELECTABLE_RETURN_VALUE_CHANGE = 16,	//Currently used by Float, StringVector and Int selectable. Function will also return when a value is changed (e.g. left or right is pressed).
+	SELECTABLE_HIDE_INFO_BOX = 32,			//Forcefully (ignoring other settings) hides the Selectable Information Box for a given Selectable.
 };
-
 
 typedef struct VECTOR2 { float x, y; };
 typedef struct VECTOR2_2 { float w, h; };
@@ -122,15 +128,10 @@ namespace Cheat
 {
 	namespace GUI
 	{
-		namespace Drawing
-		{
-			void Text(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center, bool Outline = false);
-			void Rect(RGBA rgba, VECTOR2 position, VECTOR2_2 size);
-			void Spriter(std::string Streamedtexture, std::string textureName, float x, float y, float width, float height, float rotation, int r, int g, int b, int a);
-			void InitTextureFile();
-		}
-
-		extern void ControlsLoop();
+		void LoadTextureFile();
+		void DrawTextInGame(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center, bool Outline = false);
+		void DrawRectInGame(RGBA rgba, VECTOR2 position, VECTOR2_2 size);
+		void DrawSpriterInGame(std::string Streamedtexture, std::string textureName, float x, float y, float width, float height, float rotation, int r, int g, int b, int a);
 
 		extern const float SelectableInfoBoxY_Default;
 		extern const float SelectableInfoBoxX_Default;
@@ -150,11 +151,6 @@ namespace Cheat
 		extern bool CheatGUIHasBeenOpened;
 		extern bool CurrentOptionIsSavable;
 		extern std::string CurrentTheme;
-		extern bool ControlsDisabled;
-		extern bool selectPressed;
-		extern bool leftPressed;
-		extern bool rightPressed;
-		extern bool center;
 		extern bool RestorePreviousSubmenu;
 		extern int maxVisOptions;
 		extern int currentOption;
@@ -169,33 +165,32 @@ namespace Cheat
 		extern SubMenus PreviousMenu;
 		extern int optionsArray[1000];
 		extern SubMenus menusArray[1000];
-		extern RGBA selectedText;
-		extern RGBA scroller;
 		extern RGBA PrimaryColor;
 		extern RGBAF TextColorAndFont;
-		extern int GUIKeyPressDelay;
-		extern int KeyPressPreviousTick;
-		extern int OpenGUIKey;
-		extern int GUINavigationKey;
-		extern int SaveSelectableKey;
+		extern int SelectableTransparency;
+		extern int HeaderBackgroundTransparency;
+		extern int TitleAndEndTransparency;
+		extern int ToggleSelectableTransparency;
+		extern int HeaderTextureTransparency;
+		extern int EndSmallLogoTransparency;
+		extern int OnlinePlayerPictureTransparency;
+		extern int MenuArrowAnimationDelay;
 		extern bool MenuOptionArrowAnimationState;
-		extern void DeleteCurrentTheme();
+		extern void DeleteLoadedTheme();
 		void MoveMenu(SubMenus menu);
 		void BackMenu();
-		void CloseGUI();
+		void CloseMenuGUI();
 		void End();
-		void ChangeControlsState(bool State);
 		void LoadTheme(std::string ThemeFileName, bool StartUp);
 		void SaveTheme(std::string ThemeFileName);
-		extern bool SelectableHandler(bool DisabledState);
 
 		void Title(std::string TitleName);
 		void AddPlayerInfoBoxTextEntry(std::string text, int Row1 = NULL, int Row2 = NULL, int Row3 = NULL, int Row4 = NULL);
-		bool Break(std::string option, bool TextCentered);
+		bool Break(std::string option, int BitFlags = NULL);
 		bool Option(std::string option, std::string InformationText, int BitFlags = NULL);
 		bool VehicleOption(std::string option, std::string ModelName);
 		bool MenuOption(std::string option, SubMenus newSub, int BitFlags = NULL);
-		bool MenuOptionPlayerList(std::string PlayerName, SubMenus newSub);
+		bool MenuOptionPlayerList(std::string PlayerName, int BitFlags = NULL);
 		bool Toggle(std::string option, bool& TargetBool, std::string InformationText, int BitFlags = NULL);
 		bool Int(std::string option, int& _int, int min, int max, int step, std::string InformationText = "Select to change", int BitFlags = NULL);
 		bool Float(std::string option, float& _float, float min, float max, float steps, std::string InformationText = "", std::streamsize FloatPrecision = 3, int BitFlags = NULL);

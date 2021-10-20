@@ -16,7 +16,8 @@ namespace Cheat
 		extern int OpenVehicleDoorPosition;
 		extern int CloseVehicleDoorPosition;
 		extern int FastSuperRunPosition;
-		extern int selectedPlayer;
+		extern int PlayerListMarkerPosition;
+		extern int SelectedPlayer;
 		extern int PlayerOpacityInt;
 		extern bool BlockMaliciousScriptEvents;
 		extern bool BlockAllScriptEvents;
@@ -47,6 +48,8 @@ namespace Cheat
 		void NeverWanted(bool toggle);
 		extern bool NoWeaponReloadBool;
 		void NoWeaponReload();
+		extern bool InfiniteAmmoBool;
+		void InfiniteAmmo(bool toggle);
 		extern bool SlowMotionBool;
 		void SlowMotion(bool toggle);
 		extern bool WorldBlackoutBool;
@@ -54,8 +57,11 @@ namespace Cheat
 		extern float GravityGunEntityDistance;
 		extern bool GravityGunBool;
 		void GravityGun();
-		extern bool HideHUDBool;
-		void HideHUD();
+		extern bool DisableHUDBool;
+		void DisableHUD();
+		extern bool HideMinimapBool;
+		extern bool HideMinimapWasEnabled;
+		void HideMinimap();
 		extern bool NoGravityBool;
 		void NoGravity(bool toggle);
 		extern bool WorldSnowLocalBool;
@@ -84,16 +90,12 @@ namespace Cheat
 		void ProtectionGiveRemoveWeapons(bool toggle);
 		extern bool SuperJumpBool;
 		void SuperJump();
-		extern bool FastRunBool;
-		void FastRun(bool toggle);
 		extern bool ShowFPSBool;
 		void ShowFPS();
 		extern bool JumpAroundModeBool;
 		void JumpAroundMode();
 		extern bool VehicleHornBoostBool;
 		void VehicleHornBoost();
-		extern bool FakeWantedLevelBool;
-		void FakeWantedLevel(bool toggle);
 		extern bool VehicleGodmodeBool;
 		void VehicleGodmode(bool toggle);
 		extern bool VehicleInvisibleBool;
@@ -102,6 +104,9 @@ namespace Cheat
 		void PlayerInvisible(bool toggle);
 		extern bool MobileRadioBool;
 		void MobileRadio(bool toggle);
+		extern bool FreezeStationBool;
+		extern bool FreezeStationWasEnabled;
+		void FreezeStation();
 		extern bool WeaponRapidFireBool;
 		void WeaponRapidFire();
 		extern bool PlayerIgnoredBool;
@@ -133,9 +138,9 @@ namespace Cheat
 		void TinyPlayer(bool toggle);
 		extern bool UnlimitedRocketBoostBool;
 		void UnlimitedRocketBoost();
-		extern bool VehicleGunBool;
-		extern std::string VehicleGun_VehicleNameString;
-		void VehicleGun();
+		extern bool ShootEntitiesBool;
+		extern std::string ShootEntitiesCurrent;
+		void ShootEntities();
 		extern bool PlayerESPBool;
 		void PlayerESP();
 		extern bool OffRadarBool;
@@ -158,10 +163,6 @@ namespace Cheat
 		extern bool CopsTurnBlindEyeBool;
 		extern bool CopsTurnBlindEyeWasEnabled;
 		void CopsTurnBlindEye();
-		extern bool MoneyDropBool;
-		extern int MoneyDropDelay;
-		extern int MoneyDropDelayPreviousTick;
-		void MoneyDrop();
 		extern bool VehicleWeaponsBool;
 		extern bool VehicleWeapons_TankRounds;
 		extern bool VehicleWeapons_VehicleRockets;
@@ -184,5 +185,7 @@ namespace Cheat
 		extern bool RGBDiscoBool;
 		extern bool RGBDiscoFirstCall;
 		void RGBDisco();
+		extern bool WeaponInvisibilityBool;
+		void WeaponInvisibility(bool toggle);
 	}
 }

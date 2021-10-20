@@ -61,11 +61,11 @@ namespace Cheat
 		std::string GetLastErrorAsString();
 		void LoopedFunctions();
 		bool IsGameWindowFocussed();
-		bool StringIsInteger(const std::string& s);
-		bool IsIntegerInRange(unsigned low, unsigned high, unsigned x);
-		std::string TextureFilePath();
+		bool StringIsInteger(std::string String);
+		std::string ReturnTextureFilePath();
 		int WaitForAndReturnPressedKey();
-		char* StringToChar(std::string string);
+		char* StringToChar(std::string String);
+		const char* StringToConstChar(std::string String);
 		std::string VirtualKeyCodeToString(UCHAR virtualKey);
 		void CreateConsole();
 		int ReturnNumberOfDigitsInValue(double Number);
@@ -87,6 +87,5 @@ namespace Cheat
 		Json::Value ReadJsonFileAndReturnDataObject(std::string FilePath);
 		void AddCustomTeleportLocation(std::string CustomTeleportLocationName);
 		void DeleteCustomTeleportLocation(std::string CustomTeleportLocationName);
-		DWORD WINAPI MenuSelectableAnimationThread(LPVOID lpParam);
 	}
 }

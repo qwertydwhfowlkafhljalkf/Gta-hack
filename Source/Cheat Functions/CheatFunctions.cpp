@@ -10,12 +10,12 @@ void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 	if (!std::filesystem::create_directory(Path))
 	{
 		std::string String = __func__ + (std::string)"() Failed to create directory '" + Path + "' Error: " + Cheat::CheatFunctions::GetLastErrorAsString();
-		Cheat::LogFunctions::DebugMessage(CheatFunctions::StringToChar(String));
+		Cheat::LogFunctions::DebugMessage(String);
 	}
 	else
 	{
 		std::string String = __func__ + (std::string)"() Created directory '" + Path + "'";
-		Cheat::LogFunctions::DebugMessage((CheatFunctions::StringToChar(String)));
+		Cheat::LogFunctions::DebugMessage(String);
 	}
 }
 
@@ -62,6 +62,11 @@ const std::string Cheat::CheatFunctions::ReturnThemeFilePath(std::string ThemeNa
 	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes\\" + ThemeName + ".ini";
 }
 
+std::string Cheat::CheatFunctions::ReturnTextureFilePath()
+{
+	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Textures.ytd";
+}
+
 bool Cheat::CheatFunctions::FileOrDirectoryExists(std::string Path)
 {
 	if (std::filesystem::exists(Path))
@@ -85,20 +90,19 @@ std::string Cheat::CheatFunctions::GetLastErrorAsString()
 	return message;
 }
 
-
 Player Cheat::GameFunctions::PlayerID;
 Ped Cheat::GameFunctions::PlayerPedID;
 void Cheat::CheatFunctions::LoopedFunctions()
 {
-	//Player ID and Player Ped ID
+	// Player ID and Player Ped ID
 	GameFunctions::PlayerID = PLAYER::PLAYER_ID();
 	GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
 
-	//Features
+	// Features
 	CheatFeatures::Looped();
 
-	//Controls
-	GUI::ControlsLoop();
+	// Controls
+	Controls::Loop();
 
 	//Submenu handlers - additional submenu logic is looped here
 	if (GUI::currentMenu == SelectedPlayerMenu ||
@@ -107,16 +111,18 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		GUI::currentMenu == SelectedPlayerTeleportMenu ||
 		GUI::currentMenu == SelectedPlayerAttachmentOptions ||
 		GUI::currentMenu == SelectedPlayerTrollMenu ||
+		GUI::currentMenu == SelectedPlayerApartmentTeleport ||
 		GUI::currentMenu == SelectedPlayerRemoteOptions)
 	{
-		if (GameFunctions::IsPlayerIDValid(CheatFeatures::selectedPlayer))
+		if (GameFunctions::IsPlayerIDValid(CheatFeatures::SelectedPlayer))
 		{
-			GameFunctions::ShowPlayerInformationBox(CheatFeatures::selectedPlayer);
+			GameFunctions::ShowPlayerInformationBox(CheatFeatures::SelectedPlayer);
 		}
 		else
 		{
 			GUI::PreviousMenu = NOMENU;
 			GUI::MoveMenu(MainMenu);
+			GUI::MoveMenu(OnlineOptionsMenu);
 			GameFunctions::MinimapNotification("~r~Invalid Player ID");
 		}
 	}
@@ -125,7 +131,7 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		GUI::ThemeFilesVector.clear();
 		std::string ThemeFolderPath = CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
 		if (!Cheat::CheatFunctions::FileOrDirectoryExists(ThemeFolderPath)) { CheatFunctions::CreateNewDirectory(ThemeFolderPath); }
-		for (const auto& file : std::filesystem::directory_iterator(ThemeFolderPath.c_str()))
+		for (const auto& file : std::filesystem::directory_iterator(ThemeFolderPath))
 		{
 			if (file.path().extension() == ".ini")
 			{
@@ -134,13 +140,7 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		}
 	}
 
-	//Show subtitle message in-game while config file is loading
-	if (!CheatFunctions::LoadConfigThreadFunctionCompleted)
-	{
-		GameFunctions::SubtitleNotification("Loading configuration file, one moment please", 1);
-	}
-
-	//Cursor Navigation Handler
+	// Cursor Navigation Handler
 	if (CheatFeatures::CursorGUINavigationEnabled)
 	{
 		PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, false, 0);
@@ -199,33 +199,20 @@ bool Cheat::CheatFunctions::IsGameWindowFocussed()
 	if (FindWindowA("grcWindow", "Grand Theft Auto V") == GetForegroundWindow())
 	{ 
 		return true;
-	} 
-	else 
-	{ 
-		return false; 
 	}
+	return false;
 }
 
-bool Cheat::CheatFunctions::StringIsInteger(const std::string& s)
+bool Cheat::CheatFunctions::StringIsInteger(std::string String)
 {
-	return !s.empty() && std::find_if(s.begin(), s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
-}
-
-bool Cheat::CheatFunctions::IsIntegerInRange(unsigned low, unsigned high, unsigned x)
-{
-	return  ((x - low) <= (high - low));
-}
-
-std::string Cheat::CheatFunctions::TextureFilePath()
-{
-	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Textures.ytd";
+	return !String.empty() && std::find_if(String.begin(), String.end(), [](unsigned char c) { return !std::isdigit(c); }) == String.end();
 }
 
 int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 {
 	while (true)
 	{
-		Cheat::GUI::Drawing::Text("~bold~Press any key, press Escape to cancel", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 0.900f, 0.900f }, true); GameHooking::PauseMainFiber(0, false);
+		GUI::DrawTextInGame("~bold~Press any key, press Escape to cancel", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 0.900f, 0.900f }, true); GameHooking::PauseMainFiber(0, false);
 		for (int i = 1; i < 256; i++)
 		{
 			if (IsKeyCurrentlyPressed(i) && i != VK_RETURN && i != VK_NUMPAD5)
@@ -244,12 +231,12 @@ int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 void Cheat::CheatFunctions::SaveOption(std::string OptionName, std::string OptionValue, bool IsSavable)
 {
 	GUI::CurrentOptionIsSavable = IsSavable;
-	if (IsKeyCurrentlyPressed(GUI::SaveSelectableKey))
+	if (IsKeyCurrentlyPressed(Controls::SaveSelectableKey))
 	{
 		if (IsSavable)
 		{
 			std::string LogMessage = "'" + OptionName + "' saved";
-			Cheat::GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(LogMessage), "Textures", "AdvancedNotificationImage", false, 4, "Config", "", 0.5f, "");
+			Cheat::GameFunctions::AdvancedMinimapNotification(StringToChar(LogMessage), "Textures", "AdvancedNotificationImage", false, 4, "Config", "", 0.5f, "");
 			IniFileWriteString(OptionValue, ReturnConfigFilePath(), "SETTINGS", OptionName);
 		}
 	}
@@ -262,41 +249,39 @@ std::string Cheat::CheatFunctions::GetOptionValueFromConfig(std::string OptionNa
 
 void LoadConfigThreadFunction()
 {
-	Cheat::GUI::ChangeControlsState(false);
+	Cheat::Controls::ChangeControlsState(false);
 	Cheat::GUI::HideGUIElements = true;
 	for (int SubMenuInt = MainMenu; SubMenuInt != SUBMENUS_END; SubMenuInt++)
 	{
 		Cheat::GUI::MoveMenu(static_cast<SubMenus>(SubMenuInt));
 		Sleep(150);
 	}
-	Cheat::GUI::CloseGUI();
+	Cheat::GUI::CloseMenuGUI();
 	Cheat::GUI::PreviousMenu = NOMENU;
-	Cheat::GUI::ChangeControlsState(true);
+	Cheat::Controls::ChangeControlsState(true);
 	Cheat::GUI::HideGUIElements = false;
 	Cheat::CheatFunctions::LoadConfigThreadFunctionCompleted = true;
 }
 
 void Cheat::CheatFunctions::LoadConfig()
 {
-	Cheat::LogFunctions::Message("Loading Config");
-
-	GameFunctions::SubtitleNotification("Loading configuration file, one moment please", 100);
+	Cheat::LogFunctions::Message("Loading Configuration");
 	std::thread LoadConfigThreadHandle(LoadConfigThreadFunction);
 	LoadConfigThreadHandle.detach();
 
 	//Load keys
 	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Menu GUI Key");
-	if (!MenuGUIKey.empty()) { GUI::OpenGUIKey = StringToInt(MenuGUIKey); }
+	if (!MenuGUIKey.empty()) { Controls::OpenGUIKey = StringToInt(MenuGUIKey); }
 	
 	std::string CursorNavigationKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
-	if (!CursorNavigationKey.empty()) { GUI::OpenGUIKey = StringToInt(CursorNavigationKey); }
+	if (!CursorNavigationKey.empty()) { Controls::OpenGUIKey = StringToInt(CursorNavigationKey); }
 
 	std::string SaveSelectableKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Save Selectable Key");
-	if (!SaveSelectableKey.empty()) { GUI::OpenGUIKey = StringToInt(SaveSelectableKey); }
+	if (!SaveSelectableKey.empty()) { Controls::OpenGUIKey = StringToInt(SaveSelectableKey); }
 
 	//Load Active Theme
 	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Active Theme");
-	if (!ActiveThemeSetting.empty()) { GUI::LoadTheme(CheatFunctions::StringToChar(ActiveThemeSetting), true); }
+	if (!ActiveThemeSetting.empty()) { GUI::LoadTheme(ActiveThemeSetting, true); }
 }
 
 bool Cheat::CheatFunctions::IsOptionRegisteredAsLoaded(std::string OptionName)
@@ -311,9 +296,15 @@ bool Cheat::CheatFunctions::IsOptionRegisteredAsLoaded(std::string OptionName)
 	return false;
 }
 
-char* Cheat::CheatFunctions::StringToChar(std::string string)
+char* Cheat::CheatFunctions::StringToChar(std::string String)
 {
-	return _strdup(string.c_str());
+	return _strdup(String.c_str());
+}
+
+const char* Cheat::CheatFunctions::StringToConstChar(std::string String)
+{
+	auto Temp = String.c_str();
+	return Temp;
 }
 
 std::string Cheat::CheatFunctions::VirtualKeyCodeToString(UCHAR virtualKey)
@@ -389,7 +380,6 @@ void Cheat::CheatFunctions::CreateConsole()
 	std::cin.clear();
 }
 
-
 int Cheat::CheatFunctions::ReturnNumberOfDigitsInValue(double Number) 
 {
 	int i = 0;
@@ -455,7 +445,7 @@ bool Cheat::CheatFunctions::StringToBool(std::string String)
 
 bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool PressedOnce)
 {
-	if (Cheat::CheatFunctions::IsGameWindowFocussed() && !Cheat::GUI::ControlsDisabled)
+	if (IsGameWindowFocussed() && !Controls::ControlsDisabled)
 	{
 		if (PressedOnce)
 		{
@@ -502,27 +492,29 @@ Json::Value Cheat::CheatFunctions::ReturnOnlineJsonCppDataObject(std::string URL
 {
 	int httpCode;
 	CURL* CurlHandle;
-	std::string readBuffer;
+	std::string HttpData;
+	CURLcode res;
 	CurlHandle = curl_easy_init();
 	if (CurlHandle)
 	{
 		curl_easy_setopt(CurlHandle, CURLOPT_URL, StringToChar(URL));
 		curl_easy_setopt(CurlHandle, CURLOPT_USERAGENT, "request");
+		curl_easy_setopt(CurlHandle, CURLOPT_TIMEOUT, 10);
 		curl_easy_setopt(CurlHandle, CURLOPT_WRITEFUNCTION, callback);
-		curl_easy_setopt(CurlHandle, CURLOPT_WRITEDATA, &readBuffer);
-		curl_easy_perform(CurlHandle);
+		curl_easy_setopt(CurlHandle, CURLOPT_WRITEDATA, &HttpData);
+		res = curl_easy_perform(CurlHandle);
 		curl_easy_getinfo(CurlHandle, CURLINFO_RESPONSE_CODE, &httpCode);
 		curl_easy_cleanup(CurlHandle);
 	}
 
-	if (httpCode == 200)
+	if (httpCode != CURLE_HTTP_RETURNED_ERROR && res == CURLE_OK)
 	{
 		Json::CharReaderBuilder CharBuilder;
 		Json::Value JsonData;
 		JSONCPP_STRING JsonError;
 		const std::unique_ptr<Json::CharReader> reader(CharBuilder.newCharReader());
 
-		if (reader->parse(StringToChar(readBuffer), StringToChar(readBuffer) + readBuffer.length(), &JsonData, &JsonError))
+		if (reader->parse(StringToConstChar(HttpData), StringToConstChar(HttpData) + HttpData.length(), &JsonData, &JsonError))
 		{
 			return JsonData;
 		}
@@ -550,11 +542,10 @@ void Cheat::CheatFunctions::CheckCheatUpdate()
 	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(CHEAT_BUILD_NUMBER, ".");
 	std::string LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(ReturnLatestCheatBuildNumber(), "v.");
 
-	int CurrentLocalVersion, LatestOnlineVersion;
 	if (StringIsInteger(CurrentLocalVersionString) && StringIsInteger(LatestOnlineVersionString))
 	{
-		CurrentLocalVersion = StringToInt(CurrentLocalVersionString);
-		LatestOnlineVersion = StringToInt(LatestOnlineVersionString);
+		int CurrentLocalVersion = StringToInt(CurrentLocalVersionString);
+		int LatestOnlineVersion = StringToInt(LatestOnlineVersionString);
 
 		if (CurrentLocalVersion < LatestOnlineVersion)
 		{
@@ -644,10 +635,9 @@ Json::Value Cheat::CheatFunctions::ReadJsonFileAndReturnDataObject(std::string F
 		{
 			FileHandle >> JsonHandle;
 		}
-		catch (...) { goto Exit; }
+		catch (...) { }
 	}
 
-	Exit:
 	FileHandle.close();
 	return JsonHandle;
 }
@@ -655,10 +645,10 @@ Json::Value Cheat::CheatFunctions::ReadJsonFileAndReturnDataObject(std::string F
 void Cheat::CheatFunctions::AddCustomTeleportLocation(std::string CustomTeleportLocationName)
 {
 	Json::Value JsonHandle = ReadJsonFileAndReturnDataObject(ReturnCustomTeleportLocationsFilePath());
-	remove(StringToChar(ReturnCustomTeleportLocationsFilePath()));
+	remove(StringToConstChar(ReturnCustomTeleportLocationsFilePath()));
 	if (JsonHandle.isMember(CustomTeleportLocationName)) { JsonHandle.removeMember(CustomTeleportLocationName); }
 
-	Vector3 LocalPlayerCoords = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, true);
+	Vector3 LocalPlayerCoords = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
 	JsonHandle[CustomTeleportLocationName]["X"] = LocalPlayerCoords.x;
 	JsonHandle[CustomTeleportLocationName]["Y"] = LocalPlayerCoords.y;
 	JsonHandle[CustomTeleportLocationName]["Z"] = LocalPlayerCoords.z;
@@ -671,21 +661,9 @@ void Cheat::CheatFunctions::AddCustomTeleportLocation(std::string CustomTeleport
 void Cheat::CheatFunctions::DeleteCustomTeleportLocation(std::string CustomTeleportLocationName)
 {
 	Json::Value JsonHandle = ReadJsonFileAndReturnDataObject(ReturnCustomTeleportLocationsFilePath());
-	remove(StringToChar(ReturnCustomTeleportLocationsFilePath()));
+	remove(StringToConstChar(ReturnCustomTeleportLocationsFilePath()));
 	if (JsonHandle.isMember(CustomTeleportLocationName)) { JsonHandle.removeMember(CustomTeleportLocationName); }
 	std::fstream FileHandle(ReturnCustomTeleportLocationsFilePath(), std::ios_base::out);
 	FileHandle << JsonHandle;
 	FileHandle.close();
-}
-
-DWORD WINAPI Cheat::CheatFunctions::MenuSelectableAnimationThread(LPVOID lpParam)
-{
-	int Delay = 1000;
-	while (true)
-	{
-		GUI::MenuOptionArrowAnimationState = true;
-		Sleep(Delay);
-		GUI::MenuOptionArrowAnimationState = false;
-		Sleep(Delay);
-	}
 }

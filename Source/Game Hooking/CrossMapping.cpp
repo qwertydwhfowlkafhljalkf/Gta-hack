@@ -6107,8 +6107,6 @@ uint64_t HashMapDataArray[] = {
 0x444D8CF241EC25C5, 0xDB94CFF813F20EA8
 };
 
-
-
 void CrossMapping::initNativeMap()
 {
 	static int init = 0;

@@ -13,6 +13,7 @@ static uint64_t														m_worldPtr;
 static GameHooking::NativeRegistrationNew**							m_registrationTable;
 static std::unordered_map<uint64_t, GameHooking::NativeHandler>		m_handlerCache;
 static __int64**													m_globalPtr;
+std::vector<LPVOID> HookedFunctions;
 ScriptThread* (*GetActiveThread)()									= nullptr;
 const int EventCountInteger											= 85;
 static char EventRestore[EventCountInteger]							= {};
@@ -30,7 +31,7 @@ bool IsDLCPresentHooked(std::uint32_t DLCHash)
 	if (Last != Current)
 	{
 		Last = Current;
-		GameHooking::onTickInit();
+		GameHooking::OnTickInit();
 	}
 	if (DLCHash == 2532323046 && Cheat::CheatFeatures::GTAODeveloperMode) { return true; }
 	return IsDLCPresentOriginal(DLCHash);
@@ -66,32 +67,29 @@ const char* GetLabelTextHooked(void* this_, const char* label)
 	return GetLabelTextOriginal(this_, label);
 }
 
-//https://www.unknowncheats.me/forum/3012992-post2712.html
-
-/*
-__int64 MiscScriptsArray[] = { 1317868303, -1243454584, -1212832151, -1252906024, -1890951223, -442306200, -966559987, 1977655521, 1998625272,
-							   -171207973, 393068387, 1097312011, -1162153263, -116602735, -738295409, -1949011582, -545396442, 1070934291, 
-							   392501634, -2029779863, -1648921703, -1333236192, 1302185744, 575518757, 1120313136 };
-*/
-
-__int64 MiscScriptsArray[] = { 0 };
+const std::vector <int> MaliciousScriptsArray = { 1355230914, -316948135, 153488394, -1656474008, -1147284669, 1249026189, 1537221257, -1813981910,
+											-2041535807, 639032041, -1320260596, 1427741376, -272926713, 1337820848, 299217086, -148441291, 
+											1187364773, -151720011, -397188359, 1152266822, -81613951, -1906146218, -2105858993, -1005623606, 
+											315658550, 297912845, 888578819, -1002348481, 1694315389, 1337206479, -1264708915, -44054089, 27493799,
+											247151081, 1385748752, 1871141598, 1069230108, 1163167720, 220852783, -1857757712, -989654618, 
+											-1382676328, 1256866538, -1753084819, 1119864805, -1833002148, 202252150, -1503282114, 243981125,
+											-1836118977, -169685950, -2071141142, -149227625, 1433396036, 1608876738, 458875017, 987018372, 
+											-1587276086, 1954846099, 813647057, -1479371259 };
 void* GetEventDataOriginal = nullptr;
 bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argStructSize)
 {
 	auto result = static_cast<decltype(&GetEventDataHooked)>(GetEventDataOriginal)(eventGroup, eventIndex, argStruct, argStructSize);
 	if (result)
 	{
-		bool IsBlackListedScript = std::find(std::begin(MiscScriptsArray), std::end(MiscScriptsArray), argStruct[0]) != std::end(MiscScriptsArray);
-		char* SenderName = PLAYER::GET_PLAYER_NAME(argStruct[1]);
+		bool IsBlackListedEvent = std::find(std::begin(MaliciousScriptsArray), std::end(MaliciousScriptsArray), argStruct[0]) != std::end(MaliciousScriptsArray);
 		if (Cheat::CheatFeatures::BlockAllScriptEvents)
 		{
 			return false;
 		}
-		else if (Cheat::CheatFeatures::BlockMaliciousScriptEvents && IsBlackListedScript)
+		else if (Cheat::CheatFeatures::BlockMaliciousScriptEvents && IsBlackListedEvent)
 		{
-			Cheat::LogFunctions::DebugMessage("Blocked Script Event " + argStruct[0]);
-			std::string MessageString = "Blocked Script Event " + std::to_string(argStruct[0]);
-			Cheat::GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Remote Events Protection", "", .5, "");
+			std::string MessageString = "Remote Event: Blocked ~n~ID: " + std::to_string(argStruct[0]) + " ~n~Sender: " + PLAYER::GET_PLAYER_NAME(argStruct[1]);
+			Cheat::GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Remote Events Protection", "", 0.8f, "");
 			return false;
 		}
 	}
@@ -116,7 +114,7 @@ void ScriptFunction(LPVOID lpParameter)
 }
 
 DWORD WakeTime;
-void GameHooking::onTickInit()
+void GameHooking::OnTickInit()
 {
 	static HANDLE scriptFiber;
 	if (MainFiber == nullptr) { MainFiber = ConvertThreadToFiber(nullptr); }
@@ -126,7 +124,7 @@ void GameHooking::onTickInit()
 
 void GameHooking::PauseMainFiber(DWORD ms, bool ShowMessage)
 {
-	if (ShowMessage) { Cheat::GUI::Drawing::Text("One moment please", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 1.5f, 1.5f }, true, true); }
+	if (ShowMessage) { Cheat::GUI::DrawTextInGame("One Moment Please", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 1.5f, 1.5f }, true, true); }
 	WakeTime = timeGetTime() + ms;
 	SwitchToFiber(MainFiber);
 }
@@ -326,7 +324,6 @@ void setFn(std::string name, char* pat, char* mask, T* out, int skip = 0)
 	return;
 }
 
-
 void GameHooking::Initialize()
 {
 	GameHooking::get_label_text					 = static_cast<GetLabelText>(Memory::pattern("48 89 5C 24 ? 57 48 83 EC 20 48 8B DA 48 8B F9 48 85 D2 75 44 E8").count(1).get(0).get<void>(0));
@@ -339,10 +336,11 @@ void GameHooking::Initialize()
 	setFn<GetPlayerAddress>("get_player_address", "\x40\x53\x48\x83\xEC\x20\x33\xDB\x38\x1D\x00\x00\x00\x00\x74\x1C", "xxxxxxxxxx????xx", &GameHooking::get_player_address);
 	setFn<GetChatData>("get_chat_data", "\x4D\x85\xC9\x0F\x84\x00\x00\x00\x00\x48\x8B\xC4\x48\x89\x58\x08\x48\x89\x70\x10\x48\x89\x78\x18\x4C\x89\x48\x20\x55\x41\x54\x41\x55\x41\x56\x41\x57\x48\x8D\xA8", "xxxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", &get_chat_data);
 
-	//Hook GameState
-	Cheat::LogFunctions::DebugMessage("Load 'GameState'");
 	char* c_location = nullptr;
 	void* v_location = nullptr;
+
+	//Hook GameState
+	Cheat::LogFunctions::DebugMessage("Load 'GameState'");
 	c_location = Memory::pattern("83 3D ? ? ? ? ? 75 17 8B 43 20 25").count(1).get(0).get<char>(2);
 	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook GameState", true) : m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5);
 	
@@ -418,30 +416,33 @@ void GameHooking::Initialize()
 		}
 		Sleep(100);
 	}
-
 	Cheat::LogFunctions::Message("Game Completed Loading");
 
 	//Hook Game Functions
 	Cheat::LogFunctions::DebugMessage("Hook 'GET_EVENT_DATA'");
 	auto status = MH_CreateHook(GameHooking::get_event_data, GetEventDataHooked, (void**)&GetEventDataOriginal);
 	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::get_event_data) != MH_OK) { Cheat::LogFunctions::Error("Failed to hook GET_EVENT_DATA", true);  std::exit(EXIT_SUCCESS); }
-	
+	HookedFunctions.push_back(GameHooking::get_event_data);
+
 	Cheat::LogFunctions::DebugMessage("Hook 'GET_SCRIPT_HANDLER_IF_NETWORKED'");
 	status = MH_CreateHook(GameHooking::get_script_handler_if_networked, GetScriptHandlerIfNetworkedHooked, (void**)&GetScriptHandlerIfNetworkedOriginal);
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_script_handler_if_networked) != MH_OK) { Cheat::LogFunctions::Error("Failed to hook GET_SCRIPT_HANDLER_IF_NETWORKED", true);  std::exit(EXIT_SUCCESS); }
-	
+	HookedFunctions.push_back(GameHooking::get_script_handler_if_networked);
+
 	Cheat::LogFunctions::DebugMessage("Hook 'GET_LABEL_TEXT'");
 	status = MH_CreateHook(GameHooking::get_label_text, GetLabelTextHooked, (void**)&GetLabelTextOriginal);
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_label_text) != MH_OK) { Cheat::LogFunctions::Error("Failed to hook GET_LABEL_TEXT", true);  std::exit(EXIT_SUCCESS); }
+	HookedFunctions.push_back(GameHooking::get_label_text);
 
 	Cheat::LogFunctions::DebugMessage("Hook 'GET_CHAT_DATA'");
 	status = MH_CreateHook(GameHooking::get_chat_data, GetChatDataHooked, (void**)&GetChatDataOriginal);
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_chat_data) != MH_OK) { Cheat::LogFunctions::Error("Failed to hook GET_CHAT_DATA", true);  std::exit(EXIT_SUCCESS); }
+	HookedFunctions.push_back(GameHooking::get_chat_data);
 
 	Cheat::LogFunctions::DebugMessage("Hook 'IS_DLC_PRESENT'");
 	status = MH_CreateHook(GameHooking::is_dlc_present, IsDLCPresentHooked, (void**)&IsDLCPresentOriginal);
 	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::is_dlc_present) != MH_OK) { Cheat::LogFunctions::Error("Failed to hook IS_DLC_PRESENT", true);  std::exit(EXIT_SUCCESS); }
-
+	HookedFunctions.push_back(GameHooking::is_dlc_present);
 }
 
 static GameHooking::NativeHandler _Handler(uint64_t origHash)
@@ -502,4 +503,31 @@ void GameHooking::defuseEvent(GameEvents e, bool toggle)
 __int64** GameHooking::getGlobalPtr()
 {
 	return m_globalPtr;
+}
+
+DWORD WINAPI UnloadThread(LPVOID lpParam)
+{
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
+	FreeConsole();
+
+	//Remove MinHook hooks and unitialize
+	for (int i = 0; i < HookedFunctions.size(); i++)
+	{
+		if (MH_DisableHook(HookedFunctions[i]) != MH_OK && MH_RemoveHook(HookedFunctions[i]) != MH_OK)
+		{
+			std::string CurrentHook((char*)HookedFunctions[i]);
+			std::string Message = "Failed To Remove Hook " + CurrentHook;
+			Cheat::LogFunctions::Error(Cheat::CheatFunctions::StringToChar(Message), true);
+		}
+	}
+	MH_Uninitialize();
+
+	//Exit
+	FreeLibraryAndExitThread(Cheat::CheatModuleHandle, EXIT_SUCCESS);
+}
+
+void GameHooking::Unload()
+{
+	Cheat::LogFunctions::DebugMessage("Unloading");
+	CreateThread(NULL, NULL, UnloadThread, NULL, NULL, NULL);
 }

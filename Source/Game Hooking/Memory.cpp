@@ -147,26 +147,6 @@ static bool compare(const uint8_t* pData, const uint8_t* bMask, const char* sMas
 	return *sMask == NULL;
 }
 
-std::vector<DWORD64> Memory::get_string_addresses(std::string str)
-{
-	std::string currentMask;
-	const char* to_scan = str.c_str();
-	for (uint8_t i = 0; i < strlen(to_scan); i++) currentMask += "x";
-	const char *mask = currentMask.c_str();
-	std::vector<DWORD64> foundAddrs;
-	for (uint32_t i = 0; i < get_size(); ++i)
-	{
-		auto address = get_base() + i;
-		if (compare((BYTE *)(address), (BYTE *)to_scan, mask))
-		{
-			foundAddrs.push_back((address));
-		}
-	}
-
-	return foundAddrs;
-
-}
-
 bool Memory::pattern::ConsiderMatch( uintptr_t offset ) 
 {
 

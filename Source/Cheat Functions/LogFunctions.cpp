@@ -5,7 +5,7 @@ void Cheat::LogFunctions::Init()
 	CheatFunctions::CreateConsole();
 	std::string MessageString = "Build: " + (std::string)CHEAT_BUILD_NUMBER + " | Compile Date & Time: " + __DATE__ + " " + __TIME__ + 
 								Cheat::CheatFunctions::ReturnDateTimeFormatAsString(" | Load Date & Time: %b %e %Y %H:%M:%S")
-								+ "\nInitializing GTAV Cheat" + " | Github Repository: https://github.com/HatchesPls/GrandTheftAutoV-Cheat\n";
+								+ "\nGitHub Repository: https://github.com/HatchesPls/GrandTheftAutoV-Cheat\n";
 	std::cout << MessageString;
 
 	//Write divider line to logfile

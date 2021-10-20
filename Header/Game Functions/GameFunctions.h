@@ -16,12 +16,11 @@ namespace Cheat
 		void BurstSelectedPlayerTires(Ped selectedPed);
 		void SetOffAlarmPlayerVehicle(Ped selectedPed);
 		bool IsPlayerFriend(Player player);
-		double DegreeToRadian(double n);
 		Vector3 MultiplyVector(Vector3 vector, float inc);
 		Vector3 AddVector(Vector3 vector, Vector3 vector2);
-		Vector3 RotationToDirection(Vector3 rot);
-		void SetRankRockstarGift(int RPValue);
-		Vector3 RotToDirection(Vector3* rot);
+		void SetRankRockstarGift(int Rank);
+		int ReturnReputationPointsAmount(int Level);
+		Vector3 RotationToDirection(Vector3* rot);
 		Vector3 AddTwoVectors(Vector3* vectorA, Vector3* vectorB);
 		Vector3 MultiplyVector(Vector3* vector, float x);
 		float GetDistanceBetweenTwoVectors(Vector3* pointA, Vector3* pointB);
@@ -50,7 +49,7 @@ namespace Cheat
 		void DoNearbyPedsAnimation(char* AnimationName, char* AnimationID);
 		void PlayPedAnimation(Ped TargetPed, char* AnimationName, char* AnimationID, bool Controllable);
 		void AttachObjectToPed(Ped Ped, char* ObjectName);
-		void DetachObjectFromPed(Ped Ped, char* ObjectName);
+		void RemoveObjectFromPed(Ped Ped, char* ObjectName);
 		void MinimapNotification(char* Message);
 		void AdvancedMinimapNotification(char* Message, char* PicName1, char* PicName2, bool Flash, int IconType, char* Sender, char* Subject, float Duration, char* ClanTag);
 		void AddBlipToVehicle(Vehicle Vehicle);
@@ -69,7 +68,7 @@ namespace Cheat
 		void CopySelectedPlayerOutfit(Player SelectedPlayer);
 		int ReturnPlayerRockstarID(Player PlayerHandle);
 		std::string ReturnPlayerIPAddressAsString(Player PlayerHandle);
-		std::string ReturnCurrentGTAOCharacter(int NumberOnly = false);
+		std::string ReturnCurrentGTAOCharacter(bool NumberOnly = false);
 		void PlayFrontendSoundDefault(char* SoundName);
 		void PlayScenarioNearbyPeds(char* Scenario);
 		bool IsPlayerIDValid(Player ID);
@@ -79,5 +78,7 @@ namespace Cheat
 		void ToggleOffRadar(bool state);
 		void ToggleCopsTurnBlindEye(bool state);
 		void FadeRGB(int& r, int& g, int& b);
+		bool ShowFullScreenMessage(std::string Message);
+		void SetCharacterSkillStat(std::string Skill, int Level);
 	}
 }

@@ -1,9 +1,9 @@
 #pragma once
-
-//Boost C++ Libraries Code
+// Boost C++ Libraries Code
 
 template <uint64_t FnvPrime, uint64_t OffsetBasis>
-struct basic_fnv_1 {
+struct basic_fnv_1 
+{
 
 	uint64_t operator()( std::string const& text ) const {
 
@@ -199,12 +199,9 @@ namespace Memory {
 	inline void putVP(AddressType address, ValueType value)
 	{
 		adjust_base(address);
-
 		DWORD oldProtect;
 		VirtualProtect((void*)address, sizeof(value), PAGE_EXECUTE_READWRITE, &oldProtect);
-
 		memcpy((void*)address, &value, sizeof(value));
-
 		VirtualProtect((void*)address, sizeof(value), oldProtect, &oldProtect);
 	}
 
@@ -212,7 +209,6 @@ namespace Memory {
 	inline void nop(AddressType address, size_t length)
 	{
 		adjust_base(address);
-
 		memset((void*)address, 0x90, length);
 	}
 
@@ -259,7 +255,6 @@ namespace Memory {
 	{
 		intptr_t target = *(uintptr_t*)(get_adjusted(address) + 1);
 		target += (get_adjusted(address) + 5);
-
 		return (T)target;
 	}
 
@@ -286,26 +281,25 @@ namespace Memory {
 		}
 	}
 
-	std::vector<DWORD64> get_string_addresses(std::string str);
-
 	template <typename T>
 	T get_value(std::vector<DWORD> offsets) {
 
 		uintptr_t Addr = get_multilayer_pointer(GameHooking::getWorldPtr(), offsets);
-		if (Addr == NULL) {
+		if (Addr == NULL) 
+		{
 			return NULL;
 		}
-
 		return *((T*)Addr);
 	}
 
 	template <typename T>
-	void set_value(std::vector<DWORD> offsets, T value) {
+	void set_value(std::vector<DWORD> offsets, T value) 
+	{
 		uintptr_t Addr = get_multilayer_pointer(GameHooking::getWorldPtr(), offsets);
-		if (Addr == NULL) {
+		if (Addr == NULL) 
+		{
 			return;
 		}
-
 		*reinterpret_cast<T*>(Addr) = value;
 	}
 }

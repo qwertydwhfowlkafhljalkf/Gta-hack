@@ -7,7 +7,7 @@ DWORD WINAPI InitializationThread(LPVOID lpParam)
 	LogFunctions::Init();
 	GameHooking::Initialize();
 	//This thread is no longer needed, goodbye
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 HMODULE Cheat::CheatModuleHandle;
