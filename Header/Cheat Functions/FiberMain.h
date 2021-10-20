@@ -6,7 +6,7 @@
 #pragma warning(disable : 4091)	
 #pragma warning(disable : 6262)
 
-#define CHEAT_BUILD_NUMBER "2.0.0.0"
+#define CHEAT_BUILD_NUMBER "2.1.0.0"
 
 #include <windows.h>
 #include <string>
@@ -60,6 +60,7 @@
 #include "../Header/Game Hooking/Natives.h"
 #include "../Header/Game Hooking/GameHooking.h"
 #include "../Header/GUI/GUI.h"
+#include "../Header/GUI/Controls.h"
 #include "../Header/Game Hooking/Types.h"
 #include "../Header/Game Functions/GameArrays.h"
 #include "../Header/Game Hooking/Offsets.h"
@@ -69,7 +70,7 @@
 #include "../Header/Cheat Functions/LogFunctions.h"
 
 
-namespace Cheat 
+namespace Cheat
 {
 	extern HMODULE CheatModuleHandle;
 	void FiberMain();
