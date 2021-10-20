@@ -2261,7 +2261,6 @@ void Cheat::FiberMain()
 			GUI::Toggle("Free Cam", CheatFeatures::FreeCamBool, "Use W and S to control. Shift to go faster");
 			GUI::Toggle("Show Joining Players Notification", CheatFeatures::ShowJoiningPlayersNotification, "");
 			GUI::Toggle("Rockstar Developer Mode", CheatFeatures::GTAODeveloperMode, "Toggles GTAO Spectator Options");
-			GUI::Toggle("Auto Teleport To Waypoint", CheatFeatures::AutoTeleportToWaypointBool, "");
 			GUI::Toggle("Show Session Information", CheatFeatures::ShowSessionInformationBool, "Show session info (next to radar)");
 			GUI::Toggle("Show FPS", CheatFeatures::ShowFPSBool, "");
 			if (GUI::Option("Stop Cutscene", ""))
@@ -2549,6 +2548,10 @@ void Cheat::FiberMain()
 				else { WEAPON::REMOVE_ALL_PED_WEAPONS(GameFunctions::PlayerPedID, true); }
 			}
 			GUI::Break("Upgrades", SELECTABLE_CENTER_TEXT);
+			if (GUI::Option("Max Upgrade All Weapons", "Max Upgrade All Weapons"))
+			{
+				GameFunctions::MaxUpgradeAllWeapons();
+			}
 			if (GUI::Option("Max Upgrade Current Weapon", ""))
 			{
 				Hash CurrentWeapon;
@@ -2560,10 +2563,6 @@ void Cheat::FiberMain()
 						WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, i.WeaponHash, GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(i.UpgradeHash)));
 					}
 				}
-			}
-			if (GUI::Option("Max Upgrade All Weapons", "Max Upgrade All Weapons"))
-			{
-				GameFunctions::MaxUpgradeAllWeapons();
 			}
 			GUI::Break("Auto", SELECTABLE_CENTER_TEXT);
 			GUI::Toggle("Auto Get All Weapons", CheatFeatures::AutoGiveAllWeaponsBool, "");
@@ -2636,6 +2635,7 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("Teleport");
 			if (GUI::Option("Teleport To Waypoint", "")) { GameFunctions::TeleportToBlipCoord(SpriteWaypoint); }
+			GUI::Toggle("Auto Teleport To Waypoint", CheatFeatures::AutoTeleportToWaypointBool, "");
 			if (GUI::Option("Teleport To Personal Vehicle", "")) { GameFunctions::TeleportToBlipCoord(SpritePersonalVehicleCar);  }
 			if (GUI::Option("Teleport To Objective", "")) { GameFunctions::TeleportToObjective(); }
 			if (GUI::Option("Teleport to Custom Coordinate", ""))
@@ -3018,7 +3018,7 @@ void Cheat::FiberMain()
 				{ 
 					TimeoutTick++;
 					GameHooking::PauseMainFiber(0, false);
-					if (TimeoutTick >= 100)
+					if (TimeoutTick >= 500)
 					{
 						break;
 					}
@@ -3377,9 +3377,9 @@ void Cheat::FiberMain()
 			if (GUI::Option("Support this project!", "Select to copy Bitcoin address to clipboard"))
 			{
 				CheatFunctions::CopyStringToClipboard("3BwCVtcJaNgUovcYQkDYFjrdy5YydTnjwc");
-				GameFunctions::MinimapNotification("~g~Bitcoin adr copied to clipboard.~n~Thank you for your support!");
+				GameFunctions::SubtitleNotification("~g~Bitcoin address copied to clipboard.~n~Thank you for your support!");
 			}
-			if (GUI::Option("Visit GitHub Page", ""))
+			if (GUI::Option("Visit GitHub Repository", ""))
 			{
 				system("start https://github.com/HatchesPls/GrandTheftAutoV-Cheat");
 			}
