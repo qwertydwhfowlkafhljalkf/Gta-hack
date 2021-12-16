@@ -1178,6 +1178,7 @@ void Cheat::FiberMain()
 		case DLCVehiclesMenu:
 		{
 			GUI::Title("DLC Vehicles");
+			GUI::MenuOption("The Contract", TheContractDLCMenu);
 			GUI::MenuOption("Los Santos Tuners", LosSantosTunersDLCMenu);
 			GUI::MenuOption("The Cayo Perico Heist", CayoPericoHeistDLCMenu);
 			GUI::MenuOption("2020 Summer Special", SummerSpecialDLCMenu);
@@ -1190,6 +1191,18 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Smuggler's Run", smugglersrun);
 			GUI::MenuOption("Gunrunning", gunrunningdlc);
 			GUI::MenuOption("Cunning Stunts", CunningStuntsDLCMenu);
+		}
+		break;
+		case TheContractDLCMenu:
+		{
+			GUI::Title("The Contract");
+			for (auto const& i : GameArrays::TheContractModels)
+			{
+				if (GUI::VehicleOption(UI::_GET_LABEL_TEXT(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(i)))), i))
+				{
+					GameFunctions::SpawnVehicle(CheatFunctions::StringToChar(i));
+				}
+			}
 		}
 		break;
 		case LosSantosTunersDLCMenu:
@@ -3143,7 +3156,7 @@ void Cheat::FiberMain()
 			GUI::Toggle("Tiny Player", CheatFeatures::TinyPlayerBool, "Lowers your character's scaling");
 			GUI::Toggle("Super Man", CheatFeatures::SuperManBool, "Fly around like a superman!");
 			if (GUI::Option("Suicide", "Kill your character")) { PED::APPLY_DAMAGE_TO_PED(GameFunctions::PlayerPedID, 300, true); }
-			if (GUI::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(2441237).At(4013).As<bool>() = true; }
+			if (GUI::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(GLOBAL_BULLSHARKTESTOSTERONE[0]).At(GLOBAL_BULLSHARKTESTOSTERONE[1]).As<bool>() = true; }
 			if (GUI::Option("Clean", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(GameFunctions::PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(GameFunctions::PlayerPedID); GameFunctions::MinimapNotification("Player Cleaned"); }	
 		}
 		break;

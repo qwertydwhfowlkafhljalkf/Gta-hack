@@ -7,13 +7,14 @@
 #define OFFSET_PLAYER_INFO_FRAMEFLAGS	0x219
 
 //Globals (These change with each major patch, see <Project Root>/Resources/TSE_Globals for information on function location)
-#define GLOBAL_PLAYER_PICTURE_INDEX		1391551
-#define GLOBAL_LEVEL_TO_RP				293361
-const int GLOBAL_SNOW[]					= { 262145, 4724 };
+#define GLOBAL_PLAYER_PICTURE_INDEX		1656652
+#define GLOBAL_LEVEL_TO_RP				294328
+const int GLOBAL_SNOW[]					= { 262145, 4723 };
+const int GLOBAL_BULLSHARKTESTOSTERONE[] = { 2703656, 3590 };
 
 //Script Events
-#define TSE_KICK_TO_SP					-1382676328
-#define TSE_CEO_KICK					-316948135
-#define TSE_CEO_BAN						1355230914
-#define TSE_PROPERTY_TELEPORT			1249026189
-#define TSE_CAYO_PERICO_TELEPORT		-1479371259
+#define TSE_KICK_TO_SP					998716537
+#define TSE_CEO_KICK					248967238
+#define TSE_CEO_BAN						-764524031
+#define TSE_PROPERTY_TELEPORT			603406648
+#define TSE_CAYO_PERICO_TELEPORT		-621279188

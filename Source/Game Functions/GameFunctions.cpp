@@ -1166,8 +1166,8 @@ void Cheat::GameFunctions::ToggleOffRadar(bool state)
 {
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
-		globalHandle(2426865).At(1 + (Cheat::GameFunctions::PlayerID * 449)).At(209).As<bool>() = state;
-		globalHandle(2441237).At(70).As<int>() = NETWORK::GET_NETWORK_TIME();
+		globalHandle(2689156).At(1 + (Cheat::GameFunctions::PlayerID * 453)).At(209).As<bool>() = state;
+		globalHandle(2703656).At(70).As<int>() = NETWORK::GET_NETWORK_TIME();
 	}
 }
 

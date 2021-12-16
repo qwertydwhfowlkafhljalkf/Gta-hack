@@ -83,7 +83,7 @@ void Cheat::CheatFeatures::NonLooped()
 	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 
 	// Load 'multiplayer vehicles in Single Player' bypass
-	globalHandle(4270934).As<BOOL>() = true;
+	globalHandle(4533757).As<BOOL>() = true;
 
 	// Log POST initialization completion
 	LogFunctions::Message("GTAV Cheat Initialization Completed");
@@ -1261,8 +1261,8 @@ void Cheat::CheatFeatures::DisablePhone()
 bool Cheat::CheatFeatures::NoIdleKickBool = false;
 void Cheat::CheatFeatures::NoIdleKick()
 {
-	globalHandle(1379108).At(1165).As<int>() = -1;
-	globalHandle(1379108).At(1149).As<int>() = -1;
+	globalHandle(1644209).At(1165).As<int>() = -1;
+	globalHandle(1644209).At(1149).As<int>() = -1;
 }
 
 DWORD VehicleWeapons_LastTick = 0;

@@ -72,6 +72,7 @@ enum SubMenus
 	SummerSpecialDLCMenu,
 	CayoPericoHeistDLCMenu,
 	LosSantosTunersDLCMenu,
+	TheContractDLCMenu,
 	OnlineOptionsMenu,
 	timemenu,
 	LandmarkTeleportLocations,

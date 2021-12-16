@@ -103,7 +103,11 @@ const std::vector<WeaponHashesStruct> Cheat::GameArrays::WeaponsHashList = {
 	{ "Flare", 0x497FACC3					}, //WeaponFlare
 	{ "Parachute", 0xFBAB5776				}, //WeaponParachute
 	{ "Fire Extinguisher", 0x060EC506		}, //WeaponFireExtinguisher
-	{ "Hazard Can", 0xBA536372				}  //WeaponHazardCan
+	{ "Hazard Can", 0xBA536372				}, //WeaponHazardCan
+	{ "Fertilizer Can", 0x184140A1			}, //WeaponFertilizerCan	
+	{ "Heavy Rifle", 0xC78D71B4				}, //WeaponHeavyRifle									
+	{ "Compact EMP Launcher", 0xDB26713A	}, //WeaponEMPLauncher
+	{ "StunGun MP", 0x45CD9CF3				}  //WeaponStunGunMP
 };
 
 const std::vector<std::string> Cheat::GameArrays::PedModels = {
@@ -510,12 +514,14 @@ const std::vector<std::string> Cheat::GameArrays::CayoPericoHeistModels = {
 };
 
 const std::vector<std::string> Cheat::GameArrays::LosSantosTunersModels = {
-	"CALICO", "COMET6", "CYPHER",
-	"DOMINATOR7", "DOMINATOR8", "EUROS", "FREIGHTCAR2",
-	"FUTO2", "GROWLER", "JESTER4",
-	"PREVION", "REMUS", "RT3000",
-	"SULTAN3", "TAILGATER2", "VECTRE",
+	"CALICO", "COMET6", "CYPHER", "DOMINATOR7", "DOMINATOR8", "EUROS", "FREIGHTCAR2",
+	"FUTO2", "GROWLER", "JESTER4","PREVION", "REMUS", "RT3000","SULTAN3", "TAILGATER2", "VECTRE",
 	"WARRENER", "WARRENER2", "ZR350"
+};
+
+const std::vector<std::string> Cheat::GameArrays::TheContractModels = {
+	"BUFFALO4", "GRANGER2", "IWAGEN","PATRIOT3", "ASTRON", "DEITY", "IGNUS",
+	"JUBILEE", "REEVER", "SHINOBI", "SUGOI", "ZENO", "BALLER7", "CHAMPION", "CINQUEMILA", "COMET7"
 };
 
 const std::vector<VehicleModelPicturesStruct> Cheat::GameArrays::VehicleModelPictures = {
