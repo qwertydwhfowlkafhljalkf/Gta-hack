@@ -14813,3 +14813,16 @@ const std::vector<TSEPropertyListStruct> Cheat::GameArrays::TSEPropertyList = {
 	{ "Cougar Avenue", 21 },
 	{ "Prosperity Street", 22 }
 };
+
+const std::vector<SessionTypesStruct> Cheat::GameArrays::SessionTypes = {
+	{ "Join Public", SessionTypeJoinPublic },
+	{ "New Public", SessionTypeNewPublic },
+	{ "Closed Crew", SessionTypeClosedCrew },
+	{ "Crew", SessionTypeCrew },
+	{ "Closed Friend", SessionTypeClosedFriend },
+	{ "Find Friend", SessionTypeFindFriend },
+	{ "Solo", SessionTypeSolo },
+	{ "Invite Only", SessionTypeInviteOnly },
+	{ "Join Crew", SessionTypeJoinCrew },
+	{ "Leave GTA Online", SessionTypeLeaveOnline }
+};

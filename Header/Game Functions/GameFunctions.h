@@ -80,5 +80,6 @@ namespace Cheat
 		void FadeRGB(int& r, int& g, int& b);
 		bool ShowFullScreenMessage(std::string Message);
 		void SetCharacterSkillStat(std::string Skill, int Level);
+		void ChangeGTAOSessionType(SessionTypes SessionType);
 	}
 }

@@ -1222,3 +1222,17 @@ enum AnimationFlags
 	ANIM_FLAG_ENABLE_PLAYER_CONTROL = 32,
 	ANIM_FLAG_CANCELABLE = 120,
 };
+
+enum SessionTypes
+{
+	SessionTypeJoinPublic,
+	SessionTypeNewPublic,
+	SessionTypeClosedCrew,
+	SessionTypeCrew,
+	SessionTypeClosedFriend = 6,
+	SessionTypeFindFriend = 9,
+	SessionTypeSolo,
+	SessionTypeInviteOnly,
+	SessionTypeJoinCrew,
+	SessionTypeLeaveOnline = -1
+};

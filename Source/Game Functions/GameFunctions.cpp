@@ -1230,3 +1230,19 @@ void Cheat::GameFunctions::SetCharacterSkillStat(std::string Skill, int Level)
 {
 	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_" + Skill)), Level, true);
 }
+
+void Cheat::GameFunctions::ChangeGTAOSessionType(SessionTypes SessionType)
+{
+	if (SessionType == SessionTypeLeaveOnline)
+	{
+		globalHandle(1574587).At(2).As<int>() = SessionTypeLeaveOnline;
+	}	
+	else
+	{
+		globalHandle(1575004).As<int>() = (int)SessionType;
+	}
+	globalHandle(1574587).As<int>() = 1;
+	GameHooking::PauseMainFiber(250, false);
+	globalHandle(1574587).As<int>() = 0;
+	GUI::CloseMenuGUI();
+}

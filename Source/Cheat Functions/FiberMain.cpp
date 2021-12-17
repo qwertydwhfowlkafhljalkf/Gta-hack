@@ -8,6 +8,7 @@ int VehicleSecondaryColorRed, VehicleSecondaryColorGreen, VehicleSecondaryColorB
 int VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue;										// Used by Vehicle Color features
 int PlayerWantedLevelInteger = 0;																			// Used by Set Wanted Level Option
 int FakeWantedLevelInteger = 0;																				// Used by Fake Wanted Level
+int ChangeSessionInteger = 0;																				// Used by Change Session
 float SelfHealth = 200.f;																					// Used by Self Health
 int HairColor;																								// Used by Wardrobe
 int CustomLocationsAmount;																					// Used by Custom Locations
@@ -186,6 +187,14 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("Session");
 			GUI::MenuOption("Chat", SessionChatMenu);
+			GUI::Break("Join/Change Session", SELECTABLE_CENTER_TEXT);
+			for (const auto& i : GameArrays::SessionTypes)
+			{
+				if (GUI::Option(i.SessionTypeName, ""))
+				{
+					GameFunctions::ChangeGTAOSessionType(i.ID);
+				}		
+			}
 		}
 		break;
 		case SessionChatMenu:

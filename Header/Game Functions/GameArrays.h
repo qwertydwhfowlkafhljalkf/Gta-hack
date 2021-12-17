@@ -44,6 +44,12 @@ struct TSEPropertyListStruct
 	int Index;
 };
 
+struct SessionTypesStruct
+{
+	std::string SessionTypeName;
+	SessionTypes ID;
+};
+
 namespace Cheat
 {
 	namespace GameArrays
@@ -99,5 +105,6 @@ namespace Cheat
 		extern const std::vector<std::string> Scenarios;
 		extern const std::vector<std::string> Objects;
 		extern const std::vector<TSEPropertyListStruct> TSEPropertyList;
+		extern const std::vector<SessionTypesStruct> SessionTypes;
 	}
 }
