@@ -328,7 +328,7 @@ void Cheat::CheatFeatures::Looped()
 	SuperManBool ? SuperMan() : NULL;
 	ShakeCamSelectedPlayerBool ? ShakeCamSelectedPlayer() : NULL;
 	RainbowGunBool ? RainbowGun() : NULL;
-	DisablePhoneBool ? DisablePhone() : NULL;
+	DisableMobilePhoneBool ? DisableMobilePhone() : NULL;
 	NoIdleKickBool ? NoIdleKick() : NULL;
 	CopsTurnBlindEyeBool ? CopsTurnBlindEye() : CopsTurnBlindEyeWasEnabled ? GameFunctions::ToggleCopsTurnBlindEye(false), CopsTurnBlindEyeWasEnabled = false : NULL;
 	VehicleWeaponsBool ? VehicleWeapons() : NULL;
@@ -1251,11 +1251,10 @@ void Cheat::CheatFeatures::RainbowGun()
 
 }
 
-bool Cheat::CheatFeatures::DisablePhoneBool = false;
-void Cheat::CheatFeatures::DisablePhone()
+bool Cheat::CheatFeatures::DisableMobilePhoneBool = false;
+void Cheat::CheatFeatures::DisableMobilePhone()
 {
-	MOBILE::_DISABLE_PHONE_THIS_FRAME(true);
-	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_PHONE, true);
+	globalHandle(GLOBAL_DISABLE_PHONE).As<int>() = 1;
 }
 
 bool Cheat::CheatFeatures::NoIdleKickBool = false;

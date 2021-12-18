@@ -188,7 +188,7 @@ void Cheat::FiberMain()
 			GUI::Title("Session");
 			GUI::MenuOption("Chat", SessionChatMenu);
 			std::string JoinChangeSessionString;
-			if (GUI::StringVector(NETWORK::NETWORK_IS_SESSION_STARTED() ? "Change Session" : "Join Session", { "Join Public", "New Public", "Closed Crew", "Crew", "Closed Friend", "Solo", "Invite Only"}, ChangeSessionInteger, ""))
+			if (GUI::StringVector(NETWORK::NETWORK_IS_SESSION_STARTED() ? "Change Session" : "Join Session", { "Join Public", "New Public", "Closed Crew", "Crew", "Closed Friend", "Solo", "Invite Only"}, ChangeSessionInteger, "", SELECTABLE_DISABLE_SAVE))
 			{
 				SessionTypes SetType;
 				if (ChangeSessionInteger == 0)
@@ -2311,7 +2311,7 @@ void Cheat::FiberMain()
 			{
 				GAMEPLAY::SET_FAKE_WANTED_LEVEL(FakeWantedLevelInteger);
 			}
-			GUI::Toggle("Disable Phone", CheatFeatures::DisablePhoneBool, "Disable phone controls");
+			GUI::Toggle("Disable Mobile Phone", CheatFeatures::DisableMobilePhoneBool, "Disable Mobile Phone");
 			GUI::Toggle("No-Clip", CheatFeatures::NoClipBool, "Use W and mouse to control");
 			GUI::Toggle("Jump Around Mode", CheatFeatures::JumpAroundModeBool, "Nearby vehicles will 'jump around'");
 			GUI::Toggle("Free Cam", CheatFeatures::FreeCamBool, "Use W and S to control. Shift to go faster");

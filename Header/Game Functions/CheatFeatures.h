@@ -156,8 +156,8 @@ namespace Cheat
 		void ShakeCamSelectedPlayer();
 		extern bool RainbowGunBool;
 		void RainbowGun();
-		extern bool DisablePhoneBool;
-		void DisablePhone();
+		extern bool DisableMobilePhoneBool;
+		void DisableMobilePhone();
 		extern bool NoIdleKickBool;
 		void NoIdleKick();
 		extern bool CopsTurnBlindEyeBool;
