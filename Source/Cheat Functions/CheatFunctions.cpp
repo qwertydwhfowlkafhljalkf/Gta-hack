@@ -147,7 +147,7 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		UI::_SHOW_CURSOR_THIS_FRAME();
 		UI::_SET_CURSOR_SPRITE(Normal);
 
-		if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - 0.213f }, { GUI::guiWidth, 0.084f }))
+		if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - GUI::SelectableHeight - 0.181f }, { GUI::guiWidth, 0.084f }))
 		{
 			UI::_SET_CURSOR_SPRITE(PreGrab);
 			if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))

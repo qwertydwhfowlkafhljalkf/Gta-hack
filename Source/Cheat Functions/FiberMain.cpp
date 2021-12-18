@@ -221,11 +221,11 @@ void Cheat::FiberMain()
 				}
 				GameFunctions::ChangeGTAOSessionType(SetType);
 			}
-			if (GUI::Option("Join Session With Friend(s)", "Searches for and joins a game session with one or more friends"))
+			if (GUI::Option("Join Session Containing Friends", "Searches for and joins a game session with one or more friends"))
 			{
 				GameFunctions::ChangeGTAOSessionType(SessionTypeFindFriend);
 			}
-			if (GUI::Option("Join Session With Crew Member(s)", "Searches for and joins a game with one or more crew members"))
+			if (GUI::Option("Join Session Containing Crew Members", "Searches for and joins a game with one or more crew members"))
 			{
 				GameFunctions::ChangeGTAOSessionType(SessionTypeJoinCrew);
 			}
@@ -234,7 +234,7 @@ void Cheat::FiberMain()
 		case SessionChatMenu:
 		{
 			GUI::Title("Session Chat");
-			GUI::Toggle("Log Chat Messages", CheatFeatures::LogChatMessages, "Chat gets logged to console");
+			GUI::Toggle("Log Messages", CheatFeatures::LogChatMessages, "Chat gets logged to console");
 		}
 		break;
 		case RecoveryMenuWarning:
