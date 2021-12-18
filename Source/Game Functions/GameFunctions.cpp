@@ -478,11 +478,11 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		if (NETWORK::NETWORK_IS_SESSION_STARTED()) 
 		{
 			std::ostringstream PlayerRank;
-			PlayerRank << globalHandle(1590908 + 1).At(PlayerID, 874).At(205).At(5).As<int>();
+			PlayerRank << globalHandle(1853128 + 1).At(PlayerID, 874).At(205).At(5).As<int>();
 			Cheat::GUI::AddPlayerInfoBoxTextEntry(PlayerRank.str(), NULL, 2);
 
 			std::ostringstream PlayerMoney;
-			PlayerMoney << "$" << globalHandle(1590908).At(PlayerID, 874).At(205).At(56).As<__int64>();
+			PlayerMoney << "$" << globalHandle(1853128 + 1).At(PlayerID, 874).At(205).At(56).As<__int64>();
 			Cheat::GUI::AddPlayerInfoBoxTextEntry(PlayerMoney.str(), NULL, 3);
 		}
 		else

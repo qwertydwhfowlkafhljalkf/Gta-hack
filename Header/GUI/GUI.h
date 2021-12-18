@@ -28,7 +28,7 @@ enum SubMenus
 	VehicleSpawnSettings,
 	SpawnedVehiclesMenu,
 	AllPlayersMenu,
-	AllPlayersExclutionsMenu,
+	AllPlayersExclusionsMenu,
 	SelfModelMenu,
 	GlobalsMenu,
 	SpawnMenu,
@@ -111,19 +111,19 @@ enum SubMenus
 
 enum SelectableBitFlags
 {
-	SELECTABLE_DUMMY = 1,					//Placeholder.
-	SELECTABLE_DISABLED = 2,				//The selectable is disabled, if the Select key is pressed on the selectable a message appears informing the user about the disabled state. When using this flag saving is also blocked (use of SELECTABLE_DISABLE_SAVE not needed).
-	SELECTABLE_DISABLE_SAVE = 4,			//The selectable won't save when the corresponding key is pressed.
-	SELECTABLE_CENTER_TEXT = 8,				//Text will be centered relative to menu GUI. This currently only applies to the Break selectable.
-	SELECTABLE_RETURN_VALUE_CHANGE = 16,	//Function will also return when a value is changed (e.g. left or right is pressed). Currently used by Float, StringVector and Int selectable.
-	SELECTABLE_HIDE_INFO_BOX = 32,			//Forcefully (ignoring other settings) hides the Selectable Information Box for a given Selectable.
+	SELECTABLE_DUMMY				= 1,	//Placeholder.
+	SELECTABLE_DISABLED				= 2,	//The selectable is disabled, if the Select key is pressed on the selectable a message appears informing the user about the disabled state. When using this flag saving is also blocked (use of SELECTABLE_DISABLE_SAVE not needed).
+	SELECTABLE_DISABLE_SAVE			= 4,	//The selectable won't save when the corresponding key is pressed.
+	SELECTABLE_CENTER_TEXT			= 8,	//Text will be centered relative to menu GUI. This currently only applies to the Break selectable.
+	SELECTABLE_RETURN_VALUE_CHANGE	= 16,	//Function will also return when a value is changed (e.g. left or right is pressed). Currently used by Float, StringVector and Int selectable.
+	SELECTABLE_HIDE_INFO_BOX		= 32,	//Forcefully (ignoring other settings) hides the Selectable Information Box for a given Selectable.
 };
 
-typedef struct VECTOR2 { float x, y; };
-typedef struct VECTOR2_2 { float w, h; };
-typedef struct RGBAF { int r, g, b, a, f; };
-typedef struct RGBA { int r, g, b, a; };
-typedef struct RGB { int r, g, b; };
+typedef struct VECTOR2		{ float x, y; };
+typedef struct VECTOR2_2	{ float w, h; };
+typedef struct RGBAF		{ int r, g, b, a, f; };
+typedef struct RGBA			{ int r, g, b, a; };
+typedef struct RGB			{ int r, g, b; };
 
 namespace Cheat
 {

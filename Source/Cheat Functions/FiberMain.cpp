@@ -50,26 +50,26 @@ void Cheat::FiberMain()
 			GUI::MenuOption("Settings", SettingsMenu);
 		}
 		break;
-		case AllPlayersExclutionsMenu:
+		case AllPlayersExclusionsMenu:
 		{
-			GUI::Title("Exclutions");
-			GUI::Toggle("Exclude Self", CheatFeatures::AllPlayersExclutionsSelf, "");
-			GUI::Toggle("Exclude Friends", CheatFeatures::AllPlayersExclutionsFriends, "");
-			GUI::Toggle("Exclude Host", CheatFeatures::AllPlayersExclutionsHost, "");
+			GUI::Title("Exclusions");
+			GUI::Toggle("Exclude Self", CheatFeatures::AllPlayersExclusionsSelf, "");
+			GUI::Toggle("Exclude Friends", CheatFeatures::AllPlayersExclusionsFriends, "");
+			GUI::Toggle("Exclude Host", CheatFeatures::AllPlayersExclusionsHost, "");
 		}
 		break;
 		case AllPlayersMenu:
 		{
 			GUI::Title("All Players");
-			GUI::MenuOption("Exclutions", AllPlayersExclutionsMenu);
+			GUI::MenuOption("Exclusions", AllPlayersExclusionsMenu);
 			GUI::Break("Friendly", SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Give All Weapons", "Give all players all weapons"))
 			{
 				for (int i = 0; i < 32; i++)
 				{
-					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
-					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
-					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
+					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;
+					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclusionsHost;
 
 					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
@@ -83,9 +83,9 @@ void Cheat::FiberMain()
 			{
 				for (int i = 0; i < 32; i++)
 				{
-					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
-					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
-					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
+					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;
+					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclusionsHost;
 
 					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
@@ -99,9 +99,9 @@ void Cheat::FiberMain()
 			{
 				for (int i = 0; i < 32; i++)
 				{
-					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
-					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
-					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
+					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;
+					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclusionsHost;
 
 					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
@@ -116,9 +116,9 @@ void Cheat::FiberMain()
 			{
 				for (int i = 0; i < 32; i++) 
 				{
-					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
-					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
-					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
+					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;
+					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclusionsHost;
 
 					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
@@ -131,9 +131,9 @@ void Cheat::FiberMain()
 			{
 				for (int i = 0; i < 32; i++) 
 				{
-					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
-					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
-					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
+					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;
+					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclusionsHost;
 
 					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
@@ -146,9 +146,9 @@ void Cheat::FiberMain()
 			{
 				for (int i = 0; i < 32; i++)
 				{
-					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
-					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
-					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
+					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;
+					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclusionsHost;
 
 					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{
@@ -161,9 +161,9 @@ void Cheat::FiberMain()
 			{
 				for (int i = 0; i < 32; i++)
 				{
-					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclutionsSelf;
-					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclutionsFriends;
-					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclutionsHost;
+					bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
+					bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;
+					bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && CheatFeatures::AllPlayersExclusionsHost;
 
 					if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 					{ 
@@ -2668,13 +2668,14 @@ void Cheat::FiberMain()
 			GUI::Title("Shoot Entities");
 			GUI::Toggle("Toggle", CheatFeatures::ShootEntitiesBool, "", SELECTABLE_DISABLE_SAVE);
 			GUI::Break("Current: ~t~" + CheatFeatures::ShootEntitiesCurrent, false);
-			GUI::Break("Vehicles", SELECTABLE_CENTER_TEXT);
-			if (GUI::Option("Rhino Tank", "")) { CheatFeatures::ShootEntitiesCurrent = "RHINO"; }
-			if (GUI::Option("Hydra", "")) { CheatFeatures::ShootEntitiesCurrent = "HYDRA"; }
-			if (GUI::Option("Airport Bus", "")) { CheatFeatures::ShootEntitiesCurrent = "AIRBUS"; }
-			if (GUI::Option("Brickade", "")) { CheatFeatures::ShootEntitiesCurrent = "BRICKADE"; }
-			if (GUI::Option("Cargo Plane", "")) { CheatFeatures::ShootEntitiesCurrent = "CARGOPLANE"; }
-			if (GUI::Option("Dump", "")) { CheatFeatures::ShootEntitiesCurrent = "DUMP"; }
+			if (GUI::Option("Set Entity", ""))
+			{
+				char* Input = GameFunctions::DisplayKeyboardAndReturnInput(25, "Set Entity");
+				if (Input != "0")
+				{
+					CheatFeatures::ShootEntitiesCurrent = Input;
+				}
+			}
 		}
 		break;
 		case aimbotsettingsmenu:

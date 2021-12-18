@@ -30,9 +30,9 @@ bool Cheat::CheatFeatures::VehicleSpawnerSpawnAirVehicleAir = false;
 bool Cheat::CheatFeatures::HidePlayerInformationBox = false;
 bool Cheat::CheatFeatures::HideSelectableInformationBox = false;
 bool Cheat::CheatFeatures::ControllableAnimations = false;
-bool Cheat::CheatFeatures::AllPlayersExclutionsSelf = true;
-bool Cheat::CheatFeatures::AllPlayersExclutionsFriends = false;
-bool Cheat::CheatFeatures::AllPlayersExclutionsHost = false;
+bool Cheat::CheatFeatures::AllPlayersExclusionsSelf = true;
+bool Cheat::CheatFeatures::AllPlayersExclusionsFriends = false;
+bool Cheat::CheatFeatures::AllPlayersExclusionsHost = false;
 
 int PostInitBannerNotificationScaleformHandle;
 void Cheat::CheatFeatures::NonLooped()
@@ -975,9 +975,9 @@ void Cheat::CheatFeatures::FreezeAllPlayers()
 {
 	for (int i = 0; i < 32; i++)
 	{
-		bool ExcludeSelf = GameFunctions::PlayerID == i && AllPlayersExclutionsSelf;
-		bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && AllPlayersExclutionsFriends;
-		bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && AllPlayersExclutionsHost;
+		bool ExcludeSelf = GameFunctions::PlayerID == i && AllPlayersExclusionsSelf;
+		bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && AllPlayersExclusionsFriends;
+		bool ExcludeHost = GameFunctions::PlayerIsFreemodeScriptHost(i) && AllPlayersExclusionsHost;
 
 		if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && GameFunctions::IsPlayerIDValid(i))
 		{
@@ -1053,38 +1053,48 @@ void Cheat::CheatFeatures::UnlimitedRocketBoost()
 	}
 }
 
-std::string Cheat::CheatFeatures::ShootEntitiesCurrent = "HYDRA";
+std::string Cheat::CheatFeatures::ShootEntitiesCurrent;
 bool Cheat::CheatFeatures::ShootEntitiesBool = false;
 void Cheat::CheatFeatures::ShootEntities()
 {
 	if (PED::IS_PED_SHOOTING(GameFunctions::PlayerPedID))
 	{
-		float offset = 0;
-		Vehicle vehmodel = GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ShootEntitiesCurrent));
-		STREAMING::REQUEST_MODEL(vehmodel);
+		Hash EntityHash = GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ShootEntitiesCurrent));
 
-		while (!STREAMING::HAS_MODEL_LOADED(vehmodel)) { GameHooking::PauseMainFiber(0, false); }
-
-		Vector3 coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(GameFunctions::PlayerPedID, 0.0, 5.0, 0.0);
-
-		if (STREAMING::IS_MODEL_IN_CDIMAGE(vehmodel) && STREAMING::IS_MODEL_A_VEHICLE(vehmodel))
+		if (STREAMING::IS_MODEL_VALID(EntityHash))
 		{
-			Vector3 dim1, dim2;
-			GAMEPLAY::GET_MODEL_DIMENSIONS(vehmodel, &dim1, &dim2);
+			while (!STREAMING::HAS_MODEL_LOADED(EntityHash)) { STREAMING::REQUEST_MODEL(EntityHash); GameHooking::PauseMainFiber(0, false); }
+			Vector3 Dimension1, Dimension2;
+			GAMEPLAY::GET_MODEL_DIMENSIONS(EntityHash, &Dimension1, &Dimension2);
 
-			offset = dim2.y * 1.6;
+			float Offset = Dimension2.y * 1.5; //1.6
 
 			Vector3 dir = ENTITY::GET_ENTITY_FORWARD_VECTOR(GameFunctions::PlayerPedID);
 			Vector3 pCoords = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
-			float rot = (ENTITY::GET_ENTITY_ROTATION(GameFunctions::PlayerPedID, 0)).z;
+			float Rotation = ENTITY::GET_ENTITY_ROTATION(GameFunctions::PlayerPedID, 0).z;
 			Vector3 gameplayCam = CAM::_GET_GAMEPLAY_CAM_COORDS();
 			Vector3 gameplayCamDirection = GameFunctions::RotationToDirection(&CAM::GET_GAMEPLAY_CAM_ROT(0));
 			Vector3 startCoords = GameFunctions::AddVector(gameplayCam, (GameFunctions::MultiplyVector(gameplayCamDirection, 10)));
 			Vector3 endCoords = GameFunctions::AddVector(gameplayCam, (GameFunctions::MultiplyVector(gameplayCamDirection, 500.0f)));
-			Vehicle veh = VEHICLE::CREATE_VEHICLE(vehmodel, pCoords.x + (dir.x * offset), pCoords.y + (dir.y * offset), startCoords.z, rot, 1, 1);
-			ENTITY::SET_ENTITY_VISIBLE(veh, false, false);
-			ENTITY::APPLY_FORCE_TO_ENTITY(veh, 1, 0.0f, 500.0f, 2.0f + endCoords.z, 0.0f, 0.0f, 0.0f, 0, 1, 1, 1, 0, 1);
-			ENTITY::SET_VEHICLE_AS_NO_LONGER_NEEDED(&veh);
+
+
+			Entity EntityHandle;
+			if (STREAMING::IS_MODEL_A_VEHICLE(EntityHash))
+			{
+				EntityHandle = VEHICLE::CREATE_VEHICLE(EntityHash, pCoords.x + (dir.x * Offset), pCoords.y + (dir.y * Offset), startCoords.z, Rotation, true, true);
+			}
+			else if (ENTITY::IS_ENTITY_A_PED(EntityHash))
+			{
+				EntityHandle = PED::CREATE_PED(0, EntityHash, pCoords.x + (dir.x * Offset), pCoords.y + (dir.y * Offset), startCoords.z, Rotation, true, true);
+			}
+			else
+			{
+				EntityHandle = OBJECT::CREATE_OBJECT(EntityHandle, pCoords.x + (dir.x * Offset), pCoords.y + (dir.y * Offset), startCoords.z, true, true, false);
+			}
+
+			//ENTITY::SET_ENTITY_VISIBLE(EntityHandle, false, false);
+			ENTITY::APPLY_FORCE_TO_ENTITY(EntityHandle, 1, 0.0f, 500.0f, 2.0f + endCoords.z, 0.0f, 0.0f, 0.0f, 0, true, true, true, false, true);
+			ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&EntityHandle);
 		}
 	}
 }
@@ -1254,7 +1264,7 @@ void Cheat::CheatFeatures::RainbowGun()
 bool Cheat::CheatFeatures::DisableMobilePhoneBool = false;
 void Cheat::CheatFeatures::DisableMobilePhone()
 {
-	globalHandle(GLOBAL_DISABLE_PHONE).As<int>() = 1;
+	globalHandle(GLOBAL_DISABLE_MOBILE_PHONE).As<int>() = 1;
 }
 
 bool Cheat::CheatFeatures::NoIdleKickBool = false;
