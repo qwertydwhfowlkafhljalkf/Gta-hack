@@ -1233,16 +1233,22 @@ void Cheat::GameFunctions::SetCharacterSkillStat(std::string Skill, int Level)
 
 void Cheat::GameFunctions::ChangeGTAOSessionType(SessionTypes SessionType)
 {
-	if (SessionType == SessionTypeLeaveOnline)
+	if (SessionType != NULL)
 	{
-		globalHandle(1574587).At(2).As<int>() = SessionTypeLeaveOnline;
+		if (SessionType == SessionTypeLeaveOnline)
+		{
+			if (NETWORK::NETWORK_IS_SESSION_STARTED)
+			{
+				globalHandle(1574587).At(2).As<int>() = SessionTypeLeaveOnline;
+			}
+		}
+		else
+		{
+			globalHandle(1575004).As<int>() = (int)SessionType;
+		}
+		globalHandle(1574587).As<int>() = 1;
+		GameHooking::PauseMainFiber(50, false);
+		globalHandle(1574587).As<int>() = 0;
+		GUI::CloseMenuGUI();
 	}	
-	else
-	{
-		globalHandle(1575004).As<int>() = (int)SessionType;
-	}
-	globalHandle(1574587).As<int>() = 1;
-	GameHooking::PauseMainFiber(250, false);
-	globalHandle(1574587).As<int>() = 0;
-	GUI::CloseMenuGUI();
 }

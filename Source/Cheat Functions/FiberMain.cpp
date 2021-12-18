@@ -187,13 +187,47 @@ void Cheat::FiberMain()
 		{
 			GUI::Title("Session");
 			GUI::MenuOption("Chat", SessionChatMenu);
-			GUI::Break("Join/Change Session", SELECTABLE_CENTER_TEXT);
-			for (const auto& i : GameArrays::SessionTypes)
+			std::string JoinChangeSessionString;
+			if (GUI::StringVector(NETWORK::NETWORK_IS_SESSION_STARTED() ? "Change Session" : "Join Session", { "Join Public", "New Public", "Closed Crew", "Crew", "Closed Friend", "Solo", "Invite Only"}, ChangeSessionInteger, ""))
 			{
-				if (GUI::Option(i.SessionTypeName, ""))
+				SessionTypes SetType;
+				if (ChangeSessionInteger == 0)
 				{
-					GameFunctions::ChangeGTAOSessionType(i.ID);
-				}		
+					SetType = SessionTypeJoinPublic;
+				}
+				else if (ChangeSessionInteger == 1)
+				{
+					SetType = SessionTypeNewPublic;
+				}
+				else if (ChangeSessionInteger == 2)
+				{
+					SetType = SessionTypeClosedCrew;
+				}
+				else if (ChangeSessionInteger == 3)
+				{
+					SetType = SessionTypeCrew;
+				}
+				else if (ChangeSessionInteger == 4)
+				{
+					SetType = SessionTypeClosedFriend;
+				}
+				else if (ChangeSessionInteger == 5)
+				{
+					SetType = SessionTypeSolo;
+				}
+				else if (ChangeSessionInteger == 6)
+				{
+					SetType = SessionTypeInviteOnly;
+				}
+				GameFunctions::ChangeGTAOSessionType(SetType);
+			}
+			if (GUI::Option("Join Session With Friend(s)", "Searches for and joins a game session with one or more friends"))
+			{
+				GameFunctions::ChangeGTAOSessionType(SessionTypeFindFriend);
+			}
+			if (GUI::Option("Join Session With Crew Member(s)", "Searches for and joins a game with one or more crew members"))
+			{
+				GameFunctions::ChangeGTAOSessionType(SessionTypeJoinCrew);
 			}
 		}
 		break;
@@ -2317,7 +2351,7 @@ void Cheat::FiberMain()
 				else { GameFunctions::MinimapNotification("Please set a waypoint first to use this feature"); }
 			}		
 			if (GUI::Option("Get Empty Session", "Get Empty (Public) Session")) { Sleep(10000); }
-			if (GUI::Option("Exit to Single Player", "")) { NETWORK::SHUTDOWN_AND_LAUNCH_SINGLE_PLAYER_GAME(); }
+			if (GUI::Option("Exit to Single Player", "")) { GameFunctions::ChangeGTAOSessionType(SessionTypeLeaveOnline); }
 			if (GUI::Option("Close Game", "You must hold spacebar to prevent accidental closure")) { if (CheatFunctions::IsKeyCurrentlyPressed(VK_SPACE)) { std::exit(EXIT_SUCCESS); } }
 		}
 		break;
