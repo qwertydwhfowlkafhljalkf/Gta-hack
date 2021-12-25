@@ -40,7 +40,6 @@ namespace Cheat
 		extern bool AllPlayersExclusionsFriends;
 		extern bool AllPlayersExclusionsHost;
 
-		void NonLooped();
 		void Looped();
 		extern bool GodmodeBool;
 		void Godmode(bool toggle);

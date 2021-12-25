@@ -1,5 +1,6 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
+int Cheat::CheatFeatures::SelectedPlayer;
 int Cheat::CheatFeatures::SpeedometerVectorPosition = 0;
 int Cheat::CheatFeatures::AimbotBoneVectorPosition = 0;
 int Cheat::CheatFeatures::MeasurementSystemVectorPosition = 0;
@@ -34,66 +35,8 @@ bool Cheat::CheatFeatures::AllPlayersExclusionsSelf = true;
 bool Cheat::CheatFeatures::AllPlayersExclusionsFriends = false;
 bool Cheat::CheatFeatures::AllPlayersExclusionsHost = false;
 
-int PostInitBannerNotificationScaleformHandle;
-void Cheat::CheatFeatures::NonLooped()
-{
-	// Check for newer cheat version
-	CheatFunctions::CheckCheatUpdate();
-
-	// Check if this cheat build is compatible with injected GTA5.exe build (by checking if _GET_ONLINE_VERSION() works)
-	if (!UNK3::_GET_ONLINE_VERSION())
-	{
-		LogFunctions::Error("The cheat does not work with this version of the game. This is most likely the result of a recent game patch. Check GitHub for the latest release.", true);
-		std::exit(EXIT_SUCCESS);
-	}
-
-	// Create Menu Selectable Arrow Animation Thread
-	std::thread MenuSelectableAnimationThreadHandle([]()
-	{
-		while (true)
-		{
-			if (GUI::menuLevel > 0)
-			{
-				GUI::MenuOptionArrowAnimationState = !GUI::MenuOptionArrowAnimationState;
-				Sleep(GUI::MenuArrowAnimationDelay);
-			}
-		}
-	});
-	MenuSelectableAnimationThreadHandle.detach();
-
-	// Load texture file
-	GUI::LoadTextureFile();
-
-	// Load configuration file
-	CheatFunctions::LoadConfig();
-
-	// Init Scaleform Banner Notification
-	PostInitBannerNotificationScaleformHandle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_BIG_MESSAGE_FREEMODE");
-	while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(PostInitBannerNotificationScaleformHandle)) { GameHooking::PauseMainFiber(0, false); }
-
-	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "OVERRIDE_Y_POSITION");
-	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_FLOAT(-0.2f);
-	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
-
-	std::string MessageString = "Welcome " + (std::string)SOCIALCLUB::_SC_GET_NICKNAME() + ", have fun!";
-	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "SHOW_SHARD_WASTED_MP_MESSAGE");
-	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING("<FONT FACE='$gtaCash'>GTAV CHEAT");
-	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING(CheatFunctions::StringToChar(MessageString));
-	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(5);
-	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
-
-	// Load 'multiplayer vehicles in Single Player' bypass
-	globalHandle(4533757).As<BOOL>() = true;
-
-	// Log POST initialization completion
-	LogFunctions::Message("GTAV Cheat Initialization Completed");
-}
-
-bool PostInitBannerNotificationAnimationPlayed = false;
-bool LoadConfigInstructionalButtonInitialized = false;
-bool PostInitBannerNotificationCleanupComplete = false;
-int PostInitBannerNotificationCleanupTimer;
-int LoadConfigInstructionalButtonHandle;
+bool PostInitBannerNotificationAnimationPlayed, LoadConfigInstructionalButtonInitialized, PostInitBannerNotificationCleanupComplete = false;
+int PostInitBannerNotificationCleanupTimer, LoadConfigInstructionalButtonHandle;
 void Cheat::CheatFeatures::Looped()
 {
 	// POST initialization notification
@@ -103,13 +46,13 @@ void Cheat::CheatFeatures::Looped()
 		{
 			GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenGUIKey) + " to open cheat GUI";
 			GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&LoadConfigInstructionalButtonHandle);
-			GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(PostInitBannerNotificationScaleformHandle, 255, 255, 255, 255, 0);
+			GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(CheatFunctions::PostInitBannerNotificationScaleformHandle, 255, 255, 255, 255, 0);
 		}
 		if (GUI::CheatGUIHasBeenOpened)
 		{
 			if (!PostInitBannerNotificationAnimationPlayed)
 			{
-				GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "TRANSITION_OUT");
+				GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(CheatFunctions::PostInitBannerNotificationScaleformHandle, "TRANSITION_OUT");
 				GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_FLOAT(2.f);
 				GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 				PostInitBannerNotificationCleanupTimer = GetTickCount64();
@@ -119,7 +62,7 @@ void Cheat::CheatFeatures::Looped()
 			{
 				if (GetTickCount64() - PostInitBannerNotificationCleanupTimer == 2500)
 				{
-					GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&PostInitBannerNotificationScaleformHandle);
+					GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&CheatFunctions::PostInitBannerNotificationScaleformHandle);
 					PostInitBannerNotificationCleanupComplete = true;
 				}		
 			}
@@ -1078,7 +1021,7 @@ void Cheat::CheatFeatures::ShootEntities()
 			Vector3 endCoords = GameFunctions::AddVector(gameplayCam, (GameFunctions::MultiplyVector(gameplayCamDirection, 500.0f)));
 
 
-			Entity EntityHandle;
+			Entity EntityHandle = NULL;
 			if (STREAMING::IS_MODEL_A_VEHICLE(EntityHash))
 			{
 				EntityHandle = VEHICLE::CREATE_VEHICLE(EntityHash, pCoords.x + (dir.x * Offset), pCoords.y + (dir.y * Offset), startCoords.z, Rotation, true, true);

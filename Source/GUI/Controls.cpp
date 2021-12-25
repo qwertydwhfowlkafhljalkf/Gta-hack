@@ -28,7 +28,7 @@ void Cheat::Controls::Loop()
 				if (GUI::menuLevel == 0)
 				{
 					GameFunctions::PlayFrontendSoundDefault("YES");
-					if (GUI::PreviousMenu != NOMENU && GUI::RestorePreviousSubmenu)
+					if (GUI::PreviousMenu != nullptr && GUI::RestorePreviousSubmenu)
 					{
 						GUI::MoveMenu(GUI::PreviousMenu);
 						GUI::menuLevel = GUI::PreviousMenuLevel;
@@ -36,7 +36,7 @@ void Cheat::Controls::Loop()
 					}
 					else
 					{
-						GUI::MoveMenu(SubMenus::MainMenu);
+						GUI::MoveMenu(GUI::Submenus::Home);
 					}
 					DoMenuGUIFade(true);	
 				}

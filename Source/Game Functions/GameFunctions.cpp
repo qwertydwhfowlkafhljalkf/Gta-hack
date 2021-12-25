@@ -446,7 +446,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		RequestNetworkControlOfEntity(SelectedPlayerPed);
 
 		//Draw Player Marker
-		if (CheatFeatures::PlayerListMarkerPosition == 0 || CheatFeatures::PlayerListMarkerPosition == 1 && GUI::currentMenu == PlayerListMenu)
+		if (CheatFeatures::PlayerListMarkerPosition == 0 || CheatFeatures::PlayerListMarkerPosition == 1 && GUI::currentMenu == GUI::Submenus::AllPlayers)
 		{
 			Vector3 coords = GetEntityCoords(SelectedPlayerPed);
 			GRAPHICS::DRAW_LIGHT_WITH_RANGE(coords.x, coords.y, coords.z + 2.f, 255, 255, 255, 5.f, 10.f);
@@ -1237,7 +1237,7 @@ void Cheat::GameFunctions::ChangeGTAOSessionType(SessionTypes SessionType)
 	{
 		if (SessionType == SessionTypeLeaveOnline)
 		{
-			if (NETWORK::NETWORK_IS_SESSION_STARTED)
+			if (NETWORK::NETWORK_IS_SESSION_STARTED())
 			{
 				globalHandle(1574587).At(2).As<int>() = SessionTypeLeaveOnline;
 			}

@@ -60,6 +60,8 @@ namespace Cheat
 		void CreateNewDirectory(std::string Path);
 		std::string GetLastErrorAsString();
 		void LoopedFunctions();
+		void NonLooped();
+		extern int PostInitBannerNotificationScaleformHandle;
 		bool IsGameWindowFocussed();
 		bool StringIsInteger(std::string String);
 		std::string ReturnTextureFilePath();

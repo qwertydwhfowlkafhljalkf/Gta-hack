@@ -1,114 +1,5 @@
 #pragma once
 
-enum SubMenus
-{
-	NOMENU,
-	MainMenu,
-	SelfOptionsMenu,
-	SettingsMenu,
-	ThemeMenu,
-	ThemeFilesMenu,
-	PlayerListMenu,
-	SelectedPlayerMenu,
-	teleportmenu,
-	weaponmenu,
-	WeaponsMenu,
-	WeaponVisualsMenu,
-	WeaponAmmoMenu,
-	VehicleCustomizerColorMenu,
-	miscmenu,
-	worldmenu,
-	vehiclemenu,
-	AnimationsMenu,
-	nearbyvehicles_menu,
-	nearbypeds_menu,
-	iplloader,
-	iplteleports,
-	weathermenu,
-	VehicleSpawnSettings,
-	SpawnedVehiclesMenu,
-	AllPlayersMenu,
-	AllPlayersExclusionsMenu,
-	SelfModelMenu,
-	GlobalsMenu,
-	SpawnMenu,
-	VehicleSpawnMenu,
-	ObjectSpawnMenu,
-	PedSpawnMenu,
-	Super,
-	Sports,
-	smugglersrun,
-	SportClassic,
-	Offroad,
-	Sedans,
-	Coupes,
-	Muscle,
-	Boats,
-	Commercial,
-	Compacts,
-	Cycles,
-	Emergency,
-	Helicopters,
-	Industrial,
-	Military,
-	Motorcycles,
-	Planes,
-	Service,
-	SUV,
-	Trailer,
-	Trains,
-	vehicle_lsc_neon_options,
-	vehicle_lsc_color_options,
-	Utility,
-	Vans,
-	SSASSSDLC,
-	doomsdayheistdlc,
-	gunrunningdlc,
-	CunningStuntsDLCMenu,
-	afterhoursdlc,
-	arenawardlc,
-	casinodlc,
-	diamondcasinoheist,
-	SummerSpecialDLCMenu,
-	CayoPericoHeistDLCMenu,
-	LosSantosTunersDLCMenu,
-	TheContractDLCMenu,
-	OnlineOptionsMenu,
-	timemenu,
-	LandmarkTeleportLocations,
-	CustomTeleportLocations,
-	SafehousesTeleportLocations,
-	HighAltitudeTeleportLocations,
-	UnderwaterTeleportLocations,
-	SelectedPlayerAttachmentOptions,
-	SelectedPlayerTrollMenu,
-	SelectedPlayerFriendlyMenu,
-	protections,
-	WardrobeMenu,
-	VisionMenu,
-	SelectedPlayerRemoteOptions,
-	SessionChatMenu,
-	vehicleweaponsmenu,
-	RecoveryMenu,
-	RecoveryStatsMenu,
-	RecoveryMenuWarning,
-	vehiclemultipliersmenus,
-	ShootEntitiesMenu,
-	aimbotsettingsmenu,
-	SelectedPlayerTeleportMenu,
-	SelectedPlayerApartmentTeleport,
-	sessionoptionsmenu,
-	hudmenu,
-	HideElementsMenu,
-	AboutMenu,
-	reportsmenu_stats,
-	ESPMenu,
-	VehicleCustomizerMenu,
-	DLCVehiclesMenu,
-	RadioMenu,
-	SUBMENUS_END //Used to get total size of SubMenus (SUBMENUS_END - 2) 
-};
-
 enum SelectableBitFlags
 {
 	SELECTABLE_DUMMY				= 1,	//Placeholder.
@@ -160,12 +51,12 @@ namespace Cheat
 		extern int optionCount;
 		extern int optionCountVisible;
 		extern int TotalOptionsCount;
-		extern SubMenus currentMenu;
+		extern void* currentMenu;
 		extern int menuLevel;
 		extern int PreviousMenuLevel;
-		extern SubMenus PreviousMenu;
+		extern void* PreviousMenu;
 		extern int optionsArray[1000];
-		extern SubMenus menusArray[1000];
+		extern void* menusArray[1000];
 		extern RGBA PrimaryColor;
 		extern RGBAF TextColorAndFont;
 		extern int SelectableTransparency;
@@ -178,10 +69,10 @@ namespace Cheat
 		extern int MenuArrowAnimationDelay;
 		extern bool MenuOptionArrowAnimationState;
 		extern void DeleteLoadedTheme();
-		void MoveMenu(SubMenus menu);
+		void MoveMenu(void* Submenu);
 		void BackMenu();
 		void CloseMenuGUI();
-		void End();
+		void MenuGUIBottom();
 		void LoadTheme(std::string ThemeFileName, bool StartUp);
 		void SaveTheme(std::string ThemeFileName);
 
@@ -190,7 +81,7 @@ namespace Cheat
 		bool Break(std::string option, int BitFlags = NULL);
 		bool Option(std::string option, std::string InformationText, int BitFlags = NULL);
 		bool VehicleOption(std::string option, std::string ModelName);
-		bool MenuOption(std::string option, SubMenus newSub, int BitFlags = NULL);
+		bool MenuOption(std::string option, void* NewSubmenu, int BitFlags = NULL);
 		bool MenuOptionPlayerList(std::string PlayerName, int BitFlags = NULL);
 		bool Toggle(std::string option, bool& TargetBool, std::string InformationText, int BitFlags = NULL);
 		bool Int(std::string option, int& _int, int min, int max, int step, std::string InformationText = "Select to change", int BitFlags = NULL);

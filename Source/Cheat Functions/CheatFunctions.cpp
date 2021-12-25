@@ -105,14 +105,21 @@ void Cheat::CheatFunctions::LoopedFunctions()
 	Controls::Loop();
 
 	//Submenu handlers - additional submenu logic is looped here
-	if (GUI::currentMenu == SelectedPlayerMenu ||
-		GUI::currentMenu == SelectedPlayerFriendlyMenu ||
-		GUI::currentMenu == SelectedPlayerRemoteOptions ||
-		GUI::currentMenu == SelectedPlayerTeleportMenu ||
-		GUI::currentMenu == SelectedPlayerAttachmentOptions ||
-		GUI::currentMenu == SelectedPlayerTrollMenu ||
-		GUI::currentMenu == SelectedPlayerApartmentTeleport ||
-		GUI::currentMenu == SelectedPlayerRemoteOptions)
+	for (int FuncPointerIndex = 0; FuncPointerIndex < Cheat::GUI::Submenus::NumberOfSubmenus; ++FuncPointerIndex)
+	{
+		if (GUI::currentMenu == (*Cheat::GUI::Submenus::FunctionPointers[FuncPointerIndex]))
+		{
+			(*Cheat::GUI::Submenus::FunctionPointers[FuncPointerIndex])();
+		}
+	}
+	if (GUI::currentMenu == GUI::Submenus::SelectedPlayer					||
+		GUI::currentMenu == GUI::Submenus::SelectedPlayerFriendly			||
+		GUI::currentMenu == GUI::Submenus::SelectedPlayerRemote				||
+		GUI::currentMenu == GUI::Submenus::SelectedPlayerTeleport			||
+		GUI::currentMenu == GUI::Submenus::SelectedPlayerAttachments		||
+		GUI::currentMenu == GUI::Submenus::SelectedPlayerGriefing			||
+		GUI::currentMenu == GUI::Submenus::SelectedPlayerApartmentTeleport	||
+		GUI::currentMenu == GUI::Submenus::SelectedPlayerRemote)
 	{
 		if (GameFunctions::IsPlayerIDValid(CheatFeatures::SelectedPlayer))
 		{
@@ -120,13 +127,13 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		}
 		else
 		{
-			GUI::PreviousMenu = NOMENU;
-			GUI::MoveMenu(MainMenu);
-			GUI::MoveMenu(OnlineOptionsMenu);
+			GUI::PreviousMenu = nullptr;
+			GUI::MoveMenu(GUI::Submenus::Home);
+			GUI::MoveMenu(GUI::Submenus::Online);
 			GameFunctions::MinimapNotification("~r~Invalid Player ID");
 		}
 	}
-	if (GUI::currentMenu == ThemeFilesMenu)
+	if (GUI::currentMenu == GUI::Submenus::ThemeFiles)
 	{
 		GUI::ThemeFilesVector.clear();
 		std::string ThemeFolderPath = CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
@@ -140,6 +147,9 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		}
 	}
 
+	//GUI - must be called after (^) rendering a submenu
+	GUI::MenuGUIBottom();
+
 	// Cursor Navigation Handler
 	if (CheatFeatures::CursorGUINavigationEnabled)
 	{
@@ -147,7 +157,7 @@ void Cheat::CheatFunctions::LoopedFunctions()
 		UI::_SHOW_CURSOR_THIS_FRAME();
 		UI::_SET_CURSOR_SPRITE(Normal);
 
-		if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - GUI::SelectableHeight - 0.181f }, { GUI::guiWidth, 0.084f }))
+		if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - GUI::SelectableHeight - 0.181f }, { GUI::guiWidth, GUI::SelectableHeight + 0.045f }))
 		{
 			UI::_SET_CURSOR_SPRITE(PreGrab);
 			if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
@@ -181,7 +191,7 @@ void Cheat::CheatFunctions::LoopedFunctions()
 			{
 				GUI::currentOption -= 1;
 			}
-			Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
+			GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 		}
 		if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_DOWN))
 		{
@@ -189,9 +199,57 @@ void Cheat::CheatFunctions::LoopedFunctions()
 			{
 				GUI::currentOption += 1;
 			}
-			Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
+			GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 		}
 	}
+}
+
+int Cheat::CheatFunctions::PostInitBannerNotificationScaleformHandle;
+void Cheat::CheatFunctions::NonLooped()
+{
+	// Check for newer cheat version
+	CheckCheatUpdate();
+
+	// Create Menu Selectable Arrow Animation Thread
+	std::thread MenuSelectableAnimationThreadHandle([]()
+		{
+			while (true)
+			{
+				if (GUI::menuLevel > 0)
+				{
+					GUI::MenuOptionArrowAnimationState = !GUI::MenuOptionArrowAnimationState;
+					Sleep(GUI::MenuArrowAnimationDelay);
+				}
+			}
+		});
+	MenuSelectableAnimationThreadHandle.detach();
+
+	// Load texture file
+	GUI::LoadTextureFile();
+
+	// Load configuration file
+	LoadConfig();
+
+	// Init Scaleform Banner Notification
+	PostInitBannerNotificationScaleformHandle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_BIG_MESSAGE_FREEMODE");
+	while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(PostInitBannerNotificationScaleformHandle)) { GameHooking::PauseMainFiber(0, false); }
+
+	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "OVERRIDE_Y_POSITION");
+	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_FLOAT(-0.2f);
+	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+
+	std::string MessageString = "Welcome " + (std::string)SOCIALCLUB::_SC_GET_NICKNAME() + ", have fun!";
+	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "SHOW_SHARD_WASTED_MP_MESSAGE");
+	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING("<FONT FACE='$gtaCash'>GTAV CHEAT");
+	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING(CheatFunctions::StringToChar(MessageString));
+	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(5);
+	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+
+	// Load 'multiplayer vehicles in Single Player' bypass
+	globalHandle(4533757).As<BOOL>() = true;
+
+	// Log POST initialization completion
+	LogFunctions::Message("GTAV Cheat Initialization Completed");
 }
 
 bool Cheat::CheatFunctions::IsGameWindowFocussed()
@@ -251,13 +309,13 @@ void LoadConfigThreadFunction()
 {
 	Cheat::Controls::ChangeControlsState(false);
 	Cheat::GUI::HideGUIElements = true;
-	for (int SubMenuInt = MainMenu; SubMenuInt != SUBMENUS_END; SubMenuInt++)
+	for (int FuncPointerIndex = 0; FuncPointerIndex < Cheat::GUI::Submenus::NumberOfSubmenus; ++FuncPointerIndex)
 	{
-		Cheat::GUI::MoveMenu(static_cast<SubMenus>(SubMenuInt));
+		Cheat::GUI::MoveMenu((*Cheat::GUI::Submenus::FunctionPointers[FuncPointerIndex]));
 		Sleep(150);
 	}
 	Cheat::GUI::CloseMenuGUI();
-	Cheat::GUI::PreviousMenu = NOMENU;
+	Cheat::GUI::PreviousMenu = nullptr;
 	Cheat::Controls::ChangeControlsState(true);
 	Cheat::GUI::HideGUIElements = false;
 	Cheat::CheatFunctions::LoadConfigThreadFunctionCompleted = true;

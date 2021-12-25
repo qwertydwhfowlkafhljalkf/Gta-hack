@@ -29,7 +29,6 @@
 #include <thread>
 #pragma comment(lib, "Winmm.lib")
 
-
 //MinHook
 #pragma comment(lib, "ThirdParty/MinHook/libMinHook-x64-v141-md.lib")
 #include "../ThirdParty/MinHook/MinHook.h"
@@ -61,6 +60,7 @@
 #include "../Header/Game Hooking/GameHooking.h"
 #include "../Header/GUI/GUI.h"
 #include "../Header/GUI/Controls.h"
+#include "../Header/GUI/Submenus.h"
 #include "../Header/Game Hooking/Types.h"
 #include "../Header/Game Functions/GameArrays.h"
 #include "../Header/Game Hooking/Offsets.h"
@@ -70,8 +70,9 @@
 #include "../Header/Cheat Functions/LogFunctions.h"
 
 
+
 namespace Cheat
 {
-	extern HMODULE CheatModuleHandle;
 	void FiberMain();
+	extern HMODULE CheatModuleHandle;
 }
