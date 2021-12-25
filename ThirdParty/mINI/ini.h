@@ -23,7 +23,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-//  /mINI/ v0.9.10
+//  /mINI/ v0.9.11
 //  An INI file reader and writer for the modern age.
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -108,7 +108,7 @@ namespace mINI
 		inline void toLower(std::string& str)
 		{
 			std::transform(str.begin(), str.end(), str.begin(), [](const char c) {
-				return static_cast<const char>(std::tolower(c));
+				return static_cast<char>(std::tolower(c));
 			});
 		}
 #endif
@@ -129,7 +129,7 @@ namespace mINI
 #else
 		const char* const endl = "\n";
 #endif
-	};
+	}
 
 	template<typename T>
 	class INIMap
@@ -324,7 +324,7 @@ namespace mINI
 			}
 			return PDataType::PDATA_UNKNOWN;
 		}
-	};
+	}
 
 	class INIReader
 	{
@@ -340,7 +340,7 @@ namespace mINI
 		{
 			std::string fileContents;
 			fileReadStream.seekg(0, std::ios::end);
-			fileContents.resize(fileReadStream.tellg());
+			fileContents.resize(static_cast<std::size_t>(fileReadStream.tellg()));
 			fileReadStream.seekg(0, std::ios::beg);
 			std::size_t fileSize = fileContents.size();
 			fileReadStream.read(&fileContents[0], fileSize);
