@@ -1235,7 +1235,7 @@ void Cheat::GameFunctions::SetCharacterSkillStat(std::string Skill, int Level)
 
 void Cheat::GameFunctions::ChangeGTAOSessionType(SessionTypes SessionType)
 {
-	if (SessionType != NULL)
+	if (SessionType >= -1 && SessionType <= 12)
 	{
 		if (SessionType == SessionTypeLeaveOnline)
 		{
