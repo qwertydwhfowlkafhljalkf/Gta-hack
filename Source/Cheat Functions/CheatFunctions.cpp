@@ -90,20 +90,8 @@ std::string Cheat::CheatFunctions::GetLastErrorAsString()
 	return message;
 }
 
-Player Cheat::GameFunctions::PlayerID;
-Ped Cheat::GameFunctions::PlayerPedID;
-void Cheat::CheatFunctions::LoopedFunctions()
+void Cheat::CheatFunctions::Loop()
 {
-	// Player ID and Player Ped ID
-	GameFunctions::PlayerID = PLAYER::PLAYER_ID();
-	GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
-
-	// Features
-	CheatFeatures::Looped();
-
-	// Controls
-	Controls::Loop();
-
 	//Submenu handlers - additional submenu logic is looped here
 	for (int FuncPointerIndex = 0; FuncPointerIndex < Cheat::GUI::Submenus::NumberOfSubmenus; ++FuncPointerIndex)
 	{

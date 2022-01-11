@@ -37,8 +37,11 @@ bool Cheat::CheatFeatures::AllPlayersExclusionsHost = false;
 
 bool PostInitBannerNotificationAnimationPlayed, LoadConfigInstructionalButtonInitialized, PostInitBannerNotificationCleanupComplete = false;
 int PostInitBannerNotificationCleanupTimer, LoadConfigInstructionalButtonHandle;
-void Cheat::CheatFeatures::Looped()
+void Cheat::CheatFeatures::Loop()
 {
+	GameFunctions::PlayerID = PLAYER::PLAYER_ID();
+	GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
+
 	// POST initialization notification
 	if (CheatFunctions::LoadConfigThreadFunctionCompleted)
 	{

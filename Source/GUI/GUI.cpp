@@ -275,7 +275,7 @@ bool GUI::MenuOptionPlayerList(std::string PlayerName, int BitFlags)
 {
 	if (Option("      " + PlayerName, "", BitFlags))
 	{
-		GUI::MoveMenu(nullptr);
+		GUI::MoveMenu(Submenus::SelectedPlayer);
 		return true;
 	}
 

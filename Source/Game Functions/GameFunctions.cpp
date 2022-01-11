@@ -1,4 +1,6 @@
 #include "../Header/Cheat Functions/FiberMain.h"
+Player Cheat::GameFunctions::PlayerID;
+Ped Cheat::GameFunctions::PlayerPedID;
 
 void Cheat::GameFunctions::GiveAllWeaponsToPlayer(Ped Player)
 {

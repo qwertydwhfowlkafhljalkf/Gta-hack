@@ -59,7 +59,7 @@ namespace Cheat
 		bool FileOrDirectoryExists(std::string Path);
 		void CreateNewDirectory(std::string Path);
 		std::string GetLastErrorAsString();
-		void LoopedFunctions();
+		void Loop();
 		void NonLooped();
 		extern int PostInitBannerNotificationScaleformHandle;
 		bool IsGameWindowFocussed();
