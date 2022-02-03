@@ -1,6 +1,5 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
-bool Cheat::CheatFunctions::NewerCheatVersionAvailable = false;
 std::string Cheat::CheatFunctions::NewCheatVersionString;
 bool Cheat::CheatFunctions::LoadConfigThreadFunctionCompleted = false;
 std::vector <std::string> Cheat::CheatFunctions::LoadedOptionsVector;
@@ -595,9 +594,8 @@ void Cheat::CheatFunctions::CheckCheatUpdate()
 
 		if (CurrentLocalVersion < LatestOnlineVersion)
 		{
-			NewerCheatVersionAvailable = true;
 			NewCheatVersionString = "v" + LatestOnlineVersionString;
-			LogFunctions::DebugMessage("A newer version of the cheat is available on Github");
+			LogFunctions::DebugMessage("A newer version of the cheat is available on GitHub");
 		}
 	}
 }

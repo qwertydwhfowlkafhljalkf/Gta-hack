@@ -4,7 +4,6 @@ using namespace Cheat;
 
 DWORD WINAPI InitializationThread(LPVOID lpParam)
 {
-	LogFunctions::Init();
 	GameHooking::Initialize();
 	//This thread is no longer needed, goodbye
 	return EXIT_SUCCESS;
@@ -16,8 +15,10 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		DisableThreadLibraryCalls(hModule);
 		CheatModuleHandle = hModule;
+		DisableThreadLibraryCalls(CheatModuleHandle);
+		//Initialize logging (create log console window)
+		LogFunctions::Init();
 		//Create 'gtav' directory
 		std::string GtavDirectoryPath = CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav";
 		if (!CheatFunctions::FileOrDirectoryExists(GtavDirectoryPath)) { CheatFunctions::CreateNewDirectory(GtavDirectoryPath); }
@@ -28,7 +29,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 		std::string ThemesDirectoryPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
 		if (!CheatFunctions::FileOrDirectoryExists(ThemesDirectoryPath)) { CheatFunctions::CreateNewDirectory(ThemesDirectoryPath); }
 		//Continue cheat loading
-		CreateThread(NULL, NULL, InitializationThread, hModule, NULL, NULL);
+		CreateThread(NULL, NULL, InitializationThread, CheatModuleHandle, NULL, NULL);
 		break;
 	}
 	return TRUE;

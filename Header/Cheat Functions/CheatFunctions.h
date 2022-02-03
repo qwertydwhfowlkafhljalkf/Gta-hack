@@ -4,7 +4,6 @@ namespace Cheat
 {
 	namespace CheatFunctions
 	{
-		extern bool NewerCheatVersionAvailable;
 		extern std::string NewCheatVersionString;
 		extern bool LoadConfigThreadFunctionCompleted;
 		extern std::vector <std::string> LoadedOptionsVector;
