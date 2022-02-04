@@ -2,7 +2,7 @@
 using namespace Cheat;
 using namespace GUI;
 
-void (*Submenus::FunctionPointers[])() = { 
+void (*Submenus::FunctionPointers[])() = {
 	Submenus::Home, Submenus::Self, Submenus::AllPlayersExclusions, Submenus::AllPlayers,
 	Submenus::Online, Submenus::Session, Submenus::SessionChat, Submenus::RecoverySubmenuWarning,
 	Submenus::RecoveryStatistics, Submenus::Recovery, Submenus::ReportStatistics, Submenus::SelfModel,

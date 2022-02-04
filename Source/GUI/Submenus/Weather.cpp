@@ -4,7 +4,7 @@ using namespace Cheat;
 void GUI::Submenus::Weather()
 {
 	GUI::Title("Weather");
-	if (GUI::Option("Reset Weather", ""))
+	if (GUI::Option("Reset", ""))
 	{
 		GAMEPLAY::CLEAR_OVERRIDE_WEATHER();
 	}
