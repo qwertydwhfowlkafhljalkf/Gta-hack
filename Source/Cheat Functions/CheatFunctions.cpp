@@ -518,10 +518,12 @@ bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool PressedOnce)
 	return false;
 }
 
-void Cheat::CheatFunctions::WriteToFile(std::string FilePath, std::string text, std::ios_base::openmode FileOpenMode)
+void Cheat::CheatFunctions::WriteToFile(std::string FilePath, std::string text, bool Append)
 {
+	std::ios_base::openmode Modes = std::ofstream::out;
+	std::ios_base::openmode ModesAppend = Modes + std::ofstream::app;
 	std::ofstream FileHandle;
-	FileHandle.open(FilePath, FileOpenMode);
+	FileHandle.open(FilePath, Append ? ModesAppend : Modes);
 	FileHandle << text;
 	FileHandle.close();
 }

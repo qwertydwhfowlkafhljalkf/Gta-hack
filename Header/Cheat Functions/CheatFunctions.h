@@ -77,7 +77,7 @@ namespace Cheat
 		std::string ReturnDateTimeFormatAsString(const char* DateTimeFormat);
 		bool StringToBool(std::string String);
 		bool IsKeyCurrentlyPressed(int vKey, bool PressedOnce = false);
-		void WriteToFile(std::string FilePath, std::string text, std::ios_base::openmode FileOpenMode);
+		void WriteToFile(std::string FilePath, std::string text, bool Append);
 		Json::Value ReturnOnlineJsonCppDataObject(std::string URL);
 		std::string ReturnLatestCheatBuildNumber();
 		void CheckCheatUpdate();
