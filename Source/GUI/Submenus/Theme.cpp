@@ -23,11 +23,11 @@ void GUI::Submenus::Theme()
 	}
 	if (GUI::Option("Save To New", ""))
 	{
-		char* NewThemeFileName = GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Theme Name");
-		if (NewThemeFileName != "0")
+		char* NewThemeFileName;
+		if (GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Theme Name", NewThemeFileName))
 		{
 			GUI::SaveTheme(NewThemeFileName);
-		}	
+		}
 	}
 	GUI::Break("Header", SELECTABLE_CENTER_TEXT);
 	GUI::Toggle("Texture", GUI::ShowHeaderTexture, "", SELECTABLE_DISABLE_SAVE);
@@ -36,17 +36,59 @@ void GUI::Submenus::Theme()
 	GUI::Toggle("RGB Disco", CheatFeatures::RGBDiscoBool, "It's party time!", SELECTABLE_DISABLE_SAVE);
 	if (GUI::Option("Primary", "Save is disabled while RGB Disco is enabled", CheatFeatures::RGBDiscoBool ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 	{
-		GUI::PrimaryColor.r = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter R-color"));
-		GUI::PrimaryColor.g = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter G-color"));
-		GUI::PrimaryColor.b = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter B-color"));
-		GameFunctions::MinimapNotification("Updated Primary Color");
+		int Red, Green, Blue;
+		bool Canceled = false;
+		if (GameFunctions::DisplayKeyboardAndReturnInputInteger(3, "Enter R-color", Red))
+		{
+			GUI::PrimaryColor.r = Red;
+		}
+		else { Canceled = true; }
+		if (GameFunctions::DisplayKeyboardAndReturnInputInteger(3, "Enter G-color", Green) && !Canceled)
+		{
+			GUI::PrimaryColor.g = Green;
+		}
+		else { Canceled = true; }
+		if (GameFunctions::DisplayKeyboardAndReturnInputInteger(3, "Enter B-color", Blue) && !Canceled)
+		{
+			GUI::PrimaryColor.b = Blue;
+		}
+		else { Canceled = true; }
+		if (!Canceled)
+		{
+			GameFunctions::MinimapNotification("Updated Primary Color");
+		}
+		else
+		{
+			GameFunctions::MinimapNotification("Canceled Updating Primary Color");
+		}
 	}
 	if (GUI::Option("Text", "Save is disabled while RGB Disco is enabled", CheatFeatures::RGBDiscoBool ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
 	{
-		GUI::TextColorAndFont.r = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter R-color"));
-		GUI::TextColorAndFont.g = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter G-color"));
-		GUI::TextColorAndFont.b = CheatFunctions::StringToInt(GameFunctions::DisplayKeyboardAndReturnInput(3, "Enter B-color"));
-		GameFunctions::MinimapNotification("Updated Text Color");
+		int Red, Green, Blue;
+		bool Canceled = false;
+		if (GameFunctions::DisplayKeyboardAndReturnInputInteger(3, "Enter R-color", Red))
+		{
+			GUI::TextColorAndFont.r = Red;
+		}
+		else { Canceled = true; }
+		if (GameFunctions::DisplayKeyboardAndReturnInputInteger(3, "Enter G-color", Green) && !Canceled)
+		{
+			GUI::TextColorAndFont.g = Green;
+		}
+		else { Canceled = true; }
+		if (GameFunctions::DisplayKeyboardAndReturnInputInteger(3, "Enter B-color", Blue) && !Canceled)
+		{
+			GUI::TextColorAndFont.b = Blue;
+		}
+		else { Canceled = true; }
+		if (!Canceled)
+		{
+			GameFunctions::MinimapNotification("Updated Text Color");
+		}
+		else
+		{
+			GameFunctions::MinimapNotification("Canceled Updating Text Color");
+		}
 	}
 	GUI::Break("Font", SELECTABLE_CENTER_TEXT);
 	if (GUI::StringVector("Type", { "Chalet London", "House Script", "Monospace", "Wing Dings", "Chalet Comprime Cologne", "Pricedown" }, CheatFeatures::FontTypeVectorPosition, "", SELECTABLE_RETURN_VALUE_CHANGE))

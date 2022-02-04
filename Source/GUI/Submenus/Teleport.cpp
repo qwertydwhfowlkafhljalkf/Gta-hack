@@ -14,15 +14,16 @@ void GUI::Submenus::Teleport()
 		Vector3 TargetCoordinates;
 		try
 		{
-			TargetCoordinates.x = std::stof(GameFunctions::DisplayKeyboardAndReturnInput(25, "Enter X-axis coordinate"));
-			if (TargetCoordinates.x != 0) 
+			char* X; char* Y; char* Z;
+			if (GameFunctions::DisplayKeyboardAndReturnInput(25, "Enter X-axis coordinate", X))
 			{ 
-				TargetCoordinates.y = std::stof(GameFunctions::DisplayKeyboardAndReturnInput(25, "Enter Y-axis coordinate"));
-				if (TargetCoordinates.y != 0) 
-				{ 
-					TargetCoordinates.z = std::stof(GameFunctions::DisplayKeyboardAndReturnInput(25, "Enter Z-axis coordinate"));
-					if (TargetCoordinates.z != 0) 
+				if (GameFunctions::DisplayKeyboardAndReturnInput(25, "Enter Y-axis coordinate", Y))
+				{
+					if (GameFunctions::DisplayKeyboardAndReturnInput(25, "Enter Z-axis coordinate", Z))
 					{ 
+						TargetCoordinates.x = std::stof(X);
+						TargetCoordinates.y = std::stof(Y);
+						TargetCoordinates.y = std::stof(Z);
 						GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, TargetCoordinates, false, false);
 					}
 				}
@@ -46,8 +47,8 @@ void GUI::Submenus::Teleport()
 	GUI::Break("Custom Locations", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Save current location", ""))
 	{
-		char* NewThemeFileName = GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Custom Teleport Location Name");
-		if (NewThemeFileName != "0")
+		char* NewThemeFileName;
+		if (GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Custom Teleport Location Name", NewThemeFileName))
 		{
 			CheatFunctions::AddCustomTeleportLocation(NewThemeFileName);
 			GameFunctions::MinimapNotification("Custom Location Saved");

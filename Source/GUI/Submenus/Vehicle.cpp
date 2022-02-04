@@ -18,9 +18,9 @@ void GUI::Submenus::Vehicle()
 	{
 		if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false))
 		{
-			int MaxSpeedInput = GameFunctions::DisplayKeyboardAndReturnInputInteger(3, "Enter the desired max speed");
-			if (MaxSpeedInput != 0)
-			{ 	
+			int MaxSpeedInput;
+			if (GameFunctions::DisplayKeyboardAndReturnInputInteger(3, "Enter the desired max speed", MaxSpeedInput))
+			{
 				::Vehicle VehicleHandle = PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID);
 				if (CheatFeatures::MeasurementSystemVectorPosition == 0)
 				{

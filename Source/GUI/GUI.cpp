@@ -329,7 +329,11 @@ bool GUI::Int(std::string option, int & _int, int min, int max, int step, std::s
 
 	if (Option(option, InformationText, BitFlags))
 	{
-		int KeyBoardInput = GameFunctions::DisplayKeyboardAndReturnInputInteger(CheatFunctions::ReturnNumberOfDigitsInValue(max), "Enter number");
+		int KeyBoardInput;
+		if (!GameFunctions::DisplayKeyboardAndReturnInputInteger(CheatFunctions::ReturnNumberOfDigitsInValue(max), "Enter number", KeyBoardInput))
+		{
+			return false;
+		}
 		if (KeyBoardInput >= min && KeyBoardInput <= max)
 		{
 			_int = KeyBoardInput;

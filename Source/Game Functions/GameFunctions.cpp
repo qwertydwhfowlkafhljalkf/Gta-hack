@@ -341,19 +341,26 @@ void Cheat::GameFunctions::AdvancedMinimapNotification(char* Message, char* PicN
 }
 
 std::string Cheat::GameFunctions::InGameKeyboardWindowTitle;
-char* Cheat::GameFunctions::DisplayKeyboardAndReturnInput(int MaxInput, std::string Title)
+bool Cheat::GameFunctions::DisplayKeyboardAndReturnInput(int MaxInput, std::string Title, char*& Input)
 {
 	InGameKeyboardWindowTitle = Title;
 	GAMEPLAY::DISPLAY_ONSCREEN_KEYBOARD(0, "FMMC_KEY_TIP8", "", "", "", "", "", MaxInput);
 	while (GAMEPLAY::UPDATE_ONSCREEN_KEYBOARD() == 0) { GameHooking::PauseMainFiber(0, false); }
 	InGameKeyboardWindowTitle.clear();
-	if (!GAMEPLAY::GET_ONSCREEN_KEYBOARD_RESULT()) return "0";
-	return GAMEPLAY::GET_ONSCREEN_KEYBOARD_RESULT();
+	if (!GAMEPLAY::GET_ONSCREEN_KEYBOARD_RESULT())
+	{
+		return false;
+	}
+	Input = GAMEPLAY::GET_ONSCREEN_KEYBOARD_RESULT();
+	return true;
 }
 
-int Cheat::GameFunctions::DisplayKeyboardAndReturnInputInteger(int MaxInput, std::string Title)
+bool Cheat::GameFunctions::DisplayKeyboardAndReturnInputInteger(int MaxInput, std::string Title, int &Input)
 {	
-	return CheatFunctions::StringToInt(DisplayKeyboardAndReturnInput(MaxInput, Title));
+	char* InputString;
+	if (!DisplayKeyboardAndReturnInput(MaxInput, Title, InputString)) { return false; }
+	Input = CheatFunctions::StringToInt(InputString);
+	return true;
 }
 
 void Cheat::GameFunctions::StopAllPedAnimations(Ped TargetPed)

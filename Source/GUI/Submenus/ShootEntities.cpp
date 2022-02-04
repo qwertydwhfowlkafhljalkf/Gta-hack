@@ -10,8 +10,8 @@ void GUI::Submenus::ShootEntities()
 	GUI::StringVector("Type", { "Vehicle", "Ped" }, ShootEntitiesInteger, ""); // TODO: Entity as well as Vehicle/Ped List
 	if (GUI::Option(ShootEntitiesInteger == 0 ? "Custom Vehicle" : "Custom Ped", ""))
 	{
-		char* Input = GameFunctions::DisplayKeyboardAndReturnInput(25, ShootEntitiesInteger == 0 ? "Set Vehicle" : "Set Ped");
-		if (Input != "0")
+		char* Input;
+		if (GameFunctions::DisplayKeyboardAndReturnInput(25, ShootEntitiesInteger == 0 ? "Set Vehicle" : "Set Ped", Input))
 		{
 			CheatFeatures::ShootEntitiesCurrent = Input;
 		}

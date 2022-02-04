@@ -26,12 +26,12 @@ void GUI::Submenus::VehicleCustomizer()
 		}
 		if (GUI::Option("Change License Plate Text", "Input custom vehicle license plate text"))
 		{
-			char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(8, "Enter new license plate text");
-			if (KeyboardInput != "0") 
-			{  
+			char* KeyboardInput;
+			if (GameFunctions::DisplayKeyboardAndReturnInput(8, "Enter new license plate text", KeyboardInput))
+			{
 				VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), KeyboardInput);
 				GameFunctions::AdvancedMinimapNotification("License Plate Text Updated", "Textures", "AdvancedNotificationImage", false, 4, "Los Santos Customs", "", 1.0, "");
-			}	
+			}
 		}
 		GUI::MenuOption("Color", Submenus::VehicleCustomizerColor);
 		GUI::MenuOption("Neon", Submenus::VehicleCustomizerNeon);

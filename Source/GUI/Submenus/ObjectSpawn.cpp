@@ -8,12 +8,12 @@ void GUI::Submenus::ObjectSpawn()
 	GUI::Break("Object List", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Search", "Enter keywords to filter object list"))
 	{
-		char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter search term");
-		if (KeyboardInput != "0")
-		{  
+		char* KeyboardInput;
+		if (GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter search term", KeyboardInput))
+		{
 			ObjectSpawnSearchTerm = KeyboardInput;
 			std::transform(ObjectSpawnSearchTerm.begin(), ObjectSpawnSearchTerm.end(), ObjectSpawnSearchTerm.begin(), tolower);
-		}	
+		}
 	}
 	if (!ObjectSpawnSearchTerm.empty())
 	{

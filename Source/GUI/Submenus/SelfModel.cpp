@@ -7,9 +7,9 @@ void GUI::Submenus::SelfModel()
 	GUI::Title("Model");
 	if (GUI::Option("Custom Input", "Input custom Ped model"))
 	{
-		char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter custom ped model name");
-		if (KeyboardInput != "0") 
-		{ 
+		char* KeyboardInput;
+		if (GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter custom ped model name", KeyboardInput))
+		{
 			DWORD model = GAMEPLAY::GET_HASH_KEY(KeyboardInput);
 			if (!STREAMING::IS_MODEL_IN_CDIMAGE(model))
 			{
@@ -19,17 +19,17 @@ void GUI::Submenus::SelfModel()
 			{
 				GameFunctions::ChangePedModelLocalPlayer(model);
 			}
-		}		
+		}	
 	}
 	GUI::Break("Ped List", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Search", "Enter keywords to filter peds list"))
 	{
-		char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter search term");
-		if (KeyboardInput != "0") 
-		{ 
+		char* KeyboardInput;
+		if (GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter search term", KeyboardInput))
+		{
 			ChangeModelPedSearchTerm = KeyboardInput;
 			std::transform(ChangeModelPedSearchTerm.begin(), ChangeModelPedSearchTerm.end(), ChangeModelPedSearchTerm.begin(), tolower);
-		}	
+		}
 	}
 	if (!ChangeModelPedSearchTerm.empty())
 	{

@@ -32,8 +32,8 @@ namespace Cheat
 		void GetCameraDirection(float* dirX, float* dirY, float* dirZ);
 		void RequestNetworkControlOfEntity(Entity entity);
 		void ClonePed(Ped ped);
-		char* DisplayKeyboardAndReturnInput(int MaxInput, std::string Title);
-		int DisplayKeyboardAndReturnInputInteger(int MaxInput, std::string Title);
+		bool DisplayKeyboardAndReturnInput(int MaxInput, std::string Title, char* &Input);
+		bool DisplayKeyboardAndReturnInputInteger(int MaxInput, std::string Title, int &Input);
 		void StopAllPedAnimations(Ped TargetPed);
 		void ShowPlayerInformationBox(Player PlayerID);
 		float Get3DDistance(Vector3 a, Vector3 b);

@@ -642,8 +642,11 @@ void GUI::Submenus::Recovery()
 	GUI::Break("Rank", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Set Rank", "Input a custom Rank"))
 	{
-		int Rank = GameFunctions::DisplayKeyboardAndReturnInputInteger(4, "Enter desired rank");
-		if (Rank != 0) { GameFunctions::SetRankRockstarGift(Rank); }
+		int Rank;
+		if (GameFunctions::DisplayKeyboardAndReturnInputInteger(4, "Enter desired rank", Rank))
+		{
+			GameFunctions::SetRankRockstarGift(Rank);
+		}
 	}
 	GUI::Break("Money", SELECTABLE_CENTER_TEXT);
 	GUI::Break("Wallet balance: ~g~$~s~" + std::to_string(NETWORKCASH::NETWORK_GET_VC_WALLET_BALANCE(-1)));
@@ -676,8 +679,8 @@ void GUI::Submenus::Recovery()
 	GUI::Break("ATM", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Move Wallet To Bank", ""))
 	{
-		char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move. Type \"all\" to move all money.");
-		if (KeyboardInput != "0")
+		char* KeyboardInput;
+		if (GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move. Type \"all\" to move all money.", KeyboardInput))
 		{
 			int Amount = CheatFunctions::StringToInt(KeyboardInput);
 			if (KeyboardInput == "all")
@@ -689,8 +692,8 @@ void GUI::Submenus::Recovery()
 	}
 	if (GUI::Option("Move Bank To Wallet", ""))
 	{
-		char* KeyboardInput = GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move. Type \"all\" to move all money.");
-		if (KeyboardInput != "0")
+		char* KeyboardInput;
+		if (GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter amount to move. Type \"all\" to move all money.", KeyboardInput))
 		{
 			int Amount = CheatFunctions::StringToInt(KeyboardInput);
 			if (KeyboardInput == "all")
