@@ -1,7 +1,7 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
 using namespace Cheat;
-int TeleportFoward = 1;
+float TeleportFoward = 1.f;
 void GUI::Submenus::Teleport()
 {
 	GUI::Title("Teleport");
@@ -38,9 +38,9 @@ void GUI::Submenus::Teleport()
 	{
 		PED::SET_PED_INTO_VEHICLE(GameFunctions::PlayerPedID, VEHICLE::GET_LAST_DRIVEN_VEHICLE(), -1);
 	}
-	if (GUI::Int("Teleport Forward", TeleportFoward, 1, 10, 1))
+	if (GUI::Float("Teleport Forward", TeleportFoward, 1, 10, 1, "", 0))
 	{
-		Vector3 Coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(GameFunctions::PlayerPedID, 0.0f, static_cast<float>(TeleportFoward), 0.0f);
+		Vector3 Coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(GameFunctions::PlayerPedID, 0.0f, TeleportFoward, 0.0f);
 		if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false)) { GameFunctions::PlayerPedID = PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, false); }
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(GameFunctions::PlayerPedID, Coords.x, Coords.y, Coords.z, false, false, true);
 	}
