@@ -35,7 +35,7 @@ bool Cheat::CheatFeatures::AllPlayersExclusionsSelf = true;
 bool Cheat::CheatFeatures::AllPlayersExclusionsFriends = false;
 bool Cheat::CheatFeatures::AllPlayersExclusionsHost = false;
 
-bool PostInitBannerNotificationAnimationPlayed, LoadConfigInstructionalButtonInitialized, PostInitBannerNotificationCleanupComplete = false;
+bool LoadConfigInstructionalButtonInitialized;
 int PostInitBannerNotificationCleanupTimer, LoadConfigInstructionalButtonHandle;
 void Cheat::CheatFeatures::Loop()
 {
@@ -43,37 +43,13 @@ void Cheat::CheatFeatures::Loop()
 	GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
 
 	// POST initialization notification
-	if (CheatFunctions::LoadConfigThreadFunctionCompleted)
+	if (CheatFunctions::LoadConfigThreadFunctionCompleted && !GUI::CheatGUIHasBeenOpened)
 	{
-		if (!PostInitBannerNotificationCleanupComplete)
-		{
-			GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenGUIKey) + " to open cheat GUI";
-			GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&LoadConfigInstructionalButtonHandle);
-			GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(CheatFunctions::PostInitBannerNotificationScaleformHandle, 255, 255, 255, 255, 0);
-		}
-		if (GUI::CheatGUIHasBeenOpened)
-		{
-			if (!PostInitBannerNotificationAnimationPlayed)
-			{
-				GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(CheatFunctions::PostInitBannerNotificationScaleformHandle, "TRANSITION_OUT");
-				GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_FLOAT(2.f);
-				GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
-				PostInitBannerNotificationCleanupTimer = GetTickCount64();
-				PostInitBannerNotificationAnimationPlayed = true;
-			}
-			else
-			{
-				if (GetTickCount64() - PostInitBannerNotificationCleanupTimer == 2500)
-				{
-					GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&CheatFunctions::PostInitBannerNotificationScaleformHandle);
-					PostInitBannerNotificationCleanupComplete = true;
-				}		
-			}
-		}
-		else
-		{
-			UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
-		}
+		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&LoadConfigInstructionalButtonHandle);
+		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenGUIKey) + " to open cheat GUI";
+		std::string WelcomeText = "Welcome " + (std::string)SOCIALCLUB::_SC_GET_NICKNAME() + ", have fun!";
+		GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(WelcomeText), "Textures", "AdvancedNotificationImage", false, 4, "GTAV Cheat", "", 0.5f, "");
+		UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
 	}
 	else
 	{

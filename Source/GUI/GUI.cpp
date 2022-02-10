@@ -176,7 +176,7 @@ bool GUI::VehicleOption(std::string option, std::string ModelName)
 
 			if (guiX < 0.71f)
 			{
-				DrawTextInGame("Model Name: " + ModelName, TextColorAndFont, { guiX + 0.111f,  guiY - 0.004f }, { 0.45f, 0.30f }, false);
+				DrawTextInGame("Model Name: " + ModelName, TextColorAndFont, { guiX + 0.111f,  guiY - 0.005f }, { 0.45f, 0.30f }, false);
 				DrawTextInGame(ModelMaxSpeed.str(), TextColorAndFont, { guiX + 0.111f, guiY + 0.010f }, { 0.45f, 0.30f }, false);
 				DrawTextInGame("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { guiX + 0.111f, guiY + 0.025f}, {0.45f, 0.30f}, false);
 				DrawRectInGame({ 0, 0, 0, 150 }, { guiX + 0.187f, GUI::guiY - 0.061f }, { 0.16f, 0.22f });
@@ -184,7 +184,7 @@ bool GUI::VehicleOption(std::string option, std::string ModelName)
 			}
 			else
 			{
-				DrawTextInGame("Model Name: " + ModelName, TextColorAndFont, { guiX - 0.262f, guiY - 0.004f }, { 0.45f, 0.30f }, false);
+				DrawTextInGame("Model Name: " + ModelName, TextColorAndFont, { guiX - 0.262f, guiY - 0.005f }, { 0.45f, 0.30f }, false);
 				DrawTextInGame(ModelMaxSpeed.str(), TextColorAndFont, { guiX - 0.262f, guiY + 0.010f }, { 0.45f, 0.30f }, false);
 				DrawTextInGame("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { guiX - 0.262f, guiY + 0.025f }, { 0.45f, 0.30f }, false);
 				DrawRectInGame({ 0, 0, 0, 150 }, { guiX - 0.187f, guiY - 0.061f }, { 0.16f, 0.22f });

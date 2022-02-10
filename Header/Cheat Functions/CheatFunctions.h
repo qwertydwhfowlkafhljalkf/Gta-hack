@@ -60,7 +60,6 @@ namespace Cheat
 		std::string GetLastErrorAsString();
 		void Loop();
 		void NonLooped();
-		extern int PostInitBannerNotificationScaleformHandle;
 		bool IsGameWindowFocussed();
 		bool StringIsInteger(std::string String);
 		std::string ReturnTextureFilePath();

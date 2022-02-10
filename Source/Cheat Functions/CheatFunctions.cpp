@@ -191,7 +191,6 @@ void Cheat::CheatFunctions::Loop()
 	}
 }
 
-int Cheat::CheatFunctions::PostInitBannerNotificationScaleformHandle;
 void Cheat::CheatFunctions::NonLooped()
 {
 	// Check for newer cheat version
@@ -216,21 +215,6 @@ void Cheat::CheatFunctions::NonLooped()
 
 	// Load configuration file
 	LoadConfig();
-
-	// Init Scaleform Banner Notification
-	PostInitBannerNotificationScaleformHandle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MP_BIG_MESSAGE_FREEMODE");
-	while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(PostInitBannerNotificationScaleformHandle)) { GameHooking::PauseMainFiber(0, false); }
-
-	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "OVERRIDE_Y_POSITION");
-	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_FLOAT(-0.2f);
-	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
-
-	std::string MessageString = "Welcome " + (std::string)SOCIALCLUB::_SC_GET_NICKNAME() + ", have fun!";
-	GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(PostInitBannerNotificationScaleformHandle, "SHOW_SHARD_WASTED_MP_MESSAGE");
-	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING("<FONT FACE='$gtaCash'>GTAV CHEAT");
-	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_STRING(CheatFunctions::StringToChar(MessageString));
-	GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(5);
-	GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 
 	// Load 'multiplayer vehicles in Single Player' bypass
 	globalHandle(4533757).As<BOOL>() = true;
