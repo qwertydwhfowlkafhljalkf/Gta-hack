@@ -51,7 +51,7 @@ void Cheat::CheatFeatures::Loop()
 		GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(WelcomeText), "Textures", "AdvancedNotificationImage", false, 4, "GTAV Cheat", "", 0.5f, "");
 		UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
 	}
-	else
+	else if (!CheatFunctions::LoadConfigThreadFunctionCompleted)
 	{
 		if (!LoadConfigInstructionalButtonInitialized)
 		{
