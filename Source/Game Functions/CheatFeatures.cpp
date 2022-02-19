@@ -700,9 +700,7 @@ void Cheat::CheatFeatures::PlayerInvisible(bool toggle)
 bool Cheat::CheatFeatures::MobileRadioBool = false;
 void Cheat::CheatFeatures::MobileRadio(bool toggle)
 {
-	AUDIO::SET_RADIO_TO_STATION_INDEX(AUDIO::GET_PLAYER_RADIO_STATION_INDEX());
 	AUDIO::SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(toggle);
-	AUDIO::SET_MOBILE_PHONE_RADIO_STATE(toggle);
 }
 
 bool Cheat::CheatFeatures::FreezeStationBool = false;
