@@ -145,8 +145,7 @@ bool GUI::VehicleOption(std::string option, std::string ModelName)
 	{
 		return true;
 	}
-	bool OnCurrent = GUI::currentOption == GUI::optionCount ? true : false;
-	if (OnCurrent)
+	if (GUI::currentOption == GUI::optionCount)
 	{
 		std::string VehiclePreviewDictName, VehiclePreviewName;
 		std::transform(ModelName.begin(), ModelName.end(), ModelName.begin(), tolower);

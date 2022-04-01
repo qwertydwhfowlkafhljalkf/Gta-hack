@@ -4,7 +4,7 @@ enum SelectableBitFlags
 {
 	SELECTABLE_DUMMY				= 1,	//Placeholder.
 	SELECTABLE_DISABLED				= 2,	//The selectable is disabled, if the Select key is pressed on the selectable a message appears informing the user about the disabled state. When using this flag saving is also blocked (use of SELECTABLE_DISABLE_SAVE not needed).
-	SELECTABLE_DISABLE_SAVE			= 4,	//The selectable won't save when the corresponding key is pressed.
+	SELECTABLE_DISABLE_SAVE			= 4,	//The selectable state won't be saved when the 'save' key is pressed.
 	SELECTABLE_CENTER_TEXT			= 8,	//Text will be centered relative to menu GUI. This currently only applies to the Break selectable.
 	SELECTABLE_RETURN_VALUE_CHANGE	= 16,	//Function will also return when a value is changed (e.g. left or right is pressed). Currently used by Float, StringVector and Int selectable.
 	SELECTABLE_HIDE_INFO_BOX		= 32,	//Forcefully (ignoring other settings) hides the Selectable Information Box for a given Selectable.

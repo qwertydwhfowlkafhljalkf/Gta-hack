@@ -1210,19 +1210,14 @@ void Cheat::GameFunctions::FadeRGB(int& r, int& g, int& b)
 	}
 }
 
-/*
-Description: Shows a full-screen message with background rectangle.
-Note(s): Used by Recovery warning and Unload, needs work to be used for other purposes.
-*/
 bool Cheat::GameFunctions::ShowFullScreenMessage(std::string Message)
 {
 	while (true)
 	{
-		GUI::DrawRectInGame({ GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 210 }, { 0.500f, 0.372f }, { 0.30f, 0.005f });
 		GUI::DrawRectInGame({ 0, 0, 0, 210 }, { 0.50f, 0.45f }, { 0.30f, 0.15f });
-		Cheat::GUI::DrawTextInGame("WARNING", { 255, 255, 255, 255, FontPricedown }, { 0.355f, 0.375f }, { 0.50f, 0.50f }, false);
-		Cheat::GUI::DrawTextInGame(Message, { 255, 255, 255, 255}, { 0.500f, 0.410f}, { 0.40f, 0.40f }, true, true);
-		Cheat::GUI::DrawTextInGame("Press ENTER to accept or BACKSPACE to decline", { 255, 255, 255, 255 }, { 0.355f, 0.495f }, { 0.30f, 0.30f }, false);
+		Cheat::GUI::DrawTextInGame("~bold~CAUTION", { 225, 0, 0, 255, FontChaletLondon }, { 0.450f, 0.370f }, { 0.55f, 0.55f }, false, true);
+		Cheat::GUI::DrawTextInGame(Message, { 255, 255, 255, 255, FontChaletLondon }, { 0.500f, 0.420f}, { 0.40f, 0.40f }, true);
+		Cheat::GUI::DrawTextInGame("Press ENTER to continue or BACKSPACE to go back", { 255, 255, 255, 255, FontChaletLondon }, { 0.355f, 0.495f }, { 0.30f, 0.30f }, false, true);
 		if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_ACCEPT))
 		{
 			return true;

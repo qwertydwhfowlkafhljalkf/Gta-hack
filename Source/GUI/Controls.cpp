@@ -1,15 +1,15 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
-bool Cheat::Controls::ControlsDisabled = false; //All cheat input is ignored when True
-bool Cheat::Controls::SelectPressed = false;
-bool Cheat::Controls::LeftPressed = false;
-bool Cheat::Controls::RightPressed = false;
+bool Cheat::Controls::ControlsDisabled		= false; //All cheat input is ignored when True
+bool Cheat::Controls::SelectPressed			= false;
+bool Cheat::Controls::LeftPressed			= false;
+bool Cheat::Controls::RightPressed			= false;
 
-int Cheat::Controls::GUIKeyPressDelay = 150;
-int Cheat::Controls::KeyPressPreviousTick = GetTickCount64();
-int Cheat::Controls::OpenGUIKey = VK_F4;
-int Cheat::Controls::GUINavigationKey = VK_F5;
-int Cheat::Controls::SaveSelectableKey = VK_F12;
+int Cheat::Controls::GUIKeyPressDelay		= 150;
+int Cheat::Controls::KeyPressPreviousTick	= GetTickCount64();
+int Cheat::Controls::OpenGUIKey				= VK_F4;
+int Cheat::Controls::GUINavigationKey		= VK_F5;
+int Cheat::Controls::SaveSelectableKey		= VK_F12;
 
 void Cheat::Controls::Loop()
 {
