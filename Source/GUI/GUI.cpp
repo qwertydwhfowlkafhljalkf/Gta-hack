@@ -141,11 +141,11 @@ bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
 
 bool GUI::VehicleOption(std::string option, std::string ModelName)
 {
-	bool OnCurrent = GUI::currentOption == GUI::optionCount ? true : false;
 	if (Option(option, ""))
 	{
 		return true;
 	}
+	bool OnCurrent = GUI::currentOption == GUI::optionCount ? true : false;
 	if (OnCurrent)
 	{
 		std::string VehiclePreviewDictName, VehiclePreviewName;
