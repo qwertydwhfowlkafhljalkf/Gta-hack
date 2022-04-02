@@ -3,6 +3,7 @@
 std::string Cheat::CheatFunctions::NewCheatVersionString;
 bool Cheat::CheatFunctions::LoadConfigThreadFunctionCompleted = false;
 std::vector <std::string> Cheat::CheatFunctions::LoadedOptionsVector;
+bool Cheat::CheatFunctions::SendThreadTerminateSignal = false;	// This MUST ONLY be set to True when the cheat is unloading
 
 void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 {
@@ -199,7 +200,7 @@ void Cheat::CheatFunctions::NonLooped()
 	// Create Menu Selectable Arrow Animation Thread
 	std::thread MenuSelectableAnimationThreadHandle([]()
 		{
-			while (true)
+			while (!CheatFunctions::SendThreadTerminateSignal)
 			{
 				if (GUI::menuLevel > 0)
 				{

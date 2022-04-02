@@ -22,9 +22,9 @@ std::string SelectableInformationText;
 std::string GUI::CurrentTheme;
 int GUI::maxVisOptions			= 10;
 int GUI::currentOption			= 0;
-int GUI::currentOptionVisible    = 0;	//This has GUI::Break excluded
+int GUI::currentOptionVisible   = 0;	//This has GUI::Break excluded
 int GUI::previousOption			= 0;
-int GUI::optionCount				= 0;
+int GUI::optionCount			= 0;
 int GUI::optionCountVisible		= 0;	//This has GUI::Break excluded
 int GUI::TotalOptionsCount		= 0;
 int GUI::menuLevel				= 0;
@@ -35,14 +35,14 @@ int GUI::optionsArray			[1000];
 void* GUI::menusArray			[1000];
 std::vector <std::string> GUI::ThemeFilesVector;
                  
-RGBA GUI::PrimaryColor               { 0, 0, 255, 255 };
-RGBAF GUI::TextColorAndFont			{ 255, 255, 255, 255, FontChaletLondon };
-int GUI::SelectableTransparency		= 150;
-int GUI::HeaderBackgroundTransparency  = 200;
+RGBA GUI::PrimaryColor					{ 0, 0, 255, 255 };
+RGBAF GUI::TextColorAndFont				{ 255, 255, 255, 255, FontChaletLondon };
+int GUI::SelectableTransparency			= 150;
+int GUI::HeaderBackgroundTransparency	= 200;
 int GUI::TitleAndEndTransparency		= 210;
-int GUI::ToggleSelectableTransparency = 255;
-int GUI::HeaderTextureTransparency	 = 255;
-int GUI::EndSmallLogoTransparency	 = 255;
+int GUI::ToggleSelectableTransparency	= 255;
+int GUI::HeaderTextureTransparency		= 255;
+int GUI::EndSmallLogoTransparency		= 255;
 int GUI::OnlinePlayerPictureTransparency = 255;
 
 int GUI::MenuArrowAnimationDelay		= 1000;

@@ -364,7 +364,6 @@ void GameHooking::Initialize()
 	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook Global Pointer", true) : patternAddr = reinterpret_cast<decltype(patternAddr)>(c_location);
 	m_globalPtr = (__int64**)(patternAddr + *(int*)(patternAddr + 3) + 7);
 
-
 	//Get Event Hook -> Used by defuseEvent
 	Cheat::LogFunctions::DebugMessage("Load 'Event Hook'");
 	if ((c_location = Memory::pattern("48 83 EC 28 E8 ? ? ? ? 48 8B 0D ? ? ? ? 4C 8D 0D ? ? ? ? 4C 8D 05 ? ? ? ? BA 03").count(1).get(0).get<char>(0)))
@@ -503,17 +502,19 @@ DWORD WINAPI UnloadThread(LPVOID lpParam)
 	ShowWindow(GetConsoleWindow(), SW_HIDE);
 	FreeConsole();
 
-	//Remove MinHook hooks and unitialize
+	//Stop threads
+	Cheat::CheatFunctions::SendThreadTerminateSignal = true;
+
+	//Disable & remove MinHook hooks
 	for (int i = 0; i < HookedFunctions.size(); i++)
 	{
-		if (MH_DisableHook(HookedFunctions[i]) != MH_OK && MH_RemoveHook(HookedFunctions[i]) != MH_OK)
-		{
-			std::string CurrentHook((char*)HookedFunctions[i]);
-			std::string Message = "Failed To Remove Hook " + CurrentHook;
-			Cheat::LogFunctions::Error(Cheat::CheatFunctions::StringToChar(Message), true);
-		}
+		MH_DisableHook(HookedFunctions[i]);
+		MH_RemoveHook(HookedFunctions[i]);
 	}
 	MH_Uninitialize();
+
+	//Unitializing Logger
+	Cheat::LogFunctions::Uninit();
 
 	//Exit
 	FreeLibraryAndExitThread(Cheat::CheatModuleHandle, EXIT_SUCCESS);
