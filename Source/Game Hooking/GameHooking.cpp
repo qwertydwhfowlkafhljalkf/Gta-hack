@@ -332,36 +332,36 @@ void GameHooking::Initialize()
 	char* c_location = nullptr;
 	void* v_location = nullptr;
 
-	//Hook GameState
+	//Load GameState
 	Cheat::LogFunctions::DebugMessage("Load 'GameState'");
 	c_location = Memory::pattern("83 3D ? ? ? ? ? 75 17 8B 43 20 25").count(1).get(0).get<char>(2);
-	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook GameState", true) : m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5);
+	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to load GameState", true) : m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5);
 	
-	//Hook Vector3 Result Fix
+	//Load Vector3 Result Fix
 	Cheat::LogFunctions::DebugMessage("Load 'Vector3 Result Fix'");
 	v_location = Memory::pattern("83 79 18 00 48 8B D1 74 4A FF 4A 18").count(1).get(0).get<void>(0);
 	if (v_location != nullptr) scrNativeCallContext::SetVectorResults = (void(*)(scrNativeCallContext*))(v_location);
 
-	//Hook Native Registration Table
+	//Load Native Registration Table
 	Cheat::LogFunctions::DebugMessage("Load 'Native Registration Table'");
 	c_location = Memory::pattern("76 32 48 8B 53 40 48 8D 0D").count(1).get(0).get<char>(9);
-	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook Native Registration Table", true) : m_registrationTable = reinterpret_cast<decltype(m_registrationTable)>(c_location + *(int32_t*)c_location + 4);
+	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to load Native Registration Table", true) : m_registrationTable = reinterpret_cast<decltype(m_registrationTable)>(c_location + *(int32_t*)c_location + 4);
 
-	//Hook Game World Pointer
+	//Load Game World Pointer
 	Cheat::LogFunctions::DebugMessage("Load 'World Pointer'");
 	c_location = Memory::pattern("48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07").count(1).get(0).get<char>(0);
-	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook World Pointer", true) : m_worldPtr = reinterpret_cast<uint64_t>(c_location) + *reinterpret_cast<int*>(reinterpret_cast<uint64_t>(c_location) + 3) + 7;
+	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to load World Pointer", true) : m_worldPtr = reinterpret_cast<uint64_t>(c_location) + *reinterpret_cast<int*>(reinterpret_cast<uint64_t>(c_location) + 3) + 7;
 
-	//Hook Active Game Thread
+	//Load Active Game Thread
 	Cheat::LogFunctions::DebugMessage("Load 'Active Game Thread'");
 	c_location = Memory::pattern("E8 ? ? ? ? 48 8B 88 10 01 00 00").count(1).get(0).get<char>(1);
-	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook Active Game Thread", true) : GetActiveThread = reinterpret_cast<decltype(GetActiveThread)>(c_location + *(int32_t*)c_location + 4);
+	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to load Active Game Thread", true) : GetActiveThread = reinterpret_cast<decltype(GetActiveThread)>(c_location + *(int32_t*)c_location + 4);
 
 	//Get Global Pointer
 	Cheat::LogFunctions::DebugMessage("Load 'Global Pointer'");
 	c_location = Memory::pattern("4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11").count(1).get(0).get<char>(0);
 	__int64 patternAddr = NULL;
-	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to hook Global Pointer", true) : patternAddr = reinterpret_cast<decltype(patternAddr)>(c_location);
+	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to load Global Pointer", true) : patternAddr = reinterpret_cast<decltype(patternAddr)>(c_location);
 	m_globalPtr = (__int64**)(patternAddr + *(int*)(patternAddr + 3) + 7);
 
 	//Get Event Hook -> Used by defuseEvent

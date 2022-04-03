@@ -21,6 +21,7 @@ void Cheat::LogFunctions::Init()
 
 void Cheat::LogFunctions::Uninit()
 {
+	DebugMessage("Logger uninitialized");
 	LoggerInitialized = false;
 }
 

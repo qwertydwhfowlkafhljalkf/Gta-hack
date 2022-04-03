@@ -11,14 +11,19 @@ void GUI::Submenus::CustomTeleportLocations()
 		for (auto it = JsonHandle.begin(); it != JsonHandle.end(); ++it)
 		{
 			CustomLocationsAmount++;
+			Vector3 Target;
+			Target.x = JsonHandle[it.key().asString()]["X"].asFloat();
+			Target.y = JsonHandle[it.key().asString()]["Y"].asFloat();
+			Target.z = JsonHandle[it.key().asString()]["Z"].asFloat();
 			GUI::Break(it.key().asString(), SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Teleport To", ""))
-			{
-				Vector3 Target;
-				Target.x = JsonHandle[it.key().asString()]["X"].asFloat();
-				Target.y = JsonHandle[it.key().asString()]["Y"].asFloat();
-				Target.z = JsonHandle[it.key().asString()]["Z"].asFloat();
+			{	
 				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Target, false, false);
+			}
+			if (GUI::Option("Copy Coordinates To Clipboard", ""))
+			{
+				CheatFunctions::CopyStringToClipboard("X: " + std::to_string(Target.x) + " Y: " + std::to_string(Target.y) + " Z: " + std::to_string(Target.z));
+				GameFunctions::MinimapNotification("Custom Location coordinates copied to clipboard");
 			}
 			if (GUI::Option("Delete", ""))
 			{

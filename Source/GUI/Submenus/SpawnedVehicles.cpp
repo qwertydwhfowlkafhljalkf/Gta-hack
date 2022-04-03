@@ -3,7 +3,7 @@
 using namespace Cheat;
 void GUI::Submenus::SpawnedVehicles()
 {
-	GUI::Title("Spawned Vehicles");
+	GUI::Title("Previously Spawned");
 	if (!GameArrays::SpawnedVehicles.empty())
 	{
 		for (::Vehicle i : GameArrays::SpawnedVehicles)
