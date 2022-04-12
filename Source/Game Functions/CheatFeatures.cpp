@@ -1012,7 +1012,6 @@ void Cheat::CheatFeatures::ShootEntities()
 				EntityHandle = OBJECT::CREATE_OBJECT(EntityHandle, pCoords.x + (dir.x * Offset), pCoords.y + (dir.y * Offset), startCoords.z, true, true, false);
 			}
 
-			//ENTITY::SET_ENTITY_VISIBLE(EntityHandle, false, false);
 			ENTITY::APPLY_FORCE_TO_ENTITY(EntityHandle, 1, 0.0f, 500.0f, 2.0f + endCoords.z, 0.0f, 0.0f, 0.0f, 0, true, true, true, false, true);
 			ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&EntityHandle);
 		}

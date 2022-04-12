@@ -839,7 +839,6 @@ void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 			}
 			
 			VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(NewVehicleHandle, "Vehicle");
-			VEHICLE::SET_VEHICLE_ENGINE_ON(NewVehicleHandle, true, true, true);
 			VEHICLE::SET_VEHICLE_IS_STOLEN(NewVehicleHandle, false);
 			VEHICLE::SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(NewVehicleHandle, true);
 			VEHICLE::SET_VEHICLE_IS_WANTED(NewVehicleHandle, false);
