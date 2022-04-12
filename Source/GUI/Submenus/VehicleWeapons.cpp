@@ -4,7 +4,7 @@ using namespace Cheat;
 void GUI::Submenus::VehicleWeapons()
 {
 	GUI::Title("Vehicle Weapons");
-	GUI::Toggle("Toggle Vehicle Weapons", CheatFeatures::VehicleWeaponsBool, "Press horn button to use");
+	GUI::Toggle("Toggle", CheatFeatures::VehicleWeaponsBool, "Press horn button to use", SELECTABLE_DISABLE_SAVE);
 	GUI::Toggle("Show Lines", CheatFeatures::VehicleWeapons_DrawLaser, "Show lines in front of vehicle");
 	if (CheatFeatures::VehicleWeapons_TankRounds)
 	{

@@ -973,7 +973,7 @@ void Cheat::CheatFeatures::UnlimitedRocketBoost()
 	}
 }
 
-std::string Cheat::CheatFeatures::ShootEntitiesCurrent;
+std::string Cheat::CheatFeatures::ShootEntitiesCurrent = "Rhino";
 bool Cheat::CheatFeatures::ShootEntitiesBool = false;
 void Cheat::CheatFeatures::ShootEntities()
 {
