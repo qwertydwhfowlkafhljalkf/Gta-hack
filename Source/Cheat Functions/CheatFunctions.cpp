@@ -312,6 +312,10 @@ void Cheat::CheatFunctions::LoadConfig()
 	//Load Active Theme
 	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Active Theme");
 	if (!ActiveThemeSetting.empty()) { GUI::LoadTheme(ActiveThemeSetting, true); }
+
+	//Load Vehicle Spawner Custom License Plate Text
+	std::string VehicleSpawnerCustomLicensePlateText = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Vehicle Spawner Custom License Plate Text");
+	if (!VehicleSpawnerCustomLicensePlateText.empty()) { CheatFeatures::VehicleSpawnerCustomLicensePlateTextString = VehicleSpawnerCustomLicensePlateText; }
 }
 
 bool Cheat::CheatFunctions::IsOptionRegisteredAsLoaded(std::string OptionName)

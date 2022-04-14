@@ -10,4 +10,17 @@ void GUI::Submenus::VehicleSpawnSettings()
 	GUI::Toggle("Delete Current", CheatFeatures::VehicleSpawnerDeleteOldVehicle, "");
 	GUI::Toggle("Spawn With Blip", CheatFeatures::VehicleSpawnerSpawnWithBlip, "");
 	GUI::Toggle("Spawn Air Vehicles In The Air", CheatFeatures::VehicleSpawnerSpawnAirVehicleAir, "");
+	GUI::StringVector("License Plate Text", { "Standard", "Empty", "Custom" }, CheatFeatures::VehicleSpawnerLicensePlateVectorPosition, "");
+	if (CheatFeatures::VehicleSpawnerLicensePlateVectorPosition == 2)
+	{
+		if (GUI::Option("Current Text: ~c~" + CheatFeatures::VehicleSpawnerCustomLicensePlateTextString, "Select to change"))
+		{
+			char* Input;
+			if (GameFunctions::DisplayKeyboardAndReturnInput(8, "Enter Custom License Plate Text", Input))
+			{
+				CheatFeatures::VehicleSpawnerCustomLicensePlateTextString = Input;
+				CheatFunctions::IniFileWriteString(CheatFeatures::VehicleSpawnerCustomLicensePlateTextString, CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Vehicle Spawner Custom License Plate Text");
+			}
+		}
+	}
 }

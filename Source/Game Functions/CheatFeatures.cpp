@@ -28,6 +28,8 @@ bool Cheat::CheatFeatures::VehicleSpawnerSpawnWithBlip = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnWithGodmode = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnMaxUpgraded = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnAirVehicleAir = false;
+int Cheat::CheatFeatures::VehicleSpawnerLicensePlateVectorPosition = 0;
+std::string Cheat::CheatFeatures::VehicleSpawnerCustomLicensePlateTextString = "GTAV";
 bool Cheat::CheatFeatures::HidePlayerInformationBox = false;
 bool Cheat::CheatFeatures::HideSelectableInformationBox = false;
 bool Cheat::CheatFeatures::ControllableAnimations = false;
@@ -36,7 +38,7 @@ bool Cheat::CheatFeatures::AllPlayersExclusionsFriends = false;
 bool Cheat::CheatFeatures::AllPlayersExclusionsHost = false;
 
 bool LoadConfigInstructionalButtonInitialized;
-int PostInitBannerNotificationCleanupTimer, LoadConfigInstructionalButtonHandle;
+int LoadConfigInstructionalButtonHandle;
 void Cheat::CheatFeatures::Loop()
 {
 	GameFunctions::PlayerID = PLAYER::PLAYER_ID();

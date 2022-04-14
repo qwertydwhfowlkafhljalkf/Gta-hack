@@ -45,7 +45,7 @@ void GUI::Submenus::Teleport()
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(GameFunctions::PlayerPedID, Coords.x, Coords.y, Coords.z, false, false, true);
 	}
 	GUI::Break("Custom Locations", SELECTABLE_CENTER_TEXT);
-	if (GUI::Option("Save current location", ""))
+	if (GUI::Option("Save Current Location", ""))
 	{
 		char* NewThemeFileName;
 		if (GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Custom Teleport Location Name", NewThemeFileName))
@@ -54,7 +54,7 @@ void GUI::Submenus::Teleport()
 			GameFunctions::MinimapNotification("Custom Location Saved");
 		}
 	}
-	GUI::MenuOption("View locations", Submenus::CustomTeleportLocations);
+	GUI::MenuOption("View Locations", Submenus::CustomTeleportLocations);
 	GUI::Break("Presets", SELECTABLE_CENTER_TEXT);
 	GUI::MenuOption("Landmarks", Submenus::LandmarkTeleportLocations);
 	GUI::MenuOption("IPL's", Submenus::IPLTeleports);

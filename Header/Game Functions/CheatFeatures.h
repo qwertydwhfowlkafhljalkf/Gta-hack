@@ -33,6 +33,8 @@ namespace Cheat
 		extern bool VehicleSpawnerSpawnWithGodmode;
 		extern bool VehicleSpawnerSpawnMaxUpgraded;
 		extern bool VehicleSpawnerSpawnAirVehicleAir;
+		extern int VehicleSpawnerLicensePlateVectorPosition;
+		extern std::string VehicleSpawnerCustomLicensePlateTextString;
 		extern bool HidePlayerInformationBox;
 		extern bool HideSelectableInformationBox;
 		extern bool ControllableAnimations;

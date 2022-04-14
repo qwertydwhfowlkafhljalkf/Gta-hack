@@ -837,8 +837,15 @@ void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 			{ 
 				AddBlipToVehicle(NewVehicleHandle);
 			}
-			
-			VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(NewVehicleHandle, "Vehicle");
+			if (CheatFeatures::VehicleSpawnerLicensePlateVectorPosition != 0)
+			{
+				char* LicensePlateString = "";
+				if (CheatFeatures::VehicleSpawnerLicensePlateVectorPosition == 2)
+				{
+					LicensePlateString = CheatFunctions::StringToChar(CheatFeatures::VehicleSpawnerCustomLicensePlateTextString);
+				}
+				VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(NewVehicleHandle, LicensePlateString);
+			}		
 			VEHICLE::SET_VEHICLE_IS_STOLEN(NewVehicleHandle, false);
 			VEHICLE::SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(NewVehicleHandle, true);
 			VEHICLE::SET_VEHICLE_IS_WANTED(NewVehicleHandle, false);
