@@ -1181,8 +1181,8 @@ void Cheat::GameFunctions::ToggleOffRadar(bool state)
 {
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
-		globalHandle(2689156).At(1 + (Cheat::GameFunctions::PlayerID * 453)).At(209).As<bool>() = state;
-		globalHandle(2703656).At(70).As<int>() = NETWORK::GET_NETWORK_TIME();
+		globalHandle(2689224).At(1 + (Cheat::GameFunctions::PlayerID * 451)).At(207).As<bool>() = state;
+		globalHandle(2703660).At(56).As<int>() = NETWORK::GET_NETWORK_TIME();
 	}
 }
 
@@ -1190,8 +1190,8 @@ void Cheat::GameFunctions::ToggleCopsTurnBlindEye(bool state)
 {
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
-		globalHandle(2544210).At(4622).As<int>() = 5;
-		globalHandle(2544210).At(4623).As<int>() = 1;
+		globalHandle(2810701).At(4624).As<int>() = 5;
+		globalHandle(2810701).At(4627).As<int>() = 1;
 		globalHandle(2544210).At(4625).As<int>() = NETWORK::GET_NETWORK_TIME();
 	}
 }
@@ -1249,16 +1249,16 @@ void Cheat::GameFunctions::ChangeGTAOSessionType(SessionTypes SessionType)
 		{
 			if (NETWORK::NETWORK_IS_SESSION_STARTED())
 			{
-				globalHandle(1574587).At(2).As<int>() = SessionTypeLeaveOnline;
+				globalHandle(1574589).At(2).As<int>() = SessionTypeLeaveOnline;
 			}
 		}
 		else
 		{
-			globalHandle(1575004).As<int>() = (int)SessionType;
+			globalHandle(1575012).As<int>() = (int)SessionType;
 		}
-		globalHandle(1574587).As<int>() = 1;
+		globalHandle(1574589).As<int>() = 1;
 		GameHooking::PauseMainFiber(50, false);
-		globalHandle(1574587).As<int>() = 0;
+		globalHandle(1574589).As<int>() = 0;
 		GUI::CloseMenuGUI();
 	}	
 }
