@@ -27,6 +27,8 @@
 #include <io.h>
 #include <array>
 #include <thread>
+#include <WinINet.h>
+#pragma comment(lib, "WinINet.lib")
 #pragma comment(lib, "Winmm.lib")
 
 // MinHook
@@ -35,16 +37,6 @@
 
 // mINI
 #include "../ThirdParty/mINI/ini.h"
-
-// Libcurl
-#define CURL_STATICLIB
-#pragma comment(lib, "ThirdParty/libcurl/libcurl_a.lib")
-#pragma comment(lib, "Ws2_32.lib")
-#pragma comment(lib, "Crypt32.lib")
-#pragma comment(lib, "Wldap32.lib")
-#pragma comment(lib, "Normaliz.lib")
-#pragma comment(lib, "advapi32.lib")
-#include "../ThirdParty/libcurl/curl.h"
 
 // JsonCpp
 #include "../ThirdParty/JsonCpp/json.h"

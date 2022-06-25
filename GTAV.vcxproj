@@ -98,7 +98,6 @@
     <ClInclude Include="Header\Game Hooking\Types.h" />
     <ClInclude Include="Header\GUI\GUI.h" />
     <ClInclude Include="Header\GUI\ImGuiRenderer\ImGuiMain.h" />
-    <ClInclude Include="Header\GUI\ImGuiRenderer\Includes.h" />
     <ClInclude Include="Header\GUI\ImGuiRenderer\Proxy.h" />
     <ClInclude Include="Header\GUI\Submenus.h" />
     <ClInclude Include="Header\resource.h" />

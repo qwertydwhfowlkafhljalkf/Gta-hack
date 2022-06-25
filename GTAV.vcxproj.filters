@@ -474,9 +474,6 @@
     <ClInclude Include="Header\GUI\ImGuiRenderer\Proxy.h">
       <Filter>Header Files\GUI\ImGuiRenderer</Filter>
     </ClInclude>
-    <ClInclude Include="Header\GUI\ImGuiRenderer\Includes.h">
-      <Filter>Header Files\GUI\ImGuiRenderer</Filter>
-    </ClInclude>
     <ClInclude Include="Header\GUI\ImGuiRenderer\ImGuiMain.h">
       <Filter>Header Files\GUI\ImGuiRenderer</Filter>
     </ClInclude>

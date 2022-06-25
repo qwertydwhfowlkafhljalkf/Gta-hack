@@ -77,8 +77,6 @@ namespace Cheat
 		bool StringToBool(std::string String);
 		bool IsKeyCurrentlyPressed(int vKey, bool PressedOnce = false);
 		void WriteToFile(std::string FilePath, std::string text, bool Append);
-		Json::Value ReturnOnlineJsonCppDataObject(std::string URL);
-		std::string ReturnLatestCheatBuildNumber();
 		void CheckCheatUpdate();
 		std::string RemoveCharactersFromStringAndReturn(std::string String, char* CharactersToRemove);
 		int StringToInt(std::string String);

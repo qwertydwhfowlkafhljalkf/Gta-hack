@@ -469,66 +469,50 @@ void Cheat::CheatFunctions::WriteToFile(std::string FilePath, std::string text, 
 	FileHandle.close();
 }
 
-std::size_t callback(const char* in, std::size_t size, std::size_t num, std::string* out)
-{
-	const std::size_t totalBytes(size * num);
-	out->append(in, totalBytes);
-	return totalBytes;
-}
-
-Json::Value Cheat::CheatFunctions::ReturnOnlineJsonCppDataObject(std::string URL)
-{
-	int httpCode;
-	CURL* CurlHandle;
-	std::string HttpData;
-	CURLcode res;
-	CurlHandle = curl_easy_init();
-	if (CurlHandle)
-	{
-		curl_easy_setopt(CurlHandle, CURLOPT_URL, StringToChar(URL));
-		curl_easy_setopt(CurlHandle, CURLOPT_USERAGENT, "request");
-		curl_easy_setopt(CurlHandle, CURLOPT_TIMEOUT, 10);
-		curl_easy_setopt(CurlHandle, CURLOPT_WRITEFUNCTION, callback);
-		curl_easy_setopt(CurlHandle, CURLOPT_WRITEDATA, &HttpData);
-		res = curl_easy_perform(CurlHandle);
-		curl_easy_getinfo(CurlHandle, CURLINFO_RESPONSE_CODE, &httpCode);
-		curl_easy_cleanup(CurlHandle);
-	}
-
-	if (httpCode != CURLE_HTTP_RETURNED_ERROR && res == CURLE_OK)
-	{
-		Json::CharReaderBuilder CharBuilder;
-		Json::Value JsonData;
-		JSONCPP_STRING JsonError;
-		const std::unique_ptr<Json::CharReader> reader(CharBuilder.newCharReader());
-
-		if (reader->parse(StringToConstChar(HttpData), StringToConstChar(HttpData) + HttpData.length(), &JsonData, &JsonError))
-		{
-			return JsonData;
-		}
-		else
-		{
-			Cheat::Logger::DebugMessage(__func__ + (std::string)"() : failed to parse json data. Error message returned by JsonCPP: " + JsonError);
-		}
-	}
-	else
-	{
-		Cheat::Logger::DebugMessage(__func__ + (std::string)"() : request failed, received the following HTTP status code: " + std::to_string(httpCode));
-	}
-	return Json::Value();
-}
-
-std::string Cheat::CheatFunctions::ReturnLatestCheatBuildNumber()
-{
-	auto JsonData = ReturnOnlineJsonCppDataObject("https://api.github.com/repos/HatchesPls/GrandTheftAutoV-Cheat/releases/latest");
-	return JsonData["name"].asString();
-}
-
 void Cheat::CheatFunctions::CheckCheatUpdate()
 {
 	Cheat::Logger::Message("Checking for newer cheat version");
 	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(CHEAT_BUILD_NUMBER, ".");
-	std::string LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(ReturnLatestCheatBuildNumber(), "v.");
+	std::string LatestOnlineVersionString;
+
+	std::wstring URL = L"https://api.github.com/repos/HatchesPls/GrandTheftAutoV-Cheat/releases/latest";
+	HINTERNET hopen = InternetOpen(L"GTAVCheat", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
+	if (hopen)
+	{
+		DWORD flags = INTERNET_FLAG_DONT_CACHE;
+		if (URL.find(L"https://") == 0) flags |= INTERNET_FLAG_SECURE;
+		HINTERNET hinternet = InternetOpenUrl(hopen, URL.c_str(), NULL, 0, flags, 0);
+		if (hinternet)
+		{
+			char tmp[2048 + 1];
+			DWORD received = 0;
+			std::string buffer;
+			while (InternetReadFile(hinternet, tmp, 2048, &received) && received > 0)
+			{
+				if (!received) break;
+				tmp[received] = '\0';
+				buffer += (std::string)tmp;
+			}
+
+			Json::CharReaderBuilder CharBuilder;
+			Json::Value JsonData;
+			JSONCPP_STRING JsonError;
+			const std::unique_ptr<Json::CharReader> reader(CharBuilder.newCharReader());
+
+			if (reader->parse(buffer.c_str(), buffer.c_str() + buffer.length(), &JsonData, &JsonError))
+			{
+				LatestOnlineVersionString = JsonData["name"].asString();
+			}
+			else
+			{
+				Cheat::Logger::DebugMessage(__func__ + (std::string)"() : failed to parse json data. Error message returned by JsonCPP: " + JsonError);
+			}
+			InternetCloseHandle(hinternet);
+		}
+		InternetCloseHandle(hopen);
+	}
+
+	LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(LatestOnlineVersionString, "v.");
 
 	if (StringIsInteger(CurrentLocalVersionString) && StringIsInteger(LatestOnlineVersionString))
 	{
