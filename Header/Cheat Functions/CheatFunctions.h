@@ -27,7 +27,7 @@ namespace Cheat
 					if (!ConfigFileValue.empty())
 					{
 						ReturnedVariable = CheatFunctions::StringToBool(CheatFunctions::GetOptionValueFromConfig(OptionName));
-						Cheat::LogFunctions::DebugMessage("Loaded savable option (Boolean) '" + OptionName + "'");
+						Cheat::Logger::DebugMessage("Loaded savable option (Boolean) '" + OptionName + "'");
 					}
 					LoadedOptionsVector.push_back(OptionName);
 				}
@@ -37,7 +37,7 @@ namespace Cheat
 					if (!ConfigFileValue.empty())
 					{
 						ReturnedVariable = CheatFunctions::StringToInt(CheatFunctions::GetOptionValueFromConfig(OptionName));
-						Cheat::LogFunctions::DebugMessage("Loaded savable option (Integer) '" + OptionName + "'");
+						Cheat::Logger::DebugMessage("Loaded savable option (Integer) '" + OptionName + "'");
 					}
 					LoadedOptionsVector.push_back(OptionName);
 				}
@@ -47,7 +47,7 @@ namespace Cheat
 					if (!ConfigFileValue.empty())
 					{
 						ReturnedVariable = std::stof(CheatFunctions::GetOptionValueFromConfig(OptionName));
-						Cheat::LogFunctions::DebugMessage("Loaded savable option (Float) '" + OptionName + "'");
+						Cheat::Logger::DebugMessage("Loaded savable option (Float) '" + OptionName + "'");
 					}
 					LoadedOptionsVector.push_back(OptionName);
 				}

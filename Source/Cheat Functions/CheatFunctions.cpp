@@ -10,12 +10,12 @@ void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 	if (!std::filesystem::create_directory(Path))
 	{
 		std::string String = __func__ + (std::string)"() Failed to create directory '" + Path + "' Error: " + Cheat::CheatFunctions::GetLastErrorAsString();
-		Cheat::LogFunctions::DebugMessage(String);
+		Cheat::Logger::DebugMessage(String);
 	}
 	else
 	{
 		std::string String = __func__ + (std::string)"() Created directory '" + Path + "'";
-		Cheat::LogFunctions::DebugMessage(String);
+		Cheat::Logger::DebugMessage(String);
 	}
 }
 
@@ -221,7 +221,7 @@ void Cheat::CheatFunctions::NonLooped()
 	globalHandle(4533757).As<BOOL>() = true;
 
 	// Log POST initialization completion
-	LogFunctions::Message("GTAV Cheat Initialization Completed");
+	Logger::Message("GTAV Cheat Initialization Completed");
 }
 
 bool Cheat::CheatFunctions::IsGameWindowFocussed()
@@ -295,7 +295,7 @@ void LoadConfigThreadFunction()
 
 void Cheat::CheatFunctions::LoadConfig()
 {
-	Cheat::LogFunctions::Message("Loading Configuration");
+	Cheat::Logger::Message("Loading Configuration");
 	std::thread LoadConfigThreadHandle(LoadConfigThreadFunction);
 	LoadConfigThreadHandle.detach();
 
@@ -556,12 +556,12 @@ Json::Value Cheat::CheatFunctions::ReturnOnlineJsonCppDataObject(std::string URL
 		}
 		else
 		{
-			Cheat::LogFunctions::DebugMessage(__func__ + (std::string)"() : failed to parse json data. Error message returned by JsonCPP: " + JsonError);
+			Cheat::Logger::DebugMessage(__func__ + (std::string)"() : failed to parse json data. Error message returned by JsonCPP: " + JsonError);
 		}
 	}
 	else
 	{
-		Cheat::LogFunctions::DebugMessage(__func__ + (std::string)"() : request failed, received the following HTTP status code: " + std::to_string(httpCode));
+		Cheat::Logger::DebugMessage(__func__ + (std::string)"() : request failed, received the following HTTP status code: " + std::to_string(httpCode));
 	}
 	return Json::Value();
 }
@@ -574,7 +574,7 @@ std::string Cheat::CheatFunctions::ReturnLatestCheatBuildNumber()
 
 void Cheat::CheatFunctions::CheckCheatUpdate()
 {
-	Cheat::LogFunctions::Message("Checking for newer cheat version");
+	Cheat::Logger::Message("Checking for newer cheat version");
 	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(CHEAT_BUILD_NUMBER, ".");
 	std::string LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(ReturnLatestCheatBuildNumber(), "v.");
 
@@ -586,7 +586,7 @@ void Cheat::CheatFunctions::CheckCheatUpdate()
 		if (CurrentLocalVersion < LatestOnlineVersion)
 		{
 			NewCheatVersionString = "v" + LatestOnlineVersionString;
-			LogFunctions::DebugMessage("A newer version of the cheat is available on GitHub");
+			Logger::DebugMessage("A newer version of the cheat is available on GitHub");
 		}
 	}
 }

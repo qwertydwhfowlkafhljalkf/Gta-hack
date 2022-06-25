@@ -2,7 +2,7 @@
 
 namespace Cheat
 {
-	namespace LogFunctions
+	namespace Logger
 	{
 		extern bool LoggerInitialized;
 		void Init();

@@ -1,8 +1,8 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
-bool Cheat::LogFunctions::LoggerInitialized = false;
+bool Cheat::Logger::LoggerInitialized = false;
 
-void Cheat::LogFunctions::Init()
+void Cheat::Logger::Init()
 {
 	CheatFunctions::CreateConsole();
 	std::string MessageString = "Build: " + (std::string)CHEAT_BUILD_NUMBER + " | Compile Date & Time: " + __DATE__ + " " + __TIME__ + 
@@ -19,13 +19,13 @@ void Cheat::LogFunctions::Init()
 	LoggerInitialized = true;
 }
 
-void Cheat::LogFunctions::Uninit()
+void Cheat::Logger::Uninit()
 {
 	DebugMessage("Logger uninitialized");
 	LoggerInitialized = false;
 }
 
-void Cheat::LogFunctions::Message(std::string Message)
+void Cheat::Logger::Message(std::string Message)
 {
 	if (LoggerInitialized)
 	{
@@ -36,7 +36,7 @@ void Cheat::LogFunctions::Message(std::string Message)
 	}
 }
 
-void Cheat::LogFunctions::MessageCustomCategory(std::string CategoryName, std::string Message)
+void Cheat::Logger::MessageCustomCategory(std::string CategoryName, std::string Message)
 {
 	if (LoggerInitialized)
 	{
@@ -46,7 +46,7 @@ void Cheat::LogFunctions::MessageCustomCategory(std::string CategoryName, std::s
 	}
 }
 
-void Cheat::LogFunctions::DebugMessage(std::string Message)
+void Cheat::Logger::DebugMessage(std::string Message)
 {
 	if (LoggerInitialized)
 	{
@@ -57,7 +57,7 @@ void Cheat::LogFunctions::DebugMessage(std::string Message)
 	}
 }
 
-void Cheat::LogFunctions::Error(char* Message, bool ShowMessageBox)
+void Cheat::Logger::Error(char* Message, bool ShowMessageBox)
 {
 	if (LoggerInitialized)
 	{

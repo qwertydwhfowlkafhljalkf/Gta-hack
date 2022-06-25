@@ -28,7 +28,7 @@
     <ClCompile Include="Source\Cheat Functions\CheatFunctions.cpp">
       <Filter>Source Files\Cheat Functions</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Cheat Functions\LogFunctions.cpp">
+    <ClCompile Include="Source\Cheat Functions\Logger.cpp">
       <Filter>Source Files\Cheat Functions</Filter>
     </ClCompile>
     <ClCompile Include="ThirdParty\JsonCpp\json_reader.cpp">
@@ -361,6 +361,27 @@
     <ClCompile Include="Source\GUI\Submenus\CycleVehicles.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_demo.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_draw.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_impl_dx11.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_impl_win32.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_tables.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_widgets.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\resource.h">
@@ -408,7 +429,7 @@
     <ClInclude Include="Header\Game Functions\GameFunctions.h">
       <Filter>Header Files\Game Functions</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Cheat Functions\LogFunctions.h">
+    <ClInclude Include="Header\Cheat Functions\Logger.h">
       <Filter>Header Files\Cheat Functions</Filter>
     </ClInclude>
     <ClInclude Include="Header\Cheat Functions\FiberMain.h">
@@ -416,6 +437,30 @@
     </ClInclude>
     <ClInclude Include="Header\GUI\Submenus.h">
       <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imconfig.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui_impl_dx11.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui_impl_win32.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui_internal.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imstb_rectpack.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imstb_textedit.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h">
+      <Filter>ThirdParty\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -457,6 +502,12 @@
     </Filter>
     <Filter Include="Source Files\Cheat Functions">
       <UniqueIdentifier>{f7bf8f26-8357-44d6-9d53-ae30952450c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI\DirectX">
+      <UniqueIdentifier>{3c7b9ecd-8029-4e0b-a032-cec4f9d77da5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\ImGui">
+      <UniqueIdentifier>{0824fdc7-c689-4750-987b-ad3b80a497ef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

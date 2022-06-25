@@ -11,7 +11,7 @@ DWORD WINAPI InitializationThread(LPVOID lpParam)
 	std::string ThemesDirectoryPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
 	if (!CheatFunctions::FileOrDirectoryExists(ThemesDirectoryPath)) { CheatFunctions::CreateNewDirectory(ThemesDirectoryPath); }
 
-	LogFunctions::Init();
+	Logger::Init();
 	GameHooking::Initialize();
 	return EXIT_SUCCESS;
 }

@@ -30,7 +30,7 @@ uint64_t * nativeCall()
 		{
 			static char Message[256];
 			sprintf_s(Message, 256, "Failed to execute native 0x%016llx at address %p", g_hash, exceptionAddress);
-			Cheat::LogFunctions::Error(Message, false);
+			Cheat::Logger::Error(Message, false);
 		}
 	}
 	return reinterpret_cast<uint64_t*>(g_context.GetResultPointer());
