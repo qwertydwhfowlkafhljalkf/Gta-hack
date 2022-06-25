@@ -97,6 +97,9 @@
     <ClInclude Include="Header\Game Hooking\Offsets.h" />
     <ClInclude Include="Header\Game Hooking\Types.h" />
     <ClInclude Include="Header\GUI\GUI.h" />
+    <ClInclude Include="Header\GUI\ImGuiRenderer\ImGuiMain.h" />
+    <ClInclude Include="Header\GUI\ImGuiRenderer\Includes.h" />
+    <ClInclude Include="Header\GUI\ImGuiRenderer\Proxy.h" />
     <ClInclude Include="Header\GUI\Submenus.h" />
     <ClInclude Include="Header\resource.h" />
     <ClInclude Include="ThirdParty\ImGui\imconfig.h" />
@@ -107,6 +110,7 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_rectpack.h" />
     <ClInclude Include="ThirdParty\ImGui\imstb_textedit.h" />
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
+    <ClInclude Include="ThirdParty\kiero\kiero.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header\GUI\Controls.h" />
@@ -123,6 +127,8 @@
     <ClCompile Include="Source\Game Hooking\NativeInvoker.cpp" />
     <ClCompile Include="Source\GUI\Controls.cpp" />
     <ClCompile Include="Source\GUI\GUI.cpp" />
+    <ClCompile Include="Source\GUI\ImGuiRenderer\ImGuiMain.cpp" />
+    <ClCompile Include="Source\GUI\ImGuiRenderer\Proxy.cpp" />
     <ClCompile Include="Source\GUI\Submenus.cpp" />
     <ClCompile Include="Source\GUI\Submenus\About.cpp" />
     <ClCompile Include="Source\GUI\Submenus\AfterHoursDLC.cpp" />
@@ -227,7 +233,9 @@
     <ClCompile Include="Source\GUI\Submenus\Weather.cpp" />
     <ClCompile Include="Source\GUI\Submenus\World.cpp" />
     <ClCompile Include="ThirdParty\ImGui\imgui.cpp" />
-    <ClCompile Include="ThirdParty\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui_demo.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="ThirdParty\ImGui\imgui_draw.cpp" />
     <ClCompile Include="ThirdParty\ImGui\imgui_impl_dx11.cpp" />
     <ClCompile Include="ThirdParty\ImGui\imgui_impl_win32.cpp" />
@@ -236,9 +244,13 @@
     <ClCompile Include="ThirdParty\JsonCpp\json_reader.cpp" />
     <ClCompile Include="ThirdParty\JsonCpp\json_value.cpp" />
     <ClCompile Include="ThirdParty\JsonCpp\json_writer.cpp" />
+    <ClCompile Include="ThirdParty\kiero\kiero.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Source\GTAV.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\GUI\ImGuiRenderer\Proxy.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

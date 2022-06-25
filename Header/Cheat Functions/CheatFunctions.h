@@ -68,7 +68,6 @@ namespace Cheat
 		char* StringToChar(std::string String);
 		const char* StringToConstChar(std::string String);
 		std::string VirtualKeyCodeToString(UCHAR virtualKey);
-		void CreateConsole();
 		int ReturnNumberOfDigitsInValue(double Number);
 		void IniFileWriteString(std::string string, std::string FilePath, std::string Section, std::string Key);
 		std::string IniFileReturnKeyValueAsString(std::string FilePath, std::string Section, std::string Key);

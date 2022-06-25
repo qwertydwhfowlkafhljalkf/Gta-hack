@@ -304,10 +304,10 @@ void Cheat::CheatFunctions::LoadConfig()
 	if (!MenuGUIKey.empty()) { Controls::OpenGUIKey = StringToInt(MenuGUIKey); }
 	
 	std::string CursorNavigationKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
-	if (!CursorNavigationKey.empty()) { Controls::OpenGUIKey = StringToInt(CursorNavigationKey); }
+	if (!CursorNavigationKey.empty()) { Controls::GUINavigationKey = StringToInt(CursorNavigationKey); }
 
 	std::string SaveSelectableKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Save Selectable Key");
-	if (!SaveSelectableKey.empty()) { Controls::OpenGUIKey = StringToInt(SaveSelectableKey); }
+	if (!SaveSelectableKey.empty()) { Controls::SaveSelectableKey = StringToInt(SaveSelectableKey); }
 
 	//Load Active Theme
 	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Active Theme");
@@ -364,54 +364,6 @@ std::string Cheat::CheatFunctions::VirtualKeyCodeToString(UCHAR virtualKey)
 	}
 	if (result == 0) { return "Unknown"; }
 	return szName;
-}
-
-void Cheat::CheatFunctions::CreateConsole()
-{
-	AllocConsole();
-	SetConsoleTitleA("GTAV Cheat Console");
-
-	// Set Console Dimensions so all text is properly visible
-	HWND ConsoleWindowHandle = GetConsoleWindow();
-	RECT CurrentRect;
-	GetWindowRect(ConsoleWindowHandle, &CurrentRect);
-	MoveWindow(ConsoleWindowHandle, CurrentRect.left, CurrentRect.top, 1100, 500, TRUE);
-
-	//Set Max Window Size
-	SetWindowLong(ConsoleWindowHandle, GWL_STYLE, GetWindowLong(ConsoleWindowHandle, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
-
-	//Disable Console Quick Edit Mode
-	HANDLE stdIn = GetStdHandle(STD_INPUT_HANDLE);
-	if (stdIn != INVALID_HANDLE_VALUE) 
-	{
-		DWORD dwMode = 0;
-		if (GetConsoleMode(stdIn, &dwMode)) {
-			dwMode &= ~ENABLE_QUICK_EDIT_MODE;
-			SetConsoleMode(stdIn, dwMode | ENABLE_EXTENDED_FLAGS);
-		}
-	}
-	CloseHandle(ConsoleWindowHandle);
-
-	//Redirect Std Outputs to Console
-	HANDLE ConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-	int SystemOutput = _open_osfhandle(intptr_t(ConsoleOutput), _O_TEXT);
-	FILE* COutputHandle = _fdopen(SystemOutput, "w");
-	HANDLE ConsoleError = GetStdHandle(STD_ERROR_HANDLE);
-	int SystemError = _open_osfhandle(intptr_t(ConsoleError), _O_TEXT);
-	FILE* CErrorHandle = _fdopen(SystemError, "w");
-	HANDLE ConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
-	int SystemInput = _open_osfhandle(intptr_t(ConsoleInput), _O_TEXT);
-	FILE* CInputHandle = _fdopen(SystemInput, "r");
-	std::ios::sync_with_stdio(true);
-	freopen_s(&CInputHandle, "CONIN$", "r", stdin);
-	freopen_s(&COutputHandle, "CONOUT$", "w", stdout);
-	freopen_s(&CErrorHandle, "CONOUT$", "w", stderr);
-	std::wcout.clear();
-	std::cout.clear();
-	std::wcerr.clear();
-	std::cerr.clear();
-	std::wcin.clear();
-	std::cin.clear();
 }
 
 int Cheat::CheatFunctions::ReturnNumberOfDigitsInValue(double Number) 

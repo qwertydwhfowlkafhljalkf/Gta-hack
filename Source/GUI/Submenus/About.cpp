@@ -14,7 +14,7 @@ void GUI::Submenus::About()
 	{
 		system("start https://github.com/HatchesPls/GrandTheftAutoV-Cheat");
 	}
-	if (GUI::Option("Unload", "WIP"))
+	if (GUI::Option("Unload", "WIP", SELECTABLE_DISABLED))
 	{
 		if (GameFunctions::ShowFullScreenMessage("Unloading the cheat is currently ~h~experimental~h~.~n~You won't be able to reinject the cheat."))
 		{

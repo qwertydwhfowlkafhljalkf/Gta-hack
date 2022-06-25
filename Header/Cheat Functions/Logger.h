@@ -11,5 +11,6 @@ namespace Cheat
 		void MessageCustomCategory(std::string CategoryName, std::string Message);
 		void Error(char* Message, bool ShowMessageBox);
 		void DebugMessage(std::string Message);
+		void ShowLoggerWindow();
 	}
 }

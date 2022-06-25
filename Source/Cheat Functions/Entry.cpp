@@ -1,18 +1,33 @@
 #include "../Header/Cheat Functions/FiberMain.h"
+#include "../../Header/GUI/ImGuiRenderer/ImGuiMain.h"
 
 using namespace Cheat;
 
 DWORD WINAPI InitializationThread(LPVOID lpParam)
 {
+	// Define paths
 	std::string GtavDirectoryPath = CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav";
 	if (!CheatFunctions::FileOrDirectoryExists(GtavDirectoryPath)) { CheatFunctions::CreateNewDirectory(GtavDirectoryPath); }
 	std::string LogsDirectoryPath = CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Logs";
 	if (!CheatFunctions::FileOrDirectoryExists(LogsDirectoryPath)) { CheatFunctions::CreateNewDirectory(LogsDirectoryPath); }
 	std::string ThemesDirectoryPath = Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
 	if (!CheatFunctions::FileOrDirectoryExists(ThemesDirectoryPath)) { CheatFunctions::CreateNewDirectory(ThemesDirectoryPath); }
-
+	
+	// Initalize Logger
 	Logger::Init();
+
+	// Initialize MinHook
+	if (MH_Initialize() != MH_OK) { Cheat::Logger::Error("Failed to initialize MinHook", true); std::exit(EXIT_SUCCESS); }
+	Logger::DebugMessage("Initialized MinHook");
+
+	// Initialize ImGui
+	ImGuiRenderer::ImGuiInit();
+	Logger::DebugMessage("Initialized ImGui");
+
+	// Initalize RAGE
 	GameHooking::Initialize();
+
+	// Exit thread
 	return EXIT_SUCCESS;
 }
 

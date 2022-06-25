@@ -1,4 +1,6 @@
 #include "../Header/Cheat Functions/FiberMain.h"
+#include "../../Header/GUI/ImGuiRenderer/Proxy.h"
+#include "../../ThirdParty/kiero/kiero.h"
 
 HANDLE MainFiber;
 IsDLCPresent														GameHooking::is_dlc_present;
@@ -323,7 +325,7 @@ void GameHooking::Initialize()
 	GameHooking::get_script_handler_if_networked = static_cast<GetScriptHandlerIfNetworked>(Memory::pattern("40 53 48 83 EC 20 E8 ? ? ? ? 48 8B D8 48 85 C0 74 12 48 8B 10 48 8B C8").count(1).get(0).get<void>(0));
 	GameHooking::get_script_handler				 = static_cast<GetScriptHandler>(Memory::pattern("48 83 EC 28 E8 ? ? ? ? 33 C9 48 85 C0 74 0C E8 ? ? ? ? 48 8B 88 ? ? ? ?").count(1).get(0).get<void>(0));
 
-	//Set Patterns
+	// Set Patterns
 	setFn<IsDLCPresent>("is_dlc_present", "\x48\x89\x5C\x24\x00\x57\x48\x83\xEC\x20\x81\xF9\x00\x00\x00\x00", "xxxx?xxxxxxx????", &GameHooking::is_dlc_present);
 	setFn<GetEventData>("get_event_data", "\x48\x89\x5C\x24\x00\x57\x48\x83\xEC\x20\x49\x8B\xF8\x4C\x8D\x05\x00\x00\x00\x00\x41\x8B\xD9\xE8\x00\x00\x00\x00\x48\x85\xC0\x74\x14\x4C\x8B\x10\x44\x8B\xC3\x48\x8B\xD7\x41\xC1\xE0\x03\x48\x8B\xC8\x41\xFF\x52\x30\x48\x8B\x5C\x24\x00", "xxxx?xxxxxxxxxxx????xxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxx?", &GameHooking::get_event_data);
 	setFn<GetPlayerAddress>("get_player_address", "\x40\x53\x48\x83\xEC\x20\x33\xDB\x38\x1D\x00\x00\x00\x00\x74\x1C", "xxxxxxxxxx????xx", &GameHooking::get_player_address);
@@ -332,39 +334,39 @@ void GameHooking::Initialize()
 	char* c_location = nullptr;
 	void* v_location = nullptr;
 
-	//Load GameState
+	// Load GameState
 	Cheat::Logger::DebugMessage("Load 'GameState'");
 	c_location = Memory::pattern("83 3D ? ? ? ? ? 75 17 8B 43 20 25").count(1).get(0).get<char>(2);
 	c_location == nullptr ? Cheat::Logger::Error("Failed to load GameState", true) : m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5);
 	
-	//Load Vector3 Result Fix
+	// Load Vector3 Result Fix
 	Cheat::Logger::DebugMessage("Load 'Vector3 Result Fix'");
 	v_location = Memory::pattern("83 79 18 00 48 8B D1 74 4A FF 4A 18").count(1).get(0).get<void>(0);
 	if (v_location != nullptr) scrNativeCallContext::SetVectorResults = (void(*)(scrNativeCallContext*))(v_location);
 
-	//Load Native Registration Table
+	// Load Native Registration Table
 	Cheat::Logger::DebugMessage("Load 'Native Registration Table'");
 	c_location = Memory::pattern("76 32 48 8B 53 40 48 8D 0D").count(1).get(0).get<char>(9);
 	c_location == nullptr ? Cheat::Logger::Error("Failed to load Native Registration Table", true) : m_registrationTable = reinterpret_cast<decltype(m_registrationTable)>(c_location + *(int32_t*)c_location + 4);
 
-	//Load Game World Pointer
+	// Load Game World Pointer
 	Cheat::Logger::DebugMessage("Load 'World Pointer'");
 	c_location = Memory::pattern("48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07").count(1).get(0).get<char>(0);
 	c_location == nullptr ? Cheat::Logger::Error("Failed to load World Pointer", true) : m_worldPtr = reinterpret_cast<uint64_t>(c_location) + *reinterpret_cast<int*>(reinterpret_cast<uint64_t>(c_location) + 3) + 7;
 
-	//Load Active Game Thread
+	// Load Active Game Thread
 	Cheat::Logger::DebugMessage("Load 'Active Game Thread'");
 	c_location = Memory::pattern("E8 ? ? ? ? 48 8B 88 10 01 00 00").count(1).get(0).get<char>(1);
 	c_location == nullptr ? Cheat::Logger::Error("Failed to load Active Game Thread", true) : GetActiveThread = reinterpret_cast<decltype(GetActiveThread)>(c_location + *(int32_t*)c_location + 4);
 
-	//Get Global Pointer
+	// Get Global Pointer
 	Cheat::Logger::DebugMessage("Load 'Global Pointer'");
 	c_location = Memory::pattern("4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11").count(1).get(0).get<char>(0);
 	__int64 patternAddr = NULL;
 	c_location == nullptr ? Cheat::Logger::Error("Failed to load Global Pointer", true) : patternAddr = reinterpret_cast<decltype(patternAddr)>(c_location);
 	m_globalPtr = (__int64**)(patternAddr + *(int*)(patternAddr + 3) + 7);
 
-	//Get Event Hook -> Used by defuseEvent
+	// Get Event Hook -> Used by defuseEvent
 	Cheat::Logger::DebugMessage("Load 'Event Hook'");
 	if ((c_location = Memory::pattern("48 83 EC 28 E8 ? ? ? ? 48 8B 0D ? ? ? ? 4C 8D 0D ? ? ? ? 4C 8D 05 ? ? ? ? BA 03").count(1).get(0).get<char>(0)))
 	{
@@ -390,13 +392,9 @@ void GameHooking::Initialize()
 		}
 	}
 
-	//Initialize Natives
+	// Initialize Natives
 	Cheat::Logger::DebugMessage("Initialized Game Natives");
 	CrossMapping::initNativeMap();
-
-	//Initialize MinHook
-	Cheat::Logger::DebugMessage("Initialized MinHook");
-	if (MH_Initialize() != MH_OK) { Cheat::Logger::Error("Failed to initialize MinHook", true); std::exit(EXIT_SUCCESS); }
 
 	bool WaitingGameLoadLogPrinted = false;
 	while (*m_gameState != GameStatePlaying)
@@ -410,7 +408,7 @@ void GameHooking::Initialize()
 	}
 	Cheat::Logger::Message("Game Completed Loading");
 
-	//Hook Game Functions
+	// Hook Game Functions
 	Cheat::Logger::DebugMessage("Hook 'GET_EVENT_DATA'");
 	auto status = MH_CreateHook(GameHooking::get_event_data, GetEventDataHooked, (void**)&GetEventDataOriginal);
 	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::get_event_data) != MH_OK) { Cheat::Logger::Error("Failed to hook GET_EVENT_DATA", true);  std::exit(EXIT_SUCCESS); }
@@ -502,21 +500,21 @@ DWORD WINAPI UnloadThread(LPVOID lpParam)
 	ShowWindow(GetConsoleWindow(), SW_HIDE);
 	FreeConsole();
 
-	//Stop threads
+	// Stop threads
 	Cheat::CheatFunctions::SendThreadTerminateSignal = true;
 
-	//Disable & remove MinHook hooks
-	for (int i = 0; i < HookedFunctions.size(); i++)
-	{
-		MH_DisableHook(HookedFunctions[i]);
-		MH_RemoveHook(HookedFunctions[i]);
-	}
+	// Stop DirectX hook
+	Proxy_Detach();
+	kiero::shutdown();
+
+	//Disable MinHook hooks	
+	MH_DisableHook(MH_ALL_HOOKS);
 	MH_Uninitialize();
 
-	//Unitializing Logger
+	// Unitializing Logger
 	Cheat::Logger::Uninit();
 
-	//Exit
+	// Exit
 	FreeLibraryAndExitThread(Cheat::CheatModuleHandle, EXIT_SUCCESS);
 }
 

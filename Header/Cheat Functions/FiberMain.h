@@ -29,14 +29,14 @@
 #include <thread>
 #pragma comment(lib, "Winmm.lib")
 
-//MinHook
+// MinHook
 #pragma comment(lib, "ThirdParty/MinHook/libMinHook-x64-v141-md.lib")
 #include "../ThirdParty/MinHook/MinHook.h"
 
-//mINI
+// mINI
 #include "../ThirdParty/mINI/ini.h"
 
-//Libcurl
+// Libcurl
 #define CURL_STATICLIB
 #pragma comment(lib, "ThirdParty/libcurl/libcurl_a.lib")
 #pragma comment(lib, "Ws2_32.lib")
@@ -46,10 +46,18 @@
 #pragma comment(lib, "advapi32.lib")
 #include "../ThirdParty/libcurl/curl.h"
 
-//JsonCpp
+// JsonCpp
 #include "../ThirdParty/JsonCpp/json.h"
 
-//Project Header Files
+// kiero
+#include "kiero/kiero.h"
+
+// Dear ImGui
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx11.h"
+
+// Project Header Files
 #include "../Header/Game Hooking/Memory.h"
 #include "../Header/Game Hooking/Types.h"
 #include "../Header/Game Hooking/Enums.h"
