@@ -1,6 +1,6 @@
 #include "../Header/Cheat Functions/FiberMain.h"
-#include "../../../Header/GUI/ImGuiRenderer/Proxy.h"
-#include "../../../Header/GUI/ImGuiRenderer/ImGuiMain.h"
+#include "../../../Header/GUI/DirectX/Proxy.h"
+#include "../../../Header/GUI/DirectX/ImGuiMain.h"
 #include <d3d11.h>
 #include <dxgi.h>
 
@@ -29,7 +29,7 @@ HRESULT hkResizeBuffers(IDXGISwapChain* pThis, UINT BufferCount, UINT Width, UIN
 DWORD WINAPI RenderHookThread(HMODULE hmod);
 
 
-void ImGuiRenderer::ImGuiInit()
+void DirectX::ImGuiInit()
 {
 	Proxy_Attach();
 	CreateThread(nullptr, NULL, (LPTHREAD_START_ROUTINE)RenderHookThread, CheatModuleHandle, NULL, nullptr);
@@ -90,7 +90,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			ImGuiIO& io = ImGui::GetIO();
 			io.IniFilename = NULL;
 			io.MouseDrawCursor = true;
-			io.Fonts->AddFontFromFileTTF(strcat(getenv("SystemDrive"), "\\Windows\\Fonts\\Verdana.ttf"), 21.f);
+			io.Fonts->AddFontFromFileTTF(strcat(getenv("SystemDrive"), "\\Windows\\Fonts\\Verdana.ttf"), 20.f);
 			ImGui_ImplWin32_Init(window);
 			ImGui_ImplDX11_Init(pDevice, pContext);
 			init = true;
@@ -108,11 +108,8 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	ImVec4* colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_TitleBg] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 	colors[ImGuiCol_TitleBgActive] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
-	colors[ImGuiCol_Border] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
-	colors[ImGuiCol_Border] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
-	colors[ImGuiCol_ScrollbarBg] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
-	colors[ImGuiCol_ScrollbarGrab] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
-	colors[ImGuiCol_ScrollbarGrabHovered] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
+	colors[ImGuiCol_Border] = ImColor(105, 105, 105);
+	colors[ImGuiCol_Border] = ImColor(105, 105, 105);
 	colors[ImGuiCol_Button] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 	colors[ImGuiCol_ButtonHovered] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 	colors[ImGuiCol_ButtonActive] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
@@ -132,6 +129,10 @@ DWORD WINAPI RenderHookThread(HMODULE hmod)
 	{
 		kiero::bind(8, (void**)&oPresent, hkPresent);
 		kiero::bind(13, (void**)&oResizeBuffers, hkResizeBuffers);
+	}
+	else
+	{
+		Logger::Error("Kiero initialization failed", true);
 	}
 	return TRUE;
 }

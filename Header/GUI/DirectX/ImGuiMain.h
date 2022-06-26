@@ -2,7 +2,7 @@
 
 namespace Cheat
 {
-	namespace ImGuiRenderer
+	namespace DirectX
 	{
 		void ImGuiInit();
 	}

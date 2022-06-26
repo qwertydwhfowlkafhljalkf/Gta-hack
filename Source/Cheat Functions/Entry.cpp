@@ -1,5 +1,5 @@
 #include "../Header/Cheat Functions/FiberMain.h"
-#include "../../Header/GUI/ImGuiRenderer/ImGuiMain.h"
+#include "../../Header/GUI/DirectX/ImGuiMain.h"
 
 using namespace Cheat;
 
@@ -20,11 +20,11 @@ DWORD WINAPI InitializationThread(LPVOID lpParam)
 	if (MH_Initialize() != MH_OK) { Cheat::Logger::Error("Failed to initialize MinHook", true); std::exit(EXIT_SUCCESS); }
 	Logger::DebugMessage("Initialized MinHook");
 
-	// Initialize ImGui
-	ImGuiRenderer::ImGuiInit();
-	Logger::DebugMessage("Initialized ImGui");
+	// Initialize DirectX hook and ImGui
+	DirectX::ImGuiInit();
+	Logger::DebugMessage("Initialized DirectX hook & ImGui");
 
-	// Initalize RAGE
+	// Initalize RAGE hooks
 	GameHooking::Initialize();
 
 	// Exit thread

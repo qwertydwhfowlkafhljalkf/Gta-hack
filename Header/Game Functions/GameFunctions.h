@@ -61,7 +61,7 @@ namespace Cheat
 		void ChangeEntityInvincibilityState(Entity EntityHandle, bool Enable);
 		char* ReturnOnlinePlayerPictureString(Player PlayerHandle);
 		VECTOR2 ReturnCursorYXCoords();
-		void EnableDisableCursorGUINavigation();
+		void EnableDisableCursorNavigation();
 		bool IsCursorAtXYPosition(VECTOR2 const& boxCentre, VECTOR2 const& boxSize);
 		void ChangePedModelLocalPlayer(Hash PedModel);
 		bool PlayerIsFreemodeScriptHost(Player Player);

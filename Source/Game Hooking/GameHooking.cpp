@@ -1,5 +1,5 @@
 #include "../Header/Cheat Functions/FiberMain.h"
-#include "../../Header/GUI/ImGuiRenderer/Proxy.h"
+#include "../../Header/GUI/DirectX/Proxy.h"
 #include "../../ThirdParty/kiero/kiero.h"
 
 HANDLE MainFiber;

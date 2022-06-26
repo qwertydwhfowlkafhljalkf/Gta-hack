@@ -32,7 +32,6 @@
 #pragma comment(lib, "Winmm.lib")
 
 // MinHook
-#pragma comment(lib, "ThirdParty/MinHook/libMinHook-x64-v141-md.lib")
 #include "../ThirdParty/MinHook/MinHook.h"
 
 // mINI

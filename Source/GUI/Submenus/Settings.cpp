@@ -20,12 +20,12 @@ void GUI::Submenus::Settings()
 			GameFunctions::MinimapNotification("Menu GUI key has been set");
 		}
 	}
-	if (GUI::Option("Cursor Navigation: ~c~" + CheatFunctions::VirtualKeyCodeToString(Controls::GUINavigationKey), "Select to change"))
+	if (GUI::Option("Cursor Navigation: ~c~" + CheatFunctions::VirtualKeyCodeToString(Controls::CursorNavigationKey), "Select to change"))
 	{
 		int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
 		if (PressedKey != 0)
 		{
-			Controls::GUINavigationKey = PressedKey;
+			Controls::CursorNavigationKey = PressedKey;
 			CheatFunctions::IniFileWriteString(std::to_string(PressedKey), CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
 			GameFunctions::MinimapNotification("Cursor Navigation key has been set");
 		}

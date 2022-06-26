@@ -625,7 +625,6 @@ void GUI::MoveMenu(void* Submenu)
 
 void GUI::CloseMenuGUI()
 {
-	if (CheatFeatures::CursorGUINavigationEnabled) { GameFunctions::EnableDisableCursorGUINavigation(); }
 	GUI::PreviousMenu = GUI::currentMenu;
 	GUI::PreviousMenuLevel = GUI::menuLevel;
 	GUI::previousOption = GUI::currentOption;

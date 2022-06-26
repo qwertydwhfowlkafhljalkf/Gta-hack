@@ -15,14 +15,14 @@ struct LoggerStruct
         Clear();
     }
 
-    void    Clear()
+    void Clear()
     {
         Buf.clear();
         LineOffsets.clear();
         LineOffsets.push_back(0);
     }
 
-    void    AddLog(const char* fmt, ...) IM_FMTARGS(2)
+    void AddLog(const char* fmt, ...) IM_FMTARGS(2)
     {
         int old_size = Buf.size();
         va_list args;
@@ -34,7 +34,7 @@ struct LoggerStruct
                 LineOffsets.push_back(old_size + 1);
     }
 
-    void    Draw(const char* title, bool* p_open = NULL)
+    void Draw(const char* title, bool* p_open = NULL)
     {
         if (!ImGui::Begin(title, p_open))
         {
@@ -176,11 +176,15 @@ void Cheat::Logger::Error(char* Message, bool ShowMessageBox)
 
 void Cheat::Logger::ShowLoggerWindow()
 {
-    ImGui::SetNextWindowSize(ImVec2(700, 700));
-    ImGui::SetNextWindowPos(ImVec2(1200, 20));
+    ImGui::SetNextWindowSize(ImVec2(ImGui::GetMainViewport()->Size.x * 30 / 100, 600));
+    ImGui::SetNextWindowPos(ImVec2(ImGui::GetMainViewport()->Size.x * 60 / 100, 0));
 
-    ImGui::Begin("GTAV Cheat Console", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    ImGui::Begin("Log", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+    if (CheatFunctions::LoadConfigThreadFunctionCompleted)
+    {
+        ImGui::SetWindowCollapsed(true, ImGuiCond_Once);
+    }
     ImGui::End();
 
-    MainLoggerObject.Draw("GTAV Cheat Console", NULL);
+    MainLoggerObject.Draw("Log", NULL);
 }

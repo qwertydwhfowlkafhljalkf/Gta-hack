@@ -8,12 +8,12 @@ bool Cheat::Controls::RightPressed			= false;
 int Cheat::Controls::GUIKeyPressDelay		= 150;
 int Cheat::Controls::KeyPressPreviousTick	= GetTickCount64();
 int Cheat::Controls::OpenGUIKey				= VK_F4;
-int Cheat::Controls::GUINavigationKey		= VK_F5;
+int Cheat::Controls::CursorNavigationKey	= VK_F5;
 int Cheat::Controls::SaveSelectableKey		= VK_F12;
 
 void Cheat::Controls::Loop()
 {
-	if (CheatFunctions::IsKeyCurrentlyPressed(GUINavigationKey, true)) { GameFunctions::EnableDisableCursorGUINavigation(); }
+	if (CheatFunctions::IsKeyCurrentlyPressed(CursorNavigationKey, true)) { GameFunctions::EnableDisableCursorNavigation(); }
 	if (!ControlsDisabled)
 	{
 		SelectPressed = false;

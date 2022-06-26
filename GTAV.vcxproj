@@ -52,10 +52,12 @@
       </AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <BrowseInformation>true</BrowseInformation>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <BrowseInformation>false</BrowseInformation>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -96,9 +98,9 @@
     <ClInclude Include="Header\Game Hooking\Natives.h" />
     <ClInclude Include="Header\Game Hooking\Offsets.h" />
     <ClInclude Include="Header\Game Hooking\Types.h" />
+    <ClInclude Include="Header\GUI\DirectX\ImGuiMain.h" />
+    <ClInclude Include="Header\GUI\DirectX\Proxy.h" />
     <ClInclude Include="Header\GUI\GUI.h" />
-    <ClInclude Include="Header\GUI\ImGuiRenderer\ImGuiMain.h" />
-    <ClInclude Include="Header\GUI\ImGuiRenderer\Proxy.h" />
     <ClInclude Include="Header\GUI\Submenus.h" />
     <ClInclude Include="Header\resource.h" />
     <ClInclude Include="ThirdParty\ImGui\imconfig.h" />
@@ -110,6 +112,13 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_textedit.h" />
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
     <ClInclude Include="ThirdParty\kiero\kiero.h" />
+    <ClInclude Include="ThirdParty\MinHook\buffer.h" />
+    <ClInclude Include="ThirdParty\MinHook\hde\hde32.h" />
+    <ClInclude Include="ThirdParty\MinHook\hde\hde64.h" />
+    <ClInclude Include="ThirdParty\MinHook\hde\pstdint.h" />
+    <ClInclude Include="ThirdParty\MinHook\hde\table32.h" />
+    <ClInclude Include="ThirdParty\MinHook\hde\table64.h" />
+    <ClInclude Include="ThirdParty\MinHook\trampoline.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Header\GUI\Controls.h" />
@@ -125,9 +134,9 @@
     <ClCompile Include="Source\Game Hooking\Memory.cpp" />
     <ClCompile Include="Source\Game Hooking\NativeInvoker.cpp" />
     <ClCompile Include="Source\GUI\Controls.cpp" />
+    <ClCompile Include="Source\GUI\DirectX\ImGuiMain.cpp" />
+    <ClCompile Include="Source\GUI\DirectX\Proxy.cpp" />
     <ClCompile Include="Source\GUI\GUI.cpp" />
-    <ClCompile Include="Source\GUI\ImGuiRenderer\ImGuiMain.cpp" />
-    <ClCompile Include="Source\GUI\ImGuiRenderer\Proxy.cpp" />
     <ClCompile Include="Source\GUI\Submenus.cpp" />
     <ClCompile Include="Source\GUI\Submenus\About.cpp" />
     <ClCompile Include="Source\GUI\Submenus\AfterHoursDLC.cpp" />
@@ -244,12 +253,17 @@
     <ClCompile Include="ThirdParty\JsonCpp\json_value.cpp" />
     <ClCompile Include="ThirdParty\JsonCpp\json_writer.cpp" />
     <ClCompile Include="ThirdParty\kiero\kiero.cpp" />
+    <ClCompile Include="ThirdParty\MinHook\buffer.c" />
+    <ClCompile Include="ThirdParty\MinHook\hde\hde32.c" />
+    <ClCompile Include="ThirdParty\MinHook\hde\hde64.c" />
+    <ClCompile Include="ThirdParty\MinHook\hook.c" />
+    <ClCompile Include="ThirdParty\MinHook\trampoline.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Source\GTAV.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\GUI\ImGuiRenderer\Proxy.def" />
+    <None Include="Source\GUI\DirectX\Proxy.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

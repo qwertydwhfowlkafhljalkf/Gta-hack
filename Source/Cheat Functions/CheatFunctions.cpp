@@ -141,54 +141,57 @@ void Cheat::CheatFunctions::Loop()
 	// Cursor Navigation Handler
 	if (CheatFeatures::CursorGUINavigationEnabled)
 	{
-		PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, false, 0);
 		UI::_SHOW_CURSOR_THIS_FRAME();
 		UI::_SET_CURSOR_SPRITE(Normal);
 
-		if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - GUI::SelectableHeight - 0.181f }, { GUI::guiWidth, GUI::SelectableHeight + 0.045f }))
+		// Handle menu GUI navigation - only when the menu is actually open/visible
+		if (GUI::menuLevel > 0)
 		{
-			UI::_SET_CURSOR_SPRITE(PreGrab);
-			if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
+			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - GUI::SelectableHeight - 0.181f }, { GUI::guiWidth, GUI::SelectableHeight + 0.045f }))
 			{
-				UI::_SET_CURSOR_SPRITE(Grab);
-				GUI::guiX = GameFunctions::ReturnCursorYXCoords().x;
-				GUI::guiY = GameFunctions::ReturnCursorYXCoords().y + 0.20f;
+				UI::_SET_CURSOR_SPRITE(PreGrab);
+				if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
+				{
+					UI::_SET_CURSOR_SPRITE(Grab);
+					GUI::guiX = GameFunctions::ReturnCursorYXCoords().x;
+					GUI::guiY = GameFunctions::ReturnCursorYXCoords().y + 0.20f;
+				}
 			}
-		}
-		if (GameFunctions::IsCursorAtXYPosition({ GUI::SelectableInfoBoxX, GUI::SelectableInfoBoxY }, { 0.25f, 0.080f }))
-		{
-			UI::_SET_CURSOR_SPRITE(PreGrab);
-			if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
+			if (GameFunctions::IsCursorAtXYPosition({ GUI::SelectableInfoBoxX, GUI::SelectableInfoBoxY }, { 0.25f, 0.080f }))
 			{
-				UI::_SET_CURSOR_SPRITE(Grab);
-				GUI::SelectableInfoBoxX = GameFunctions::ReturnCursorYXCoords().x;
-				GUI::SelectableInfoBoxY = GameFunctions::ReturnCursorYXCoords().y;
+				UI::_SET_CURSOR_SPRITE(PreGrab);
+				if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
+				{
+					UI::_SET_CURSOR_SPRITE(Grab);
+					GUI::SelectableInfoBoxX = GameFunctions::ReturnCursorYXCoords().x;
+					GUI::SelectableInfoBoxY = GameFunctions::ReturnCursorYXCoords().y;
+				}
 			}
-		}
-		if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX - 0.100f, GUI::guiY - 0.156f }, { 0.060f, 0.025f }))
-		{
-			UI::_SET_CURSOR_SPRITE(PreGrab);
-			if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, INPUT_CURSOR_ACCEPT))
+			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX - 0.100f, GUI::guiY - 0.156f }, { 0.060f, 0.025f }))
 			{
-				GUI::BackMenu();
+				UI::_SET_CURSOR_SPRITE(PreGrab);
+				if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, INPUT_CURSOR_ACCEPT))
+				{
+					GUI::BackMenu();
+				}
 			}
-		}
-		if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_UP))
-		{
-			if (GUI::currentOption > 1)
+			if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_UP))
 			{
-				GUI::currentOption -= 1;
+				if (GUI::currentOption > 1)
+				{
+					GUI::currentOption -= 1;
+				}
+				GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 			}
-			GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
-		}
-		if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_DOWN))
-		{
-			if (GUI::TotalOptionsCount > GUI::currentOption)
+			if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_DOWN))
 			{
-				GUI::currentOption += 1;
+				if (GUI::TotalOptionsCount > GUI::currentOption)
+				{
+					GUI::currentOption += 1;
+				}
+				GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 			}
-			GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
-		}
+		}	
 	}
 }
 
@@ -303,8 +306,8 @@ void Cheat::CheatFunctions::LoadConfig()
 	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Menu GUI Key");
 	if (!MenuGUIKey.empty()) { Controls::OpenGUIKey = StringToInt(MenuGUIKey); }
 	
-	std::string CursorNavigationKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
-	if (!CursorNavigationKey.empty()) { Controls::GUINavigationKey = StringToInt(CursorNavigationKey); }
+	std::string CursorNavigationKeyString = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
+	if (!CursorNavigationKeyString.empty()) { Controls::CursorNavigationKey = StringToInt(CursorNavigationKeyString); }
 
 	std::string SaveSelectableKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Save Selectable Key");
 	if (!SaveSelectableKey.empty()) { Controls::SaveSelectableKey = StringToInt(SaveSelectableKey); }
@@ -523,6 +526,10 @@ void Cheat::CheatFunctions::CheckCheatUpdate()
 		{
 			NewCheatVersionString = "v" + LatestOnlineVersionString;
 			Logger::DebugMessage("A newer version of the cheat is available on GitHub");
+		}
+		else
+		{
+			Logger::DebugMessage("No newer cheat version available");
 		}
 	}
 }

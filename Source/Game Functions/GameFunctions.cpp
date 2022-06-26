@@ -1037,9 +1037,9 @@ bool Cheat::GameFunctions::IsCursorAtXYPosition(VECTOR2 const& boxCentre, VECTOR
 }
 
 bool Cheat::CheatFeatures::CursorGUINavigationEnabled = false;
-void Cheat::GameFunctions::EnableDisableCursorGUINavigation()
+void Cheat::GameFunctions::EnableDisableCursorNavigation()
 {
-	if (GUI::menuLevel != 0 && !Controls::ControlsDisabled)
+	if (!Controls::ControlsDisabled)
 	{
 		if (CheatFeatures::CursorGUINavigationEnabled)
 		{
