@@ -93,6 +93,8 @@ namespace Cheat
 		void SuperJump();
 		extern bool ShowFPSBool;
 		void ShowFPS();
+		extern bool CloseGameImmediatelyBool;
+		void CloseGameImmediately();
 		extern bool JumpAroundModeBool;
 		void JumpAroundMode();
 		extern bool VehicleHornBoostBool;

@@ -22,6 +22,7 @@ void GUI::Submenus::Miscellaneous()
 	GUI::Toggle("Rockstar Developer Mode", CheatFeatures::GTAODeveloperMode, "Toggles GTAO Spectator Options");
 	GUI::Toggle("Show Session Information", CheatFeatures::ShowSessionInformationBool, "Show session info (next to radar)");
 	GUI::Toggle("Show FPS", CheatFeatures::ShowFPSBool, "");
+	GUI::Toggle("Close Game Immediately", CheatFeatures::CloseGameImmediatelyBool, "Closes the game immediately when ALT + F4 is pressed");
 	if (GUI::Option("Stop Cutscene", ""))
 	{
 		CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
@@ -55,5 +56,4 @@ void GUI::Submenus::Miscellaneous()
 	}
 	if (GUI::Option("Get Empty Session", "Get Empty (Public) Session")) { Sleep(10000); }
 	if (GUI::Option("Exit to Single Player", "")) { if (NETWORK::NETWORK_IS_SESSION_STARTED()) { GameFunctions::ChangeGTAOSessionType(SessionTypeLeaveOnline); } }
-	if (GUI::Option("Close Game", "You must hold spacebar to prevent accidental closure")) { if (CheatFunctions::IsKeyCurrentlyPressed(VK_SPACE)) { std::exit(EXIT_SUCCESS); } }
 }

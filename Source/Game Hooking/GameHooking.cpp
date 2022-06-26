@@ -393,7 +393,7 @@ void GameHooking::Initialize()
 	}
 
 	// Initialize Natives
-	Cheat::Logger::DebugMessage("Initialized Game Natives");
+	Cheat::Logger::DebugMessage("Initialized game natives");
 	CrossMapping::initNativeMap();
 
 	bool WaitingGameLoadLogPrinted = false;

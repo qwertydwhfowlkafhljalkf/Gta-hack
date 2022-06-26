@@ -267,6 +267,7 @@ void Cheat::CheatFeatures::Loop()
 	FreezeStationBool ? FreezeStation() : FreezeStationWasEnabled ? AUDIO::UNFREEZE_RADIO_STATION(AUDIO::GET_PLAYER_RADIO_STATION_NAME()), FreezeStationWasEnabled = false : NULL;
 	HideMinimapBool ? HideMinimap() : HideMinimapWasEnabled ? UI::DISPLAY_RADAR(true), HideMinimapWasEnabled = false : NULL;
 	WeaponInvisibilityBool ? WeaponInvisibility(true) : WeaponInvisibility(false);
+	CloseGameImmediatelyBool ? CloseGameImmediately() : NULL;
 }
 
 bool Cheat::CheatFeatures::GodmodeBool = false;
@@ -576,7 +577,6 @@ void Cheat::CheatFeatures::ShowFPS()
 	std::string MessageString = "FPS: " + str;
 	GUI::DrawTextInGame(MessageString, { 255, 255, 255, 255 }, { 0.50f, 0.002f }, { 0.30f, 0.30f }, false);
 }
-
 
 bool Cheat::CheatFeatures::JumpAroundModeBool = false;
 void Cheat::CheatFeatures::JumpAroundMode()
@@ -1332,4 +1332,13 @@ bool Cheat::CheatFeatures::WeaponInvisibilityBool = false;
 void Cheat::CheatFeatures::WeaponInvisibility(bool toggle)
 {
 	ENTITY::SET_ENTITY_VISIBLE(WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX(GameFunctions::PlayerPedID), !toggle, false);
+}
+
+bool Cheat::CheatFeatures::CloseGameImmediatelyBool = true;
+void Cheat::CheatFeatures::CloseGameImmediately()
+{
+	if (CheatFunctions::IsKeyCurrentlyPressed(VK_F4) && CheatFunctions::IsKeyCurrentlyPressed(VK_MENU))
+	{
+		std::exit(EXIT_SUCCESS);
+	}
 }
