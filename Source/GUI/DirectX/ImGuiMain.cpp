@@ -90,7 +90,8 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			ImGuiIO& io = ImGui::GetIO();
 			io.IniFilename = NULL;
 			io.MouseDrawCursor = true;
-			io.Fonts->AddFontFromFileTTF(strcat(getenv("SystemDrive"), "\\Windows\\Fonts\\Verdana.ttf"), 20.f);
+			std::string FontLocation = std::getenv("SystemDrive") + (std::string)"\\Windows\\Fonts\\Verdana.ttf";
+			io.Fonts->AddFontFromFileTTF(FontLocation.c_str(), 20.f);
 			ImGui_ImplWin32_Init(window);
 			ImGui_ImplDX11_Init(pDevice, pContext);
 			init = true;

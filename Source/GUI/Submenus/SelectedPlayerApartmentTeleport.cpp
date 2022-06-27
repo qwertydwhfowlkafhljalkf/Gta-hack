@@ -4,7 +4,7 @@ using namespace Cheat;
 void GUI::Submenus::SelectedPlayerApartmentTeleport()
 {
 	GUI::Title("Teleport to Apartment");
-	for (const auto& i : GameArrays::TSEPropertyList)
+	for (auto& i : GameArrays::TSEPropertyList)
 	{
 		if (GUI::Option(i.PropertyName, ""))
 		{
