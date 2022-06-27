@@ -141,35 +141,27 @@ void Cheat::CheatFunctions::Loop()
 	// Cursor Navigation Handler
 	if (CheatFeatures::CursorGUINavigationEnabled)
 	{
-		UI::_SHOW_CURSOR_THIS_FRAME();
-		UI::_SET_CURSOR_SPRITE(Normal);
-
 		// Handle menu GUI navigation - only when the menu is actually open/visible
 		if (GUI::menuLevel > 0)
 		{
 			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - GUI::SelectableHeight - 0.181f }, { GUI::guiWidth, GUI::SelectableHeight + 0.045f }))
 			{
-				UI::_SET_CURSOR_SPRITE(PreGrab);
 				if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
 				{
-					UI::_SET_CURSOR_SPRITE(Grab);
 					GUI::guiX = GameFunctions::ReturnCursorYXCoords().x;
 					GUI::guiY = GameFunctions::ReturnCursorYXCoords().y + 0.20f;
 				}
 			}
 			if (GameFunctions::IsCursorAtXYPosition({ GUI::SelectableInfoBoxX, GUI::SelectableInfoBoxY }, { 0.25f, 0.080f }))
 			{
-				UI::_SET_CURSOR_SPRITE(PreGrab);
 				if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
 				{
-					UI::_SET_CURSOR_SPRITE(Grab);
 					GUI::SelectableInfoBoxX = GameFunctions::ReturnCursorYXCoords().x;
 					GUI::SelectableInfoBoxY = GameFunctions::ReturnCursorYXCoords().y;
 				}
 			}
 			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX - 0.100f, GUI::guiY - 0.156f }, { 0.060f, 0.025f }))
 			{
-				UI::_SET_CURSOR_SPRITE(PreGrab);
 				if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, INPUT_CURSOR_ACCEPT))
 				{
 					GUI::BackMenu();
