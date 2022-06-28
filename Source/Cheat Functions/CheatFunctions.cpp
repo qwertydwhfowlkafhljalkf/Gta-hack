@@ -295,7 +295,7 @@ void Cheat::CheatFunctions::LoadConfig()
 	std::thread LoadConfigThreadHandle(LoadConfigThreadFunction);
 	LoadConfigThreadHandle.detach();
 
-	//Load keys
+	// Load hotkeys
 	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Menu GUI Key");
 	if (!MenuGUIKey.empty()) { Controls::OpenMenuGUIKey = StringToInt(MenuGUIKey); }
 	
@@ -305,11 +305,11 @@ void Cheat::CheatFunctions::LoadConfig()
 	std::string SaveSelectableKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Save Selectable Key");
 	if (!SaveSelectableKey.empty()) { Controls::SaveSelectableKey = StringToInt(SaveSelectableKey); }
 
-	//Load Active Theme
+	// Load Active Theme
 	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Active Theme");
 	if (!ActiveThemeSetting.empty()) { GUI::LoadTheme(ActiveThemeSetting, true); }
 
-	//Load Vehicle Spawner Custom License Plate Text
+	// Load Vehicle Spawner Custom License Plate Text
 	std::string VehicleSpawnerCustomLicensePlateText = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Vehicle Spawner Custom License Plate Text");
 	if (!VehicleSpawnerCustomLicensePlateText.empty()) { CheatFeatures::VehicleSpawnerCustomLicensePlateTextString = VehicleSpawnerCustomLicensePlateText; }
 }
@@ -382,7 +382,7 @@ void Cheat::CheatFunctions::IniFileWriteString(std::string string, std::string F
 	mINI::INIStructure IniStruct;
 	File.read(IniStruct);
 	IniStruct[Section][Key] = string;
-	File.write(IniStruct);
+	File.write(IniStruct, true);
 }
 
 std::string Cheat::CheatFunctions::IniFileReturnKeyValueAsString(std::string FilePath, std::string Section, std::string Key)
