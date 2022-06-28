@@ -37,9 +37,10 @@ void DirectX::ImGuiInit()
 
 LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	if (CheatFeatures::CursorGUINavigationEnabled && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+	if (CheatFeatures::CursorGUINavigationEnabled && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam) && !Controls::ControlsDisabled)
+	{
 		return true;
-
+	}
 	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
 

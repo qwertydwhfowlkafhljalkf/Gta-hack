@@ -11,7 +11,7 @@ namespace Cheat
 		extern bool ControlsDisabled;
 		extern int GUIKeyPressDelay;
 		extern int KeyPressPreviousTick;
-		extern int OpenGUIKey;
+		extern int OpenMenuGUIKey;
 		extern int CursorNavigationKey;
 		extern int SaveSelectableKey;
 		extern bool SelectPressed;

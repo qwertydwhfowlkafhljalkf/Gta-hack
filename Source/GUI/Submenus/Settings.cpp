@@ -10,12 +10,12 @@ void GUI::Submenus::Settings()
 	GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu");
 	GUI::StringVector("Measurement System", { "Metric", "Imperial" }, CheatFeatures::MeasurementSystemVectorPosition, "Metric = KM/H, Imperial = MP/H", SELECTABLE_RETURN_VALUE_CHANGE);
 	GUI::Break("Keys", SELECTABLE_CENTER_TEXT);
-	if (GUI::Option("Menu GUI: ~c~" + CheatFunctions::VirtualKeyCodeToString(Controls::OpenGUIKey), "Select to change"))
+	if (GUI::Option("Menu GUI: ~c~" + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey), "Select to change"))
 	{
 		int PressedKey = CheatFunctions::WaitForAndReturnPressedKey();
 		if (PressedKey != 0)
 		{
-			Controls::OpenGUIKey = PressedKey;
+			Controls::OpenMenuGUIKey = PressedKey;
 			CheatFunctions::IniFileWriteString(std::to_string(PressedKey), CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Menu GUI Key");
 			GameFunctions::MinimapNotification("Menu GUI key has been set");
 		}

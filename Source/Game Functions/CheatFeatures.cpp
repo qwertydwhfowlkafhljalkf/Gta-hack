@@ -18,6 +18,7 @@ int Cheat::CheatFeatures::PlayerOpacityInt = 250;
 bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
 bool Cheat::CheatFeatures::HideOwnIPAddress = true;
+bool Cheat::CheatFeatures::HideOnScreenGameAndCheatInfo = false;
 bool Cheat::CheatFeatures::HideVehicleInfoAndPreview = false;
 bool Cheat::CheatFeatures::ShowJoiningPlayersNotification = true;
 bool Cheat::CheatFeatures::LogChatMessages = true;
@@ -48,7 +49,7 @@ void Cheat::CheatFeatures::Loop()
 	if (CheatFunctions::LoadConfigThreadFunctionCompleted && !GUI::CheatGUIHasBeenOpened)
 	{
 		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&LoadConfigInstructionalButtonHandle);
-		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenGUIKey) + " to open cheat GUI";
+		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to open cheat GUI";
 		std::string WelcomeText = "Welcome " + (std::string)SOCIALCLUB::_SC_GET_NICKNAME() + ", have fun!";
 		GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(WelcomeText), "Textures", "AdvancedNotificationImage", false, 4, "GTAV Cheat", "", 0.5f, "");
 		UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
@@ -201,6 +202,34 @@ void Cheat::CheatFeatures::Loop()
 		}
 	}
 
+	// On-screen Game & Cheat Info
+	if (!CheatFeatures::HideOnScreenGameAndCheatInfo)
+	{
+		Vector3 PlayerCoord = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
+		std::string NumbConnectedPlayers;
+		NumbConnectedPlayers = "Session connected players: ";
+
+		if (NETWORK::NETWORK_IS_SESSION_STARTED())
+		{
+			NumbConnectedPlayers.append(std::to_string(NETWORK::NETWORK_GET_NUM_CONNECTED_PLAYERS()));
+		}
+		else
+		{
+			NumbConnectedPlayers.append("N/A");
+		}
+
+		// Cursor navigation
+		std::string CursorNavigationStatus = CheatFeatures::CursorGUINavigationEnabled ? "~g~active ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::CursorNavigationKey) + " to deactivate)" : "~r~inactive ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::CursorNavigationKey) + " to activate)";
+
+		// Menu GUI
+		std::string MenuGUIStatus = GUI::menuLevel > 0 ? "~g~visible ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to hide)" : "~r~hidden ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to show)";
+
+		GUI::DrawTextInGame("~h~Game & Cheat Information", { 255, 255, 255, 255, FontChaletLondon }, { 0.77f, 0.8095f }, { 0.28f, 0.28f }, false, true);
+		GUI::DrawTextInGame(NumbConnectedPlayers, { 255, 255, 255, 255, FontChaletLondon }, { 0.77f, 0.8245f }, { 0.28f, 0.28f }, false, true);
+		GUI::DrawTextInGame("Cursor navigation is " + CursorNavigationStatus, { 255, 255, 255, 255, FontChaletLondon }, { 0.77f, 0.8390f }, { 0.28f, 0.28f }, false, true);
+		GUI::DrawTextInGame("Menu GUI is " + MenuGUIStatus, { 255, 255, 255, 255, FontChaletLondon }, { 0.77f, 0.8535f }, { 0.28f, 0.28f }, false, true);
+	}
+	
 
 	GodmodeBool ? Godmode(true) : Godmode(false);
 	NeverWantedBool ? NeverWanted(true) : NeverWanted(false);
@@ -256,7 +285,6 @@ void Cheat::CheatFeatures::Loop()
 	NoIdleKickBool ? NoIdleKick() : NULL;
 	CopsTurnBlindEyeBool ? CopsTurnBlindEye() : CopsTurnBlindEyeWasEnabled ? GameFunctions::ToggleCopsTurnBlindEye(false), CopsTurnBlindEyeWasEnabled = false : NULL;
 	VehicleWeaponsBool ? VehicleWeapons() : NULL;
-	ShowSessionInformationBool ? ShowSessionInformation() : NULL;
 	AutoGiveAllWeaponsBool ? AutoGiveAllWeapons() : NULL;
 	AutoGiveAllWeaponUpgradesBool ? AutoGiveAllWeaponUpgrades() : NULL;
 	FreeCamBool ? FreeCam(true) : FreeCam(false);
@@ -1243,36 +1271,6 @@ void Cheat::CheatFeatures::VehicleWeapons()
 		}
 		VehicleWeapons_LastTick = GetTickCount64();
 	}
-}
-
-bool Cheat::CheatFeatures::ShowSessionInformationBool = false;
-void Cheat::CheatFeatures::ShowSessionInformation()
-{
-	Vector3 PlayerCoord = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
-	std::string NumbConnectedPlayers;
-	NumbConnectedPlayers = "Connected Players: ";
-
-	if (NETWORK::NETWORK_IS_SESSION_STARTED())
-	{
-		NumbConnectedPlayers.append(std::to_string(NETWORK::NETWORK_GET_NUM_CONNECTED_PLAYERS()));
-	}
-	else
-	{
-		NumbConnectedPlayers.append("N/A");
-	}
-
-	std::ostringstream PlayerCoordX, PlayerCoordY, PlayerCoordZ;
-	PlayerCoordX.precision(2);
-	PlayerCoordX << std::fixed << PlayerCoord.x;
-	PlayerCoordY.precision(2);
-	PlayerCoordY << std::fixed << PlayerCoord.y;
-	PlayerCoordZ.precision(2);
-	PlayerCoordZ << std::fixed << PlayerCoord.z;
-
-	GUI::DrawTextInGame("X " + PlayerCoordX.str(), { 255, 255, 255, 255, FontChaletLondon }, { 0.18f, 0.8225f }, { 0.25f, 0.25f }, false);
-	GUI::DrawTextInGame("Y " + PlayerCoordY.str(), { 255, 255, 255, 255, FontChaletLondon }, { 0.18f, 0.8350f }, { 0.25f, 0.25f }, false);
-	GUI::DrawTextInGame("Z " + PlayerCoordZ.str(), { 255, 255, 255, 255, FontChaletLondon }, { 0.18f, 0.8475f }, { 0.25f, 0.25f }, false);
-	GUI::DrawTextInGame(NumbConnectedPlayers, { 255, 255, 255, 255, FontChaletLondon }, { 0.18f, 0.8600f }, { 0.25f, 0.25f }, false);
 }
 
 bool Cheat::CheatFeatures::AutoGiveAllWeaponsBool = false;

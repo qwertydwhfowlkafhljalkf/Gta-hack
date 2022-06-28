@@ -20,7 +20,6 @@ void GUI::Submenus::Miscellaneous()
 	GUI::Toggle("Free Cam", CheatFeatures::FreeCamBool, "Use W and S to control. Shift to go faster");
 	GUI::Toggle("Show Joining Players Notification", CheatFeatures::ShowJoiningPlayersNotification, "");
 	GUI::Toggle("Rockstar Developer Mode", CheatFeatures::GTAODeveloperMode, "Toggles GTAO Spectator Options");
-	GUI::Toggle("Show Session Information", CheatFeatures::ShowSessionInformationBool, "Show session info (next to radar)");
 	GUI::Toggle("Show FPS", CheatFeatures::ShowFPSBool, "");
 	GUI::Toggle("Close Game Immediately", CheatFeatures::CloseGameImmediatelyBool, "Closes the game immediately when ALT + F4 is pressed");
 	if (GUI::Option("Stop Cutscene", ""))
@@ -31,7 +30,7 @@ void GUI::Submenus::Miscellaneous()
 	{
 		CheatFeatures::SpectatePlayerBool = false;
 	}
-	if (GUI::Option("Drive To Waypoint", "A NPC drives you to waypoint"))
+	if (GUI::Option("Drive To Waypoint", "A NPC drives you to the set waypoint"))
 	{
 		int WaypointHandle = UI::GET_FIRST_BLIP_INFO_ID(SpriteWaypoint);
 		if (UI::DOES_BLIP_EXIST(WaypointHandle))

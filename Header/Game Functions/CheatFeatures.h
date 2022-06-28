@@ -22,6 +22,7 @@ namespace Cheat
 		extern bool BlockMaliciousScriptEvents;
 		extern bool BlockAllScriptEvents;
 		extern bool HideOwnIPAddress;
+		extern bool HideOnScreenGameAndCheatInfo;
 		extern bool HideVehicleInfoAndPreview;
 		extern bool CursorGUINavigationEnabled;
 		extern bool ShowJoiningPlayersNotification;
@@ -172,8 +173,6 @@ namespace Cheat
 		extern bool VehicleWeapons_Fireworks;
 		extern bool VehicleWeapons_DrawLaser;
 		void VehicleWeapons();
-		extern bool ShowSessionInformationBool;
-		void ShowSessionInformation();
 		extern bool AutoGiveAllWeaponsBool;
 		void AutoGiveAllWeapons();
 		extern bool AutoGiveAllWeaponUpgradesBool;

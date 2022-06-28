@@ -142,7 +142,8 @@ void Cheat::CheatFunctions::Loop()
 	if (CheatFeatures::CursorGUINavigationEnabled)
 	{
 		// Handle menu GUI navigation - only when the menu is actually open/visible
-		if (GUI::menuLevel > 0)
+		// ImGui has priority over mouse control
+		if (GUI::menuLevel > 0 && !ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow))
 		{
 			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - GUI::SelectableHeight - 0.181f }, { GUI::guiWidth, GUI::SelectableHeight + 0.045f }))
 			{
@@ -296,7 +297,7 @@ void Cheat::CheatFunctions::LoadConfig()
 
 	//Load keys
 	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Menu GUI Key");
-	if (!MenuGUIKey.empty()) { Controls::OpenGUIKey = StringToInt(MenuGUIKey); }
+	if (!MenuGUIKey.empty()) { Controls::OpenMenuGUIKey = StringToInt(MenuGUIKey); }
 	
 	std::string CursorNavigationKeyString = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
 	if (!CursorNavigationKeyString.empty()) { Controls::CursorNavigationKey = StringToInt(CursorNavigationKeyString); }

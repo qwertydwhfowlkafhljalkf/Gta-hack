@@ -7,7 +7,7 @@ bool Cheat::Controls::RightPressed			= false;
 
 int Cheat::Controls::GUIKeyPressDelay		= 150;
 int Cheat::Controls::KeyPressPreviousTick	= GetTickCount64();
-int Cheat::Controls::OpenGUIKey				= VK_F4;
+int Cheat::Controls::OpenMenuGUIKey = VK_F4;
 int Cheat::Controls::CursorNavigationKey	= VK_F5;
 int Cheat::Controls::SaveSelectableKey		= VK_F12;
 
@@ -22,7 +22,7 @@ void Cheat::Controls::Loop()
 
 		if (GetTickCount64() - KeyPressPreviousTick > GUIKeyPressDelay)
 		{
-			if (CheatFunctions::IsKeyCurrentlyPressed(OpenGUIKey))
+			if (CheatFunctions::IsKeyCurrentlyPressed(OpenMenuGUIKey))
 			{
 				GUI::CheatGUIHasBeenOpened = true;
 				if (GUI::menuLevel == 0)
