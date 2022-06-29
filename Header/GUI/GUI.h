@@ -43,6 +43,7 @@ namespace Cheat
 		extern bool CheatGUIHasBeenOpened;
 		extern bool CurrentOptionIsSavable;
 		extern std::string CurrentTheme;
+		extern std::string CurrentSubmenu;
 		extern bool RestorePreviousSubmenu;
 		extern int maxVisOptions;
 		extern int currentOption;

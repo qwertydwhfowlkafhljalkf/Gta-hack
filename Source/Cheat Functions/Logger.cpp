@@ -177,15 +177,15 @@ void Cheat::Logger::Error(char* Message, bool ShowMessageBox)
 
 void Cheat::Logger::Window()
 {
-    ImGui::SetNextWindowSize(ImVec2(ImGui::GetMainViewport()->Size.x * 30 / 100, 600), ImGuiCond_FirstUseEver);
-    ImGui::SetNextWindowPos(ImVec2(ImGui::GetMainViewport()->Size.x * 60 / 100, 0), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(ImGui::GetMainViewport()->Size.x * 30 / 100, 600), ImGuiCond_Once);
+    ImGui::SetNextWindowPos(ImVec2(ImGui::GetMainViewport()->Size.x * 60 / 100, 0), ImGuiCond_Once);
 
     if (WindowVisible)
     {
         ImGui::Begin("Log", &WindowVisible);
         if (CheatFunctions::LoadConfigThreadFunctionCompleted)
         {
-            ImGui::SetWindowCollapsed(true, ImGuiCond_FirstUseEver);
+            ImGui::SetWindowCollapsed(true, ImGuiCond_Once);
         }
         ImGui::End();
         MainLoggerObject.Draw("Log", &WindowVisible);

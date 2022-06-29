@@ -4,7 +4,7 @@ using namespace Cheat;
 void GUI::Submenus::ShootEntities()
 {
 	GUI::Title("Shoot Entities");
-	GUI::Toggle("Toggle", CheatFeatures::ShootEntitiesBool, "", SELECTABLE_DISABLE_SAVE);
+	GUI::Toggle("Toggle", CheatFeatures::ShootEntitiesBool, "");
 	GUI::Break("Current: ~t~" + CheatFeatures::ShootEntitiesCurrent, false);
 	if (GUI::Option("Custom Entity", ""))
 	{

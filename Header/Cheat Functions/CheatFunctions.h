@@ -23,30 +23,30 @@ namespace Cheat
 
 				if (TypeName == "bool")
 				{
-					std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
+					std::string ConfigFileValue = GetSelectableValueFromConfig(OptionName);
 					if (!ConfigFileValue.empty())
 					{
-						ReturnedVariable = CheatFunctions::StringToBool(CheatFunctions::GetOptionValueFromConfig(OptionName));
+						ReturnedVariable = CheatFunctions::StringToBool(CheatFunctions::GetSelectableValueFromConfig(OptionName));
 						Cheat::Logger::DebugMessage("Loaded savable option (Boolean) '" + OptionName + "'");
 					}
 					LoadedOptionsVector.push_back(OptionName);
 				}
 				else if (TypeName == "int")
 				{
-					std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
+					std::string ConfigFileValue = GetSelectableValueFromConfig(OptionName);
 					if (!ConfigFileValue.empty())
 					{
-						ReturnedVariable = CheatFunctions::StringToInt(CheatFunctions::GetOptionValueFromConfig(OptionName));
+						ReturnedVariable = CheatFunctions::StringToInt(CheatFunctions::GetSelectableValueFromConfig(OptionName));
 						Cheat::Logger::DebugMessage("Loaded savable option (Integer) '" + OptionName + "'");
 					}
 					LoadedOptionsVector.push_back(OptionName);
 				}
 				else if (TypeName == "float")
 				{
-					std::string ConfigFileValue = GetOptionValueFromConfig(OptionName);
+					std::string ConfigFileValue = GetSelectableValueFromConfig(OptionName);
 					if (!ConfigFileValue.empty())
 					{
-						ReturnedVariable = std::stof(CheatFunctions::GetOptionValueFromConfig(OptionName));
+						ReturnedVariable = std::stof(CheatFunctions::GetSelectableValueFromConfig(OptionName));
 						Cheat::Logger::DebugMessage("Loaded savable option (Float) '" + OptionName + "'");
 					}
 					LoadedOptionsVector.push_back(OptionName);
@@ -54,8 +54,8 @@ namespace Cheat
 			}
 		}
 		std::string ReturnCheatModuleDirectoryPath();
-		void SaveOption(std::string OptionName, std::string OptionValue, bool IsSavable);
-		std::string GetOptionValueFromConfig(std::string OptionName);
+		void SaveSelectable(std::string OptionName, std::string OptionValue, bool IsSavable);
+		std::string GetSelectableValueFromConfig(std::string OptionName);
 		bool FileOrDirectoryExists(std::string Path);
 		void CreateNewDirectory(std::string Path);
 		std::string GetLastErrorAsString();

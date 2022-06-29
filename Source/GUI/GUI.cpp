@@ -20,6 +20,7 @@ bool GUI::CurrentOptionIsSavable	= false;
 bool GUI::RestorePreviousSubmenu = true;
 std::string SelectableInformationText;
 std::string GUI::CurrentTheme;
+std::string GUI::CurrentSubmenu;
 int GUI::maxVisOptions			= 10;
 int GUI::currentOption			= 0;
 int GUI::currentOptionVisible   = 0;	//This has GUI::Break excluded
@@ -73,6 +74,8 @@ void GUI::Title(std::string TitleName)
 	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_MAP_POI, true);
 	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_VEH_RADIO_WHEEL, true);
 	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_VEH_HEADLIGHT, true);	
+
+	CurrentSubmenu = TitleName;
 }
 
 bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
@@ -316,7 +319,7 @@ bool GUI::Toggle(std::string option, bool & TargetBool, std::string InformationT
 
 	if (GUI::optionCount == GUI::currentOption)
 	{
-		CheatFunctions::SaveOption(option, TargetBool ? "true" : "false", !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
+		CheatFunctions::SaveSelectable(option, TargetBool ? "true" : "false", !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 	}
 	return false;
 }
@@ -402,7 +405,7 @@ bool GUI::Int(std::string option, int & _int, int min, int max, int step, std::s
 			if (BitFlags & SELECTABLE_RETURN_VALUE_CHANGE) { return true; }
 		}
 
-		CheatFunctions::SaveOption(option, std::to_string(_int), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
+		CheatFunctions::SaveSelectable(option, std::to_string(_int), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 	}
 	return false;
 }
@@ -419,7 +422,7 @@ bool GUI::Float(std::string option, float& _float, float min, float max, float s
 	bool IgnoreMinMax = min == 0.0f && max == 0.0f;
 	if (GUI::optionCount == GUI::currentOption)
 	{	
-		CheatFunctions::SaveOption(option, std::to_string(_float), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
+		CheatFunctions::SaveSelectable(option, std::to_string(_float), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 		if (Controls::LeftPressed && !(BitFlags & SELECTABLE_DISABLED))
 		{
 			if (_float < max || IgnoreMinMax)
@@ -475,7 +478,7 @@ bool GUI::IntVector(std::string option, std::vector<int> Vector, int& position, 
 			position < max ? position++ : position = min;
 			return true;
 		}
-		CheatFunctions::SaveOption(option, std::to_string(position), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
+		CheatFunctions::SaveSelectable(option, std::to_string(position), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 	}
 
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
@@ -500,7 +503,7 @@ bool GUI::FloatVector(std::string option, std::vector<float> Vector, int& positi
 
 	if (GUI::optionCount == GUI::currentOption) 
 	{
-		CheatFunctions::SaveOption(option, std::to_string(position), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
+		CheatFunctions::SaveSelectable(option, std::to_string(position), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 		size_t max = static_cast<int>(Vector.size()) - 1;
 		int min = 0;
 		if (Controls::LeftPressed && !(BitFlags & SELECTABLE_DISABLED))
@@ -537,7 +540,7 @@ bool GUI::StringVector(std::string option, std::vector<std::string> Vector, int&
 
 	if (GUI::optionCount == GUI::currentOption)
 	{
-		CheatFunctions::SaveOption(option, std::to_string(position), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
+		CheatFunctions::SaveSelectable(option, std::to_string(position), !(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) ? true : false);
 		if (Controls::LeftPressed)
 		{
 			if (position < Vector.size() - 1)
@@ -696,7 +699,7 @@ void GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 	if (!CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnThemeFilePath(ThemeFileName))) 
 	{ 
 		GameFunctions::MinimapNotification("Requested Theme does not exist. Auto load entry removed from config file."); 
-		CheatFunctions::IniFileRemoveKey(CheatFunctions::ReturnConfigFilePath(), "Settings", "Active Theme");
+		CheatFunctions::IniFileRemoveKey(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Active Theme");
 		return;
 	}
 
@@ -738,7 +741,7 @@ void GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 	//Save New Active Theme Name To Config File
 	if (!StartUp) 
 	{
-		CheatFunctions::IniFileWriteString(GUI::CurrentTheme, CheatFunctions::ReturnConfigFilePath(), "Settings", "Active Theme");
+		CheatFunctions::IniFileWriteString(GUI::CurrentTheme, CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Active Theme");
 		GameFunctions::MinimapNotification("Theme Loaded"); 
 	}
 }
@@ -746,7 +749,7 @@ void GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 void GUI::DeleteLoadedTheme()
 {
 	remove(CheatFunctions::StringToChar(CheatFunctions::ReturnThemeFilePath(CurrentTheme)));
-	CheatFunctions::IniFileRemoveKey(CheatFunctions::ReturnConfigFilePath(), "Settings", "Active Theme");
+	CheatFunctions::IniFileRemoveKey(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Active Theme");
 	GUI::CurrentTheme.clear();
 	GUI::currentOption = 1;
 	GameFunctions::MinimapNotification("Theme Removed");

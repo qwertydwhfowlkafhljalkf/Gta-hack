@@ -254,7 +254,7 @@ int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 	}
 }
 
-void Cheat::CheatFunctions::SaveOption(std::string OptionName, std::string OptionValue, bool IsSavable)
+void Cheat::CheatFunctions::SaveSelectable(std::string OptionName, std::string OptionValue, bool IsSavable)
 {
 	GUI::CurrentOptionIsSavable = IsSavable;
 	if (IsKeyCurrentlyPressed(Controls::SaveSelectableKey))
@@ -263,14 +263,14 @@ void Cheat::CheatFunctions::SaveOption(std::string OptionName, std::string Optio
 		{
 			std::string LogMessage = "'" + OptionName + "' saved";
 			Cheat::GameFunctions::AdvancedMinimapNotification(StringToChar(LogMessage), "Textures", "AdvancedNotificationImage", false, 4, "Config", "", 0.5f, "");
-			IniFileWriteString(OptionValue, ReturnConfigFilePath(), "SETTINGS", OptionName);
+			IniFileWriteString(OptionValue, ReturnConfigFilePath(), "submenu_" + GUI::CurrentSubmenu, OptionName);
 		}
 	}
 }
 
-std::string Cheat::CheatFunctions::GetOptionValueFromConfig(std::string OptionName)
+std::string Cheat::CheatFunctions::GetSelectableValueFromConfig(std::string OptionName)
 {
-	return IniFileReturnKeyValueAsString(ReturnConfigFilePath(), "SETTINGS", OptionName);
+	return IniFileReturnKeyValueAsString(ReturnConfigFilePath(), "submenu_" + GUI::CurrentSubmenu, OptionName);
 }
 
 void LoadConfigThreadFunction()
@@ -296,21 +296,21 @@ void Cheat::CheatFunctions::LoadConfig()
 	LoadConfigThreadHandle.detach();
 
 	// Load hotkeys
-	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Menu GUI Key");
+	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Menu GUI Key");
 	if (!MenuGUIKey.empty()) { Controls::OpenMenuGUIKey = StringToInt(MenuGUIKey); }
 	
-	std::string CursorNavigationKeyString = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Cursor Navigation Key");
+	std::string CursorNavigationKeyString = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Cursor Navigation Key");
 	if (!CursorNavigationKeyString.empty()) { Controls::CursorNavigationKey = StringToInt(CursorNavigationKeyString); }
 
-	std::string SaveSelectableKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Save Selectable Key");
+	std::string SaveSelectableKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Save Selectable Key");
 	if (!SaveSelectableKey.empty()) { Controls::SaveSelectableKey = StringToInt(SaveSelectableKey); }
 
 	// Load Active Theme
-	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Active Theme");
+	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Active Theme");
 	if (!ActiveThemeSetting.empty()) { GUI::LoadTheme(ActiveThemeSetting, true); }
 
 	// Load Vehicle Spawner Custom License Plate Text
-	std::string VehicleSpawnerCustomLicensePlateText = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Vehicle Spawner Custom License Plate Text");
+	std::string VehicleSpawnerCustomLicensePlateText = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_vehicle spawn settings", "Vehicle Spawner Custom License Plate Text");
 	if (!VehicleSpawnerCustomLicensePlateText.empty()) { CheatFeatures::VehicleSpawnerCustomLicensePlateTextString = VehicleSpawnerCustomLicensePlateText; }
 }
 
