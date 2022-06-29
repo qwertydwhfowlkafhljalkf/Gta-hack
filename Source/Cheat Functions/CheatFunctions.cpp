@@ -92,7 +92,7 @@ std::string Cheat::CheatFunctions::GetLastErrorAsString()
 
 void Cheat::CheatFunctions::Loop()
 {
-	//Submenu handlers - additional submenu logic is looped here
+	// Submenu handlers - additional submenu logic is looped here
 	for (int FuncPointerIndex = 0; FuncPointerIndex < Cheat::GUI::Submenus::NumberOfSubmenus; ++FuncPointerIndex)
 	{
 		if (GUI::currentMenu == (*Cheat::GUI::Submenus::FunctionPointers[FuncPointerIndex]))
@@ -135,15 +135,15 @@ void Cheat::CheatFunctions::Loop()
 		}
 	}
 
-	//GUI - must be called after (^) rendering a submenu
+	// GUI - must be called after (^) rendering a submenu
 	GUI::MenuGUIBottom();
 
 	// Cursor Navigation Handler
-	if (CheatFeatures::CursorGUINavigationEnabled)
+	if (CheatFeatures::CursorNavigationState)
 	{
 		// Handle menu GUI navigation - only when the menu is actually open/visible
 		// ImGui has priority over mouse control
-		if (GUI::menuLevel > 0 && !ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow))
+		if (GUI::menuLevel > 0)
 		{
 			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - GUI::SelectableHeight - 0.181f }, { GUI::guiWidth, GUI::SelectableHeight + 0.045f }))
 			{
@@ -168,7 +168,7 @@ void Cheat::CheatFunctions::Loop()
 					GUI::BackMenu();
 				}
 			}
-			if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_UP))
+			if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_UP) && !ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow))
 			{
 				if (GUI::currentOption > 1)
 				{

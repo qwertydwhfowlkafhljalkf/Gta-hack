@@ -24,7 +24,7 @@ namespace Cheat
 		extern bool HideOwnIPAddress;
 		extern bool HideOnScreenGameAndCheatInfo;
 		extern bool HideVehicleInfoAndPreview;
-		extern bool CursorGUINavigationEnabled;
+		extern bool CursorNavigationState;
 		extern bool ShowJoiningPlayersNotification;
 		extern bool LogChatMessages;
 		extern bool GTAODeveloperMode;

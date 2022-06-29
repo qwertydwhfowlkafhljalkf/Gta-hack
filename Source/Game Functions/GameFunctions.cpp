@@ -1036,21 +1036,18 @@ bool Cheat::GameFunctions::IsCursorAtXYPosition(VECTOR2 const& boxCentre, VECTOR
 		&& (ReturnCursorYXCoords().y > boxCentre.y - boxSize.y / 2 && ReturnCursorYXCoords().y < boxCentre.y + boxSize.y / 2);
 }
 
-bool Cheat::CheatFeatures::CursorGUINavigationEnabled = false;
+bool Cheat::CheatFeatures::CursorNavigationState = false;
 void Cheat::GameFunctions::EnableDisableCursorNavigation()
 {
-	if (!Controls::ControlsDisabled)
+	if (CheatFeatures::CursorNavigationState)
 	{
-		if (CheatFeatures::CursorGUINavigationEnabled)
-		{
-			CheatFeatures::CursorGUINavigationEnabled = false;
-			PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, true, 0);
-		}
-		else
-		{
-			CheatFeatures::CursorGUINavigationEnabled = true;
-			PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, false, 0);
-		}
+		CheatFeatures::CursorNavigationState = false;
+		PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, true, 0);
+	}
+	else
+	{
+		CheatFeatures::CursorNavigationState = true;
+		PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, false, 0);
 	}
 }
 

@@ -7,13 +7,12 @@ bool Cheat::Controls::RightPressed			= false;
 
 int Cheat::Controls::GUIKeyPressDelay		= 150;
 int Cheat::Controls::KeyPressPreviousTick	= GetTickCount64();
-int Cheat::Controls::OpenMenuGUIKey = VK_F4;
+int Cheat::Controls::OpenMenuGUIKey			= VK_F4;
 int Cheat::Controls::CursorNavigationKey	= VK_F5;
 int Cheat::Controls::SaveSelectableKey		= VK_F12;
 
 void Cheat::Controls::Loop()
 {
-	if (CheatFunctions::IsKeyCurrentlyPressed(CursorNavigationKey, true)) { GameFunctions::EnableDisableCursorNavigation(); }
 	if (!ControlsDisabled)
 	{
 		SelectPressed = false;
@@ -22,6 +21,13 @@ void Cheat::Controls::Loop()
 
 		if (GetTickCount64() - KeyPressPreviousTick > GUIKeyPressDelay)
 		{
+			// Enable/Disable Cursor Control
+			if (CheatFunctions::IsKeyCurrentlyPressed(CursorNavigationKey, true)) { GameFunctions::EnableDisableCursorNavigation(); }
+
+			// Logger Window Open/Close
+			if (CheatFunctions::IsKeyCurrentlyPressed(VK_OEM_3, true)) { Logger::WindowVisible = !Logger::WindowVisible; }
+
+			// Menu GUI
 			if (CheatFunctions::IsKeyCurrentlyPressed(OpenMenuGUIKey))
 			{
 				GUI::CheatGUIHasBeenOpened = true;

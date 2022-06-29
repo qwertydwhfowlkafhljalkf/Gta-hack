@@ -37,7 +37,7 @@ void DirectX::ImGuiInit()
 
 LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	if (CheatFeatures::CursorGUINavigationEnabled && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam) && !Controls::ControlsDisabled)
+	if (CheatFeatures::CursorNavigationState && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam) && !Controls::ControlsDisabled)
 	{
 		return true;
 	}
@@ -116,7 +116,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	colors[ImGuiCol_ButtonHovered] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 	colors[ImGuiCol_ButtonActive] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 
-	Logger::ShowLoggerWindow();
+	Logger::Window();
 
 	ImGui::Render();
 	pContext->OMSetRenderTargets(1, &mainRenderTargetView, NULL);

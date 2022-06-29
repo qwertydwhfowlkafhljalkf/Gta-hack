@@ -83,6 +83,9 @@ void Cheat::CheatFeatures::Loop()
 		GUI::DrawTextInGame("~bold~A newer cheat version (" + CheatFunctions::NewCheatVersionString + ") is available on GitHub.", { 255, 255, 255, 255, FontChaletLondon }, { 0.003f, 0.001f }, { 0.25f, 0.25f }, false);
 	}
 
+	// Disable Cheat Code (available in SP only) - used by Logger window
+	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_ENTER_CHEAT_CODE, true);
+
 	// New session member notification feature
 	Cheat::GameFunctions::CheckNewSessionMembersLoop();
 
@@ -219,7 +222,7 @@ void Cheat::CheatFeatures::Loop()
 		}
 
 		// Cursor navigation
-		std::string CursorNavigationStatus = CheatFeatures::CursorGUINavigationEnabled ? "~g~active ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::CursorNavigationKey) + " to deactivate)" : "~r~inactive ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::CursorNavigationKey) + " to activate)";
+		std::string CursorNavigationStatus = CheatFeatures::CursorNavigationState ? "~g~active ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::CursorNavigationKey) + " to deactivate)" : "~r~inactive ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::CursorNavigationKey) + " to activate)";
 
 		// Menu GUI
 		std::string MenuGUIStatus = GUI::menuLevel > 0 ? "~g~visible ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to hide)" : "~r~hidden ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to show)";
@@ -369,7 +372,7 @@ void Cheat::CheatFeatures::GravityGun()
 	}
 	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_NEXT_CAMERA, true);
 
-	if (!CursorGUINavigationEnabled)
+	if (!CursorNavigationState)
 	{
 		if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_UP) && GravityGunEntityDistance < 25.f)
 		{

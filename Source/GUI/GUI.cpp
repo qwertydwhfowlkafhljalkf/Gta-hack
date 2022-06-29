@@ -55,7 +55,7 @@ void GUI::Title(std::string TitleName)
 	DrawTextInGame(TitleName, TextColorAndFont, { GUI::guiX, GUI::guiY - 0.174f }, { 0.40f, 0.38f }, true, true);
 	DrawRectInGame({ 0, 0, 0, TitleAndEndTransparency }, { guiX, GUI::guiY - 0.1585f }, { guiWidth, SelectableHeight });
 
-	if (CheatFeatures::CursorGUINavigationEnabled)
+	if (CheatFeatures::CursorNavigationState)
 	{
 		std::string CursorBackCloseString;
 		if (GUI::currentMenu == GUI::Submenus::Home) { CursorBackCloseString = "Close"; }
@@ -72,7 +72,7 @@ void GUI::Title(std::string TitleName)
 	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_VEH_CIN_CAM, true);
 	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_MAP_POI, true);
 	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_VEH_RADIO_WHEEL, true);
-	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_VEH_HEADLIGHT, true);
+	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_VEH_HEADLIGHT, true);	
 }
 
 bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
@@ -128,7 +128,7 @@ bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
 		}
 	}
 
-	if (GameFunctions::IsCursorAtXYPosition(RectPosition, { GUI::guiWidth, SelectableHeight }) && CheatFeatures::CursorGUINavigationEnabled)
+	if (GameFunctions::IsCursorAtXYPosition(RectPosition, { GUI::guiWidth, SelectableHeight }) && CheatFeatures::CursorNavigationState)
 	{
 		if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, INPUT_CURSOR_ACCEPT))
 		{
