@@ -5,4 +5,5 @@ void GUI::Submenus::SessionChat()
 {
 	GUI::Title("Session Chat");
 	GUI::Toggle("Log Messages", CheatFeatures::LogChatMessages, "Chat gets logged to console");
+	GUI::Toggle("Show Log Window", Logger::GameChatWindowVisible, "");
 }

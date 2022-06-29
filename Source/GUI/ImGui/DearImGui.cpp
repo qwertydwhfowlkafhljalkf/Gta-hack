@@ -1,6 +1,6 @@
 #include "../Header/Cheat Functions/FiberMain.h"
-#include "../../../Header/GUI/DirectX/Proxy.h"
-#include "../../../Header/GUI/DirectX/ImGuiMain.h"
+#include "../../../Header/GUI/ImGui/Proxy.h"
+#include "../../../Header/GUI/ImGui/DearImGui.h"
 #include <d3d11.h>
 #include <dxgi.h>
 
@@ -29,7 +29,7 @@ HRESULT hkResizeBuffers(IDXGISwapChain* pThis, UINT BufferCount, UINT Width, UIN
 DWORD WINAPI RenderHookThread(HMODULE hmod);
 
 
-void DirectX::ImGuiInit()
+void GUI::DearImGui::Init()
 {
 	Proxy_Attach();
 	CreateThread(nullptr, NULL, (LPTHREAD_START_ROUTINE)RenderHookThread, CheatModuleHandle, NULL, nullptr);
@@ -115,8 +115,13 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	colors[ImGuiCol_Button] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 	colors[ImGuiCol_ButtonHovered] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 	colors[ImGuiCol_ButtonActive] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
+	colors[ImGuiCol_ResizeGripHovered] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
+	colors[ImGuiCol_ResizeGrip] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
+	colors[ImGuiCol_ResizeGripActive] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 
-	Logger::Window();
+	// Windows
+	Logger::CheatWindow();
+	Logger::GameChatWindow();
 
 	ImGui::Render();
 	pContext->OMSetRenderTargets(1, &mainRenderTargetView, NULL);

@@ -1,5 +1,5 @@
 #include "../Header/Cheat Functions/FiberMain.h"
-#include "../../Header/GUI/DirectX/ImGuiMain.h"
+#include "../../Header/GUI/ImGui/DearImGui.h"
 
 using namespace Cheat;
 
@@ -21,7 +21,7 @@ DWORD WINAPI InitializationThread(LPVOID lpParam)
 	Logger::DebugMessage("Initialized MinHook");
 
 	// Initialize DirectX hook and ImGui
-	DirectX::ImGuiInit();
+	GUI::DearImGui::Init();
 	Logger::DebugMessage("Initialized DirectX hook & ImGui");
 
 	// Initalize RAGE hooks

@@ -227,10 +227,14 @@ void Cheat::CheatFeatures::Loop()
 		// Menu GUI
 		std::string MenuGUIStatus = GUI::menuLevel > 0 ? "~g~visible ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to hide)" : "~r~hidden ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to show)";
 
+		// Log window
+		std::string LogWindowStatus = Logger::CheatWindowVisible ? "~g~open ~s~(Press '~' to close)" : "~r~closed ~s~(Press '~' to open)";
+
 		GUI::DrawTextInGame("~h~Game & Cheat Information", { 255, 255, 255, 255, FontChaletLondon }, { 0.77f, 0.8095f }, { 0.28f, 0.28f }, false, true);
 		GUI::DrawTextInGame(NumbConnectedPlayers, { 255, 255, 255, 255, FontChaletLondon }, { 0.77f, 0.8245f }, { 0.28f, 0.28f }, false, true);
 		GUI::DrawTextInGame("Cursor navigation is " + CursorNavigationStatus, { 255, 255, 255, 255, FontChaletLondon }, { 0.77f, 0.8390f }, { 0.28f, 0.28f }, false, true);
 		GUI::DrawTextInGame("Menu GUI is " + MenuGUIStatus, { 255, 255, 255, 255, FontChaletLondon }, { 0.77f, 0.8535f }, { 0.28f, 0.28f }, false, true);
+		GUI::DrawTextInGame("Log window is " + LogWindowStatus, { 255, 255, 255, 255, FontChaletLondon }, { 0.77f, 0.8680f }, { 0.28f, 0.28f }, false, true);
 	}
 	
 

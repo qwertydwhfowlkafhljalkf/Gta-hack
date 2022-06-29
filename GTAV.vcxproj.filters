@@ -385,12 +385,6 @@
     <ClCompile Include="ThirdParty\kiero\kiero.cpp">
       <Filter>ThirdParty\kiero</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GUI\DirectX\ImGuiMain.cpp">
-      <Filter>Source Files\GUI\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\DirectX\Proxy.cpp">
-      <Filter>Source Files\GUI\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="ThirdParty\MinHook\buffer.c">
       <Filter>ThirdParty\MinHook</Filter>
     </ClCompile>
@@ -405,6 +399,12 @@
     </ClCompile>
     <ClCompile Include="ThirdParty\MinHook\hde\hde64.c">
       <Filter>ThirdParty\MinHook</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\ImGui\DearImGui.cpp">
+      <Filter>Source Files\GUI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\ImGui\Proxy.cpp">
+      <Filter>Source Files\GUI\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -489,12 +489,6 @@
     <ClInclude Include="ThirdParty\kiero\kiero.h">
       <Filter>ThirdParty\kiero</Filter>
     </ClInclude>
-    <ClInclude Include="Header\GUI\DirectX\ImGuiMain.h">
-      <Filter>Header Files\GUI\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\GUI\DirectX\Proxy.h">
-      <Filter>Header Files\GUI\DirectX</Filter>
-    </ClInclude>
     <ClInclude Include="ThirdParty\MinHook\buffer.h">
       <Filter>ThirdParty\MinHook</Filter>
     </ClInclude>
@@ -515,6 +509,12 @@
     </ClInclude>
     <ClInclude Include="ThirdParty\MinHook\hde\table64.h">
       <Filter>ThirdParty\MinHook</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\GUI\ImGui\DearImGui.h">
+      <Filter>Header Files\GUI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\GUI\ImGui\Proxy.h">
+      <Filter>Header Files\GUI\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -563,22 +563,22 @@
     <Filter Include="ThirdParty\kiero">
       <UniqueIdentifier>{0ae9bf93-85a4-47a3-9ec5-21994609de2f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GUI\DirectX">
-      <UniqueIdentifier>{3c7b9ecd-8029-4e0b-a032-cec4f9d77da5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GUI\DirectX">
-      <UniqueIdentifier>{70e4513c-2b11-48f8-8075-2fb6b4f38288}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ThirdParty\MinHook">
       <UniqueIdentifier>{edfb048a-9322-40d1-af4b-27594b4cc41c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GUI\ImGui">
+      <UniqueIdentifier>{70e4513c-2b11-48f8-8075-2fb6b4f38288}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI\ImGui">
+      <UniqueIdentifier>{3c7b9ecd-8029-4e0b-a032-cec4f9d77da5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Source\GTAV.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\GUI\DirectX\Proxy.def">
-      <Filter>Source Files\GUI\DirectX</Filter>
+    <None Include="Source\GUI\ImGui\Proxy.def">
+      <Filter>Source Files\GUI\ImGui</Filter>
     </None>
   </ItemGroup>
 </Project>

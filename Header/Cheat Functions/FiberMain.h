@@ -67,6 +67,7 @@
 #include "../Header/Cheat Functions/CheatFunctions.h"
 #include "../Header/Game Functions/GameFunctions.h"
 #include "../Header/Cheat Functions/Logger.h"
+#include "../Header/GUI/ImGui/DearImGui.h"
 
 
 

@@ -25,7 +25,7 @@ void Cheat::Controls::Loop()
 			if (CheatFunctions::IsKeyCurrentlyPressed(CursorNavigationKey, true)) { GameFunctions::EnableDisableCursorNavigation(); }
 
 			// Logger Window Open/Close
-			if (CheatFunctions::IsKeyCurrentlyPressed(VK_OEM_3, true)) { Logger::WindowVisible = !Logger::WindowVisible; }
+			if (CheatFunctions::IsKeyCurrentlyPressed(VK_OEM_3, true)) { Logger::CheatWindowVisible = !Logger::CheatWindowVisible; }
 
 			// Menu GUI
 			if (CheatFunctions::IsKeyCurrentlyPressed(OpenMenuGUIKey))

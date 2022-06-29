@@ -1,5 +1,5 @@
 #include "../Header/Cheat Functions/FiberMain.h"
-#include "../../Header/GUI/DirectX/Proxy.h"
+#include "../../Header/GUI/ImGui/Proxy.h"
 #include "../../ThirdParty/kiero/kiero.h"
 
 HANDLE MainFiber;
@@ -97,7 +97,7 @@ __int64 GetChatDataHooked(__int64 a1, __int64 a2, __int64 a3, const char* origTe
 	if (Cheat::CheatFeatures::LogChatMessages)
 	{
 		Cheat::CheatFunctions::WriteToFile(Cheat::CheatFunctions::ReturnChatLogFilePath(), Cheat::CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] Message: ") + (std::string)origText + "\n", true);
-		Cheat::Logger::MessageCustomCategory("Chat Logger", " Message: '" + (std::string)origText + "'");
+		Cheat::Logger::SendMessageToGameChatLogWindow(Cheat::CheatFunctions::StringToConstChar("Message: " + (std::string)origText));
 	}
 	return GetChatDataOriginal(a1, a2, a3, origText, isTeam);
 }

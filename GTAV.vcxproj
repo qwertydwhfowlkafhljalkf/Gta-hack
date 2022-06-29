@@ -98,9 +98,9 @@
     <ClInclude Include="Header\Game Hooking\Natives.h" />
     <ClInclude Include="Header\Game Hooking\Offsets.h" />
     <ClInclude Include="Header\Game Hooking\Types.h" />
-    <ClInclude Include="Header\GUI\DirectX\ImGuiMain.h" />
-    <ClInclude Include="Header\GUI\DirectX\Proxy.h" />
     <ClInclude Include="Header\GUI\GUI.h" />
+    <ClInclude Include="Header\GUI\ImGui\DearImGui.h" />
+    <ClInclude Include="Header\GUI\ImGui\Proxy.h" />
     <ClInclude Include="Header\GUI\Submenus.h" />
     <ClInclude Include="Header\resource.h" />
     <ClInclude Include="ThirdParty\ImGui\imconfig.h" />
@@ -134,9 +134,9 @@
     <ClCompile Include="Source\Game Hooking\Memory.cpp" />
     <ClCompile Include="Source\Game Hooking\NativeInvoker.cpp" />
     <ClCompile Include="Source\GUI\Controls.cpp" />
-    <ClCompile Include="Source\GUI\DirectX\ImGuiMain.cpp" />
-    <ClCompile Include="Source\GUI\DirectX\Proxy.cpp" />
     <ClCompile Include="Source\GUI\GUI.cpp" />
+    <ClCompile Include="Source\GUI\ImGui\DearImGui.cpp" />
+    <ClCompile Include="Source\GUI\ImGui\Proxy.cpp" />
     <ClCompile Include="Source\GUI\Submenus.cpp" />
     <ClCompile Include="Source\GUI\Submenus\About.cpp" />
     <ClCompile Include="Source\GUI\Submenus\AfterHoursDLC.cpp" />
@@ -263,7 +263,7 @@
     <ResourceCompile Include="Source\GTAV.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\GUI\DirectX\Proxy.def" />
+    <None Include="Source\GUI\ImGui\Proxy.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
