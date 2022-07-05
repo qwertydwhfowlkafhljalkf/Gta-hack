@@ -9,7 +9,7 @@ void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 {
 	if (!std::filesystem::create_directory(Path))
 	{
-		std::string String = __func__ + (std::string)"() Failed to create directory '" + Path + "' Error: " + Cheat::CheatFunctions::GetLastErrorAsString();
+		std::string String = __func__ + (std::string)"() Failed to create directory '" + Path + "' WinAPI Error Code: " + std::to_string(GetLastError());
 		Cheat::Logger::DebugMessage(String);
 	}
 	else
@@ -74,20 +74,6 @@ bool Cheat::CheatFunctions::FileOrDirectoryExists(std::string Path)
 		return true;
 	}
 	return false;
-}
-
-std::string Cheat::CheatFunctions::GetLastErrorAsString()
-{
-	DWORD errorMessageID = GetLastError();
-	if (errorMessageID == 0) { return std::string(); }
-
-	LPSTR messageBuffer = nullptr;
-	size_t size = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-				  NULL, errorMessageID, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)& messageBuffer, 0, NULL);
-
-	std::string message(messageBuffer, size);
-	LocalFree(messageBuffer);
-	return message;
 }
 
 void Cheat::CheatFunctions::Loop()
@@ -214,7 +200,7 @@ void Cheat::CheatFunctions::NonLooped()
 	LoadConfig();
 
 	// Load 'multiplayer vehicles in Single Player' bypass
-	globalHandle(4533757).As<BOOL>() = true;
+	globalHandle(GLOBAL_SP_DESPAWN_BYPASS).As<BOOL>() = true;
 
 	// Log POST initialization completion
 	Logger::Message("GTAV Cheat Initialization Completed");
@@ -465,18 +451,61 @@ void Cheat::CheatFunctions::WriteToFile(std::string FilePath, std::string text, 
 	FileHandle.close();
 }
 
-void Cheat::CheatFunctions::CheckCheatUpdate()
+Json::Value Cheat::CheatFunctions::ReturnGithubAPIJsonDataCheat(std::string Build)
 {
-	Cheat::Logger::Message("Checking for newer cheat version");
-	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(CHEAT_BUILD_NUMBER, ".");
-	std::string LatestOnlineVersionString;
+	if (Build.empty()) { return NULL; }
+	CA2W wstringver(Build.c_str());
+	Json::Value JsonData;
+	std::wstring URL = L"https://api.github.com/repos/HatchesPls/GrandTheftAutoV-Cheat/releases/tags/" + (std::wstring)wstringver;
+	HINTERNET hopen = InternetOpen(L"GTAVCheat", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
+	if (hopen)
+	{
+		DWORD flags = INTERNET_FLAG_DONT_CACHE;
+		HINTERNET hinternet = InternetOpenUrl(hopen, URL.c_str(), NULL, 0, flags, 0);
+		if (hinternet)
+		{
+			char tmp[2048 + 1];
+			DWORD received = 0;
+			std::string buffer;
+			while (InternetReadFile(hinternet, tmp, 2048, &received) && received > 0)
+			{
+				if (!received) break;
+				tmp[received] = '\0';
+				buffer += (std::string)tmp;
+			}
 
+			Json::CharReaderBuilder CharBuilder;
+			JSONCPP_STRING JsonError;
+			const std::unique_ptr<Json::CharReader> reader(CharBuilder.newCharReader());
+
+			if (reader->parse(buffer.c_str(), buffer.c_str() + buffer.length(), &JsonData, &JsonError))
+			{
+				if (JsonData["message"].asString() == "Not Found")
+				{
+					// Non existent version provided
+					return NULL;
+				}
+			}
+			else
+			{
+				Cheat::Logger::DebugMessage(__func__ + (std::string)"() : failed to parse JSON data. Error message returned by JsonCPP: " + JsonError);
+				return NULL;
+			}
+			InternetCloseHandle(hinternet);
+		}
+		InternetCloseHandle(hopen);
+	}
+	return JsonData;
+}
+
+std::string Cheat::CheatFunctions::GetLatestCheatBuildNumber()
+{
+	std::string Version;
 	std::wstring URL = L"https://api.github.com/repos/HatchesPls/GrandTheftAutoV-Cheat/releases/latest";
 	HINTERNET hopen = InternetOpen(L"GTAVCheat", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
 	if (hopen)
 	{
 		DWORD flags = INTERNET_FLAG_DONT_CACHE;
-		if (URL.find(L"https://") == 0) flags |= INTERNET_FLAG_SECURE;
 		HINTERNET hinternet = InternetOpenUrl(hopen, URL.c_str(), NULL, 0, flags, 0);
 		if (hinternet)
 		{
@@ -497,34 +526,51 @@ void Cheat::CheatFunctions::CheckCheatUpdate()
 
 			if (reader->parse(buffer.c_str(), buffer.c_str() + buffer.length(), &JsonData, &JsonError))
 			{
-				LatestOnlineVersionString = JsonData["name"].asString();
+				Version = JsonData["name"].asString();
 			}
 			else
 			{
-				Cheat::Logger::DebugMessage(__func__ + (std::string)"() : failed to parse json data. Error message returned by JsonCPP: " + JsonError);
+				Cheat::Logger::DebugMessage(__func__ + (std::string)"() : failed to parse JSON data. Error message returned by JsonCPP: " + JsonError);
+				return "";
 			}
 			InternetCloseHandle(hinternet);
 		}
 		InternetCloseHandle(hopen);
 	}
-
-	LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(LatestOnlineVersionString, "v.");
-
-	if (StringIsInteger(CurrentLocalVersionString) && StringIsInteger(LatestOnlineVersionString))
+	if (!Version.empty())
 	{
-		int CurrentLocalVersion = StringToInt(CurrentLocalVersionString);
-		int LatestOnlineVersion = StringToInt(LatestOnlineVersionString);
-
-		if (CurrentLocalVersion < LatestOnlineVersion)
-		{
-			NewCheatVersionString = "v" + LatestOnlineVersionString;
-			Logger::DebugMessage("A newer version of the cheat is available on GitHub");
-		}
-		else
-		{
-			Logger::DebugMessage("No newer cheat version available");
-		}
+		return Version;
+	}	
+	else
+	{
+		return "";
 	}
+}
+
+void Cheat::CheatFunctions::CheckCheatUpdate()
+{
+	Cheat::Logger::Message("Checking for newer cheat version");
+	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(CHEAT_BUILD_NUMBER, ".");
+	std::string LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(GetLatestCheatBuildNumber(), "v.");
+
+	if (!LatestOnlineVersionString.empty())
+	{
+		if (StringIsInteger(CurrentLocalVersionString) && StringIsInteger(LatestOnlineVersionString))
+		{
+			int CurrentLocalVersion = StringToInt(CurrentLocalVersionString);
+			int LatestOnlineVersion = StringToInt(LatestOnlineVersionString);
+
+			if (CurrentLocalVersion < LatestOnlineVersion)
+			{
+				NewCheatVersionString = "v" + LatestOnlineVersionString;
+				Logger::DebugMessage("A newer version of the cheat is available on GitHub");
+			}
+			else
+			{
+				Logger::DebugMessage("No newer cheat version available");
+			}
+		}
+	}	
 }
 
 //https://stackoverflow.com/questions/5891610/how-to-remove-certain-characters-from-a-string-in-c
@@ -589,7 +635,7 @@ void Cheat::CheatFunctions::CopyStringToClipboard(const std::string& String)
 	HGLOBAL Global = GlobalAlloc(GMEM_MOVEABLE, String.size() + 1);
 	if (!Global) { CloseClipboard(); return; }
 	LPVOID GlobalPtrn = GlobalLock(Global);
-	if (GlobalPtrn != NULL) { memcpy(GlobalPtrn, String.c_str(), String.size() + 1); }
+	memcpy(GlobalPtrn, String.c_str(), String.size() + 1);
 	GlobalUnlock(Global);
 	SetClipboardData(CF_TEXT, Global);
 	CloseClipboard();

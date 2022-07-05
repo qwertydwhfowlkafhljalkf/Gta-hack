@@ -228,7 +228,7 @@ void Cheat::CheatFeatures::Loop()
 		std::string MenuGUIStatus = GUI::menuLevel > 0 ? "~g~visible ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to hide)" : "~r~hidden ~s~(Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to show)";
 
 		// Log window
-		std::string LogWindowStatus = Logger::CheatWindowVisible ? "~g~open ~s~(Press '~' to close)" : "~r~closed ~s~(Press '~' to open)";
+		std::string LogWindowStatus = Logger::CheatWindowVisible ? "~g~open ~s~(Press '~~' to close)" : "~r~closed ~s~(Press '~~' to open)";
 
 		GUI::DrawTextInGame("~h~Game & Cheat Information", { 255, 255, 255, 255, FontChaletLondon }, { 0.77f, 0.8095f }, { 0.28f, 0.28f }, false, true);
 		GUI::DrawTextInGame(NumbConnectedPlayers, { 255, 255, 255, 255, FontChaletLondon }, { 0.77f, 0.8245f }, { 0.28f, 0.28f }, false, true);
@@ -290,7 +290,7 @@ void Cheat::CheatFeatures::Loop()
 	RainbowGunBool ? RainbowGun() : NULL;
 	DisableMobilePhoneBool ? DisableMobilePhone() : NULL;
 	NoIdleKickBool ? NoIdleKick() : NULL;
-	CopsTurnBlindEyeBool ? CopsTurnBlindEye() : CopsTurnBlindEyeWasEnabled ? GameFunctions::ToggleCopsTurnBlindEye(false), CopsTurnBlindEyeWasEnabled = false : NULL;
+	CopsTurnBlindEyeBool ? CopsTurnBlindEye() : CopsTurnBlindEyeWasEnabled ? GameFunctions::StartCopsTurnBlindEye(), CopsTurnBlindEyeWasEnabled = false : NULL;
 	VehicleWeaponsBool ? VehicleWeapons() : NULL;
 	AutoGiveAllWeaponsBool ? AutoGiveAllWeapons() : NULL;
 	AutoGiveAllWeaponUpgradesBool ? AutoGiveAllWeaponUpgrades() : NULL;
@@ -1110,7 +1110,7 @@ bool Cheat::CheatFeatures::CopsTurnBlindEyeBool = false;
 bool Cheat::CheatFeatures::CopsTurnBlindEyeWasEnabled = false;
 void Cheat::CheatFeatures::CopsTurnBlindEye()
 {
-	GameFunctions::ToggleCopsTurnBlindEye(true);
+	GameFunctions::StartCopsTurnBlindEye();
 }
 
 bool Cheat::CheatFeatures::ExplodeLoopSelectedPlayerBool = false;
@@ -1311,7 +1311,7 @@ void Cheat::CheatFeatures::CrossHair()
 {
 	if (!CrossHairADSOnlyBool || CrossHairADSOnlyBool && PLAYER::IS_PLAYER_FREE_AIMING(GameFunctions::PlayerID))
 	{
-		GUI::DrawSpriterInGame("Textures", "Crosshair", 0.50f, 0.50f, 0.060f, 0.100f, 0, GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 255);
+		GUI::DrawSpriteInGame("Textures", "Crosshair", 0.50f, 0.50f, 0.060f, 0.100f, 0, GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 255);
 	}
 }
 

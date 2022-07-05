@@ -58,7 +58,6 @@ namespace Cheat
 		std::string GetSelectableValueFromConfig(std::string OptionName);
 		bool FileOrDirectoryExists(std::string Path);
 		void CreateNewDirectory(std::string Path);
-		std::string GetLastErrorAsString();
 		void Loop();
 		void NonLooped();
 		bool IsGameWindowFocussed();
@@ -77,6 +76,8 @@ namespace Cheat
 		bool StringToBool(std::string String);
 		bool IsKeyCurrentlyPressed(int vKey, bool PressedOnce = false);
 		void WriteToFile(std::string FilePath, std::string text, bool Append);
+		Json::Value ReturnGithubAPIJsonDataCheat(std::string Build);
+		std::string GetLatestCheatBuildNumber();
 		void CheckCheatUpdate();
 		std::string RemoveCharactersFromStringAndReturn(std::string String, char* CharactersToRemove);
 		int StringToInt(std::string String);

@@ -52,7 +52,7 @@ int GUI::MenuArrowAnimationDelay		= 1000;
 void GUI::Title(std::string TitleName)
 {
 	if (ShowHeaderBackground) { DrawRectInGame({ PrimaryColor.r, PrimaryColor.g, PrimaryColor.b, HeaderBackgroundTransparency }, { guiX, GUI::guiY - SelectableHeight - 0.181f }, { guiWidth, SelectableHeight + 0.045f }); }
-	if (ShowHeaderTexture) { DrawSpriterInGame("Textures", "HeaderDefaultTransparent", guiX, GUI::guiY - SelectableHeight - 0.181f, guiWidth, SelectableHeight + 0.045f, 0, 255, 255, 255, HeaderTextureTransparency); }
+	if (ShowHeaderTexture) { DrawSpriteInGame("Textures", "HeaderDefaultTransparent", guiX, GUI::guiY - SelectableHeight - 0.181f, guiWidth, SelectableHeight + 0.045f, 0, 255, 255, 255, HeaderTextureTransparency); }
 	DrawTextInGame(TitleName, TextColorAndFont, { GUI::guiX, GUI::guiY - 0.174f }, { 0.40f, 0.38f }, true, true);
 	DrawRectInGame({ 0, 0, 0, TitleAndEndTransparency }, { guiX, GUI::guiY - 0.1585f }, { guiWidth, SelectableHeight });
 
@@ -61,7 +61,7 @@ void GUI::Title(std::string TitleName)
 		std::string CursorBackCloseString;
 		if (GUI::currentMenu == GUI::Submenus::Home) { CursorBackCloseString = "Close"; }
 		else { CursorBackCloseString = "Back"; }
-		DrawSpriterInGame("commonmenu", "arrowleft", GUI::guiX - 0.100f, GUI::guiY - 0.160f, 0.015f, 0.025f, 0, 255, 255, 255, 255);
+		DrawSpriteInGame("commonmenu", "arrowleft", GUI::guiX - 0.100f, GUI::guiY - 0.160f, 0.015f, 0.025f, 0, 255, 255, 255, 255);
 		DrawTextInGame(CursorBackCloseString, TextColorAndFont, { GUI::guiX - 0.094f, GUI::guiY - 0.174f }, { 0.35f, 0.37f }, false, true);
 	}
 
@@ -181,7 +181,7 @@ bool GUI::VehicleOption(std::string option, std::string ModelName)
 				DrawTextInGame(ModelMaxSpeed.str(), TextColorAndFont, { guiX + 0.111f, guiY + 0.010f }, { 0.45f, 0.30f }, false);
 				DrawTextInGame("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { guiX + 0.111f, guiY + 0.025f}, {0.45f, 0.30f}, false);
 				DrawRectInGame({ 0, 0, 0, 150 }, { guiX + 0.187f, GUI::guiY - 0.061f }, { 0.16f, 0.22f });
-				DrawSpriterInGame(VehiclePreviewDictName, VehiclePreviewName, guiX + 0.187f, guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
+				DrawSpriteInGame(VehiclePreviewDictName, VehiclePreviewName, guiX + 0.187f, guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
 			}
 			else
 			{
@@ -189,7 +189,7 @@ bool GUI::VehicleOption(std::string option, std::string ModelName)
 				DrawTextInGame(ModelMaxSpeed.str(), TextColorAndFont, { guiX - 0.262f, guiY + 0.010f }, { 0.45f, 0.30f }, false);
 				DrawTextInGame("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { guiX - 0.262f, guiY + 0.025f }, { 0.45f, 0.30f }, false);
 				DrawRectInGame({ 0, 0, 0, 150 }, { guiX - 0.187f, guiY - 0.061f }, { 0.16f, 0.22f });
-				DrawSpriterInGame(VehiclePreviewDictName, VehiclePreviewName, guiX - 0.187f, guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
+				DrawSpriteInGame(VehiclePreviewDictName, VehiclePreviewName, guiX - 0.187f, guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
 			}
 		}
 	}
@@ -291,7 +291,7 @@ bool GUI::MenuOptionPlayerList(std::string PlayerName, int BitFlags)
 	{
 		Position = { GUI::guiX - 0.093f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.158f };
 	}
-	DrawSpriterInGame(CurrentOnlinePlayerPictureName, CurrentOnlinePlayerPictureName, Position.x, Position.y, 0.02f, 0.03f, 0, 255, 255, 255, OnlinePlayerPictureTransparency);
+	DrawSpriteInGame(CurrentOnlinePlayerPictureName, CurrentOnlinePlayerPictureName, Position.x, Position.y, 0.02f, 0.03f, 0, 255, 255, 255, OnlinePlayerPictureTransparency);
 	return false;
 }
 
@@ -310,11 +310,11 @@ bool GUI::Toggle(std::string option, bool & TargetBool, std::string InformationT
 
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
 	{
-		DrawSpriterInGame("Textures", ToggleString, GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount * SelectableHeight - 0.159f), 0.025f, 0.025f, 0, 255, 255, 255, ToggleSelectableTransparency);
+		DrawSpriteInGame("Textures", ToggleString, GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount * SelectableHeight - 0.159f), 0.025f, 0.025f, 0, 255, 255, 255, ToggleSelectableTransparency);
 	}
 	else if ((GUI::optionCount > (GUI::currentOption - GUI::maxVisOptions)) && GUI::optionCount <= GUI::currentOption)
 	{
-		DrawSpriterInGame("Textures", ToggleString, GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.159f, 0.025f, 0.025f, 0, 255, 255, 255, ToggleSelectableTransparency);
+		DrawSpriteInGame("Textures", ToggleString, GUI::guiX + 0.090f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.159f, 0.025f, 0.025f, 0, 255, 255, 255, ToggleSelectableTransparency);
 	}
 
 	if (GUI::optionCount == GUI::currentOption)
@@ -612,7 +612,7 @@ void GUI::MenuGUIBottom()
 		}
 		DrawTextInGame(CHEAT_BUILD_NUMBER, TextColorAndFont, { BuildNumberPositionX, OptionCountAndBuildNumberY }, { 0.30f, 0.30f }, true);
 		DrawRectInGame({ 0, 0, 0, TitleAndEndTransparency }, { GUI::guiX, RectY }, { GUI::guiWidth, SelectableHeight });
-		DrawSpriterInGame("Textures", "LogoSmall", GUI::guiX, LogoSmall, 0.030f, 0.045f, 0, GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, EndSmallLogoTransparency);
+		DrawSpriteInGame("Textures", "LogoSmall", GUI::guiX, LogoSmall, 0.030f, 0.045f, 0, GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, EndSmallLogoTransparency);
 	}
 }
 
@@ -849,7 +849,7 @@ void GUI::DrawTextInGame(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR
 	}
 }
 
-void GUI::DrawSpriterInGame(std::string Streamedtexture, std::string textureName, float x, float y, float width, float height, float rotation, int r, int g, int b, int a)
+void GUI::DrawSpriteInGame(std::string Streamedtexture, std::string textureName, float x, float y, float width, float height, float rotation, int r, int g, int b, int a)
 {
 	if (!GUI::HideGUIElements)
 	{

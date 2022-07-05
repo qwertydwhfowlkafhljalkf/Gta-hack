@@ -476,7 +476,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		}
 
 		//Draw World Map
-		//GUI::DrawSpriterInGame("mp_freemode_mc", "debugmap", 0.60f, 0.50f, 0.15f, 0.4f, 0, 255, 255, 255, 255);
+		//GUI::DrawSpriteInGame("mp_freemode_mc", "debugmap", 0.60f, 0.50f, 0.15f, 0.4f, 0, 255, 255, 255, 255);
 
 		//Text Entry's
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Name", 1);
@@ -1105,7 +1105,7 @@ std::string Cheat::GameFunctions::ReturnPlayerIPAddressAsString(Player PlayerHan
 	char IPBuffer[256];
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
-		if (PlayerHandle == GameFunctions::PlayerID && CheatFeatures::HideOwnIPAddress) { return "Hidden"; }
+		if (PlayerHandle == GameFunctions::PlayerID && CheatFeatures::HideOwnIPAddress) { sprintf_s(IPBuffer, "Hidden"); }
 		auto InfoLong	 = *reinterpret_cast<std::uintptr_t*>(GameHooking::get_player_address(PlayerHandle) + OFFSET_PLAYER_INFO);
 		auto IPAddress   = reinterpret_cast<std::uint8_t*>(InfoLong + OFFSET_PLAYER_INFO_EXTERNAL_IP);
 		IPAddress ? sprintf_s(IPBuffer, "%i.%i.%i.%i", IPAddress[3], IPAddress[2], IPAddress[1], IPAddress[0]) : sprintf_s(IPBuffer, "Unknown");
@@ -1183,7 +1183,7 @@ void Cheat::GameFunctions::ToggleOffRadar(bool state)
 	}
 }
 
-void Cheat::GameFunctions::ToggleCopsTurnBlindEye(bool state)
+void Cheat::GameFunctions::StartCopsTurnBlindEye()
 {
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
@@ -1215,7 +1215,7 @@ void Cheat::GameFunctions::FadeRGB(int& r, int& g, int& b)
 
 bool Cheat::GameFunctions::ShowFullScreenMessage(std::string Message)
 {
-	while (true)
+	for (;;)
 	{
 		GUI::DrawRectInGame({ 0, 0, 0, 210 }, { 0.50f, 0.45f }, { 0.30f, 0.15f });
 		Cheat::GUI::DrawTextInGame("~bold~CAUTION", { 225, 0, 0, 255, FontChaletLondon }, { 0.450f, 0.370f }, { 0.55f, 0.55f }, false, true);
