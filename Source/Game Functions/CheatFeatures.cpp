@@ -51,7 +51,7 @@ void Cheat::CheatFeatures::Loop()
 		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&LoadConfigInstructionalButtonHandle);
 		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to open cheat GUI";
 		std::string WelcomeText = "Welcome " + (std::string)SOCIALCLUB::_SC_GET_NICKNAME() + ", have fun!";
-		GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(WelcomeText), "Textures", "AdvancedNotificationImage", false, 4, "GTAV Cheat", "", 0.5f, "");
+		GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(WelcomeText), "Textures", "AdvancedNotificationImage", false, 4, "GTAV Cheat", "", 0.3f, "");
 		UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
 	}
 	else if (!CheatFunctions::LoadConfigThreadFunctionCompleted)
@@ -748,7 +748,6 @@ void Cheat::CheatFeatures::FreezeStation()
 	FreezeStationWasEnabled = true;
 }
 
-
 bool Cheat::CheatFeatures::WeaponRapidFireBool = false;
 void Cheat::CheatFeatures::WeaponRapidFire()
 {
@@ -1194,7 +1193,6 @@ void Cheat::CheatFeatures::SuperMan()
 		if (CheatFunctions::IsKeyCurrentlyPressed(VK_SHIFT)) { GameFunctions::ApplyForceToEntity(GameFunctions::PlayerPedID, 0, 0, 6); }
 	}
 }
-
 
 bool Cheat::CheatFeatures::ShakeCamSelectedPlayerBool = false;
 void Cheat::CheatFeatures::ShakeCamSelectedPlayer()

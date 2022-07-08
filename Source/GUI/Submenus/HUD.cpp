@@ -14,9 +14,18 @@ void GUI::Submenus::HUD()
 	GUI::Int("Alpha", HUDColorAlpha, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE | SELECTABLE_RETURN_VALUE_CHANGE);
 	if (GUI::Option("Change", ""))
 	{
-		for (int i = 0; i <= 223; i++)
+		for (int i = 0; i <= GameArrays::HUDColors.size(); i++)
 		{
 			UI::_SET_HUD_COLOUR(i, HUDColorRed, HUDColorGreen, HUDColorBlue, HUDColorAlpha);
+		}
+	}
+	if (GUI::Option("Reset all to default", ""))
+	{
+		int index = 0;
+		for (auto const& data : GameArrays::DefaultHUDColors)
+		{
+			UI::_SET_HUD_COLOUR(index, data.R, data.G, data.B, data.A);
+			index++;
 		}
 	}
 }

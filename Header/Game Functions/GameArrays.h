@@ -44,6 +44,14 @@ struct TSEPropertyListStruct
 	int Index;
 };
 
+struct DefaultHUDColorsStruct
+{
+	int R;
+	int G;
+	int B;
+	int A;
+};
+
 namespace Cheat
 {
 	namespace GameArrays
@@ -99,5 +107,7 @@ namespace Cheat
 		extern const std::vector<std::string> Scenarios;
 		extern const std::vector<std::string> Objects;
 		extern const std::vector<TSEPropertyListStruct> TSEPropertyList;
+		extern const std::vector<std::string> HUDColors;
+		extern std::vector<DefaultHUDColorsStruct> DefaultHUDColors;
 	}
 }

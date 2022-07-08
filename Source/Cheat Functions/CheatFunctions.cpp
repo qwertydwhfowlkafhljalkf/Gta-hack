@@ -202,6 +202,14 @@ void Cheat::CheatFunctions::NonLooped()
 	// Load 'multiplayer vehicles in Single Player' bypass
 	globalHandle(GLOBAL_SP_DESPAWN_BYPASS).As<BOOL>() = true;
 
+	// Fetch default HUD colors
+	for (int i = 0; i <= GameArrays::HUDColors.size(); i++)
+	{
+		DefaultHUDColorsStruct data{};
+		UI::GET_HUD_COLOUR(i, &data.R, &data.G, &data.B, &data.A);
+		GameArrays::DefaultHUDColors.push_back(data);
+	}
+
 	// Log POST initialization completion
 	Logger::Message("GTAV Cheat Initialization Completed");
 }
