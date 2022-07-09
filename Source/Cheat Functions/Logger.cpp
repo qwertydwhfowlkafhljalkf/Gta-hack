@@ -26,6 +26,8 @@ void Cheat::Logger::Init()
 void Cheat::Logger::Uninit()
 {
     DebugMessage("Logger uninitialized");
+    MainLoggerObject.Clear();
+    GameChatLoggerObject.Clear();
     LoggerInitialized = false;
 }
 
@@ -33,7 +35,6 @@ void Cheat::Logger::Message(std::string Message)
 {
     if (LoggerInitialized)
     {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
         std::string MessageString = CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S]") + " [Info] " + Message + "\n";
         MainLoggerObject.AddLog(CheatFunctions::StringToConstChar(MessageString));
         CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), MessageString, true);
@@ -44,7 +45,6 @@ void Cheat::Logger::MessageCustomCategory(std::string CategoryName, std::string 
 {
     if (LoggerInitialized)
     {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
         std::string MessageString = CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S]") + " [" + CategoryName + "] " + Message + "\n";
         MainLoggerObject.AddLog(CheatFunctions::StringToConstChar(MessageString));
     }
@@ -54,7 +54,6 @@ void Cheat::Logger::DebugMessage(std::string Message)
 {
     if (LoggerInitialized)
     {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
         std::string MessageString = CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S]") + " [Debug] " + Message + "\n";
         MainLoggerObject.AddLog(CheatFunctions::StringToConstChar(MessageString));
         CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), MessageString, true);
@@ -65,7 +64,6 @@ void Cheat::Logger::Error(char* Message, bool ShowMessageBox)
 {
     if (LoggerInitialized)
     {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
         std::string MessageString = CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S]") + " [Error] " + Message + "\n";
         MainLoggerObject.AddLog(CheatFunctions::StringToConstChar(MessageString));
         CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), MessageString, true);

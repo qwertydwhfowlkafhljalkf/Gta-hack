@@ -15,16 +15,12 @@
 #include <fstream>
 #include <iostream>
 #include <atlstr.h>
-#include <map>
-#include <set>
 #include <functional>
-#include <winioctl.h>
 #include <timeapi.h>
 #include <time.h>
 #include <conio.h>
 #include <filesystem>
 #include <fcntl.h>
-#include <io.h>
 #include <array>
 #include <thread>
 #include <WinINet.h>
