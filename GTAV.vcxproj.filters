@@ -403,9 +403,6 @@
     <ClCompile Include="Source\GUI\ImGui\DearImGui.cpp">
       <Filter>Source Files\GUI\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GUI\ImGui\Proxy.cpp">
-      <Filter>Source Files\GUI\ImGui</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\resource.h">
@@ -513,9 +510,6 @@
     <ClInclude Include="Header\GUI\ImGui\DearImGui.h">
       <Filter>Header Files\GUI\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Header\GUI\ImGui\Proxy.h">
-      <Filter>Header Files\GUI\ImGui</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -575,10 +569,5 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Source\GTAV.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Source\GUI\ImGui\Proxy.def">
-      <Filter>Source Files\GUI\ImGui</Filter>
-    </None>
   </ItemGroup>
 </Project>

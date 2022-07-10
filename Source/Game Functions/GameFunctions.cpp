@@ -450,18 +450,18 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 {
 	if (!Cheat::CheatFeatures::HidePlayerInformationBox)
 	{
-		//Definitions
+		// Definitions
 		Ped SelectedPlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerID);
 		RequestNetworkControlOfEntity(SelectedPlayerPed);
 
-		//Draw Player Marker
+		// Draw Player Marker
 		if (CheatFeatures::PlayerListMarkerPosition == 0 || CheatFeatures::PlayerListMarkerPosition == 1 && GUI::currentMenu == GUI::Submenus::AllPlayers)
 		{
 			Vector3 coords = GetEntityCoords(SelectedPlayerPed);
 			GRAPHICS::DRAW_LIGHT_WITH_RANGE(coords.x, coords.y, coords.z + 2.f, 255, 255, 255, 5.f, 10.f);
 		}
 
-		//Draw Title and Background
+		// Draw Title and Background
 		if (Cheat::GUI::guiX < 0.54f)
 		{
 			GUI::DrawRectInGame(GUI::PrimaryColor, { Cheat::GUI::guiX + 0.266f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
@@ -475,10 +475,10 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 			GUI::DrawRectInGame({ 0, 0, 0, 210 }, { Cheat::GUI::guiX - 0.266f,GUI::guiY - 0.156f }, { 0.32f, 0.030f });
 		}
 
-		//Draw World Map
-		//GUI::DrawSpriteInGame("mp_freemode_mc", "debugmap", 0.60f, 0.50f, 0.15f, 0.4f, 0, 255, 255, 255, 255);
+		// Draw World Map
+		// GUI::DrawSpriteInGame("mp_freemode_mc", "debugmap", 0.60f, 0.50f, 0.15f, 0.4f, 0, 255, 255, 255, 255);
 
-		//Text Entry's
+		// Text Entry's
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Name", 1);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(PLAYER::GET_PLAYER_NAME(PlayerID), NULL, 1);
 
@@ -487,7 +487,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		if (NETWORK::NETWORK_IS_SESSION_STARTED()) 
 		{
 			std::ostringstream PlayerRank;
-			PlayerRank << globalHandle(1853128 + 1).At(PlayerID, 874).At(205).At(5).As<int>();
+			PlayerRank << globalHandle(1853131).At(PlayerID, 888).At(205).At(6).As<int>();
 			Cheat::GUI::AddPlayerInfoBoxTextEntry(PlayerRank.str(), NULL, 2);
 
 			std::ostringstream PlayerMoney;
@@ -500,7 +500,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 			Cheat::GUI::AddPlayerInfoBoxTextEntry("Unavailable", NULL, 3);
 		}
 
-		//Health
+		// Health
 		std::ostringstream Health;
 		float health = ENTITY::GET_ENTITY_HEALTH(SelectedPlayerPed);
 		float HealthValue = health * 100 / ENTITY::GET_ENTITY_MAX_HEALTH(SelectedPlayerPed);
@@ -515,7 +515,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 			Cheat::GUI::AddPlayerInfoBoxTextEntry(Health.str(), NULL, 4);
 		}
 		
-		//Armor
+		// Armor
 		std::ostringstream Armor;
 		int ArmorValue = PED::GET_PED_ARMOUR(SelectedPlayerPed) * 100 / PLAYER::GET_PLAYER_MAX_ARMOUR(PlayerID);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Armor", 5);
@@ -529,7 +529,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 			Cheat::GUI::AddPlayerInfoBoxTextEntry(Armor.str(), NULL, 5);
 		}
 
-		//Status
+		// Status
 		std::ostringstream Status;
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Status", 6);
 		if (AI::IS_PED_STILL(SelectedPlayerPed)) { Status << "Player is still"; }
@@ -544,7 +544,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(Status.str(), NULL, 6);
 
 
-		//Vehicle
+		// Vehicle
 		bool InAnyVehicle = PED::IS_PED_IN_ANY_VEHICLE(SelectedPlayerPed, 0);
 		std::ostringstream Vehicle;
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Vehicle", 7);
@@ -559,7 +559,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(Vehicle.str(), NULL, 7);
 
 
-		//Speed
+		// Speed
 		std::ostringstream Speed;
 		if (InAnyVehicle)
 		{
@@ -583,7 +583,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		}
 
 
-		//Wanted Level
+		// Wanted Level
 		std::ostringstream WantedLevel;
 		int PlayerWantedLevel = PLAYER::GET_PLAYER_WANTED_LEVEL(PlayerID);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Wanted Level", 9);
@@ -612,7 +612,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(WeaponName, NULL, 10);
 
 
-		//Coords
+		// Coords
 		Vector3 SelectedPlayerPedCoords = GetEntityCoords(SelectedPlayerPed);
 		std::ostringstream CoordX;
 		std::ostringstream CoordY;
@@ -667,7 +667,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(Distance.str(), NULL, NULL, NULL, 1);
 
 
-		//Modded Model
+		// Modded Model
 		Hash SelectedPlayerPedModel = ENTITY::GET_ENTITY_MODEL(SelectedPlayerPed);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Modded Model", NULL, NULL, 2);
 		if (NETWORK::NETWORK_IS_SESSION_STARTED() && SelectedPlayerPedModel != GAMEPLAY::GET_HASH_KEY("mp_m_freemode_01") && SelectedPlayerPedModel != GAMEPLAY::GET_HASH_KEY("mp_f_freemode_01"))
@@ -679,7 +679,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 			Cheat::GUI::AddPlayerInfoBoxTextEntry("No", NULL, NULL, NULL, 2);
 		}
 
-		//Is in interior
+		// Is in interior
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("In Interior", NULL, NULL, 3);
 		if (Cheat::GameFunctions::IsEntityInInterior(SelectedPlayerPed))
 		{
@@ -690,7 +690,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 			Cheat::GUI::AddPlayerInfoBoxTextEntry("No", NULL, NULL, NULL, 3);
 		}
 
-		//Cutscene
+		// Cutscene
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Cutscene", NULL, NULL, 4);
 		if (NETWORK::IS_PLAYER_IN_CUTSCENE(PlayerID))
 		{
@@ -701,14 +701,22 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 			Cheat::GUI::AddPlayerInfoBoxTextEntry("No", NULL, NULL, NULL, 4);
 		}
 
-		//Rockstar ID
+		// Rockstar ID
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Rockstar ID", NULL, NULL, 5);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(std::to_string(Cheat::GameFunctions::ReturnPlayerRockstarID(PlayerID)), NULL, NULL, NULL, 5);
 
-		//IP Address
-		std::string PlayerIPString = Cheat::GameFunctions::ReturnPlayerIPAddressAsString(PlayerID);
-		Cheat::GUI::AddPlayerInfoBoxTextEntry("IP Address", NULL, NULL, 6);
-		Cheat::GUI::AddPlayerInfoBoxTextEntry(PlayerIPString, NULL, NULL, NULL, 6);
+		// IP Addresses
+		std::string ExternalIP, InternalIP;
+		Cheat::GameFunctions::ReturnPlayerIPAddresses(PlayerID, ExternalIP, InternalIP);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("External IP Addr.", NULL, NULL, 6);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(ExternalIP, NULL, NULL, NULL, 6);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Internal IP Addr.", NULL, NULL, 7);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(InternalIP, NULL, NULL, NULL, 7);
+
+		// Kill/Death Ratio
+		float KDRatio = globalHandle(1853131).At(PlayerID, 888).At(205).At(26).As<float>();
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("K/D", NULL, NULL, 8);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(std::to_string(KDRatio), NULL, NULL, NULL, 8);
 	}
 }
 
@@ -1100,21 +1108,34 @@ int Cheat::GameFunctions::ReturnPlayerRockstarID(Player PlayerHandle)
 	return CheatFunctions::StringToInt(RockstarIDBuffer);
 }
 
-std::string Cheat::GameFunctions::ReturnPlayerIPAddressAsString(Player PlayerHandle)
+void Cheat::GameFunctions::ReturnPlayerIPAddresses(Player PlayerHandle, std::string& ExternalIP, std::string& InternalIP)
 {
-	char IPBuffer[256];
+	char ExternalIPBuffer[256], InternalIPBuffer[256];
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
-		if (PlayerHandle == GameFunctions::PlayerID && CheatFeatures::HideOwnIPAddress) { sprintf_s(IPBuffer, "Hidden"); }
-		auto InfoLong	 = *reinterpret_cast<std::uintptr_t*>(GameHooking::get_player_address(PlayerHandle) + OFFSET_PLAYER_INFO);
-		auto IPAddress   = reinterpret_cast<std::uint8_t*>(InfoLong + OFFSET_PLAYER_INFO_EXTERNAL_IP);
-		IPAddress ? sprintf_s(IPBuffer, "%i.%i.%i.%i", IPAddress[3], IPAddress[2], IPAddress[1], IPAddress[0]) : sprintf_s(IPBuffer, "Unknown");
+		if (PlayerHandle == GameFunctions::PlayerID && CheatFeatures::HideOwnIPAddress) 
+		{ 
+			sprintf_s(ExternalIPBuffer, "Hidden"); 
+			sprintf_s(InternalIPBuffer, "Hidden"); 
+		}
+		else
+		{
+			uintptr_t PlayerInfoPointer = *reinterpret_cast<std::uintptr_t*>(GameHooking::get_player_address(PlayerHandle) + OFFSET_PLAYER_INFO);
+
+			uint8_t* ExternalIPAddress = reinterpret_cast<std::uint8_t*>(PlayerInfoPointer + OFFSET_PLAYER_INFO_EXTERNAL_IP);
+			uint8_t* InternalIPAddress = reinterpret_cast<std::uint8_t*>(PlayerInfoPointer + OFFSET_PLAYER_INFO_INTERNAL_IP);
+
+			ExternalIPAddress ? sprintf_s(ExternalIPBuffer, "%i.%i.%i.%i", ExternalIPAddress[3], ExternalIPAddress[2], ExternalIPAddress[1], ExternalIPAddress[0]) : sprintf_s(ExternalIPBuffer, "Unknown");
+			InternalIPAddress ? sprintf_s(InternalIPBuffer, "%i.%i.%i.%i", InternalIPBuffer[3], InternalIPBuffer[2], InternalIPBuffer[1], InternalIPBuffer[0]) : sprintf_s(InternalIPBuffer, "Unknown");
+		}	
 	}
 	else
 	{
-		sprintf_s(IPBuffer, "Unavailable");
+		sprintf_s(ExternalIPBuffer, "Unavailable");
+		sprintf_s(InternalIPBuffer, "Unavailable");
 	}
-	return IPBuffer;
+	ExternalIP = ExternalIPBuffer;
+	InternalIP = InternalIPBuffer;
 }
 
 std::string Cheat::GameFunctions::ReturnCurrentGTAOCharacter(bool NumberOnly)

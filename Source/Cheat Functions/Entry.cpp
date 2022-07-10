@@ -16,7 +16,7 @@ DWORD WINAPI InitializationThread(LPVOID lpParam)
 	Logger::Init();
 
 	// Initialize MinHook
-	if (MH_Initialize() != MH_OK) { Cheat::Logger::Error("Failed to initialize MinHook", true); std::exit(EXIT_SUCCESS); }
+	if (MH_Initialize() != MH_OK) { Cheat::Logger::Error("Failed to initialize MinHook", true); std::exit(EXIT_FAILURE); }
 	Logger::DebugMessage("Initialized MinHook");
 
 	// Initialize DirectX hook and ImGui

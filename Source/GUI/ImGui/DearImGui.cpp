@@ -1,5 +1,4 @@
 #include "../Header/Cheat Functions/FiberMain.h"
-#include "../../../Header/GUI/ImGui/Proxy.h"
 #include "../../../Header/GUI/ImGui/DearImGui.h"
 #include <d3d11.h>
 #include <dxgi.h>
@@ -31,7 +30,6 @@ DWORD WINAPI RenderHookThread(HMODULE hmod);
 
 void GUI::DearImGui::Init()
 {
-	Proxy_Attach();
 	CreateThread(nullptr, NULL, (LPTHREAD_START_ROUTINE)RenderHookThread, CheatModuleHandle, NULL, nullptr);
 }
 
@@ -145,7 +143,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 		ImGui::PushStyleColor(ImGuiCol_Border, IM_COL32(0, 0, 0, 0));
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(24, 24, 24, 255));
-		ImGui::Begin("Game & Cheat Information", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse);
+		ImGui::Begin("Game & Cheat Information", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse);
 		ImGui::Text(CursorText.c_str());
 		ImGui::Text(MenuGUIText.c_str());
 		ImGui::Text(LogWindowText.c_str());

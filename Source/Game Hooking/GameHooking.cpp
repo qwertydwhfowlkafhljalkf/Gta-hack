@@ -1,5 +1,4 @@
 #include "../Header/Cheat Functions/FiberMain.h"
-#include "../../Header/GUI/ImGui/Proxy.h"
 #include "../../ThirdParty/kiero/kiero.h"
 
 HANDLE MainFiber;
@@ -97,7 +96,7 @@ __int64 GetChatDataHooked(__int64 a1, __int64 a2, __int64 a3, const char* origTe
 	if (Cheat::CheatFeatures::LogChatMessages)
 	{
 		Cheat::CheatFunctions::WriteToFile(Cheat::CheatFunctions::ReturnChatLogFilePath(), Cheat::CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] Message: ") + (std::string)origText + "\n", true);
-		Cheat::Logger::SendMessageToGameChatLogWindow(Cheat::CheatFunctions::StringToConstChar("Message: " + (std::string)origText));
+		Cheat::Logger::SendMessageToGameChatLogWindow("Message: " + (std::string)origText);
 	}
 	return GetChatDataOriginal(a1, a2, a3, origText, isTeam);
 }
@@ -497,14 +496,10 @@ __int64** GameHooking::getGlobalPtr()
 
 DWORD WINAPI UnloadThread(LPVOID lpParam)
 {
-	ShowWindow(GetConsoleWindow(), SW_HIDE);
-	FreeConsole();
-
 	// Stop threads
 	Cheat::CheatFunctions::SendThreadTerminateSignal = true;
 
 	// Stop DirectX hook
-	Proxy_Detach();
 	kiero::shutdown();
 
 	//Disable MinHook hooks	

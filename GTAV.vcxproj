@@ -100,7 +100,6 @@
     <ClInclude Include="Header\Game Hooking\Types.h" />
     <ClInclude Include="Header\GUI\GUI.h" />
     <ClInclude Include="Header\GUI\ImGui\DearImGui.h" />
-    <ClInclude Include="Header\GUI\ImGui\Proxy.h" />
     <ClInclude Include="Header\GUI\Submenus.h" />
     <ClInclude Include="Header\resource.h" />
     <ClInclude Include="ThirdParty\ImGui\imconfig.h" />
@@ -136,7 +135,6 @@
     <ClCompile Include="Source\GUI\Controls.cpp" />
     <ClCompile Include="Source\GUI\GUI.cpp" />
     <ClCompile Include="Source\GUI\ImGui\DearImGui.cpp" />
-    <ClCompile Include="Source\GUI\ImGui\Proxy.cpp" />
     <ClCompile Include="Source\GUI\Submenus.cpp" />
     <ClCompile Include="Source\GUI\Submenus\About.cpp" />
     <ClCompile Include="Source\GUI\Submenus\AfterHoursDLC.cpp" />
@@ -261,9 +259,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Source\GTAV.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Source\GUI\ImGui\Proxy.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
