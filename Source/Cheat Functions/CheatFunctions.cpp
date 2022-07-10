@@ -2,7 +2,7 @@
 
 std::string Cheat::CheatFunctions::NewCheatVersionString;
 bool Cheat::CheatFunctions::LoadConfigThreadFunctionCompleted = false;
-std::vector <std::string> Cheat::CheatFunctions::LoadedOptionsVector;
+std::vector <std::string> Cheat::CheatFunctions::LoadedSelectablesVector;
 bool Cheat::CheatFunctions::SendThreadTerminateSignal = false;	// This MUST ONLY be set to True when the cheat is unloading
 
 void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
@@ -57,6 +57,11 @@ const std::string Cheat::CheatFunctions::ReturnCustomTeleportLocationsFilePath()
 	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\CustomTeleportLocations.json";
 }
 
+const std::string Cheat::CheatFunctions::ReturnHUDColorsFilePath()
+{
+	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\HUDColors.ini";
+}
+
 const std::string Cheat::CheatFunctions::ReturnThemeFilePath(std::string ThemeName)
 {
 	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes\\" + ThemeName + ".ini";
@@ -104,7 +109,6 @@ void Cheat::CheatFunctions::Loop()
 			GUI::PreviousMenu = nullptr;
 			GUI::MoveMenu(GUI::Submenus::Home);
 			GUI::MoveMenu(GUI::Submenus::Online);
-			GameFunctions::MinimapNotification("~r~Invalid Player ID");
 		}
 	}
 	if (GUI::currentMenu == GUI::Submenus::ThemeFiles)
@@ -201,6 +205,7 @@ void Cheat::CheatFunctions::NonLooped()
 
 	// Load 'multiplayer vehicles in Single Player' bypass
 	globalHandle(GLOBAL_SP_DESPAWN_BYPASS).As<BOOL>() = true;
+	Cheat::Logger::DebugMessage("Loaded single player vehicle spawn bypass");
 
 	// Fetch default HUD colors
 	for (int i = 0; i <= GameArrays::HUDColors.size(); i++)
@@ -209,7 +214,32 @@ void Cheat::CheatFunctions::NonLooped()
 		UI::GET_HUD_COLOUR(i, &data.R, &data.G, &data.B, &data.A);
 		GameArrays::DefaultHUDColors.push_back(data);
 	}
+	Cheat::Logger::DebugMessage("Fetched default HUD colors");
 
+	// Load saved HUD colors
+	if (FileOrDirectoryExists(ReturnHUDColorsFilePath()))
+	{
+		int SavedHUDColorsIndex = 0;
+		for (auto const& HUDColorComponentName : GameArrays::HUDColors)
+		{
+			std::string Red = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "r");
+			std::string Green = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "g");
+			std::string Blue = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "b");
+			std::string Alpha = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "a");
+
+			if (!Red.empty() && !Green.empty() && !Blue.empty() && !Alpha.empty())
+			{
+				try
+				{
+					UI::_SET_HUD_COLOUR(SavedHUDColorsIndex, std::stoi(Red), std::stoi(Green), std::stoi(Blue), std::stoi(Alpha));
+				}
+				catch (...) {}
+				Cheat::Logger::DebugMessage("Loaded HUD color " + HUDColorComponentName);
+			}
+			SavedHUDColorsIndex++;
+		}
+	}
+	
 	// Log POST initialization completion
 	Logger::Message("GTAV Cheat Initialization Completed");
 }
@@ -304,13 +334,13 @@ void Cheat::CheatFunctions::LoadConfig()
 	if (!ActiveThemeSetting.empty()) { GUI::LoadTheme(ActiveThemeSetting, true); }
 
 	// Load Vehicle Spawner Custom License Plate Text
-	std::string VehicleSpawnerCustomLicensePlateText = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_vehicle spawn settings", "Vehicle Spawner Custom License Plate Text");
+	std::string VehicleSpawnerCustomLicensePlateText = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_vehicle spawn settings", "Custom License Plate Text");
 	if (!VehicleSpawnerCustomLicensePlateText.empty()) { CheatFeatures::VehicleSpawnerCustomLicensePlateTextString = VehicleSpawnerCustomLicensePlateText; }
 }
 
-bool Cheat::CheatFunctions::IsOptionRegisteredAsLoaded(std::string OptionName)
+bool Cheat::CheatFunctions::IsSelectableRegisteredAsLoaded(std::string OptionName)
 {
-	for (auto const& i : LoadedOptionsVector)
+	for (auto const& i : LoadedSelectablesVector)
 	{
 		if (i == OptionName)
 		{

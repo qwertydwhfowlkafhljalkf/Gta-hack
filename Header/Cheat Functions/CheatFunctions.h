@@ -7,17 +7,18 @@ namespace Cheat
 		extern bool SendThreadTerminateSignal;
 		extern std::string NewCheatVersionString;
 		extern bool LoadConfigThreadFunctionCompleted;
-		extern std::vector <std::string> LoadedOptionsVector;
+		extern std::vector <std::string> LoadedSelectablesVector;
 		const std::string ReturnConfigFilePath();
 		const std::string ReturnMainLogFilePath();
 		const std::string ReturnChatLogFilePath();
+		const std::string ReturnHUDColorsFilePath();
 		const std::string ReturnCustomTeleportLocationsFilePath();
 		const std::string ReturnThemeFilePath(std::string ThemeName);
 		void LoadConfig();
-		bool IsOptionRegisteredAsLoaded(std::string OptionName);
+		bool IsSelectableRegisteredAsLoaded(std::string OptionName);
 		template<typename T> void LoadConfigOption(std::string OptionName, T& ReturnedVariable)
 		{
-			if (!CheatFunctions::IsOptionRegisteredAsLoaded(OptionName))
+			if (!CheatFunctions::IsSelectableRegisteredAsLoaded(OptionName))
 			{
 				std::string TypeName = typeid(ReturnedVariable).name();
 
@@ -27,9 +28,9 @@ namespace Cheat
 					if (!ConfigFileValue.empty())
 					{
 						ReturnedVariable = CheatFunctions::StringToBool(CheatFunctions::GetSelectableValueFromConfig(OptionName));
-						Cheat::Logger::DebugMessage("Loaded savable option (Boolean) '" + OptionName + "'");
+						Cheat::Logger::DebugMessage("Loaded savable selectable (Boolean) '" + OptionName + "'");
 					}
-					LoadedOptionsVector.push_back(OptionName);
+					LoadedSelectablesVector.push_back(OptionName);
 				}
 				else if (TypeName == "int")
 				{
@@ -37,9 +38,9 @@ namespace Cheat
 					if (!ConfigFileValue.empty())
 					{
 						ReturnedVariable = CheatFunctions::StringToInt(CheatFunctions::GetSelectableValueFromConfig(OptionName));
-						Cheat::Logger::DebugMessage("Loaded savable option (Integer) '" + OptionName + "'");
+						Cheat::Logger::DebugMessage("Loaded savable selectable (Integer) '" + OptionName + "'");
 					}
-					LoadedOptionsVector.push_back(OptionName);
+					LoadedSelectablesVector.push_back(OptionName);
 				}
 				else if (TypeName == "float")
 				{
@@ -47,9 +48,9 @@ namespace Cheat
 					if (!ConfigFileValue.empty())
 					{
 						ReturnedVariable = std::stof(CheatFunctions::GetSelectableValueFromConfig(OptionName));
-						Cheat::Logger::DebugMessage("Loaded savable option (Float) '" + OptionName + "'");
+						Cheat::Logger::DebugMessage("Loaded savable selectable (Float) '" + OptionName + "'");
 					}
-					LoadedOptionsVector.push_back(OptionName);
+					LoadedSelectablesVector.push_back(OptionName);
 				}
 			}
 		}

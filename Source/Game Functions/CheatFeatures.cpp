@@ -614,6 +614,10 @@ void Cheat::CheatFeatures::FreeCam(bool toggle)
 
 	if (toggle)
 	{
+		if (CAM::GET_FOLLOW_PED_CAM_VIEW_MODE() == PedCamViewModes::FirstPerson)
+		{
+			CAM::SET_FOLLOW_PED_CAM_VIEW_MODE(PedCamViewModes::ThirdPersonMedium);
+		}
 		FreeCamFeaturedUsed = true;
 		if (!CAM::DOES_CAM_EXIST(FreeCamHandle))
 		{

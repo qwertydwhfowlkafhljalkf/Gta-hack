@@ -147,7 +147,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		ImGui::Text(CursorText.c_str());
 		ImGui::Text(MenuGUIText.c_str());
 		ImGui::Text(LogWindowText.c_str());
-		ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - ImGui::GetWindowWidth(), io.DisplaySize.y - ImGui::GetWindowHeight()));
+		ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - ImGui::GetWindowWidth(), io.DisplaySize.y - ImGui::GetWindowHeight() - 30.f));
 		ImGui::PopStyleColor();
 		ImGui::End();
 	}
