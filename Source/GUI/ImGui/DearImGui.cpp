@@ -118,6 +118,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	colors[ImGuiCol_ResizeGripHovered] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 	colors[ImGuiCol_ResizeGrip] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 	colors[ImGuiCol_ResizeGripActive] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
+	colors[ImGuiCol_CheckMark] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 
 	// Windows
 	Logger::CheatWindow();
@@ -147,7 +148,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		ImGui::Text(CursorText.c_str());
 		ImGui::Text(MenuGUIText.c_str());
 		ImGui::Text(LogWindowText.c_str());
-		ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - ImGui::GetWindowWidth() - 10.f, io.DisplaySize.y - ImGui::GetWindowHeight() - 50.f));
+		ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - ImGui::GetWindowWidth() - 20.f, io.DisplaySize.y - ImGui::GetWindowHeight() - 50.f));
 		ImGui::PopStyleColor();
 		ImGui::End();
 	}

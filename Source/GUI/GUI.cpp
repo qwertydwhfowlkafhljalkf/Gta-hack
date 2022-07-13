@@ -8,13 +8,13 @@ const float GUI::SelectableInfoBoxX_Default	= 0.50f;
 const float GUI::SelectableInfoBoxY_Default	= 0.840f;
 float GUI::guiX					= 0.11f;
 float GUI::guiY					= 0.30f;
-float GUI::guiWidth				= 0.21f; //Do not use (scalling not properly implemented yet)
+float GUI::guiWidth				= 0.21f; // Do not use (scalling not properly implemented yet)
 float GUI::SelectableInfoBoxX	= 0.50f;
-float GUI::SelectableInfoBoxY	= 0.840f;
+float GUI::SelectableInfoBoxY	= 0.850f;
 float GUI::SelectableHeight		= 0.040f;
 bool GUI::ShowHeaderBackground	= true;
 bool GUI::ShowHeaderTexture		= true;
-bool GUI::HideGUIElements		= false; //Prevents all GUI elements from being visible when True
+bool GUI::HideGUIElements		= false; // Prevents all (but ImGui) GUI elements from being visible when True
 bool GUI::CheatGUIHasBeenOpened	= false;
 bool GUI::CurrentOptionIsSavable	= false;
 bool GUI::RestorePreviousSubmenu = true;
@@ -23,10 +23,10 @@ std::string GUI::CurrentTheme;
 std::string GUI::CurrentSubmenu;
 int GUI::maxVisOptions			= 10;
 int GUI::currentOption			= 0;
-int GUI::currentOptionVisible   = 0;	//This has GUI::Break excluded
+int GUI::currentOptionVisible   = 0;	// This has GUI::Break excluded
 int GUI::previousOption			= 0;
 int GUI::optionCount			= 0;
-int GUI::optionCountVisible		= 0;	//This has GUI::Break excluded
+int GUI::optionCountVisible		= 0;	// This has GUI::Break excluded
 int GUI::TotalOptionsCount		= 0;
 int GUI::menuLevel				= 0;
 void* GUI::PreviousMenu			= nullptr;
@@ -104,13 +104,16 @@ bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
 	}
 	if (OnCurrent)
 	{
-		//Selectable Information Box
+		// Selectable Information Box
 		if (!CheatFeatures::HideSelectableInformationBox && !(BitFlags & SELECTABLE_HIDE_INFO_BOX))
 		{
-			DrawRectInGame({ GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY + 0.042f }, { 0.25f, 0.004f });		
+			DrawRectInGame({ GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY + 0.042f }, { 0.25f, 0.004f });
+			DrawRectInGame({ GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY - 0.042f }, { 0.25f, 0.004f });
+			DrawRectInGame({ GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 210 }, { SelectableInfoBoxX - 0.126f, SelectableInfoBoxY }, { 0.002f, 0.088f });
+			DrawRectInGame({ GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b, 210 }, { SelectableInfoBoxX + 0.126f, SelectableInfoBoxY }, { 0.002f, 0.088f });
 			DrawRectInGame({ 0, 0, 0, 210 }, { SelectableInfoBoxX, SelectableInfoBoxY }, { 0.25f, 0.080f });
 			DrawTextInGame(SelectableInformationText != "" ? CheatFunctions::TextWrap(SelectableInformationText, 30) : option, TextColorAndFont, { SelectableInfoBoxX - 0.12f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false);
-			if (GUI::CurrentOptionIsSavable) { DrawTextInGame("Save Option: " + CheatFunctions::VirtualKeyCodeToString(Controls::SaveSelectableKey), TextColorAndFont, { SelectableInfoBoxX + 0.04f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false); }
+			if (GUI::CurrentOptionIsSavable) { DrawTextInGame("Save: " + CheatFunctions::VirtualKeyCodeToString(Controls::SaveSelectableKey), TextColorAndFont, { SelectableInfoBoxX + 0.04f, SelectableInfoBoxY - 0.033f }, { 0.30f, 0.30f }, false); }
 		}
 		
 		GUI::currentOptionVisible = GUI::optionCount - (GUI::optionCount - GUI::optionCountVisible);

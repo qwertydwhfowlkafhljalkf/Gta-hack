@@ -234,7 +234,7 @@ void Cheat::CheatFunctions::NonLooped()
 					UI::_SET_HUD_COLOUR(SavedHUDColorsIndex, std::stoi(Red), std::stoi(Green), std::stoi(Blue), std::stoi(Alpha));
 				}
 				catch (...) {}
-				Cheat::Logger::DebugMessage("Loaded HUD color " + HUDColorComponentName);
+				Cheat::Logger::DebugMessage("Loaded custom HUD color " + HUDColorComponentName);
 			}
 			SavedHUDColorsIndex++;
 		}

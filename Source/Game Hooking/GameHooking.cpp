@@ -405,32 +405,35 @@ void GameHooking::Initialize()
 		}
 		Sleep(100);
 	}
-	Cheat::Logger::Message("Game Completed Loading");
+	if (WaitingGameLoadLogPrinted)
+	{
+		Cheat::Logger::Message("Game completed loading");
+	}
 
 	// Hook Game Functions
 	Cheat::Logger::DebugMessage("Hook 'GET_EVENT_DATA'");
 	auto status = MH_CreateHook(GameHooking::get_event_data, GetEventDataHooked, (void**)&GetEventDataOriginal);
-	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::get_event_data) != MH_OK) { Cheat::Logger::Error("Failed to hook GET_EVENT_DATA", true);  std::exit(EXIT_SUCCESS); }
+	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::get_event_data) != MH_OK) { Cheat::Logger::Error("Failed to hook GET_EVENT_DATA", true);  std::exit(EXIT_FAILURE); }
 	HookedFunctions.push_back(GameHooking::get_event_data);
 
 	Cheat::Logger::DebugMessage("Hook 'GET_SCRIPT_HANDLER_IF_NETWORKED'");
 	status = MH_CreateHook(GameHooking::get_script_handler_if_networked, GetScriptHandlerIfNetworkedHooked, (void**)&GetScriptHandlerIfNetworkedOriginal);
-	if (status != MH_OK || MH_EnableHook(GameHooking::get_script_handler_if_networked) != MH_OK) { Cheat::Logger::Error("Failed to hook GET_SCRIPT_HANDLER_IF_NETWORKED", true);  std::exit(EXIT_SUCCESS); }
+	if (status != MH_OK || MH_EnableHook(GameHooking::get_script_handler_if_networked) != MH_OK) { Cheat::Logger::Error("Failed to hook GET_SCRIPT_HANDLER_IF_NETWORKED", true);  std::exit(EXIT_FAILURE); }
 	HookedFunctions.push_back(GameHooking::get_script_handler_if_networked);
 
 	Cheat::Logger::DebugMessage("Hook 'GET_LABEL_TEXT'");
 	status = MH_CreateHook(GameHooking::get_label_text, GetLabelTextHooked, (void**)&GetLabelTextOriginal);
-	if (status != MH_OK || MH_EnableHook(GameHooking::get_label_text) != MH_OK) { Cheat::Logger::Error("Failed to hook GET_LABEL_TEXT", true);  std::exit(EXIT_SUCCESS); }
+	if (status != MH_OK || MH_EnableHook(GameHooking::get_label_text) != MH_OK) { Cheat::Logger::Error("Failed to hook GET_LABEL_TEXT", true);  std::exit(EXIT_FAILURE); }
 	HookedFunctions.push_back(GameHooking::get_label_text);
 
 	Cheat::Logger::DebugMessage("Hook 'GET_CHAT_DATA'");
 	status = MH_CreateHook(GameHooking::get_chat_data, GetChatDataHooked, (void**)&GetChatDataOriginal);
-	if (status != MH_OK || MH_EnableHook(GameHooking::get_chat_data) != MH_OK) { Cheat::Logger::Error("Failed to hook GET_CHAT_DATA", true);  std::exit(EXIT_SUCCESS); }
+	if (status != MH_OK || MH_EnableHook(GameHooking::get_chat_data) != MH_OK) { Cheat::Logger::Error("Failed to hook GET_CHAT_DATA", true);  std::exit(EXIT_FAILURE); }
 	HookedFunctions.push_back(GameHooking::get_chat_data);
 
 	Cheat::Logger::DebugMessage("Hook 'IS_DLC_PRESENT'");
 	status = MH_CreateHook(GameHooking::is_dlc_present, IsDLCPresentHooked, (void**)&IsDLCPresentOriginal);
-	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::is_dlc_present) != MH_OK) { Cheat::Logger::Error("Failed to hook IS_DLC_PRESENT", true);  std::exit(EXIT_SUCCESS); }
+	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::is_dlc_present) != MH_OK) { Cheat::Logger::Error("Failed to hook IS_DLC_PRESENT", true);  std::exit(EXIT_FAILURE); }
 	HookedFunctions.push_back(GameHooking::is_dlc_present);
 }
 
@@ -502,8 +505,8 @@ DWORD WINAPI UnloadThread(LPVOID lpParam)
 	// Stop DirectX hook - TODO; remove the hooks and unload ImGui
 	kiero::shutdown();
 
-	//Disable MinHook hooks	
-	MH_DisableHook(MH_ALL_HOOKS);
+	// Disable MinHook hooks
+	MH_DisableHook(MH_ALL_HOOKS); // TODO; remove all hooks, don't just disable them
 	MH_Uninitialize();
 
 	// Unitializing Logger

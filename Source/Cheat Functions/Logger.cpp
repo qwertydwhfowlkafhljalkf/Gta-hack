@@ -15,7 +15,7 @@ void Cheat::Logger::Init()
     MainLoggerObject.AddLog("Build: %s\n", CHEAT_BUILD_NUMBER);
 
     // Write spacing to logfile
-    CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), "\n\n\n", true);
+    CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), "\n", true);
 
     // Write text
     CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), MessageString, true);
