@@ -12,13 +12,13 @@ void Cheat::Logger::Init()
     std::string MessageString = "Build: " + (std::string)CHEAT_BUILD_NUMBER + " | Compile Date & Time: " + __DATE__ + " " + __TIME__ +
         Cheat::CheatFunctions::ReturnDateTimeFormatAsString(" | Load Date & Time: %b %e %Y %H:%M:%S")
         + "\nGitHub Repository: HatchesPls/GrandTheftAutoV-Cheat\n";
-    MainLoggerObject.AddLog(CheatFunctions::StringToConstChar(MessageString));
+    MainLoggerObject.AddLog("Build: %s\n", CHEAT_BUILD_NUMBER);
 
-    //Write divider line to logfile
-    CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), "\n------------------------------------------------------------------------------------------------------------------------------------------------------", true);
+    // Write spacing to logfile
+    CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), "\n\n\n", true);
 
-    //Write text
-    CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), "\n" + MessageString, true);
+    // Write text
+    CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), MessageString, true);
 
     LoggerInitialized = true;
 }
@@ -35,9 +35,9 @@ void Cheat::Logger::Message(std::string Message)
 {
     if (LoggerInitialized)
     {
-        std::string MessageString = CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S]") + " [Info] " + Message + "\n";
+        std::string MessageString = "[INFO] " + Message + "\n";
         MainLoggerObject.AddLog(CheatFunctions::StringToConstChar(MessageString));
-        CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), MessageString, true);
+        CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] ") + MessageString, true);
     }
 }
 
@@ -45,7 +45,7 @@ void Cheat::Logger::MessageCustomCategory(std::string CategoryName, std::string 
 {
     if (LoggerInitialized)
     {
-        std::string MessageString = CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S]") + " [" + CategoryName + "] " + Message + "\n";
+        std::string MessageString = " [" + CategoryName + "] " + Message + "\n";
         MainLoggerObject.AddLog(CheatFunctions::StringToConstChar(MessageString));
     }
 }
@@ -54,9 +54,9 @@ void Cheat::Logger::DebugMessage(std::string Message)
 {
     if (LoggerInitialized)
     {
-        std::string MessageString = CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S]") + " [Debug] " + Message + "\n";
+        std::string MessageString = "[DBG] " + Message + "\n";
         MainLoggerObject.AddLog(CheatFunctions::StringToConstChar(MessageString));
-        CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), MessageString, true);
+        CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] ") + MessageString, true);
     }
 }
 
@@ -64,9 +64,9 @@ void Cheat::Logger::Error(char* Message, bool ShowMessageBox)
 {
     if (LoggerInitialized)
     {
-        std::string MessageString = CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S]") + " [Error] " + Message + "\n";
+        std::string MessageString = "[ERR] " + (std::string)Message + "\n";
         MainLoggerObject.AddLog(CheatFunctions::StringToConstChar(MessageString));
-        CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), MessageString, true);
+        CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] ") + MessageString, true);
 
         if (ShowMessageBox)
         {

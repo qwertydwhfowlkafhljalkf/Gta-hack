@@ -499,7 +499,7 @@ DWORD WINAPI UnloadThread(LPVOID lpParam)
 	// Stop threads
 	Cheat::CheatFunctions::SendThreadTerminateSignal = true;
 
-	// Stop DirectX hook
+	// Stop DirectX hook - TODO; remove the hooks and unload ImGui
 	kiero::shutdown();
 
 	//Disable MinHook hooks	

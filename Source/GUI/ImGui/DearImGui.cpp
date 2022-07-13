@@ -110,8 +110,8 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	ImVec4* colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_TitleBg] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 	colors[ImGuiCol_TitleBgActive] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
-	colors[ImGuiCol_Border] = ImColor(105, 105, 105);
-	colors[ImGuiCol_Border] = ImColor(105, 105, 105);
+	colors[ImGuiCol_Border] = ImColor(0, 0, 0, 0);
+	colors[ImGuiCol_BorderShadow] = ImColor(0, 0, 0, 0);
 	colors[ImGuiCol_Button] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 	colors[ImGuiCol_ButtonHovered] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 	colors[ImGuiCol_ButtonActive] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
@@ -147,7 +147,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		ImGui::Text(CursorText.c_str());
 		ImGui::Text(MenuGUIText.c_str());
 		ImGui::Text(LogWindowText.c_str());
-		ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - ImGui::GetWindowWidth(), io.DisplaySize.y - ImGui::GetWindowHeight() - 30.f));
+		ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - ImGui::GetWindowWidth() - 10.f, io.DisplaySize.y - ImGui::GetWindowHeight() - 50.f));
 		ImGui::PopStyleColor();
 		ImGui::End();
 	}
