@@ -89,7 +89,7 @@ void Cheat::Logger::CheatWindow()
     if (CheatWindowVisible)
     {
         ImGui::Begin("Cheat Log", &CheatWindowVisible, ImGuiWindowFlags_NoCollapse);
-        if (CheatFunctions::LoadConfigThreadFunctionCompleted && !CheatWindowClosedAtInit)
+        if (CheatFunctions::CheatInitEntirelyCompleted && !CheatWindowClosedAtInit)
         {
             CheatWindowVisible = false;
             CheatWindowClosedAtInit = true;

@@ -38,42 +38,18 @@ bool Cheat::CheatFeatures::AllPlayersExclusionsSelf = true;
 bool Cheat::CheatFeatures::AllPlayersExclusionsFriends = false;
 bool Cheat::CheatFeatures::AllPlayersExclusionsHost = false;
 
-bool LoadConfigInstructionalButtonInitialized;
-int LoadConfigInstructionalButtonHandle;
 void Cheat::CheatFeatures::Loop()
 {
 	GameFunctions::PlayerID = PLAYER::PLAYER_ID();
 	GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
 
 	// POST initialization notification
-	if (CheatFunctions::LoadConfigThreadFunctionCompleted && !GUI::CheatGUIHasBeenOpened)
+	if (CheatFunctions::CheatInitEntirelyCompleted && !GUI::CheatGUIHasBeenOpened)
 	{
-		GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&LoadConfigInstructionalButtonHandle);
 		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to open cheat GUI";
 		std::string WelcomeText = "Welcome " + (std::string)SOCIALCLUB::_SC_GET_NICKNAME() + ", have fun!";
 		GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(WelcomeText), "Textures", "AdvancedNotificationImage", false, 4, "GTAV Cheat", "", 0.3f, "");
 		UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
-	}
-	else if (!CheatFunctions::LoadConfigThreadFunctionCompleted)
-	{
-		if (!LoadConfigInstructionalButtonInitialized)
-		{
-			LoadConfigInstructionalButtonHandle = GRAPHICS::REQUEST_SCALEFORM_MOVIE("INSTRUCTIONAL_BUTTONS");
-			while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(LoadConfigInstructionalButtonHandle)) { GameHooking::PauseMainFiber(0, false); }
-
-			GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(LoadConfigInstructionalButtonHandle, "SET_DATA_SLOT");
-			GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(0);
-			GRAPHICS::_ADD_SCALEFORM_MOVIE_METHOD_PARAMETER_INT(50);
-			GRAPHICS::BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
-			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Loading configuration file, one moment please");
-			GRAPHICS::END_TEXT_COMMAND_SCALEFORM_STRING();
-			GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
-
-			GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(LoadConfigInstructionalButtonHandle, "DRAW_INSTRUCTIONAL_BUTTONS");
-			GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
-			LoadConfigInstructionalButtonInitialized = true;
-		}
-		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(LoadConfigInstructionalButtonHandle, 255, 255, 255, 255, 0);
 	}
 	GameFunctions::InGameKeyboardWindowTitle.clear();
 

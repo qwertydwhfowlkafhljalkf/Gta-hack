@@ -1,7 +1,8 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
 std::string Cheat::CheatFunctions::NewCheatVersionString;
-bool Cheat::CheatFunctions::LoadConfigThreadFunctionCompleted = false;
+bool Cheat::CheatFunctions::CheatInitCompleted = false; // Set to True when everything in regards to initialization except for post init task(s) is done (such as loading config file)
+bool Cheat::CheatFunctions::CheatInitEntirelyCompleted = false; // Set to True when all init work is done and the cheat is ready to be used
 std::vector <std::string> Cheat::CheatFunctions::LoadedSelectablesVector;
 bool Cheat::CheatFunctions::SendThreadTerminateSignal = false;	// This MUST ONLY be set to True when the cheat is unloading
 
@@ -234,14 +235,15 @@ void Cheat::CheatFunctions::NonLooped()
 					UI::_SET_HUD_COLOUR(SavedHUDColorsIndex, std::stoi(Red), std::stoi(Green), std::stoi(Blue), std::stoi(Alpha));
 				}
 				catch (...) {}
-				Cheat::Logger::DebugMessage("Loaded custom HUD color " + HUDColorComponentName);
+				Cheat::Logger::DebugMessage("Loaded custom HUD color '" + HUDColorComponentName + "'");
 			}
 			SavedHUDColorsIndex++;
 		}
 	}
 	
-	// Log POST initialization completion
-	Logger::Message("GTAV Cheat Initialization Completed");
+	// Cheat init completed
+	CheatFunctions::CheatInitCompleted = true;
+	Logger::DebugMessage("Cheat init completed");
 }
 
 bool Cheat::CheatFunctions::IsGameWindowFocussed()
@@ -310,7 +312,7 @@ void LoadConfigThreadFunction()
 	Cheat::GUI::PreviousMenu = nullptr;
 	Cheat::Controls::ChangeControlsState(true);
 	Cheat::GUI::HideGUIElements = false;
-	Cheat::CheatFunctions::LoadConfigThreadFunctionCompleted = true;
+	Cheat::CheatFunctions::CheatInitEntirelyCompleted = true;
 }
 
 void Cheat::CheatFunctions::LoadConfig()

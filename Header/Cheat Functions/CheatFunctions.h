@@ -6,7 +6,8 @@ namespace Cheat
 	{
 		extern bool SendThreadTerminateSignal;
 		extern std::string NewCheatVersionString;
-		extern bool LoadConfigThreadFunctionCompleted;
+		extern bool CheatInitCompleted;
+		extern bool CheatInitEntirelyCompleted;
 		extern std::vector <std::string> LoadedSelectablesVector;
 		const std::string ReturnConfigFilePath();
 		const std::string ReturnMainLogFilePath();

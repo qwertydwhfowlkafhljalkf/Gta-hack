@@ -3,7 +3,7 @@
 using namespace Cheat;
 void GUI::Submenus::RecoverySubmenuWarning()
 {
-	if (CheatFunctions::LoadConfigThreadFunctionCompleted)
+	if (CheatFunctions::CheatInitEntirelyCompleted)
 	{
 		if (GameFunctions::ShowFullScreenMessage("Using features located within this submenu~n~could result in an account ban"))
 		{

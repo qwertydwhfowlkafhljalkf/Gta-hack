@@ -124,8 +124,19 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	Logger::CheatWindow();
 	Logger::GameChatWindow();
 
+	// Config file loading menu
+	if (!CheatFunctions::CheatInitEntirelyCompleted && CheatFunctions::CheatInitCompleted)
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
+		ImGui::Begin("ConfigFileLoadingMenu", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove);
+		ImGui::Text("Loading configuration file, one moment please %c", "|/-\\"[(int)(ImGui::GetTime() / 0.05f) & 3]); //TODO; add a better-looking spinner/progress indicator
+		ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - ImGui::GetWindowWidth() - 4.f, io.DisplaySize.y - ImGui::GetWindowHeight() - 4.f));
+		ImGui::End();
+		ImGui::PopStyleVar();
+	}
+	
 	// On-screen Game & Cheat Info
-	if (!CheatFeatures::HideOnScreenGameAndCheatInfo && CheatFunctions::LoadConfigThreadFunctionCompleted)
+	if (!CheatFeatures::HideOnScreenGameAndCheatInfo && CheatFunctions::CheatInitEntirelyCompleted)
 	{
 		// Cursor navigation
 		std::string CursurNavigation = "Cursor navigation is ";
@@ -149,8 +160,8 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		ImGui::Text(MenuGUIText.c_str());
 		ImGui::Text(LogWindowText.c_str());
 		ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - ImGui::GetWindowWidth() - 20.f, io.DisplaySize.y - ImGui::GetWindowHeight() - 50.f));
-		ImGui::PopStyleColor();
 		ImGui::End();
+		ImGui::PopStyleColor(2);
 	}
 
 	/* 
