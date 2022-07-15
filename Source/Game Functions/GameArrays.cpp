@@ -1,6 +1,6 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
-//https://wiki.rage.mp/index.php?title=Weapons
+// https://wiki.rage.mp/index.php?title=Weapons
 const std::vector<WeaponHashesStruct> Cheat::GameArrays::WeaponsHashList = {
 	{ "Knife", 0x99B507EA					}, //WeaponKnife
 	{ "Nightstick", 0x678B81B1				}, //WeaponNightstick

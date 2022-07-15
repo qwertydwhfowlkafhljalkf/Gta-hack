@@ -48,9 +48,9 @@ GetLabelText GetLabelTextOriginal = nullptr;
 std::string Cheat::GameFunctions::InGameHelpTextMessage;
 const char* GetLabelTextHooked(void* this_, const char* label)
 {
-	if (std::strcmp(label, "HUD_MPREENTER") == 0)	{ return "Joining a New GTA Online Session With GTAV Cheat"; }
-	if (std::strcmp(label, "HUD_JOINING") == 0)		{ return "Loading GTA Online With GTAV Cheat"; }
-	if (std::strcmp(label, "HUD_QUITTING") == 0)	{ return "Leaving GTA Online With GTAV Cheat"; }
+	if (std::strcmp(label, "HUD_MPREENTER") == 0)	{ return "Joining a New GTA Online Session with GTAV Cheat"; }
+	if (std::strcmp(label, "HUD_JOINING") == 0)		{ return "Loading GTA Online with GTAV Cheat"; }
+	if (std::strcmp(label, "HUD_QUITTING") == 0)	{ return "Leaving GTA Online with GTAV Cheat"; }
 	if (std::strcmp(label, "PM_QUIT_MP") == 0)		{ return "Leave GTA Online with GTAV Cheat"; }
 	if (std::strcmp(label, "PM_ENTER_MP") == 0)		{ return "Join GTA Online with GTAV Cheat"; }
 	if (std::strcmp(label, "PM_EXIT_GAME") == 0)	{ return "Exit Game with GTAV Cheat"; }
