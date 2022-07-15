@@ -54,7 +54,7 @@
 #include "../Header/Game Hooking/Natives.h"
 #include "../Header/Game Hooking/GameHooking.h"
 #include "../Header/GUI/GUI.h"
-#include "../Header/GUI/Controls.h"
+#include "../Header/Cheat Functions/Controls.h"
 #include "../Header/GUI/Submenus.h"
 #include "../Header/Game Hooking/Types.h"
 #include "../Header/Game Functions/GameArrays.h"

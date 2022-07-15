@@ -46,12 +46,6 @@
     <ClCompile Include="Source\Cheat Functions\Entry.cpp">
       <Filter>Source Files\Cheat Functions</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GUI\Controls.cpp">
-      <Filter>Source Files\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Header\GUI\Controls.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GUI\Submenus\Self.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
@@ -403,6 +397,9 @@
     <ClCompile Include="Source\GUI\ImGui\DearImGui.cpp">
       <Filter>Source Files\GUI\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Cheat Functions\Controls.cpp">
+      <Filter>Source Files\Cheat Functions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\resource.h">
@@ -509,6 +506,9 @@
     </ClInclude>
     <ClInclude Include="Header\GUI\ImGui\DearImGui.h">
       <Filter>Header Files\GUI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Cheat Functions\Controls.h">
+      <Filter>Header Files\Cheat Functions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

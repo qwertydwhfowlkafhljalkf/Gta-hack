@@ -84,6 +84,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Header\Cheat Functions\CheatFunctions.h" />
+    <ClInclude Include="Header\Cheat Functions\Controls.h" />
     <ClInclude Include="Header\Cheat Functions\FiberMain.h" />
     <ClInclude Include="Header\Cheat Functions\Logger.h" />
     <ClInclude Include="Header\Game Functions\CheatFeatures.h" />
@@ -120,8 +121,8 @@
     <ClInclude Include="ThirdParty\MinHook\trampoline.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Header\GUI\Controls.h" />
     <ClCompile Include="Source\Cheat Functions\CheatFunctions.cpp" />
+    <ClCompile Include="Source\Cheat Functions\Controls.cpp" />
     <ClCompile Include="Source\Cheat Functions\Entry.cpp" />
     <ClCompile Include="Source\Cheat Functions\FiberMain.cpp" />
     <ClCompile Include="Source\Cheat Functions\Logger.cpp" />
@@ -132,7 +133,6 @@
     <ClCompile Include="Source\Game Hooking\GameHooking.cpp" />
     <ClCompile Include="Source\Game Hooking\Memory.cpp" />
     <ClCompile Include="Source\Game Hooking\NativeInvoker.cpp" />
-    <ClCompile Include="Source\GUI\Controls.cpp" />
     <ClCompile Include="Source\GUI\GUI.cpp" />
     <ClCompile Include="Source\GUI\ImGui\DearImGui.cpp" />
     <ClCompile Include="Source\GUI\Submenus.cpp" />
