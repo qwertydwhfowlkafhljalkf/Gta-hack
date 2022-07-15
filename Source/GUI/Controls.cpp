@@ -1,15 +1,15 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
-bool Cheat::Controls::ControlsDisabled		= false; //All control inputs are ignored when True
-bool Cheat::Controls::SelectPressed			= false;
-bool Cheat::Controls::LeftPressed			= false;
-bool Cheat::Controls::RightPressed			= false;
+bool Cheat::Controls::ControlsDisabled			= false; //All control inputs are ignored when True
+bool Cheat::Controls::SelectPressed				= false;
+bool Cheat::Controls::LeftPressed				= false;
+bool Cheat::Controls::RightPressed				= false;
 
-int Cheat::Controls::GUIKeyPressDelay		= 150;
-int Cheat::Controls::KeyPressPreviousTick	= GetTickCount64();
-int Cheat::Controls::OpenMenuGUIKey			= VK_F4;
-int Cheat::Controls::CursorNavigationKey	= VK_F5;
-int Cheat::Controls::SaveSelectableKey		= VK_F12;
+int Cheat::Controls::KeyPressDelay = 150;
+int Cheat::Controls::KeyPressDelayPreviousTick	= GetTickCount64();
+int Cheat::Controls::OpenMenuGUIKey				= VK_F4;
+int Cheat::Controls::CursorNavigationKey		= VK_F5;
+int Cheat::Controls::SaveSelectableKey			= VK_F12;
 
 void Cheat::Controls::Loop()
 {
@@ -19,13 +19,22 @@ void Cheat::Controls::Loop()
 		LeftPressed = false;
 		RightPressed = false;
 
-		if (GetTickCount64() - KeyPressPreviousTick > GUIKeyPressDelay)
+		if (GetTickCount64() - KeyPressDelayPreviousTick > KeyPressDelay)
 		{
 			// Enable/Disable Cursor Control
-			if (CheatFunctions::IsKeyCurrentlyPressed(CursorNavigationKey, true)) { GameFunctions::EnableDisableCursorNavigation(); }
+			if (CheatFunctions::IsKeyCurrentlyPressed(CursorNavigationKey)) 
+			{ 
+				GameFunctions::EnableDisableCursorNavigation(); 
+				KeyPressDelayPreviousTick = GetTickCount64();
+			}
 
 			// Logger Window Open/Close
-			if (CheatFunctions::IsKeyCurrentlyPressed(VK_OEM_3, true)) { Logger::CheatWindowVisible = !Logger::CheatWindowVisible; }
+			if (CheatFunctions::IsKeyCurrentlyPressed(VK_OEM_3) ||
+				CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_ENTER_CHEAT_CODE))
+			{
+				Logger::CheatWindowVisible = !Logger::CheatWindowVisible;
+				KeyPressDelayPreviousTick = GetTickCount64();
+			}
 
 			// Menu GUI
 			if (CheatFunctions::IsKeyCurrentlyPressed(OpenMenuGUIKey))
@@ -44,68 +53,68 @@ void Cheat::Controls::Loop()
 					{
 						GUI::MoveMenu(GUI::Submenus::Home);
 					}
-					DoMenuGUIFade(true);	
+					DoMenuGUIFade(true);
 				}
 				else
 				{
 					Cheat::GameFunctions::PlayFrontendSoundDefault("NO");
 					DoMenuGUIFade(false);
 				}
-				KeyPressPreviousTick = GetTickCount64();
+				KeyPressDelayPreviousTick = GetTickCount64();
 			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD0))
+			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD0, true))
 			{
 				if (GUI::menuLevel > 0)
 				{
 					GUI::BackMenu();
 					Cheat::GameFunctions::PlayFrontendSoundDefault("BACK");
 				}
-				KeyPressPreviousTick = GetTickCount64();
+				KeyPressDelayPreviousTick = GetTickCount64();
 			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD8))
+			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD8, true))
 			{
 				GUI::currentOption > 1 ? GUI::currentOption-- : GUI::currentOption = GUI::optionCount;
 				if (GUI::menuLevel > 0)
 				{
 					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 				}
-				KeyPressPreviousTick = GetTickCount64();
+				KeyPressDelayPreviousTick = GetTickCount64();
 			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD2))
+			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD2, true))
 			{
 				GUI::currentOption < GUI::optionCount ? GUI::currentOption++ : GUI::currentOption = 1;
 				if (GUI::menuLevel > 0)
 				{
 					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 				}
-				KeyPressPreviousTick = GetTickCount64();
+				KeyPressDelayPreviousTick = GetTickCount64();
 			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD6))
+			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD6, true))
 			{
 				LeftPressed = true;
 				if (GUI::menuLevel > 0)
 				{
 					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 				}
-				KeyPressPreviousTick = GetTickCount64();
+				KeyPressDelayPreviousTick = GetTickCount64();
 			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD4))
+			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD4, true))
 			{
 				RightPressed = true;
 				if (GUI::menuLevel > 0)
 				{
 					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 				}
-				KeyPressPreviousTick = GetTickCount64();
+				KeyPressDelayPreviousTick = GetTickCount64();
 			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD5))
+			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD5, true))
 			{
 				SelectPressed = true;
 				if (GUI::menuLevel > 0)
 				{
 					Cheat::GameFunctions::PlayFrontendSoundDefault("SELECT");
 				}
-				KeyPressPreviousTick = GetTickCount64();
+				KeyPressDelayPreviousTick = GetTickCount64();
 			}
 		}
 		GUI::optionCount = 0;

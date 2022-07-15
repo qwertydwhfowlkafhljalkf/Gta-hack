@@ -76,7 +76,7 @@ namespace Cheat
 		void WriteBoolToIni(bool b00l, std::string file, std::string app, std::string key);
 		std::string ReturnDateTimeFormatAsString(const char* DateTimeFormat);
 		bool StringToBool(std::string String);
-		bool IsKeyCurrentlyPressed(int vKey, bool PressedOnce = false);
+		bool IsKeyCurrentlyPressed(int vKey, bool RepeatInput = false);
 		void WriteToFile(std::string FilePath, std::string text, bool Append);
 		Json::Value ReturnGithubAPIJsonDataCheat(std::string Build);
 		std::string GetLatestCheatBuildNumber();

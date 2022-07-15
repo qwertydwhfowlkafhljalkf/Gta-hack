@@ -135,7 +135,7 @@ bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
 
 	if (GameFunctions::IsCursorAtXYPosition(RectPosition, { GUI::guiWidth, SelectableHeight }) && CheatFeatures::CursorNavigationState)
 	{
-		if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, INPUT_CURSOR_ACCEPT))
+		if (CONTROLS::IS_DISABLED_CONTROL_JUST_RELEASED(0, INPUT_CURSOR_ACCEPT))
 		{
 			goto SelectAction;
 		}

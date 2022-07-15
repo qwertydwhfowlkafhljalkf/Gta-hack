@@ -42,6 +42,7 @@ namespace Cheat
 		extern bool AllPlayersExclusionsSelf;
 		extern bool AllPlayersExclusionsFriends;
 		extern bool AllPlayersExclusionsHost;
+		extern bool CloseGameImmediatelyBool;
 
 		void Loop();
 		extern bool GodmodeBool;
@@ -94,8 +95,6 @@ namespace Cheat
 		void SuperJump();
 		extern bool ShowFPSBool;
 		void ShowFPS();
-		extern bool CloseGameImmediatelyBool;
-		void CloseGameImmediately();
 		extern bool JumpAroundModeBool;
 		void JumpAroundMode();
 		extern bool VehicleHornBoostBool;

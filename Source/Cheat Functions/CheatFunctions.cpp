@@ -154,7 +154,7 @@ void Cheat::CheatFunctions::Loop()
 			}
 			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX - 0.100f, GUI::guiY - 0.156f }, { 0.060f, 0.025f }))
 			{
-				if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, INPUT_CURSOR_ACCEPT))
+				if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
 				{
 					GUI::BackMenu();
 				}
@@ -451,11 +451,11 @@ bool Cheat::CheatFunctions::StringToBool(std::string String)
 	return false;
 }
 
-bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool PressedOnce)
+bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool RepeatInput)
 {
 	if (IsGameWindowFocussed() && !Controls::ControlsDisabled)
 	{
-		if (PressedOnce)
+		if (!RepeatInput)
 		{
 			if (GetAsyncKeyState(vKey) & 0x0001)
 			{

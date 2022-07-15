@@ -35,11 +35,21 @@ void GUI::DearImGui::Init()
 
 LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	if (CheatFeatures::CursorNavigationState && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam) && !Controls::ControlsDisabled)
+	switch (uMsg)
 	{
-		return true;
+	case WM_CLOSE:
+		if (CheatFeatures::CloseGameImmediatelyBool)
+		{
+			std::exit(EXIT_SUCCESS);
+		}
+		break;
+	default:
+		if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+		{
+			return true;
+		}
+		return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 	}
-	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
 
 HRESULT hkResizeBuffers(IDXGISwapChain* pSwapChain, UINT BufferCount, UINT Width, UINT Height, DXGI_FORMAT NewFormat, UINT SwapChainFlags)
@@ -107,6 +117,18 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	ImGui::NewFrame();
 	ImGuiIO& io = ImGui::GetIO();
 
+	// Show/hide cursor
+	if (!CheatFeatures::CursorNavigationState)
+	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_None);
+		io.ConfigFlags |= ImGuiConfigFlags_NoMouse;
+	}
+	else
+	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
+		io.ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+	}
+
 	ImVec4* colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_TitleBg] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
 	colors[ImGuiCol_TitleBgActive] = ImColor(GUI::PrimaryColor.r, GUI::PrimaryColor.g, GUI::PrimaryColor.b);
@@ -124,12 +146,12 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	Logger::CheatWindow();
 	Logger::GameChatWindow();
 
-	// Config file loading menu
+	// Cheat initialization menu
 	if (!CheatFunctions::CheatInitEntirelyCompleted && CheatFunctions::CheatInitCompleted)
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
-		ImGui::Begin("ConfigFileLoadingMenu", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove);
-		ImGui::Text("Loading configuration file, one moment please %c", "|/-\\"[(int)(ImGui::GetTime() / 0.05f) & 3]); //TODO; add a better-looking spinner/progress indicator
+		ImGui::Begin("CheatInitLoadingMenu", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove);
+		ImGui::Text("GTAV Cheat is loading, one moment please %c", "|/-\\"[(int)(ImGui::GetTime() / 0.05f) & 3]); //TODO; add a better-looking spinner/progress indicator
 		ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - ImGui::GetWindowWidth() - 4.f, io.DisplaySize.y - ImGui::GetWindowHeight() - 4.f));
 		ImGui::End();
 		ImGui::PopStyleVar();

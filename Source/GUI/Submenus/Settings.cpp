@@ -40,7 +40,7 @@ void GUI::Submenus::Settings()
 			GameFunctions::MinimapNotification("Cursor Navigation key has been set");
 		}
 	}
-	GUI::Int("Key Press Delay", Controls::GUIKeyPressDelay, 1, 250, 5, "", SELECTABLE_RETURN_VALUE_CHANGE);
+	GUI::Int("Key Press Delay", Controls::KeyPressDelay, 1, 250, 5, "", SELECTABLE_RETURN_VALUE_CHANGE);
 	GUI::Int("Menu Arrow Animation Delay", GUI::MenuArrowAnimationDelay, 250, 2500, 25, "", SELECTABLE_RETURN_VALUE_CHANGE);
 	GUI::MenuOption("About", Submenus::About);
 }
