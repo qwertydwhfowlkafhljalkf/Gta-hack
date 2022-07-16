@@ -765,15 +765,13 @@ void Cheat::CheatFeatures::NoClip()
 	}
 }
 
-
+int RainbowVehicle_Red = 255, RainbowVehicle_Green, RainbowVehicle_Blue;
 bool Cheat::CheatFeatures::RainbowVehicleBool = false;
 void Cheat::CheatFeatures::RainbowVehicle()
 {
-	int Red = rand() % 256;
-	int Green = rand() % 256;
-	int Blue = rand() % 256;
-	VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), Red, Green, Blue);
-	VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), Red, Green, Blue);
+	GameFunctions::FadeRGB(RainbowVehicle_Red, RainbowVehicle_Green, RainbowVehicle_Blue);
+	VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), RainbowVehicle_Red, RainbowVehicle_Green, RainbowVehicle_Blue);
+	VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), RainbowVehicle_Red, RainbowVehicle_Green, RainbowVehicle_Blue);
 }
 
 bool Cheat::CheatFeatures::EntityInformationGunBool = false;
