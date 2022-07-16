@@ -769,9 +769,9 @@ void Cheat::CheatFeatures::NoClip()
 bool Cheat::CheatFeatures::RainbowVehicleBool = false;
 void Cheat::CheatFeatures::RainbowVehicle()
 {
-	int Red = GameFunctions::ReturnRandomInteger(0, 255);
-	int Green = GameFunctions::ReturnRandomInteger(0, 255);
-	int Blue = GameFunctions::ReturnRandomInteger(0, 255);
+	int Red = rand() % 256;
+	int Green = rand() % 256;
+	int Blue = rand() % 256;
 	VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), Red, Green, Blue);
 	VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), Red, Green, Blue);
 }
@@ -930,7 +930,12 @@ void Cheat::CheatFeatures::TriggerBot()
 bool Cheat::CheatFeatures::SuperBrakesBool = false;
 void Cheat::CheatFeatures::SuperBrakes()
 {
-	if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_VEH_BRAKE)) { VEHICLE::SET_VEHICLE_FORWARD_SPEED(PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0), 0.0f); }
+	Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, false);
+	if ((PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_VEH_BRAKE) && ENTITY::GET_ENTITY_SPEED_VECTOR(vehicle, true).y > 1.f) ||
+		(PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_VEH_ACCELERATE) && ENTITY::GET_ENTITY_SPEED_VECTOR(vehicle, true).y < -1.f))
+	{
+		VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, 0.f);
+	}
 }
 
 bool Cheat::CheatFeatures::TinyPlayerBool = false;

@@ -25,7 +25,6 @@ namespace Cheat
 		Vector3 MultiplyVector(Vector3* vector, float x);
 		float GetDistanceBetweenTwoVectors(Vector3* pointA, Vector3* pointB);
 		void TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicle);
-		int ReturnRandomInteger(int start, int end);
 		float GetDistanceBetweenTwoPoints(Vector3 A, Vector3 B);
 		Vector3 GetEntityCoords(Entity entity);
 		float DegreesToRadians(float degs);

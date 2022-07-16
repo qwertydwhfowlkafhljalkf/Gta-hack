@@ -877,11 +877,3 @@ enum SessionTypes
 	SessionTypeJoinCrew,
 	SessionTypeLeaveOnline = -1
 };
-
-enum PlayerSwitchType
-{
-	SWITCH_TYPE_AUTO,
-	SWITCH_TYPE_LONG,
-	SWITCH_TYPE_MEDIUM,
-	SWITCH_TYPE_SHORT
-};

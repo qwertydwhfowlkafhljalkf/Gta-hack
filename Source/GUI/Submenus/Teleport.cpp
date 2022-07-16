@@ -59,7 +59,7 @@ void GUI::Submenus::Teleport()
 	GUI::Toggle("Teleport Transition", CheatFeatures::TeleportTransition, "");
 	if (GUI::Option("Teleport to Cayo Perico Island", ""))
 	{
-		uint64_t arguments_aray[2] = { (uint64_t)TSE_CAYO_PERICO_TELEPORT, (uint64_t)CheatFeatures::SelectedPlayer };
+		uint64_t arguments_aray[2] = { (uint64_t)TSE_CAYO_PERICO_TELEPORT, (uint64_t)GameFunctions::PlayerID };
 		SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << GameFunctions::PlayerID);
 	}
 	GUI::MenuOption("Landmarks", Submenus::LandmarkTeleportLocations);

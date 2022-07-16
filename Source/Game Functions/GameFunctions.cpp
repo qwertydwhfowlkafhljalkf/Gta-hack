@@ -226,11 +226,6 @@ float Cheat::GameFunctions::GetDistanceBetweenTwoPoints(Vector3 A, Vector3 B)
 	return MISC::GET_DISTANCE_BETWEEN_COORDS(A.x, A.y, A.z, B.x, B.y, B.z, 1);
 }
 
-int Cheat::GameFunctions::ReturnRandomInteger(int start, int end) 
-{
-	return MISC::GET_RANDOM_INT_IN_RANGE(start, end);
-}
-
 void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicle)
 {
 	Entity TargetEntity = e;
