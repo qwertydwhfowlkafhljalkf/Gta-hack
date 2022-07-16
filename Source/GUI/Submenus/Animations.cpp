@@ -25,7 +25,7 @@ void GUI::Submenus::Animations()
 		{
 			if (IndexCount == CheatFeatures::ScenariosVectorPosition)
 			{
-				AI::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, CheatFunctions::StringToChar(i), 0, true);
+				TASK::TASK_START_SCENARIO_IN_PLACE(GameFunctions::PlayerPedID, CheatFunctions::StringToChar(i), 0, true);
 			}
 			IndexCount++;
 		}

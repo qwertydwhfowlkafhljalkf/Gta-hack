@@ -28,7 +28,7 @@ IsDLCPresent IsDLCPresentOriginal = nullptr;
 bool IsDLCPresentHooked(std::uint32_t DLCHash)
 {
 	static uint64_t	Last = 0;
-	uint64_t Current = GAMEPLAY::GET_FRAME_COUNT();
+	uint64_t Current = MISC::GET_FRAME_COUNT();
 	if (Last != Current)
 	{
 		Last = Current;

@@ -30,7 +30,7 @@ void Cheat::Controls::Loop()
 
 			// Logger Window Open/Close
 			if (CheatFunctions::IsKeyCurrentlyPressed(VK_OEM_3) ||
-				CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_ENTER_CHEAT_CODE))
+				PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_ENTER_CHEAT_CODE))
 			{
 				Logger::CheatWindowVisible = !Logger::CheatWindowVisible;
 				KeyPressDelayPreviousTick = GetTickCount64();

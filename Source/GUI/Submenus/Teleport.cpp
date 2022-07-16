@@ -14,7 +14,7 @@ void GUI::Submenus::Teleport()
 		Vector3 TargetCoordinates;
 		try
 		{
-			char* X; char* Y; char* Z;
+			const char* X; const char* Y; const char* Z;
 			if (GameFunctions::DisplayKeyboardAndReturnInput(25, "Enter X-axis coordinate", X))
 			{ 
 				if (GameFunctions::DisplayKeyboardAndReturnInput(25, "Enter Y-axis coordinate", Y))
@@ -47,7 +47,7 @@ void GUI::Submenus::Teleport()
 	GUI::Break("Custom Locations", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Save Current Location", ""))
 	{
-		char* NewThemeFileName;
+		const char* NewThemeFileName;
 		if (GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Custom Teleport Location Name", NewThemeFileName))
 		{
 			CheatFunctions::AddCustomTeleportLocation(NewThemeFileName);

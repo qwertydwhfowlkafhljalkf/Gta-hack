@@ -8,7 +8,7 @@ void GUI::Submenus::VehicleSpawn()
 	GUI::MenuOption("Previously Spawned", SpawnedVehicles);
 	if (GUI::Option("Custom Input", "Input custom vehicle model name"))
 	{
-		char* KeyboardInput;
+		const char* KeyboardInput;
 		if (GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter Vehicle Model Name", KeyboardInput))
 		{  
 			GameFunctions::SpawnVehicle(KeyboardInput);

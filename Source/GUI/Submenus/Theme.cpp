@@ -23,7 +23,7 @@ void GUI::Submenus::Theme()
 	}
 	if (GUI::Option("Save To New", ""))
 	{
-		char* NewThemeFileName;
+		const char* NewThemeFileName;
 		if (GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Theme Name", NewThemeFileName))
 		{
 			GUI::SaveTheme(NewThemeFileName);

@@ -67,12 +67,12 @@ void GUI::Title(std::string TitleName)
 
 	UI::HIDE_HELP_TEXT_THIS_FRAME();
 	CAM::SET_CINEMATIC_BUTTON_ACTIVE(false);
-	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_CHARACTER_WHEEL, true);
-	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_MULTIPLAYER_INFO, true);
-	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_PHONE, true);
-	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_VEH_CIN_CAM, true);
-	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_MAP_POI, true);
-	CONTROLS::DISABLE_CONTROL_ACTION(2, INPUT_VEH_HEADLIGHT, true);	
+	PAD::DISABLE_CONTROL_ACTION(2, INPUT_CHARACTER_WHEEL, true);
+	PAD::DISABLE_CONTROL_ACTION(2, INPUT_MULTIPLAYER_INFO, true);
+	PAD::DISABLE_CONTROL_ACTION(2, INPUT_PHONE, true);
+	PAD::DISABLE_CONTROL_ACTION(2, INPUT_VEH_CIN_CAM, true);
+	PAD::DISABLE_CONTROL_ACTION(2, INPUT_MAP_POI, true);
+	PAD::DISABLE_CONTROL_ACTION(2, INPUT_VEH_HEADLIGHT, true);	
 
 	CurrentSubmenu = TitleName;
 }
@@ -135,7 +135,7 @@ bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
 
 	if (GameFunctions::IsCursorAtXYPosition(RectPosition, { GUI::guiWidth, SelectableHeight }) && CheatFeatures::CursorNavigationState)
 	{
-		if (CONTROLS::IS_DISABLED_CONTROL_JUST_RELEASED(0, INPUT_CURSOR_ACCEPT))
+		if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, INPUT_CURSOR_ACCEPT))
 		{
 			goto SelectAction;
 		}
@@ -170,18 +170,18 @@ bool GUI::VehicleOption(std::string option, std::string ModelName)
 			std::ostringstream ModelMaxSpeed;
 			if (CheatFeatures::MeasurementSystemVectorPosition == 0)
 			{
-				ModelMaxSpeed << "Max Speed: " << GameFunctions::MSToKMH(VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))) << " KM/H";
+				ModelMaxSpeed << "Max Speed: " << GameFunctions::MSToKMH(VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))) << " KM/H";
 			}
 			else if (CheatFeatures::MeasurementSystemVectorPosition == 1)
 			{
-				ModelMaxSpeed << "Max Speed: " << GameFunctions::MSToMPH(VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))) << " MP/H";
+				ModelMaxSpeed << "Max Speed: " << GameFunctions::MSToMPH(VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))) << " MP/H";
 			}
 
 			if (guiX < 0.71f)
 			{
 				DrawTextInGame("Model Name: " + ModelName, TextColorAndFont, { guiX + 0.111f,  guiY - 0.005f }, { 0.45f, 0.30f }, false);
 				DrawTextInGame(ModelMaxSpeed.str(), TextColorAndFont, { guiX + 0.111f, guiY + 0.010f }, { 0.45f, 0.30f }, false);
-				DrawTextInGame("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { guiX + 0.111f, guiY + 0.025f}, {0.45f, 0.30f}, false);
+				DrawTextInGame("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { guiX + 0.111f, guiY + 0.025f}, {0.45f, 0.30f}, false);
 				DrawRectInGame({ 0, 0, 0, 150 }, { guiX + 0.187f, GUI::guiY - 0.061f }, { 0.16f, 0.22f });
 				DrawSpriteInGame(VehiclePreviewDictName, VehiclePreviewName, guiX + 0.187f, guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
 			}
@@ -189,7 +189,7 @@ bool GUI::VehicleOption(std::string option, std::string ModelName)
 			{
 				DrawTextInGame("Model Name: " + ModelName, TextColorAndFont, { guiX - 0.262f, guiY - 0.005f }, { 0.45f, 0.30f }, false);
 				DrawTextInGame(ModelMaxSpeed.str(), TextColorAndFont, { guiX - 0.262f, guiY + 0.010f }, { 0.45f, 0.30f }, false);
-				DrawTextInGame("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { guiX - 0.262f, guiY + 0.025f }, { 0.45f, 0.30f }, false);
+				DrawTextInGame("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { guiX - 0.262f, guiY + 0.025f }, { 0.45f, 0.30f }, false);
 				DrawRectInGame({ 0, 0, 0, 150 }, { guiX - 0.187f, guiY - 0.061f }, { 0.16f, 0.22f });
 				DrawSpriteInGame(VehiclePreviewDictName, VehiclePreviewName, guiX - 0.187f, guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
 			}
@@ -282,7 +282,7 @@ bool GUI::MenuOptionPlayerList(std::string PlayerName, int BitFlags)
 		return true;
 	}
 
-	char* CurrentOnlinePlayerPictureName = GameFunctions::ReturnOnlinePlayerPictureString(GameFunctions::ReturnPlayerIDFromPlayerName(PlayerName));
+	const char* CurrentOnlinePlayerPictureName = GameFunctions::ReturnOnlinePlayerPictureString(GameFunctions::ReturnPlayerIDFromPlayerName(PlayerName));
 
 	VECTOR2 Position;
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
@@ -293,7 +293,7 @@ bool GUI::MenuOptionPlayerList(std::string PlayerName, int BitFlags)
 	{
 		Position = { GUI::guiX - 0.093f, GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.158f };
 	}
-	DrawSpriteInGame(CurrentOnlinePlayerPictureName, CurrentOnlinePlayerPictureName, Position.x, Position.y, 0.02f, 0.03f, 0, 255, 255, 255, OnlinePlayerPictureTransparency);
+	DrawSpriteInGame(CurrentOnlinePlayerPictureName, CurrentOnlinePlayerPictureName, Position.x, Position.y, 0.02f, 0.03f, 0.f, 255, 255, 255, OnlinePlayerPictureTransparency);
 	return false;
 }
 
@@ -847,7 +847,7 @@ void GUI::DrawTextInGame(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR
 		UI::SET_TEXT_SCALE(size.w, size.h);
 		UI::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 		UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(CheatFunctions::StringToChar(text));
-		UI::END_TEXT_COMMAND_DISPLAY_TEXT(position.x, position.y);
+		UI::END_TEXT_COMMAND_DISPLAY_TEXT(position.x, position.y, 0);
 	}
 }
 
@@ -855,13 +855,13 @@ void GUI::DrawSpriteInGame(std::string Streamedtexture, std::string textureName,
 {
 	if (!GUI::HideGUIElements)
 	{
-		if (!GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED(CheatFunctions::StringToChar(Streamedtexture)))
+		if (!GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED(Streamedtexture.c_str()))
 		{
-			GRAPHICS::REQUEST_STREAMED_TEXTURE_DICT(CheatFunctions::StringToChar(Streamedtexture.c_str()), false);
+			GRAPHICS::REQUEST_STREAMED_TEXTURE_DICT(Streamedtexture.c_str(), false);
 		}
 		else
 		{
-			GRAPHICS::DRAW_SPRITE(CheatFunctions::StringToChar(Streamedtexture), CheatFunctions::StringToChar(textureName), x, y, width, height, rotation, r, g, b, a);
+			GRAPHICS::DRAW_SPRITE(Streamedtexture.c_str(), textureName.c_str(), x, y, width, height, rotation, r, g, b, a, false, 0);
 		}
 	}
 }
@@ -870,6 +870,6 @@ void GUI::DrawRectInGame(RGBA rgba, VECTOR2 position, VECTOR2_2 size)
 {
 	if (!GUI::HideGUIElements)
 	{
-		GRAPHICS::DRAW_RECT(position.x, position.y, size.w, size.h, rgba.r, rgba.g, rgba.b, rgba.a);
+		GRAPHICS::DRAW_RECT(position.x, position.y, size.w, size.h, rgba.r, rgba.g, rgba.b, rgba.a, false);
 	}
 }

@@ -12,7 +12,7 @@ void Cheat::GameFunctions::GiveAllWeaponsToPlayer(Ped Player)
 
 void Cheat::GameFunctions::RepairAndCleanVehicle(Vehicle vehicle)
 {
-	ENTITY::SET_ENTITY_HEALTH(vehicle, ENTITY::GET_ENTITY_MAX_HEALTH(vehicle));
+	ENTITY::SET_ENTITY_HEALTH(vehicle, ENTITY::GET_ENTITY_MAX_HEALTH(vehicle), 0);
 	VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0.f);
 	VEHICLE::SET_VEHICLE_ENGINE_HEALTH(vehicle, 1000.f);
 	VEHICLE::SET_VEHICLE_FIXED(vehicle);
@@ -49,7 +49,7 @@ void Cheat::GameFunctions::TeleportToObjective()
 	bool blipFound = false;
 	for (int i = 0; i <= 1000; i++)
 	{
-		int blipIterator = UI::IS_WAYPOINT_ACTIVE() ? UI::_GET_BLIP_INFO_ID_ITERATOR() : SpriteStandard;    
+		int blipIterator = UI::IS_WAYPOINT_ACTIVE() ? UI::GET_WAYPOINT_BLIP_ENUM_ID() : SpriteStandard;
 		for (Blip i = UI::GET_FIRST_BLIP_INFO_ID(blipIterator);
 			UI::DOES_BLIP_EXIST(i) != 0; i = UI::GET_NEXT_BLIP_INFO_ID(blipIterator)) {
 			if (UI::GET_BLIP_INFO_ID_TYPE(i) == ColorPlayer && UI::GET_BLIP_COLOUR(i) == ColorYellow && UI::GET_BLIP_COLOUR(i) != ColorBlue && UI::IS_BLIP_ON_MINIMAP(i) == ColorRed)
@@ -137,7 +137,7 @@ void Cheat::GameFunctions::SetRankRockstarGift(int Rank)
 {
 	if (Rank > 0 && Rank <= 8000)
 	{ 
-		STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ReturnCurrentGTAOCharacter() + "_CHAR_SET_RP_GIFT_ADMIN")), ReturnReputationPointsAmount(Rank), true);
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ReturnCurrentGTAOCharacter() + "_CHAR_SET_RP_GIFT_ADMIN")), ReturnReputationPointsAmount(Rank), true);
 		MinimapNotification("Join a new GTAO session for the new Rank to be applied");
 	}
 	else
@@ -223,12 +223,12 @@ Vector3 Cheat::GameFunctions::GetEntityCoords(Entity entity)
 
 float Cheat::GameFunctions::GetDistanceBetweenTwoPoints(Vector3 A, Vector3 B) 
 {
-	return GAMEPLAY::GET_DISTANCE_BETWEEN_COORDS(A.x, A.y, A.z, B.x, B.y, B.z, 1);
+	return MISC::GET_DISTANCE_BETWEEN_COORDS(A.x, A.y, A.z, B.x, B.y, B.z, 1);
 }
 
 int Cheat::GameFunctions::ReturnRandomInteger(int start, int end) 
 {
-	return GAMEPLAY::GET_RANDOM_INT_IN_RANGE(start, end);
+	return MISC::GET_RANDOM_INT_IN_RANGE(start, end);
 }
 
 void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicle)
@@ -260,7 +260,7 @@ void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoC
 		{
 			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, CurrentHeight, false, false, true);
 			GameHooking::PauseMainFiber(50, false);
-			if (GAMEPLAY::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, CurrentHeight, &coords.z, false))
+			if (MISC::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, CurrentHeight, &coords.z, false, false))
 			{
 				GroundFound = true;
 				coords.z += 3.0f;
@@ -319,7 +319,7 @@ void Cheat::GameFunctions::RequestNetworkControlOfEntity(Entity entity)
 
 void Cheat::GameFunctions::ClonePed(Ped ped)
 {
-	if (ENTITY::DOES_ENTITY_EXIST(ped) && !ENTITY::IS_ENTITY_DEAD(ped))
+	if (ENTITY::DOES_ENTITY_EXIST(ped) && !ENTITY::IS_ENTITY_DEAD(ped, false))
 	{
 		PED::CLONE_PED(ped, ENTITY::GET_ENTITY_HEADING(ped), true, true);
 	}
@@ -327,37 +327,37 @@ void Cheat::GameFunctions::ClonePed(Ped ped)
 
 void Cheat::GameFunctions::MinimapNotification(char* Message)
 {
-	UI::_SET_NOTIFICATION_TEXT_ENTRY("STRING");
+	UI::BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
 	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Message);
-	UI::_DRAW_NOTIFICATION(false, false);
+	UI::END_TEXT_COMMAND_THEFEED_POST_TICKER(false, false);
 }
 
 void Cheat::GameFunctions::AdvancedMinimapNotification(char* Message, char* PicName1, char* PicName2, bool Flash, int IconType, char* Sender, char* Subject, float Duration, char* ClanTag)
 {
-	UI::_SET_NOTIFICATION_TEXT_ENTRY("STRING");
+	UI::BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
 	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Message);
 	UI::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG(PicName1, PicName2, Flash, IconType, Sender, Subject, Duration, ClanTag);
-	UI::_DRAW_NOTIFICATION(false, false);
+	UI::END_TEXT_COMMAND_THEFEED_POST_TICKER(false, false);
 }
 
 std::string Cheat::GameFunctions::InGameKeyboardWindowTitle;
-bool Cheat::GameFunctions::DisplayKeyboardAndReturnInput(int MaxInput, std::string Title, char*& Input)
+bool Cheat::GameFunctions::DisplayKeyboardAndReturnInput(int MaxInput, std::string Title, const char*& Input)
 {
 	InGameKeyboardWindowTitle = Title;
-	GAMEPLAY::DISPLAY_ONSCREEN_KEYBOARD(0, "FMMC_KEY_TIP8", "", "", "", "", "", MaxInput);
-	while (GAMEPLAY::UPDATE_ONSCREEN_KEYBOARD() == 0) { GameHooking::PauseMainFiber(0, false); }
+	MISC::DISPLAY_ONSCREEN_KEYBOARD(0, "FMMC_KEY_TIP8", "", "", "", "", "", MaxInput);
+	while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) { GameHooking::PauseMainFiber(0, false); }
 	InGameKeyboardWindowTitle.clear();
-	if (!GAMEPLAY::GET_ONSCREEN_KEYBOARD_RESULT())
+	if (!MISC::GET_ONSCREEN_KEYBOARD_RESULT())
 	{
 		return false;
 	}
-	Input = GAMEPLAY::GET_ONSCREEN_KEYBOARD_RESULT();
+	Input = MISC::GET_ONSCREEN_KEYBOARD_RESULT();
 	return true;
 }
 
 bool Cheat::GameFunctions::DisplayKeyboardAndReturnInputInteger(int MaxInput, std::string Title, int &Input)
 {	
-	char* InputString;
+	const char* InputString;
 	if (!DisplayKeyboardAndReturnInput(MaxInput, Title, InputString)) { return false; }
 	Input = CheatFunctions::StringToInt(InputString);
 	return true;
@@ -365,7 +365,7 @@ bool Cheat::GameFunctions::DisplayKeyboardAndReturnInputInteger(int MaxInput, st
 
 void Cheat::GameFunctions::StopAllPedAnimations(Ped TargetPed)
 {
-	AI::CLEAR_PED_TASKS_IMMEDIATELY(TargetPed);
+	TASK::CLEAR_PED_TASKS_IMMEDIATELY(TargetPed);
 }
 
 void Cheat::GameFunctions::ClearNearbyPedAnimations()
@@ -395,7 +395,7 @@ void Cheat::GameFunctions::PlayPedAnimation(Ped TargetPed, char* AnimationName, 
 	while (!STREAMING::HAS_ANIM_DICT_LOADED((AnimationName))) { STREAMING::REQUEST_ANIM_DICT(AnimationName); GameHooking::PauseMainFiber(0, false); }
 	int Flags = 0;
 	if (Controllable) { Flags = ANIM_FLAG_UPPERBODY | ANIM_FLAG_ENABLE_PLAYER_CONTROL | ANIM_FLAG_STOP_LAST_FRAME;  }
-	AI::TASK_PLAY_ANIM(TargetPed, AnimationName, AnimationID, 8.0f, 0.0f, -1, Flags, 0, false, false, false);
+	TASK::TASK_PLAY_ANIM(TargetPed, AnimationName, AnimationID, 8.0f, 0.0f, -1, Flags, 0, false, false, false);
 }
 
 void Cheat::GameFunctions::DoNearbyPedsAnimation(char* AnimationName, char* AnimationID)
@@ -418,7 +418,7 @@ void Cheat::GameFunctions::DoNearbyPedsAnimation(char* AnimationName, char* Anim
 			STREAMING::REQUEST_ANIM_DICT(AnimationName);
 			if (STREAMING::HAS_ANIM_DICT_LOADED((AnimationName)))
 			{
-				AI::TASK_PLAY_ANIM(peds[OffsetID], AnimationName, AnimationID, 8.0f, 0.0f, -1, 9, 0, 0, 0, 0);
+				TASK::TASK_PLAY_ANIM(peds[OffsetID], AnimationName, AnimationID, 8.0f, 0.0f, -1, 9, 0, 0, 0, 0);
 			}
 		}
 	}
@@ -441,7 +441,7 @@ void Cheat::GameFunctions::PlayScenarioNearbyPeds(char* Scenario)
 		if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && Cheat::GameFunctions::PlayerPedID != peds[OffsetID])
 		{
 			StopAllPedAnimations(peds[OffsetID]);
-			AI::TASK_START_SCENARIO_IN_PLACE(peds[OffsetID], Scenario, 0, true);
+			TASK::TASK_START_SCENARIO_IN_PLACE(peds[OffsetID], Scenario, 0, true);
 		}
 	}
 }
@@ -532,10 +532,10 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		// Status
 		std::ostringstream Status;
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Status", 6);
-		if (AI::IS_PED_STILL(SelectedPlayerPed)) { Status << "Player is still"; }
-		else if (AI::IS_PED_WALKING(SelectedPlayerPed)) { Status << "Player is walking"; }
-		else if (AI::IS_PED_RUNNING(SelectedPlayerPed)) { Status << "Player is running"; }
-		else if (AI::IS_PED_SPRINTING(SelectedPlayerPed)) { Status << "Player is sprinting"; }
+		if (TASK::IS_PED_STILL(SelectedPlayerPed)) { Status << "Player is still"; }
+		else if (TASK::IS_PED_WALKING(SelectedPlayerPed)) { Status << "Player is walking"; }
+		else if (TASK::IS_PED_RUNNING(SelectedPlayerPed)) { Status << "Player is running"; }
+		else if (TASK::IS_PED_SPRINTING(SelectedPlayerPed)) { Status << "Player is sprinting"; }
 		else if (PED::IS_PED_CLIMBING(SelectedPlayerPed)) { Status << "Player is climbing"; }
 		else if (PED::IS_PED_DIVING(SelectedPlayerPed)) { Status << "Player is diving"; }
 		else if (PED::IS_PED_FALLING(SelectedPlayerPed)) { Status << "Player is falling"; }
@@ -670,7 +670,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		// Modded Model
 		Hash SelectedPlayerPedModel = ENTITY::GET_ENTITY_MODEL(SelectedPlayerPed);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Modded Model", NULL, NULL, 2);
-		if (NETWORK::NETWORK_IS_SESSION_STARTED() && SelectedPlayerPedModel != GAMEPLAY::GET_HASH_KEY("mp_m_freemode_01") && SelectedPlayerPedModel != GAMEPLAY::GET_HASH_KEY("mp_f_freemode_01"))
+		if (NETWORK::NETWORK_IS_SESSION_STARTED() && SelectedPlayerPedModel != MISC::GET_HASH_KEY("mp_m_freemode_01") && SelectedPlayerPedModel != MISC::GET_HASH_KEY("mp_f_freemode_01"))
 		{
 			Cheat::GUI::AddPlayerInfoBoxTextEntry("Yes", NULL, NULL, NULL, 2);
 		}
@@ -761,7 +761,7 @@ void Cheat::GameFunctions::ApplyForceToEntity(Entity e, float x, float y, float 
 void Cheat::GameFunctions::RemoveObjectFromPed(Ped Ped, char* ObjectName)
 {
 	Vector3 PedCoords = GetEntityCoords(Ped);
-	Object Object = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(PedCoords.x, PedCoords.y, PedCoords.z, 4.0, GAMEPLAY::GET_HASH_KEY(ObjectName), false, false, true);
+	Object Object = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(PedCoords.x, PedCoords.y, PedCoords.z, 4.0, MISC::GET_HASH_KEY(ObjectName), false, false, true);
 	if (ENTITY::DOES_ENTITY_EXIST(Object) && ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY(Object, Ped))
 	{
 		Cheat::GameFunctions::RequestNetworkControlOfEntity(Object);
@@ -776,7 +776,7 @@ void Cheat::GameFunctions::AttachObjectToPed(Ped Ped, char* ObjectName)
 	int attachobj[100];
 	int nuattach = 1;
 	Vector3 pos = GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped));
-	int hash = GAMEPLAY::GET_HASH_KEY(ObjectName);
+	int hash = MISC::GET_HASH_KEY(ObjectName);
 	if (STREAMING::IS_MODEL_IN_CDIMAGE(hash))
 	{
 		if (STREAMING::IS_MODEL_VALID(hash))
@@ -799,9 +799,9 @@ void Cheat::GameFunctions::AttachObjectToPed(Ped Ped, char* ObjectName)
 }
 
 std::vector<Vehicle> Cheat::GameArrays::SpawnedVehicles;
-void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
+void Cheat::GameFunctions::SpawnVehicle(const char* ModelHash)
 {
-	Hash VehicleModel = GAMEPLAY::GET_HASH_KEY(ModelHash);
+	Hash VehicleModel = MISC::GET_HASH_KEY(ModelHash);
 	if (STREAMING::IS_MODEL_A_VEHICLE(VehicleModel))
 	{
 		if (CheatFeatures::VehicleSpawnerDeleteOldVehicle)
@@ -809,9 +809,9 @@ void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 			Cheat::GameFunctions::DeleteVehicle(PED::GET_VEHICLE_PED_IS_IN(PlayerPedID, false));
 		}
 
-		while (!STREAMING::HAS_MODEL_LOADED(GAMEPLAY::GET_HASH_KEY(ModelHash)))
+		while (!STREAMING::HAS_MODEL_LOADED(MISC::GET_HASH_KEY(ModelHash)))
 		{
-			STREAMING::REQUEST_MODEL(GAMEPLAY::GET_HASH_KEY(ModelHash));
+			STREAMING::REQUEST_MODEL(MISC::GET_HASH_KEY(ModelHash));
 			GameHooking::PauseMainFiber(0);
 		}
 
@@ -823,11 +823,11 @@ void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 				NewVehiclePosition.z += 100.f;
 			}
 		}
-		Vehicle NewVehicleHandle = VEHICLE::CREATE_VEHICLE(GAMEPLAY::GET_HASH_KEY(ModelHash), NewVehiclePosition.x, NewVehiclePosition.y, NewVehiclePosition.z, ENTITY::GET_ENTITY_HEADING(PlayerPedID), true, true);
+		Vehicle NewVehicleHandle = VEHICLE::CREATE_VEHICLE(MISC::GET_HASH_KEY(ModelHash), NewVehiclePosition.x, NewVehiclePosition.y, NewVehiclePosition.z, ENTITY::GET_ENTITY_HEADING(PlayerPedID), true, true, false);
 
 		if (NewVehicleHandle != 0)
 		{
-			NETWORK::NETWORK_FADE_IN_ENTITY(NewVehicleHandle, true);
+			NETWORK::NETWORK_FADE_IN_ENTITY(NewVehicleHandle, true, 0);
 
 			if (CheatFeatures::VehicleSpawnerSpawnInsideVehicle)
 			{
@@ -860,7 +860,7 @@ void Cheat::GameFunctions::SpawnVehicle(char* ModelHash)
 			ENTITY::SET_ENTITY_AS_MISSION_ENTITY(NewVehicleHandle, true, true);
 			NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK::NET_TO_VEH(NewVehicleHandle), true);
 			DECORATOR::DECOR_SET_INT(NewVehicleHandle, "MPBitset", 0);
-			ENTITY::_SET_ENTITY_SOMETHING(NewVehicleHandle, true);
+			ENTITY::_SET_ENTITY_CLEANUP_BY_ENGINE(NewVehicleHandle, true);
 			Cheat::GameFunctions::MinimapNotification("Vehicle Spawned");
 			GameArrays::SpawnedVehicles.push_back(NewVehicleHandle);
 		}
@@ -877,14 +877,14 @@ void Cheat::GameFunctions::EnableDisableAntiCrashCamera()
 	if (CAM::DOES_CAM_EXIST(antiCrashCam))
 	{
 		CAM::SET_CAM_ACTIVE(antiCrashCam, false);
-		CAM::RENDER_SCRIPT_CAMS(0, 1, 10, 0, 0);
+		CAM::RENDER_SCRIPT_CAMS(false, true, 10, false, false, false);
 		CAM::DESTROY_CAM(antiCrashCam, false);
 		PLAYER::SET_PLAYER_CONTROL(Cheat::GameFunctions::PlayerID, true, 0);
 	}
 	else
 	{
 		antiCrashCam = CAM::CREATE_CAM_WITH_PARAMS("DEFAULT_SCRIPTED_CAMERA", 9999.0f, 9999.0f, 9999.0f, 9999.0f, 9999.0f, 9999.0f, 9999.0f, true, 1);
-		CAM::RENDER_SCRIPT_CAMS(1, 1, 1, 0, 0);
+		CAM::RENDER_SCRIPT_CAMS(true, true, 1, false, false, false);
 		CAM::SET_CAM_ACTIVE(antiCrashCam, true);
 		PLAYER::SET_PLAYER_CONTROL(Cheat::GameFunctions::PlayerID, false, 0);
 	}
@@ -901,7 +901,7 @@ void Cheat::GameFunctions::CheckNewSessionMembersLoop()
 
 		for (int i = 0; i < 32; ++i)
 		{
-			char* PlayernameString = PLAYER::GET_PLAYER_NAME(i);
+			const char* PlayernameString = PLAYER::GET_PLAYER_NAME(i);
 			if (ENTITY::DOES_ENTITY_EXIST(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i)))
 			{
 				if (!SecondCall) 
@@ -1007,7 +1007,7 @@ void Cheat::GameFunctions::ChangeEntityInvincibilityState(Entity EntityHandle, b
 	}
 }
 
-char* Cheat::GameFunctions::ReturnOnlinePlayerPictureString(Player PlayerHandle)
+const char* Cheat::GameFunctions::ReturnOnlinePlayerPictureString(Player PlayerHandle)
 {
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
@@ -1034,7 +1034,7 @@ char* Cheat::GameFunctions::ReturnOnlinePlayerPictureString(Player PlayerHandle)
 
 VECTOR2 Cheat::GameFunctions::ReturnCursorYXCoords()
 {
-	return { CONTROLS::GET_DISABLED_CONTROL_NORMAL(2, INPUT_CURSOR_X), CONTROLS::GET_DISABLED_CONTROL_NORMAL(2, INPUT_CURSOR_Y) };
+	return { PAD::GET_DISABLED_CONTROL_NORMAL(2, INPUT_CURSOR_X), PAD::GET_DISABLED_CONTROL_NORMAL(2, INPUT_CURSOR_Y) };
 }
 
 //https://github.com/MAFINS/MenyooSP/blob/v1.3.0/Solution/source/Menu/Menu.cpp
@@ -1097,7 +1097,7 @@ void Cheat::GameFunctions::CopySelectedPlayerOutfit(Player SelectedPlayer)
 
 int Cheat::GameFunctions::ReturnPlayerRockstarID(Player PlayerHandle)
 {
-	char* RockstarIDBuffer;
+	const char* RockstarIDBuffer;
 	int NETWORK_HANDLE[76];
 	NETWORK::NETWORK_HANDLE_FROM_PLAYER(PlayerHandle, &NETWORK_HANDLE[0], 13);
 	if (NETWORK::NETWORK_IS_HANDLE_VALID(&NETWORK_HANDLE[0], 13))
@@ -1141,7 +1141,7 @@ void Cheat::GameFunctions::ReturnPlayerIPAddresses(Player PlayerHandle, std::str
 std::string Cheat::GameFunctions::ReturnCurrentGTAOCharacter(bool NumberOnly)
 {
 	int CharacterID;
-	STATS::STAT_GET_INT(GAMEPLAY::GET_HASH_KEY("MPPLY_LAST_MP_CHAR"), &CharacterID, -1);
+	STATS::STAT_GET_INT(MISC::GET_HASH_KEY("MPPLY_LAST_MP_CHAR"), &CharacterID, -1);
 	if (NumberOnly) { return std::to_string(CharacterID); }
 	return "MP" + std::to_string(CharacterID);
 }
@@ -1149,15 +1149,6 @@ std::string Cheat::GameFunctions::ReturnCurrentGTAOCharacter(bool NumberOnly)
 void Cheat::GameFunctions::PlayFrontendSoundDefault(char* SoundName)
 {
 	AUDIO::PLAY_SOUND_FRONTEND(-1, SoundName, "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
-}
-
-bool Cheat::GameFunctions::IsPlayerIDValid(Player ID)
-{
-	if (ENTITY::DOES_ENTITY_EXIST(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(ID)))
-	{
-		return true;
-	}
-	return false;
 }
 
 Player Cheat::GameFunctions::ReturnPlayerIDFromPlayerName(std::string PlayerName)
@@ -1176,7 +1167,7 @@ void Cheat::GameFunctions::MaxUpgradeAllWeapons()
 {
 	for (auto const& i : GameArrays::MaxUpgradeWeaponComponents)
 	{
-		WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, i.WeaponHash, GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(i.UpgradeHash)));
+		WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, i.WeaponHash, MISC::GET_HASH_KEY(CheatFunctions::StringToChar(i.UpgradeHash)));
 	}
 }
 
@@ -1242,11 +1233,11 @@ bool Cheat::GameFunctions::ShowFullScreenMessage(std::string Message)
 		Cheat::GUI::DrawTextInGame("~bold~CAUTION", { 225, 0, 0, 255, FontChaletLondon }, { 0.450f, 0.370f }, { 0.55f, 0.55f }, false, true);
 		Cheat::GUI::DrawTextInGame(Message, { 255, 255, 255, 255, FontChaletLondon }, { 0.500f, 0.420f}, { 0.40f, 0.40f }, true);
 		Cheat::GUI::DrawTextInGame("Press ENTER to continue or BACKSPACE to go back", { 255, 255, 255, 255, FontChaletLondon }, { 0.355f, 0.495f }, { 0.30f, 0.30f }, false, true);
-		if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_ACCEPT))
+		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_ACCEPT))
 		{
 			return true;
 		}
-		if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_CANCEL))
+		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_CANCEL))
 		{
 			return false;
 		}
@@ -1256,7 +1247,7 @@ bool Cheat::GameFunctions::ShowFullScreenMessage(std::string Message)
 
 void Cheat::GameFunctions::SetCharacterSkillStat(std::string Skill, int Level)
 {
-	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_" + Skill)), Level, true);
+	STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_" + Skill)), Level, true);
 }
 
 void Cheat::GameFunctions::ChangeGTAOSessionType(SessionTypes SessionType)

@@ -6,11 +6,11 @@ void GUI::Submenus::IPLLoader()
 	GUI::Title("IPL Loader");
 	if (GUI::Option("Load MP data", ""))
 	{
-		DLC2::ON_ENTER_MP();
+		DLC::ON_ENTER_MP();
 	}
 	if (GUI::Option("Unload MP data", ""))
 	{
-		DLC2::ON_ENTER_SP();
+		DLC::ON_ENTER_SP();
 	}
 	if (GUI::Option("Load North Yankton", ""))
 	{

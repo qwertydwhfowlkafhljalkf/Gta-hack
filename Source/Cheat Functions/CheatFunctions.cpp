@@ -101,7 +101,7 @@ void Cheat::CheatFunctions::Loop()
 		GUI::currentMenu == GUI::Submenus::SelectedPlayerApartmentTeleport	||
 		GUI::currentMenu == GUI::Submenus::SelectedPlayerRemote)
 	{
-		if (GameFunctions::IsPlayerIDValid(CheatFeatures::SelectedPlayer))
+		if (NETWORK::NETWORK_IS_PLAYER_ACTIVE(CheatFeatures::SelectedPlayer))
 		{
 			GameFunctions::ShowPlayerInformationBox(CheatFeatures::SelectedPlayer);
 		}
@@ -138,7 +138,7 @@ void Cheat::CheatFunctions::Loop()
 		{
 			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - GUI::SelectableHeight - 0.181f }, { GUI::guiWidth, GUI::SelectableHeight + 0.045f }))
 			{
-				if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
 				{
 					GUI::guiX = GameFunctions::ReturnCursorYXCoords().x;
 					GUI::guiY = GameFunctions::ReturnCursorYXCoords().y + 0.20f;
@@ -146,7 +146,7 @@ void Cheat::CheatFunctions::Loop()
 			}
 			if (GameFunctions::IsCursorAtXYPosition({ GUI::SelectableInfoBoxX, GUI::SelectableInfoBoxY }, { 0.25f, 0.080f }))
 			{
-				if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
 				{
 					GUI::SelectableInfoBoxX = GameFunctions::ReturnCursorYXCoords().x;
 					GUI::SelectableInfoBoxY = GameFunctions::ReturnCursorYXCoords().y;
@@ -154,12 +154,12 @@ void Cheat::CheatFunctions::Loop()
 			}
 			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX - 0.100f, GUI::guiY - 0.156f }, { 0.060f, 0.025f }))
 			{
-				if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
 				{
 					GUI::BackMenu();
 				}
 			}
-			if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_UP) && !ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_UP) && !ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow))
 			{
 				if (GUI::currentOption > 1)
 				{
@@ -167,7 +167,7 @@ void Cheat::CheatFunctions::Loop()
 				}
 				GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 			}
-			if (CONTROLS::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_DOWN))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_DOWN))
 			{
 				if (GUI::TotalOptionsCount > GUI::currentOption)
 				{
@@ -232,7 +232,7 @@ void Cheat::CheatFunctions::NonLooped()
 			{
 				try
 				{
-					UI::_SET_HUD_COLOUR(SavedHUDColorsIndex, std::stoi(Red), std::stoi(Green), std::stoi(Blue), std::stoi(Alpha));
+					UI::REPLACE_HUD_COLOUR_WITH_RGBA(SavedHUDColorsIndex, std::stoi(Red), std::stoi(Green), std::stoi(Blue), std::stoi(Alpha));
 				}
 				catch (...) {}
 				Cheat::Logger::DebugMessage("Loaded custom HUD color '" + HUDColorComponentName + "'");

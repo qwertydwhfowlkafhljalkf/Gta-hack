@@ -26,7 +26,7 @@ void GUI::Submenus::VehicleCustomizer()
 		}
 		if (GUI::Option("Change License Plate Text", "Input custom vehicle license plate text"))
 		{
-			char* KeyboardInput;
+			const char* KeyboardInput;
 			if (GameFunctions::DisplayKeyboardAndReturnInput(8, "Enter new license plate text", KeyboardInput))
 			{
 				VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID), KeyboardInput);

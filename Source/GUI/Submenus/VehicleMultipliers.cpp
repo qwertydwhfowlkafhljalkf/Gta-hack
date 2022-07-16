@@ -12,8 +12,8 @@ void GUI::Submenus::VehicleMultipliers()
 		if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, 0))
 		{
 			::Vehicle CurrentVehicle = PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID);
-			VEHICLE::_SET_VEHICLE_ENGINE_POWER_MULTIPLIER(CurrentVehicle, EngineMultiplier);
-			VEHICLE::_SET_VEHICLE_ENGINE_TORQUE_MULTIPLIER(CurrentVehicle, TorqueMultiplier);
+			VEHICLE::MODIFY_VEHICLE_TOP_SPEED(CurrentVehicle, EngineMultiplier);
+			VEHICLE::SET_VEHICLE_CHEAT_POWER_INCREASE(CurrentVehicle, TorqueMultiplier);
 		}
 		else
 		{

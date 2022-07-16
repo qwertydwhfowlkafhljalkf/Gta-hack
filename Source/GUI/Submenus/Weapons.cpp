@@ -26,7 +26,7 @@ void GUI::Submenus::Weapons()
 		{
 			if (i.WeaponHash == CurrentWeapon)
 			{
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, i.WeaponHash, GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(i.UpgradeHash)));
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(GameFunctions::PlayerPedID, i.WeaponHash, MISC::GET_HASH_KEY(CheatFunctions::StringToChar(i.UpgradeHash)));
 			}
 		}
 	}

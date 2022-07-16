@@ -8,9 +8,9 @@ void GUI::Submenus::PlayerList()
 	GUI::Break("List", SELECTABLE_CENTER_TEXT);
 	for (int i = 0; i < 32; ++i)
 	{
-		std::string PlayernameString = PLAYER::GET_PLAYER_NAME(i);
-		if (GameFunctions::IsPlayerIDValid(i))
+		if (NETWORK::NETWORK_IS_PLAYER_ACTIVE(i))
 		{
+			std::string PlayernameString = PLAYER::GET_PLAYER_NAME(i);
 			if (GameFunctions::PlayerIsFreemodeScriptHost(i)) { PlayernameString.append(" ~o~[HOST]"); }
 			if (GameFunctions::IsPlayerFriend(i)) { PlayernameString.append("~b~[FRIEND]"); }
 			if (GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) { PlayernameString.append(" ~p~[INTERIOR]"); }

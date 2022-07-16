@@ -15,7 +15,7 @@ void GUI::Submenus::Wardrobe()
 	GUI::Title("Wardrobe");
 	if (GUI::Option("Police Uniform", ""))
 	{
-		if (PED::IS_PED_MODEL(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("mp_m_freemode_01")))
+		if (PED::IS_PED_MODEL(GameFunctions::PlayerPedID, MISC::GET_HASH_KEY("mp_m_freemode_01")))
 		{
 			PED::SET_PED_COMPONENT_VARIATION(GameFunctions::PlayerPedID, 0, 45, 0, 0);
 			PED::SET_PED_COMPONENT_VARIATION(GameFunctions::PlayerPedID, 3, 55, 0, 0);
@@ -23,7 +23,7 @@ void GUI::Submenus::Wardrobe()
 			PED::SET_PED_COMPONENT_VARIATION(GameFunctions::PlayerPedID, 6, 10, 0, 0);
 			PED::SET_PED_COMPONENT_VARIATION(GameFunctions::PlayerPedID, 8, 122, 0, 0);
 		}
-		else if (PED::IS_PED_MODEL(GameFunctions::PlayerPedID, GAMEPLAY::GET_HASH_KEY("mp_f_freemode_01")))
+		else if (PED::IS_PED_MODEL(GameFunctions::PlayerPedID, MISC::GET_HASH_KEY("mp_f_freemode_01")))
 		{
 			PED::SET_PED_COMPONENT_VARIATION(GameFunctions::PlayerPedID, 0, 45, 0, 0);
 			PED::SET_PED_COMPONENT_VARIATION(GameFunctions::PlayerPedID, 3, 48, 0, 0);

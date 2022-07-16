@@ -6,7 +6,7 @@ void GUI::Submenus::SportClassicVehicles()
 	GUI::Title("Sports Classic");
 	for (auto const& i : GameArrays::SportClassicModels)
 	{
-		if (GUI::VehicleOption(UI::_GET_LABEL_TEXT(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(i)))), i))
+		if (GUI::VehicleOption(UI::_GET_LABEL_TEXT(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(i)))), i))
 		{
 			GameFunctions::SpawnVehicle(CheatFunctions::StringToChar(i));
 		}

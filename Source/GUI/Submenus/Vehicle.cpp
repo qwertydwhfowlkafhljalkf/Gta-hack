@@ -13,7 +13,7 @@ void GUI::Submenus::Vehicle()
 			GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
 		}
 	}
-	if (GUI::Option("Flip Up", "Flip vehicle up")) { VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, false)); }
+	if (GUI::Option("Flip Up", "Flip vehicle up")) { VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, false), 0.f); }
 	if (GUI::Option("Set Max Speed", ""))
 	{
 		if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false))

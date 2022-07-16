@@ -34,6 +34,16 @@ typedef struct
 	DWORD _paddingx;
 	float y;
 	DWORD _paddingy;
+} Vector2;
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+typedef struct
+{
+	float x;
+	DWORD _paddingx;
+	float y;
+	DWORD _paddingy;
 	float z;
 	DWORD _paddingz;
 } Vector3;
@@ -46,6 +56,20 @@ typedef struct
 	float y;
 	float z;
 } Vector3_t;
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+typedef struct
+{
+	float x;
+	DWORD _paddingx;
+	float y;
+	DWORD _paddingy;
+	float z;
+	DWORD _paddingz;
+	float w;
+	DWORD _paddingw;
+} Vector4;
 #pragma pack(pop)
 
 struct Blip_t {

@@ -17,9 +17,9 @@ void GUI::Submenus::SelectedPlayerFriendly()
 		int gcount = 1;
 		Ped SelectedPlayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
 		if (!ENTITY::DOES_ENTITY_EXIST(SelectedPlayer)) return;
-		Hash railgun = GAMEPLAY::GET_HASH_KEY("WEAPON_RAILGUN");
+		Hash railgun = MISC::GET_HASH_KEY("WEAPON_RAILGUN");
 		Vector3 pos = GameFunctions::GetEntityCoords(SelectedPlayer);
-		Hash pedm = GAMEPLAY::GET_HASH_KEY("u_m_m_jesus_01");
+		Hash pedm = MISC::GET_HASH_KEY("u_m_m_jesus_01");
 		STREAMING::REQUEST_MODEL(pedm);
 		while (!STREAMING::HAS_MODEL_LOADED(pedm)) { GameHooking::PauseMainFiber(0); }
 		int my_group = PLAYER::GET_PLAYER_GROUP(SelectedPlayer);

@@ -9,7 +9,7 @@ void GUI::Submenus::PedSpawn()
 	{
 		if (GUI::Option(i, "Select to spawn"))
 		{
-			Hash PedHash = GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(i));
+			Hash PedHash = MISC::GET_HASH_KEY(CheatFunctions::StringToChar(i));
 			if (ENTITY::IS_ENTITY_A_PED(PedHash))
 			{
 				STREAMING::REQUEST_MODEL(PedHash);

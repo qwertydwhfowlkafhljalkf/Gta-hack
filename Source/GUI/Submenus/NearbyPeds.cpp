@@ -21,7 +21,7 @@ void GUI::Submenus::NearbyPeds()
 			if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && GameFunctions::PlayerPedID != peds[OffsetID])
 			{
 				Vector3 pos = GameFunctions::GetEntityCoords(peds[OffsetID]);
-				FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 0, 1000.f, true, false, 0.f);
+				FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 0, 1000.f, true, false, 0.f, false);
 			}
 		}
 	}
@@ -41,7 +41,7 @@ void GUI::Submenus::NearbyPeds()
 			GameFunctions::RequestNetworkControlOfEntity(peds[OffsetID]);
 			if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && GameFunctions::PlayerPedID != peds[OffsetID])
 			{
-				PED::APPLY_DAMAGE_TO_PED(peds[OffsetID], 1000, false);
+				PED::APPLY_DAMAGE_TO_PED(peds[OffsetID], 1000, false, 0);
 			}
 		}
 	}

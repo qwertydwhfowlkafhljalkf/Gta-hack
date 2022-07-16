@@ -20,7 +20,7 @@ void GUI::Submenus::NearbyVehicles()
 			{
 				GameFunctions::RequestNetworkControlOfEntity(vehs[OffsetID]);
 				Vector3 coords = GameFunctions::GetEntityCoords(vehs[OffsetID]);
-				FIRE::ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1000.f, true, false, 0.f);
+				FIRE::ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1000.f, true, false, 0.f, false);
 			}
 		}
 		delete[] vehs;

@@ -36,7 +36,7 @@ void GUI::Submenus::SelectedPlayerGriefing()
 	if (GUI::Option("Airstrike", ""))
 	{
 		Vector3 Coords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
-		GAMEPLAY::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35.f, Coords.x, Coords.y, Coords.z, 250, true, GAMEPLAY::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), true, false, 500.f);
+		MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35.f, Coords.x, Coords.y, Coords.z, 250, true, MISC::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), true, false, 500.f);
 	}
 	if (GUI::Option("Attach To", ""))
 	{
@@ -67,7 +67,7 @@ void GUI::Submenus::SelectedPlayerGriefing()
 	}
 	if (GUI::Option("Ram With Vehicle", ""))
 	{
-		Hash model = GAMEPLAY::GET_HASH_KEY("trophytruck2");
+		Hash model = MISC::GET_HASH_KEY("trophytruck2");
 		if (STREAMING::IS_MODEL_VALID(model))
 		{
 			for (int i = 0; i < 3; i++)
@@ -79,7 +79,7 @@ void GUI::Submenus::SelectedPlayerGriefing()
 				float heading = ENTITY::GET_ENTITY_HEADING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
 				float xVector = forward * sin(GameFunctions::DegreesToRadians(heading)) * -1.f;
 				float yVector = forward * cos(GameFunctions::DegreesToRadians(heading));
-				::Vehicle veh = VEHICLE::CREATE_VEHICLE(model, ourCoords.x - xVector, ourCoords.y - yVector, ourCoords.z, heading, true, true);
+				::Vehicle veh = VEHICLE::CREATE_VEHICLE(model, ourCoords.x - xVector, ourCoords.y - yVector, ourCoords.z, heading, true, true, false);
 				GameFunctions::RequestNetworkControlOfEntity(veh);
 				VEHICLE::SET_VEHICLE_FORWARD_SPEED(veh, 250);
 				STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);
@@ -89,7 +89,7 @@ void GUI::Submenus::SelectedPlayerGriefing()
 	if (GUI::Option("Cage Trap", ""))
 	{
 		Vector3 remotePos = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
-		Object obj = OBJECT::CREATE_OBJECT(GAMEPLAY::GET_HASH_KEY("prop_gold_cont_01"), remotePos.x, remotePos.y, remotePos.z - 1.f, true, false, false);
+		Object obj = OBJECT::CREATE_OBJECT(MISC::GET_HASH_KEY("prop_gold_cont_01"), remotePos.x, remotePos.y, remotePos.z - 1.f, true, false, false);
 	}
 	if (GUI::Option("Clone Ped", ""))
 	{
@@ -106,9 +106,9 @@ void GUI::Submenus::SelectedPlayerGriefing()
 		int eclone[1000];
 		int egcount = 1;
 		Ped SelectedPlayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
-		Hash railgun = GAMEPLAY::GET_HASH_KEY("WEAPON_RAILGUN");
+		Hash railgun = MISC::GET_HASH_KEY("WEAPON_RAILGUN");
 		Vector3 pos = GameFunctions::GetEntityCoords(SelectedPlayer);
-		Hash pedm = GAMEPLAY::GET_HASH_KEY("u_m_m_jesus_01");
+		Hash pedm = MISC::GET_HASH_KEY("u_m_m_jesus_01");
 		STREAMING::REQUEST_MODEL(pedm);
 		while (!STREAMING::HAS_MODEL_LOADED(pedm)) { GameHooking::PauseMainFiber(0); }
 		eclone[egcount] = PED::CREATE_PED(26, pedm, pos.x + rand() % 1, pos.y + rand() % 1, pos.z + 1, 0, 1, 1);
@@ -116,7 +116,7 @@ void GUI::Submenus::SelectedPlayerGriefing()
 		PED::SET_PED_COMBAT_ABILITY(eclone[egcount], 100);
 		WEAPON::GIVE_WEAPON_TO_PED(eclone[egcount], railgun, railgun, 9999, 9999);
 		PED::SET_PED_CAN_SWITCH_WEAPON(eclone[egcount], true);
-		AI::TASK_COMBAT_PED(eclone[egcount], SelectedPlayer, 1, 1);
+		TASK::TASK_COMBAT_PED(eclone[egcount], SelectedPlayer, 1, 1);
 		PED::SET_PED_ALERTNESS(eclone[egcount], 1000);
 		PED::SET_PED_COMBAT_RANGE(eclone[egcount], 1000);
 		egcount++;

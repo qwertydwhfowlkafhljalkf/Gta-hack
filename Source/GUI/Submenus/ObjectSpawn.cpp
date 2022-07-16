@@ -8,7 +8,7 @@ void GUI::Submenus::ObjectSpawn()
 	GUI::Break("Object List", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Search", "Enter keywords to filter object list"))
 	{
-		char* KeyboardInput;
+		const char* KeyboardInput;
 		if (GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter search term", KeyboardInput))
 		{
 			ObjectSpawnSearchTerm = KeyboardInput;

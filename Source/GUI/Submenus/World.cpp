@@ -14,12 +14,12 @@ void GUI::Submenus::World()
 	if (GUI::Option("Clear Area", "Clear area of vehicles, objects etc"))
 	{
 		Vector3 MyPos = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
-		GAMEPLAY::CLEAR_AREA(MyPos.x, MyPos.y, MyPos.z, 250, true, false, false, false);
-		GAMEPLAY::CLEAR_AREA_OF_COPS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
-		GAMEPLAY::CLEAR_AREA_OF_OBJECTS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
-		GAMEPLAY::CLEAR_AREA_OF_VEHICLES(MyPos.x, MyPos.y, MyPos.z, 250, false, false, false, false, false);
-		GAMEPLAY::CLEAR_AREA_OF_PEDS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
-		GAMEPLAY::CLEAR_AREA_OF_PROJECTILES(MyPos.x, MyPos.y, MyPos.z, 250, false);
+		MISC::CLEAR_AREA(MyPos.x, MyPos.y, MyPos.z, 250, true, false, false, false);
+		MISC::CLEAR_AREA_OF_COPS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
+		MISC::CLEAR_AREA_OF_OBJECTS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
+		MISC::CLEAR_AREA_OF_VEHICLES(MyPos.x, MyPos.y, MyPos.z, 250, false, false, false, false, false, false, 0);
+		MISC::CLEAR_AREA_OF_PEDS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
+		MISC::CLEAR_AREA_OF_PROJECTILES(MyPos.x, MyPos.y, MyPos.z, 250, false);
 
 		// Seperate Remove Nearby Vehicles: for spawned vehicles
 		const int ElementAmount = 10;

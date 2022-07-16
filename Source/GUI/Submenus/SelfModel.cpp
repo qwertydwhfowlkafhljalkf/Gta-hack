@@ -7,10 +7,10 @@ void GUI::Submenus::SelfModel()
 	GUI::Title("Model");
 	if (GUI::Option("Custom Input", "Input custom Ped model"))
 	{
-		char* KeyboardInput;
+		const char* KeyboardInput;
 		if (GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter custom ped model name", KeyboardInput))
 		{
-			DWORD model = GAMEPLAY::GET_HASH_KEY(KeyboardInput);
+			DWORD model = MISC::GET_HASH_KEY(KeyboardInput);
 			if (!STREAMING::IS_MODEL_IN_CDIMAGE(model))
 			{
 				GameFunctions::MinimapNotification("~r~That is not a valid ped model");
@@ -24,7 +24,7 @@ void GUI::Submenus::SelfModel()
 	GUI::Break("Ped List", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Search", "Enter keywords to filter peds list"))
 	{
-		char* KeyboardInput;
+		const char* KeyboardInput;
 		if (GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter search term", KeyboardInput))
 		{
 			ChangeModelPedSearchTerm = KeyboardInput;
@@ -47,7 +47,7 @@ void GUI::Submenus::SelfModel()
 		{
 			if (GUI::Option(i, ""))
 			{
-				GameFunctions::ChangePedModelLocalPlayer(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(i)));
+				GameFunctions::ChangePedModelLocalPlayer(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(i)));
 			}
 		}
 	}

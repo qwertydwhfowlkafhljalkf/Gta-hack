@@ -15,7 +15,7 @@ void GUI::Submenus::VehicleSpawnSettings()
 	{
 		if (GUI::Option("Current: ~c~" + CheatFeatures::VehicleSpawnerCustomLicensePlateTextString, "Select to change"))
 		{
-			char* Input;
+			const char* Input;
 			if (GameFunctions::DisplayKeyboardAndReturnInput(8, "Enter Custom License Plate Text", Input))
 			{
 				if (strlen(Input) < 1)

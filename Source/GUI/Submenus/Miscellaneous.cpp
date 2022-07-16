@@ -12,7 +12,7 @@ void GUI::Submenus::Miscellaneous()
 	GUI::MenuOption("IPL Loader", Submenus::IPLLoader);
 	if (GUI::Int("Fake Wanted Level", FakeWantedLevelInteger, 0, 6, 1, "Select to change", SELECTABLE_DISABLE_SAVE | SELECTABLE_RETURN_VALUE_CHANGE))
 	{
-		GAMEPLAY::SET_FAKE_WANTED_LEVEL(FakeWantedLevelInteger);
+		MISC::SET_FAKE_WANTED_LEVEL(FakeWantedLevelInteger);
 	}
 	GUI::Toggle("Disable Mobile Phone", CheatFeatures::DisableMobilePhoneBool, "Disable Mobile Phone");
 	GUI::Toggle("No-Clip", CheatFeatures::NoClipBool, "Use W and mouse to control");
@@ -37,16 +37,16 @@ void GUI::Submenus::Miscellaneous()
 		{
 			std::string VehicleName = "MARSHALL";
 			Vector3 WayPointVector = UI::GET_BLIP_COORDS(WaypointHandle);
-			STREAMING::REQUEST_MODEL(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleName)));
-			while (!STREAMING::HAS_MODEL_LOADED(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleName)))) { GameHooking::PauseMainFiber(0); }
+			STREAMING::REQUEST_MODEL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleName)));
+			while (!STREAMING::HAS_MODEL_LOADED(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleName)))) { GameHooking::PauseMainFiber(0); }
 			Vector3 pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(GameFunctions::PlayerPedID, 0.0, 5.0, 0);
-			::Vehicle VehicleHandle = VEHICLE::CREATE_VEHICLE(GAMEPLAY::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleName)), pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(GameFunctions::PlayerPedID), 1, 1);
+			::Vehicle VehicleHandle = VEHICLE::CREATE_VEHICLE(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleName)), pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(GameFunctions::PlayerPedID), 1, 1, false);
 			if (VehicleHandle != 0)
 			{
 				Ped Driver = PED::CREATE_RANDOM_PED_AS_DRIVER(VehicleHandle, false);
 				PED::SET_PED_INTO_VEHICLE(Driver, VehicleHandle, -1);
 				PED::SET_PED_INTO_VEHICLE(GameFunctions::PlayerPedID, VehicleHandle, 0);
-				AI::TASK_VEHICLE_DRIVE_TO_COORD(Driver, VehicleHandle, WayPointVector.x, WayPointVector.y, WayPointVector.z, 40, 1, ENTITY::GET_ENTITY_MODEL(VehicleHandle), 7, 6, -1);
+				TASK::TASK_VEHICLE_DRIVE_TO_COORD(Driver, VehicleHandle, WayPointVector.x, WayPointVector.y, WayPointVector.z, 40, 1, ENTITY::GET_ENTITY_MODEL(VehicleHandle), 7, 6, -1);
 				VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(VehicleHandle, "CRUSADER");
 				GameFunctions::MinimapNotification("NPC Driver Spawned");
 			}

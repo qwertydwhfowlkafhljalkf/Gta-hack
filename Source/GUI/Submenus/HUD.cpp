@@ -17,7 +17,7 @@ void GUI::Submenus::HUD()
 	GUI::Int("Alpha", HUDColorAlpha, 0, 255, 1, "", SELECTABLE_DISABLE_SAVE | SELECTABLE_RETURN_VALUE_CHANGE);
 	if (GUI::Option("Set", ""))
 	{
-		UI::_SET_HUD_COLOUR(SelectedComponent, HUDColorRed, HUDColorGreen, HUDColorBlue, HUDColorAlpha);
+		UI::REPLACE_HUD_COLOUR_WITH_RGBA(SelectedComponent, HUDColorRed, HUDColorGreen, HUDColorBlue, HUDColorAlpha);
 
 		// Write to ini file
 		CheatFunctions::IniFileWriteString(std::to_string(HUDColorRed), CheatFunctions::ReturnHUDColorsFilePath(), GameArrays::HUDColors[SelectedComponent], "r");
@@ -33,7 +33,7 @@ void GUI::Submenus::HUD()
 		{
 			if (ResetColorStringVector == 0 && index == SelectedComponent || ResetColorStringVector == 1)
 			{
-				UI::_SET_HUD_COLOUR(index, data.R, data.G, data.B, data.A);
+				UI::REPLACE_HUD_COLOUR_WITH_RGBA(index, data.R, data.G, data.B, data.A);
 			}			
 			index++;
 		}

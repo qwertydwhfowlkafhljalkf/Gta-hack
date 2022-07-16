@@ -32,13 +32,13 @@ namespace Cheat
 		void GetCameraDirection(float* dirX, float* dirY, float* dirZ);
 		void RequestNetworkControlOfEntity(Entity entity);
 		void ClonePed(Ped ped);
-		bool DisplayKeyboardAndReturnInput(int MaxInput, std::string Title, char* &Input);
+		bool DisplayKeyboardAndReturnInput(int MaxInput, std::string Title, const char* &Input);
 		bool DisplayKeyboardAndReturnInputInteger(int MaxInput, std::string Title, int &Input);
 		void StopAllPedAnimations(Ped TargetPed);
 		void ShowPlayerInformationBox(Player PlayerID);
 		float Get3DDistance(Vector3 a, Vector3 b);
 		void ApplyForceToEntity(Entity e, float x, float y, float z);
-		void SpawnVehicle(char* ModelHash);
+		void SpawnVehicle(const char* ModelHash);
 		void SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID);
 		void MaxDowngradeVehicle(int VehicleHandle);
 		void MaxUpgradeVehicle(int VehicleHandle);
@@ -59,7 +59,7 @@ namespace Cheat
 		float KMHToMS(float MS);
 		float MPHToMS(float MS);
 		void ChangeEntityInvincibilityState(Entity EntityHandle, bool Enable);
-		char* ReturnOnlinePlayerPictureString(Player PlayerHandle);
+		const char* ReturnOnlinePlayerPictureString(Player PlayerHandle);
 		VECTOR2 ReturnCursorYXCoords();
 		void EnableDisableCursorNavigation();
 		bool IsCursorAtXYPosition(VECTOR2 const& boxCentre, VECTOR2 const& boxSize);
@@ -71,7 +71,6 @@ namespace Cheat
 		std::string ReturnCurrentGTAOCharacter(bool NumberOnly = false);
 		void PlayFrontendSoundDefault(char* SoundName);
 		void PlayScenarioNearbyPeds(char* Scenario);
-		bool IsPlayerIDValid(Player ID);
 		Player ReturnPlayerIDFromPlayerName(std::string PlayerName);
 		void MaxUpgradeAllWeapons();
 		void ShowTeleportLocationsMenu(std::vector<TeleportLocationStruct> category);
