@@ -8,7 +8,7 @@ void GUI::Submenus::AllPlayers()
 	GUI::Break("Friendly", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Give All Weapons", "Give all players all weapons"))
 	{
-		for (int i = 0; i < 32; i++)
+		PlayersSessionForLoop
 		{
 			bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
 			bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;
@@ -24,7 +24,7 @@ void GUI::Submenus::AllPlayers()
 	GUI::Break("Griefing", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Teleport to Eclipse Tower", ""))
 	{
-		for (int i = 0; i < 32; i++)
+		PlayersSessionForLoop
 		{
 			bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
 			bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;
@@ -40,7 +40,7 @@ void GUI::Submenus::AllPlayers()
 	GUI::Toggle("Freeze", CheatFeatures::FreezeAllPlayersBool, "", SELECTABLE_DISABLE_SAVE);
 	if (GUI::Option("Kick Out Of Vehicle", ""))
 	{
-		for (int i = 0; i < 32; i++)
+		PlayersSessionForLoop
 		{
 			bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
 			bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;
@@ -57,7 +57,7 @@ void GUI::Submenus::AllPlayers()
 	}
 	if (GUI::Option("Airstrike", ""))
 	{
-		for (int i = 0; i < 32; i++)
+		PlayersSessionForLoop
 		{
 			bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
 			bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;
@@ -72,7 +72,7 @@ void GUI::Submenus::AllPlayers()
 	}
 	if (GUI::Option("Trap", ""))
 	{
-		for (int i = 0; i < 32; i++)
+		PlayersSessionForLoop
 		{
 			bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
 			bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;
@@ -87,7 +87,7 @@ void GUI::Submenus::AllPlayers()
 	}
 	if (GUI::Option("Attach Beach Fire", ""))
 	{
-		for (int i = 0; i < 32; i++)
+		PlayersSessionForLoop
 		{
 			bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
 			bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;
@@ -102,7 +102,7 @@ void GUI::Submenus::AllPlayers()
 	GUI::Break("Miscellaneous", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Host Kick", "Kick all players from session"))
 	{
-		for (int i = 0; i < 32; i++)
+		PlayersSessionForLoop
 		{
 			bool ExcludeSelf = GameFunctions::PlayerID == i && CheatFeatures::AllPlayersExclusionsSelf;
 			bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && CheatFeatures::AllPlayersExclusionsFriends;

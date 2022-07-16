@@ -901,7 +901,7 @@ void Cheat::GameFunctions::CheckNewSessionMembersLoop()
 	{
 		if (!SecondCall) { CurrentPlayerNamesSession.clear(); CurrentPlayerNamesSession2.clear(); }
 
-		for (int i = 0; i < 32; ++i)
+		PlayersSessionForLoop
 		{
 			const char* PlayernameString = PLAYER::GET_PLAYER_NAME(i);
 			if (ENTITY::DOES_ENTITY_EXIST(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i)))
@@ -1155,7 +1155,7 @@ void Cheat::GameFunctions::PlayFrontendSoundDefault(char* SoundName)
 
 Player Cheat::GameFunctions::ReturnPlayerIDFromPlayerName(std::string PlayerName)
 {
-	for (int i = 0; i < 32; ++i)
+	PlayersSessionForLoop
 	{
 		if (PLAYER::GET_PLAYER_NAME(i) == PlayerName)
 		{

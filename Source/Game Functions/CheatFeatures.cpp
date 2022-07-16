@@ -247,6 +247,7 @@ void Cheat::CheatFeatures::Loop()
 	FreezeStationBool ? FreezeStation() : FreezeStationWasEnabled ? AUDIO::UNFREEZE_RADIO_STATION(AUDIO::GET_PLAYER_RADIO_STATION_NAME()), FreezeStationWasEnabled = false : NULL;
 	HideMinimapBool ? HideMinimap() : HideMinimapWasEnabled ? UI::DISPLAY_RADAR(true), HideMinimapWasEnabled = false : NULL;
 	WeaponInvisibilityBool ? WeaponInvisibility(true) : WeaponInvisibility(false);
+	SessionLockFriendsOnlyBool ? SessionLockFriendsOnly() : NULL;
 }
 
 bool Cheat::CheatFeatures::GodmodeBool = false;
@@ -875,7 +876,7 @@ void Cheat::CheatFeatures::FreezeSelectedPlayer()
 bool Cheat::CheatFeatures::FreezeAllPlayersBool = false;
 void Cheat::CheatFeatures::FreezeAllPlayers()
 {
-	for (int i = 0; i < 32; i++)
+	PlayersSessionForLoop
 	{
 		bool ExcludeSelf = GameFunctions::PlayerID == i && AllPlayersExclusionsSelf;
 		bool ExcludeFriend = GameFunctions::IsPlayerFriend(i) && AllPlayersExclusionsFriends;
@@ -1014,7 +1015,7 @@ void Cheat::CheatFeatures::PlayerESP()
 {
 	if (NETWORK::NETWORK_GET_NUM_CONNECTED_PLAYERS() > 1)
 	{
-		for (int i = 0; i < 32; i++) 
+		PlayersSessionForLoop
 		{
 			if (GameFunctions::PlayerID != i) 
 			{
@@ -1289,4 +1290,20 @@ bool Cheat::CheatFeatures::WeaponInvisibilityBool = false;
 void Cheat::CheatFeatures::WeaponInvisibility(bool toggle)
 {
 	ENTITY::SET_ENTITY_VISIBLE(WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX(GameFunctions::PlayerPedID, 0), !toggle, false);
+}
+
+bool Cheat::CheatFeatures::SessionLockFriendsOnlyBool = false;
+void Cheat::CheatFeatures::SessionLockFriendsOnly()
+{
+	if (NETWORK::NETWORK_IS_SESSION_STARTED())
+	{
+		PlayersSessionForLoop
+		{
+			if (GameFunctions::PlayerID != i && NETWORK::NETWORK_IS_PLAYER_ACTIVE(i) && !GameFunctions::IsPlayerFriend(i))
+			{
+				uint64_t arguments_aray[4] = { (uint64_t)TSE_KICK_TO_SP, (uint64_t)i, 0, 0 };
+				SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << i);
+			}
+		}
+	}
 }

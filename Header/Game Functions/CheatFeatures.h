@@ -189,5 +189,7 @@ namespace Cheat
 		void RGBDisco();
 		extern bool WeaponInvisibilityBool;
 		void WeaponInvisibility(bool toggle);
+		extern bool SessionLockFriendsOnlyBool;
+		void SessionLockFriendsOnly();
 	}
 }

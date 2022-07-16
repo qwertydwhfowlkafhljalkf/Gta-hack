@@ -6,7 +6,7 @@ void GUI::Submenus::PlayerList()
 	GUI::Title("Players");
 	GUI::StringVector("Show Selected Player", { "Player List & Menu", "Player List", "Disabled" }, CheatFeatures::PlayerListMarkerPosition, "");
 	GUI::Break("List", SELECTABLE_CENTER_TEXT);
-	for (int i = 0; i < 32; ++i)
+	PlayersSessionForLoop
 	{
 		if (NETWORK::NETWORK_IS_PLAYER_ACTIVE(i))
 		{
