@@ -38,6 +38,7 @@ bool Cheat::CheatFeatures::AllPlayersExclusionsSelf = true;
 bool Cheat::CheatFeatures::AllPlayersExclusionsFriends = false;
 bool Cheat::CheatFeatures::AllPlayersExclusionsHost = false;
 bool Cheat::CheatFeatures::CloseGameImmediatelyBool = true;
+bool Cheat::CheatFeatures::TeleportTransition = false;
 
 void Cheat::CheatFeatures::Loop()
 {

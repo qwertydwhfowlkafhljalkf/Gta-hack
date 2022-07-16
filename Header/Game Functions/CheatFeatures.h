@@ -43,6 +43,7 @@ namespace Cheat
 		extern bool AllPlayersExclusionsFriends;
 		extern bool AllPlayersExclusionsHost;
 		extern bool CloseGameImmediatelyBool;
+		extern bool TeleportTransition;
 
 		void Loop();
 		extern bool GodmodeBool;

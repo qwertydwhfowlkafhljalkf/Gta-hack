@@ -22,7 +22,7 @@ void GUI::Submenus::SelectedPlayerRemote()
 	}
 	GUI::Break("Teleport", SELECTABLE_CENTER_TEXT);
 	GUI::MenuOption("Apartment", SelectedPlayerApartmentTeleport);
-	if (GUI::Option("Cayo Perico", ""))
+	if (GUI::Option("Cayo Perico Island", ""))
 	{
 		uint64_t arguments_aray[2] = { (uint64_t)TSE_CAYO_PERICO_TELEPORT, (uint64_t)CheatFeatures::SelectedPlayer };
 		SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << CheatFeatures::SelectedPlayer);

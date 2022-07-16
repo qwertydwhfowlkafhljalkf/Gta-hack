@@ -234,51 +234,58 @@ int Cheat::GameFunctions::ReturnRandomInteger(int start, int end)
 void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicle)
 {
 	Entity TargetEntity = e;
-
-	if (ENTITY::IS_ENTITY_A_PED(TargetEntity))
+	bool TeleportTransition = CheatFeatures::TeleportTransition && TargetEntity == GameFunctions::PlayerPedID;
+	if (TeleportTransition)
 	{
-		if (PED::IS_PED_IN_ANY_VEHICLE(TargetEntity, false) && !IgnoreCurrentPedVehicle)
-		{ 
-			TargetEntity = PED::GET_VEHICLE_PED_IS_USING(TargetEntity);
-		}
+		STREAMING::_SWITCH_OUT_PLAYER(TargetEntity, 0, 2);
 	}
+
 	if (ENTITY::IS_AN_ENTITY(TargetEntity))
 	{
 		GameFunctions::RequestNetworkControlOfEntity(TargetEntity);
-	}
 
-	if (!AutoCorrectGroundHeight)
-	{
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
-	}
-	else
-	{
-		bool GroundFound = false;
-		static std::array<float, 21> GroundCheckHeight = { 0.0, 50.0, 100.0, 150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.00 };
-
-		for (const float& CurrentHeight : GroundCheckHeight)
+		if (PED::IS_PED_IN_ANY_VEHICLE(TargetEntity, false) && !IgnoreCurrentPedVehicle)
 		{
-			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, CurrentHeight, false, false, true);
-			GameHooking::PauseMainFiber(50, false);
-			if (MISC::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, CurrentHeight, &coords.z, false, false))
-			{
-				GroundFound = true;
-				coords.z += 3.0f;
-				break;
-			}
+			TargetEntity = PED::GET_VEHICLE_PED_IS_USING(TargetEntity);
 		}
 
-		if (!GroundFound)
-		{ 
-			Vector3 ClosestRoadCoord;
-			if (PATHFIND::GET_CLOSEST_ROAD(coords.x, coords.y, coords.z, 1.0f, 1, 
-										   &ClosestRoadCoord, &ClosestRoadCoord, NULL, NULL, NULL, NULL))
-			{
-				coords = ClosestRoadCoord;
-			}
-			GameFunctions::SubtitleNotification("~r~Ground not found, teleporting to nearby road", 4000);
+		if (!AutoCorrectGroundHeight)
+		{
+			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
 		}
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
+		else
+		{
+			bool GroundFound = false;
+			static std::array<float, 21> GroundCheckHeight = { 0.0f, 50.0f, 100.0f, 150.0f, 200.0f, 250.0f, 300.0f, 350.0f, 400.0f, 450.0f, 500.0f, 550.0f, 600.0f, 650.0f, 700.0f, 750.0f, 800.0f, 850.0f, 900.0f, 950.0f, 1000.00f };
+
+			for (const float& CurrentHeight : GroundCheckHeight)
+			{
+				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, CurrentHeight, false, false, true);
+				GameHooking::PauseMainFiber(50, false);
+				if (MISC::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, CurrentHeight, &coords.z, false, false))
+				{
+					GroundFound = true;
+					coords.z += 3.0f;
+					break;
+				}
+			}
+
+			if (!GroundFound)
+			{
+				Vector3 ClosestRoadCoord;
+				if (PATHFIND::GET_CLOSEST_ROAD(coords.x, coords.y, coords.z, 1.0f, 1,
+					&ClosestRoadCoord, &ClosestRoadCoord, NULL, NULL, NULL, NULL))
+				{
+					coords = ClosestRoadCoord;
+				}
+				GameFunctions::SubtitleNotification("~r~Ground not found, teleported to nearby road", 4000);
+			}
+			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
+		}
+		if (TeleportTransition)
+		{
+			STREAMING::_SWITCH_IN_PLAYER(TargetEntity);
+		}
 	}
 }
 
