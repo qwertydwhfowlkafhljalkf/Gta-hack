@@ -1301,8 +1301,7 @@ void Cheat::CheatFeatures::SessionLockFriendsOnly()
 		{
 			if (GameFunctions::PlayerID != i && NETWORK::NETWORK_IS_PLAYER_ACTIVE(i) && !GameFunctions::IsPlayerFriend(i))
 			{
-				uint64_t arguments_aray[4] = { (uint64_t)TSE_KICK_TO_SP, (uint64_t)i, 0, 0 };
-				SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << i);
+				GameFunctions::TriggerScriptEvent(KICK_TO_SINGLE_PLAYER, i);
 			}
 		}
 	}

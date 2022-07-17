@@ -32,8 +32,7 @@ void GUI::Submenus::AllPlayers()
 
 			if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && NETWORK::NETWORK_IS_PLAYER_ACTIVE(i))
 			{
-				uint64_t teleport[9] = { TSE_PROPERTY_TELEPORT, i, 0, -1, 1, 1, 0, 0, 0 };
-				SCRIPT::TRIGGER_SCRIPT_EVENT(1, teleport, 9, (1 << i));
+				GameFunctions::TriggerScriptEvent(PROPERTY_TELEPORT, i, 1);
 			}
 		}
 	}

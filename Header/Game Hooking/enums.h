@@ -877,3 +877,12 @@ enum SessionTypes
 	SessionTypeJoinCrew,
 	SessionTypeLeaveOnline = -1
 };
+
+enum ScriptEventTypes
+{
+	KICK_TO_SINGLE_PLAYER,
+	CEO_KICK,
+	CEO_BAN,
+	PROPERTY_TELEPORT,
+	CAYO_PERICO_TELEPORT
+};

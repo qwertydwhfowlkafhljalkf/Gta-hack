@@ -79,6 +79,7 @@ namespace Cheat
 		bool ShowFullScreenMessage(std::string Message);
 		void SetCharacterSkillStat(std::string Skill, int Level);
 		void ChangeGTAOSessionType(SessionTypes SessionType);
+		void TriggerScriptEvent(ScriptEventTypes EventType, Player TargetPlayer, int property_teleport_index = -1);
 	}
 }
 

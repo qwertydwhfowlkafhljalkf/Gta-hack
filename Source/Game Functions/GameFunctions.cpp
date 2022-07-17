@@ -1273,3 +1273,38 @@ void Cheat::GameFunctions::ChangeGTAOSessionType(SessionTypes SessionType)
 		GUI::CloseMenuGUI();
 	}	
 }
+
+void Cheat::GameFunctions::TriggerScriptEvent(ScriptEventTypes EventType, Player TargetPlayer, int property_teleport_index)
+{
+	if (NETWORK::NETWORK_IS_SESSION_STARTED() && NETWORK::NETWORK_IS_PLAYER_ACTIVE(TargetPlayer))
+	{
+		if (EventType == ScriptEventTypes::KICK_TO_SINGLE_PLAYER)
+		{
+			uint64_t arguments_aray[4] = { (uint64_t)TSE_KICK_TO_SP, (uint64_t)TargetPlayer, 0, 0 };
+			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
+		}
+		else if (EventType == ScriptEventTypes::CEO_KICK)
+		{
+			uint64_t arguments_aray[4] = { (uint64_t)TSE_CEO_KICK, (uint64_t)TargetPlayer, 1, 5 };
+			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
+		}
+		else if (EventType == ScriptEventTypes::CEO_BAN)
+		{
+			uint64_t arguments_aray[4] = { (uint64_t)TSE_CEO_BAN, (uint64_t)TargetPlayer, 1, 5 };
+			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
+		}
+		else if (EventType == ScriptEventTypes::PROPERTY_TELEPORT)
+		{
+			if (property_teleport_index != -1)
+			{
+				uint64_t teleport[9] = { TSE_PROPERTY_TELEPORT, TargetPlayer, 0, -1, 1, property_teleport_index, 0, 0, 0 };
+				SCRIPT::TRIGGER_SCRIPT_EVENT(1, teleport, 9, (1 << TargetPlayer));
+			}
+		}
+		else if (EventType == ScriptEventTypes::CAYO_PERICO_TELEPORT)
+		{
+			uint64_t arguments_aray[2] = { (uint64_t)TSE_CAYO_PERICO_TELEPORT, (uint64_t)TargetPlayer };
+			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
+		}
+	}	
+}
