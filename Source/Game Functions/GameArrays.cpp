@@ -1359,6 +1359,12 @@ const std::vector<std::string> Cheat::GameArrays::TheContractModels = {
 	"JUBILEE", "REEVER", "SHINOBI", "SUGOI", "ZENO", "BALLER7", "CHAMPION", "CINQUEMILA", "COMET7"
 };
 
+const std::vector<std::string> Cheat::GameArrays::TheCriminalEnterprisesDLC = {
+	"TENF",	"WEEVIL2",	"TORERO2", "SENTINEL4","POSTLUDE","DRAUGUR",
+	"RHINEHART","VIGERO2","GREENWOOD", "OMNISEGT",	"RUINER4","CORSITA",
+	"LM87",	"SM722", "CONADA"
+};
+
 const std::vector<VehicleModelPicturesStruct> Cheat::GameArrays::VehicleModelPictures = {
 {"candc_heist4","alkonost"},
 {"candc_heist4","annihilator2"},
