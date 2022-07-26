@@ -354,7 +354,7 @@ void GameHooking::Initialize()
 
 	//Load Active Game Thread
 	Cheat::LogFunctions::DebugMessage("Load 'Active Game Thread'");
-	c_location = Memory::pattern("E8 ? ? ? ? 48 8B 88 10 01 00 00").count(1).get(0).get<char>(1);
+	c_location = Memory::pattern("E8 ? ? ? ? 48 8B 88 ? 01 00 00 ? 02").count(1).get(0).get<char>(1);
 	c_location == nullptr ? Cheat::LogFunctions::Error("Failed to load Active Game Thread", true) : GetActiveThread = reinterpret_cast<decltype(GetActiveThread)>(c_location + *(int32_t*)c_location + 4);
 
 	//Get Global Pointer
