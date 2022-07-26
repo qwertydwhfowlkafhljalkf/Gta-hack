@@ -1193,7 +1193,7 @@ void Cheat::GameFunctions::ToggleOffRadar(bool state)
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
 		globalHandle(2689224).At(1 + (Cheat::GameFunctions::PlayerID * 451)).At(207).As<bool>() = state;
-		globalHandle(2703660).At(56).As<int>() = NETWORK::GET_NETWORK_TIME();
+		globalHandle(2703735).At(56).As<int>() = NETWORK::GET_NETWORK_TIME();
 	}
 }
 
@@ -1265,7 +1265,7 @@ void Cheat::GameFunctions::ChangeGTAOSessionType(SessionTypes SessionType)
 		}
 		else
 		{
-			globalHandle(1575012).As<int>() = (int)SessionType;
+			globalHandle(1575015).As<int>() = (int)SessionType;
 		}
 		globalHandle(1574589).As<int>() = 1;
 		GameHooking::PauseMainFiber(50, false);

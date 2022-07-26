@@ -84,6 +84,7 @@ namespace Cheat
 			void ArenaWarDLC();
 			void SmugglersRunDLC();
 			void AfterHoursDLC();
+			void TheCriminalEnterprisesDLC();
 			void GunrunningDLC();
 			void DoomsdayHeistDLC();
 			void SSASSSDLC();

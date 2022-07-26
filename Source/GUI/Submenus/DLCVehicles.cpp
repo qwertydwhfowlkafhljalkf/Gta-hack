@@ -4,6 +4,7 @@ using namespace Cheat;
 void GUI::Submenus::DLCVehicles()
 {
 	GUI::Title("DLC Vehicles");
+	GUI::MenuOption("The Criminal Enterprises", Submenus::TheCriminalEnterprisesDLC);
 	GUI::MenuOption("The Contract", Submenus::TheContractDLC);
 	GUI::MenuOption("Los Santos Tuners", Submenus::LosSantosTunersDLC);
 	GUI::MenuOption("The Cayo Perico Heist", Submenus::CayoPericoHeistDLC);

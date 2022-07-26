@@ -214,6 +214,7 @@
     <ClCompile Include="Source\GUI\Submenus\SUVVehicles.cpp" />
     <ClCompile Include="Source\GUI\Submenus\Teleport.cpp" />
     <ClCompile Include="Source\GUI\Submenus\TheContractDLC.cpp" />
+    <ClCompile Include="Source\GUI\Submenus\TheCriminalEnterprisesDLC.cpp" />
     <ClCompile Include="Source\GUI\Submenus\Theme.cpp" />
     <ClCompile Include="Source\GUI\Submenus\ThemeFiles.cpp" />
     <ClCompile Include="Source\GUI\Submenus\Time.cpp" />

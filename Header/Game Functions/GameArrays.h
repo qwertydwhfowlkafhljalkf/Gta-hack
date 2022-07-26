@@ -56,6 +56,7 @@ namespace Cheat
 {
 	namespace GameArrays
 	{
+		extern const std::vector<std::string> TheCriminalEnterprisesDLC;
 		extern const std::vector<std::string> TheContractModels;
 		extern const std::vector<std::string> LosSantosTunersModels;
 		extern const std::vector<std::string> CayoPericoHeistModels;

@@ -400,6 +400,9 @@
     <ClCompile Include="Source\Cheat Functions\Controls.cpp">
       <Filter>Source Files\Cheat Functions</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GUI\Submenus\TheCriminalEnterprisesDLC.cpp">
+      <Filter>Source Files\GUI\Submenus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\resource.h">
