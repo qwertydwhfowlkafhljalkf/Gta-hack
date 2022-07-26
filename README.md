@@ -1,4 +1,4 @@
-:warning: **Always** download source code from the [stable branch](https://github.com/HatchesPls/GrandTheftAutoV-Cheat/tree/stable); the main branch contains changes for a upcoming release.
+:warning: **Always** download source code from the [Releases](https://github.com/HatchesPls/GrandTheftAutoV-Cheat/releases) section; the main branch might not contain stable code.
 
 # Grand Theft Auto V Cheat
 [![C++](https://img.shields.io/badge/Language-C%2B%2B-16ba42?style=flat-square)](https://en.wikipedia.org/wiki/C%2B%2B)
