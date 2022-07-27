@@ -143,8 +143,10 @@ bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
 	return false;
 }
 
-bool GUI::VehicleOption(std::string option, std::string ModelName)
+bool GUI::VehicleOption(std::string VehicleModel, std::string ModelName)
 {
+	std::string option = UI::_GET_LABEL_TEXT(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleModel))));
+	if (option == "NULL") { option = VehicleModel; }
 	if (Option(option, ""))
 	{
 		return true;
