@@ -14,6 +14,8 @@
 #define GLOBAL_SP_DESPAWN_BYPASS		4533757
 const int GLOBAL_SNOW[]						= { 262145, 4751 };
 const int GLOBAL_BULLSHARKTESTOSTERONE[]	= { 2703735, 3576 };
+const int GLOBAL_NO_IDLE_KICK1[]			= { 1648034, 1172 };
+const int GLOBAL_NO_IDLE_KICK2[]			= { 1648034, 1156 };
 
 // Script Events
 #define TSE_KICK_TO_SP					2071375245

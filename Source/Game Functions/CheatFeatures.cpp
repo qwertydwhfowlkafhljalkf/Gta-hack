@@ -1179,8 +1179,8 @@ void Cheat::CheatFeatures::DisableMobilePhone()
 bool Cheat::CheatFeatures::NoIdleKickBool = false;
 void Cheat::CheatFeatures::NoIdleKick()
 {
-	globalHandle(1644209).At(1165).As<int>() = -1;
-	globalHandle(1644209).At(1149).As<int>() = -1;
+	globalHandle(GLOBAL_NO_IDLE_KICK1[0]).At(GLOBAL_NO_IDLE_KICK1[1]).As<int>() = -1;
+	globalHandle(GLOBAL_NO_IDLE_KICK2[0]).At(GLOBAL_NO_IDLE_KICK2[1]).As<int>() = -1;
 }
 
 DWORD VehicleWeapons_LastTick = 0;
