@@ -4,7 +4,7 @@ using namespace Cheat;
 void GUI::Submenus::SelectedPlayerGriefing()
 {
 	GUI::Title("Griefing");
-	GUI::MenuOption("Remote Events", Submenus::SelectedPlayerRemote);
+	GUI::MenuOption("Script Events", Submenus::SelectedPlayerRemote);
 	GUI::MenuOption("Attachments", Submenus::SelectedPlayerAttachments);
 	GUI::Toggle("Explode", CheatFeatures::ExplodeLoopSelectedPlayerBool, "", SELECTABLE_DISABLE_SAVE);
 	GUI::Toggle("Freeze", CheatFeatures::FreezeSelectedPlayerBool, "", SELECTABLE_DISABLE_SAVE);

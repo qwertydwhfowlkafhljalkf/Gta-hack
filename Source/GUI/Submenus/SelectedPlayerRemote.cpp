@@ -3,10 +3,14 @@
 using namespace Cheat;
 void GUI::Submenus::SelectedPlayerRemote()
 {
-	GUI::Title("Remote Events");
+	GUI::Title("Script Events");
 	if (GUI::Option("Kick To Single Player", ""))
 	{
 		GameFunctions::TriggerScriptEvent(KICK_TO_SINGLE_PLAYER, CheatFeatures::SelectedPlayer);
+	}
+	if (GUI::Option("Force Into Mission", ""))
+	{
+		GameFunctions::TriggerScriptEvent(FORCE_INTO_MISSION, CheatFeatures::SelectedPlayer);
 	}
 	GUI::Break("CEO", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Kick", ""))

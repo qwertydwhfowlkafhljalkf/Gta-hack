@@ -1306,5 +1306,10 @@ void Cheat::GameFunctions::TriggerScriptEvent(ScriptEventTypes EventType, Player
 			uint64_t arguments_aray[2] = { (uint64_t)TSE_CAYO_PERICO_TELEPORT, (uint64_t)TargetPlayer };
 			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
 		}
+		else if (EventType == ScriptEventTypes::FORCE_INTO_MISSION)
+		{
+			uint64_t arguments_aray[3] = { (uint64_t)TSE_FORCE_INTO_MISSION, (uint64_t)TargetPlayer, 0 };
+			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
+		}
 	}	
 }

@@ -68,7 +68,8 @@ const char* GetLabelTextHooked(void* this_, const char* label)
 	return GetLabelTextOriginal(this_, label);
 }
 
-const std::vector <int> MaliciousScriptsArray = { };
+const std::vector <int> MaliciousScriptsArray = { TSE_KICK_TO_SP, TSE_CEO_KICK, TSE_CEO_BAN, TSE_PROPERTY_TELEPORT, TSE_CAYO_PERICO_TELEPORT,
+												  TSE_FORCE_INTO_MISSION };
 void* GetEventDataOriginal = nullptr;
 bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argStructSize)
 {
@@ -82,8 +83,14 @@ bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argS
 		}
 		else if (Cheat::CheatFeatures::BlockMaliciousScriptEvents && IsBlackListedEvent)
 		{
-			std::string MessageString = "Remote Event: Blocked ~n~ID: " + std::to_string(argStruct[0]) + " ~n~Sender: " + PLAYER::GET_PLAYER_NAME(argStruct[1]);
-			Cheat::GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Remote Events Protection", "", 0.8f, "");
+			std::string PlayerName = PLAYER::GET_PLAYER_NAME(argStruct[1]);
+			std::string MessageString = "Script Event Blocked~n~ID: " + std::to_string(argStruct[0]);
+			if (PlayerName != "**Invalid**")
+			{
+				MessageString.append(" ~n~Sender: " + (std::string)PLAYER::GET_PLAYER_NAME(argStruct[1]));
+			}
+						
+			Cheat::GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Protection", "", 0.8f, "");
 			return false;
 		}
 	}
