@@ -108,7 +108,7 @@ const std::vector<WeaponHashesStruct> Cheat::GameArrays::WeaponsHashList = {
 	{ "Heavy Rifle", 0xC78D71B4				}, //WeaponHeavyRifle									
 	{ "Compact EMP Launcher", 0xDB26713A	}, //WeaponEMPLauncher
 	{ "StunGun MP", 0x45CD9CF3				}, //WeaponStunGunMP
-	{ "Precison Rifle", 0x6E7DDDEC			} //WeaponPrecisionRifle
+	{ "Precision Rifle", 0x6E7DDDEC			} //WeaponPrecisionRifle
 };
 
 const std::vector<std::string> Cheat::GameArrays::PedModels = {
