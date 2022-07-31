@@ -1260,7 +1260,7 @@ void Cheat::GameFunctions::ChangeGTAOSessionType(SessionTypes SessionType)
 		{
 			if (NETWORK::NETWORK_IS_SESSION_STARTED())
 			{
-				globalHandle(1574589).At(2).As<int>() = SessionTypeLeaveOnline;
+				globalHandle(1574589).As<int>() = SessionTypeLeaveOnline;
 			}
 		}
 		else

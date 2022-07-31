@@ -10,7 +10,7 @@ void GUI::Submenus::Miscellaneous()
 	GUI::MenuOption("Extra-sensory Perception", Submenus::ESP);
 	GUI::MenuOption("HUD", Submenus::HUD);
 	GUI::MenuOption("IPL Loader", Submenus::IPLLoader);
-	if (GUI::Int("Fake Wanted Level", FakeWantedLevelInteger, 0, 6, 1, "Select to change", SELECTABLE_DISABLE_SAVE | SELECTABLE_RETURN_VALUE_CHANGE))
+	if (GUI::Int("Fake Wanted Level", FakeWantedLevelInteger, 0, 6, 1, "", SELECTABLE_DISABLE_SAVE | SELECTABLE_RETURN_VALUE_CHANGE))
 	{
 		MISC::SET_FAKE_WANTED_LEVEL(FakeWantedLevelInteger);
 	}
