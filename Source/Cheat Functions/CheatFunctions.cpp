@@ -593,24 +593,31 @@ void Cheat::CheatFunctions::CheckCheatUpdate()
 	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(CHEAT_BUILD_NUMBER, ".");
 	std::string LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(GetLatestCheatBuildNumber(), "v.");
 
-	if (!LatestOnlineVersionString.empty())
+	if (CurrentLocalVersionString.find("dev") != std::string::npos)
 	{
-		if (StringIsInteger(CurrentLocalVersionString) && StringIsInteger(LatestOnlineVersionString))
+		Logger::DebugMessage("Dev build - skipping update availability check");
+	}
+	else
+	{
+		if (!LatestOnlineVersionString.empty())
 		{
-			int CurrentLocalVersion = StringToInt(CurrentLocalVersionString);
-			int LatestOnlineVersion = StringToInt(LatestOnlineVersionString);
+			if (StringIsInteger(CurrentLocalVersionString) && StringIsInteger(LatestOnlineVersionString))
+			{
+				int CurrentLocalVersion = StringToInt(CurrentLocalVersionString);
+				int LatestOnlineVersion = StringToInt(LatestOnlineVersionString);
 
-			if (CurrentLocalVersion < LatestOnlineVersion)
-			{
-				NewCheatVersionString = "v" + LatestOnlineVersionString;
-				Logger::DebugMessage("A newer version of the cheat is available on GitHub");
-			}
-			else
-			{
-				Logger::DebugMessage("No newer cheat version available");
+				if (CurrentLocalVersion < LatestOnlineVersion)
+				{
+					NewCheatVersionString = "v" + LatestOnlineVersionString;
+					Logger::DebugMessage("A newer version of the cheat is available on GitHub");
+				}
+				else
+				{
+					Logger::DebugMessage("No newer cheat version available");
+				}
 			}
 		}
-	}	
+	}
 }
 
 //https://stackoverflow.com/questions/5891610/how-to-remove-certain-characters-from-a-string-in-c
