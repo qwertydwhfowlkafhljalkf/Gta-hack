@@ -9,14 +9,12 @@ void GUI::Submenus::RecoverySubmenuWarning()
 		{
 			GUI::CloseMenuGUI();
 			GUI::MoveMenu(Home);
-			GUI::MoveMenu(Online);
 			GUI::MoveMenu(Recovery);
 		}
 		else
 		{
 			GUI::CloseMenuGUI();
 			GUI::MoveMenu(Home);
-			GUI::MoveMenu(Online);
 		}
 	}
 }

@@ -104,8 +104,10 @@ namespace Cheat
 		void VehicleGodmode(bool toggle);
 		extern bool VehicleInvisibleBool;
 		void VehicleInvisible(bool toggle);
-		extern bool PlayerInvisibleBool;
-		void PlayerInvisible(bool toggle);
+		extern bool PlayerInvisibleLocalBool;
+		void PlayerInvisibleLocal(bool toggle);
+		extern bool PlayerInvisibleNetworkBool;
+		void PlayerInvisibleNetwork(bool toggle);
 		extern bool MobileRadioBool;
 		void MobileRadio(bool toggle);
 		extern bool FreezeStationBool;

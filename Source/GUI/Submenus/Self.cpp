@@ -2,6 +2,7 @@
 
 using namespace Cheat;
 float SelfHealth = 200.f;
+float SelfMaxHealth = 200.f;
 int PlayerWantedLevelInteger = 0;
 void GUI::Submenus::Self()
 {
@@ -11,14 +12,19 @@ void GUI::Submenus::Self()
 	GUI::MenuOption("Animations", Submenus::Animations);
 	GUI::MenuOption("Wardrobe", Submenus::Wardrobe);
 	GUI::MenuOption("Vision", Submenus::Vision);
-	GUI::Toggle("Invincible", CheatFeatures::GodmodeBool, "Gives your character God Mode");
-	if (GUI::Float("Health", SelfHealth, 1.f, ENTITY::GET_ENTITY_MAX_HEALTH(GameFunctions::PlayerPedID), 1.f, "", 2, SELECTABLE_RETURN_VALUE_CHANGE))
+	GUI::Toggle("God mode", CheatFeatures::GodmodeBool, "Makes your character invincible");
+	if (GUI::Float("Health", SelfHealth, 1.f, ENTITY::GET_ENTITY_MAX_HEALTH(GameFunctions::PlayerPedID), 10.f, "", 2, SELECTABLE_RETURN_VALUE_CHANGE))
 	{
 		ENTITY::SET_ENTITY_HEALTH(GameFunctions::PlayerPedID, SelfHealth, 0);
 	}
-	GUI::Toggle("No Ragdoll", CheatFeatures::NoRagdollAndSeatbeltBool, "Disables ragdoll on your character");
-	GUI::Toggle("Invisibility", CheatFeatures::PlayerInvisibleBool, "Makes your character invisible");
+	if (GUI::Float("Max Health", SelfMaxHealth, 25.f, 1000.f, 25.f, "", 2, SELECTABLE_RETURN_VALUE_CHANGE))
+	{
+		ENTITY::SET_ENTITY_MAX_HEALTH(GameFunctions::PlayerPedID, SelfMaxHealth);
+	}
+	GUI::Toggle("Invisible (local)", CheatFeatures::PlayerInvisibleLocalBool, "Makes your character invisible ~bold~locally~s~");
+	GUI::Toggle("Invisible (others)", CheatFeatures::PlayerInvisibleNetworkBool, "Makes your character invisible ~bold~for other players~s~");
 	if (GUI::Int("Opacity", CheatFeatures::PlayerOpacityInt, 50, 250, 50, "Changes local player opacity", SELECTABLE_RETURN_VALUE_CHANGE)) { ENTITY::SET_ENTITY_ALPHA(GameFunctions::PlayerPedID, (CheatFeatures::PlayerOpacityInt), false); }
+	GUI::Toggle("No Ragdoll", CheatFeatures::NoRagdollAndSeatbeltBool, "Disables ragdoll on your character");
 	GUI::Toggle("Super Jump", CheatFeatures::SuperJumpBool, "Makes your character jump higher");
 	if (GUI::StringVector("Sprint Speed", { "Disabled", "Fast", "Super" }, CheatFeatures::FastSuperRunPosition, "", SELECTABLE_RETURN_VALUE_CHANGE))
 	{
@@ -33,7 +39,7 @@ void GUI::Submenus::Self()
 	GUI::Toggle("Explosive Melee", CheatFeatures::ExplosiveMeleeBool, "Objects you hit with melee explode");
 	GUI::Toggle("Tiny Player", CheatFeatures::TinyPlayerBool, "Lowers your character's scaling");
 	GUI::Toggle("Super Man", CheatFeatures::SuperManBool, "Fly around like a superman!");
-	if (GUI::Option("Suicide", "Kill your character")) { PED::APPLY_DAMAGE_TO_PED(GameFunctions::PlayerPedID, 300, true, 0); }
 	if (GUI::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(GLOBAL_BULLSHARKTESTOSTERONE[0]).At(GLOBAL_BULLSHARKTESTOSTERONE[1]).As<bool>() = true; }
+	if (GUI::Option("Suicide", "Kill your character")) { PED::APPLY_DAMAGE_TO_PED(GameFunctions::PlayerPedID, 1000.f, false, false); }
 	if (GUI::Option("Clean", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(GameFunctions::PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(GameFunctions::PlayerPedID); GameFunctions::MinimapNotification("Player Cleaned"); }
 }

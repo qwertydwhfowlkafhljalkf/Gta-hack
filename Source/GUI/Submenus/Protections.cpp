@@ -1,10 +1,10 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
 using namespace Cheat;
-void GUI::Submenus::Protections()
+void GUI::Submenus::Protection()
 {
-	GUI::Title("Protections");
-	if (GUI::Option("Enable/Disable Anti-Crash Camera", "Changes camera position to prevent entity crash")) { GameFunctions::EnableDisableAntiCrashCamera(); }
+	GUI::Title("Protection");
+	if (GUI::Option("Toggle Anti-Crash Camera", "Changes camera position to prevent entity crash")) { GameFunctions::EnableDisableAntiCrashCamera(); }
 	GUI::Break("Protection", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Enable All", "")) {
 		CheatFeatures::ProtectionVoteKickBool = true;

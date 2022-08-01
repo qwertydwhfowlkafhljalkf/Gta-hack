@@ -21,7 +21,7 @@ bool GUI::RestorePreviousSubmenu = true;
 std::string SelectableInformationText;
 std::string GUI::CurrentTheme;
 std::string GUI::CurrentSubmenu;
-int GUI::maxVisOptions			= 10;
+int GUI::maxVisOptions			= 11;
 int GUI::currentOption			= 0;
 int GUI::currentOptionVisible   = 0;	// This has GUI::Break excluded
 int GUI::previousOption			= 0;

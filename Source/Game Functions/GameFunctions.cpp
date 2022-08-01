@@ -527,7 +527,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		}
 		else 
 		{ 
-			Armor << ArmorValue; 
+			Armor << ArmorValue;
 			Cheat::GUI::AddPlayerInfoBoxTextEntry(Armor.str(), NULL, 5);
 		}
 

@@ -11,7 +11,7 @@ void (*Submenus::FunctionPointers[])() = {
 	Submenus::World, Submenus::NearbyPeds, Submenus::NearbyVehicles, Submenus::Time,
 	Submenus::Vehicle, Submenus::VehicleCustomizer, Submenus::VehicleCustomizerColor,
 	Submenus::VehicleCustomizerNeon, Submenus::VehicleMultipliers, Submenus::Miscellaneous,
-	Submenus::Globals, Submenus::Vision, Submenus::HideElements, Submenus::Protections,
+	Submenus::Globals, Submenus::Vision, Submenus::HideElements, Submenus::Protection,
 	Submenus::Wardrobe, Submenus::IPLLoader, Submenus::Weapons, Submenus::Weapon, Submenus::ShootEntities,
 	Submenus::VehicleWeapons, Submenus::VehicleSpawnSettings, Submenus::VehicleSpawn, Submenus::Teleport, Submenus::HUD,
 	Submenus::CustomTeleportLocations, Submenus::Weather, Submenus::ESP, Submenus::Radio,

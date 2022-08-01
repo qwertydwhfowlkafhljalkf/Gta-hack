@@ -210,7 +210,8 @@ void Cheat::CheatFeatures::Loop()
 	VehicleHornBoostBool ? VehicleHornBoost() : NULL;
 	VehicleGodmodeBool ? VehicleGodmode(true) : VehicleGodmode(false);
 	VehicleInvisibleBool ? VehicleInvisible(true) : VehicleInvisible(false);
-	PlayerInvisibleBool ? PlayerInvisible(true) : PlayerInvisible(false);
+	PlayerInvisibleLocalBool ? PlayerInvisibleLocal(true) : PlayerInvisibleLocal(false);
+	PlayerInvisibleNetworkBool ? PlayerInvisibleNetwork(true) : PlayerInvisibleNetwork(false);
 	MobileRadioBool ? MobileRadio(true) : MobileRadio(false);
 	WeaponRapidFireBool ? WeaponRapidFire() : NULL;
 	PlayerIgnoredBool ? PlayerIgnored(true) : PlayerIgnored(false);
@@ -677,10 +678,16 @@ void Cheat::CheatFeatures::VehicleInvisible(bool toggle)
 	ENTITY::SET_ENTITY_VISIBLE(PED::GET_VEHICLE_PED_IS_USING(Cheat::GameFunctions::PlayerPedID), !toggle, false);
 }
 
-bool Cheat::CheatFeatures::PlayerInvisibleBool = false;
-void Cheat::CheatFeatures::PlayerInvisible(bool toggle)
+bool Cheat::CheatFeatures::PlayerInvisibleLocalBool = false;
+void Cheat::CheatFeatures::PlayerInvisibleLocal(bool toggle)
 {
 	ENTITY::SET_ENTITY_VISIBLE(GameFunctions::PlayerPedID, !toggle, false);
+}
+
+bool Cheat::CheatFeatures::PlayerInvisibleNetworkBool = false;
+void Cheat::CheatFeatures::PlayerInvisibleNetwork(bool toggle)
+{
+	NETWORK::_NETWORK_SET_ENTITY_INVISIBLE_TO_NETWORK(GameFunctions::PlayerPedID, toggle);
 }
 
 bool Cheat::CheatFeatures::MobileRadioBool = false;

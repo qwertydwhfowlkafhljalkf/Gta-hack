@@ -11,6 +11,8 @@ void GUI::Submenus::Home()
 	GUI::MenuOption("Spawn", Submenus::Spawn);
 	GUI::MenuOption("Teleport", Submenus::Teleport);
 	GUI::MenuOption("World", Submenus::World);
+	GUI::MenuOption("Protection", Submenus::Protection);
+	GUI::MenuOption("Recovery", Submenus::RecoverySubmenuWarning);
 	GUI::MenuOption("Miscellaneous", Submenus::Miscellaneous);
 	GUI::MenuOption("Settings", Submenus::Settings);
 }
