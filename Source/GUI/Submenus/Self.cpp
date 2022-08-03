@@ -39,7 +39,6 @@ void GUI::Submenus::Self()
 	GUI::Toggle("Explosive Melee", CheatFeatures::ExplosiveMeleeBool, "Objects you hit with melee explode");
 	GUI::Toggle("Tiny Player", CheatFeatures::TinyPlayerBool, "Lowers your character's scaling");
 	GUI::Toggle("Super Man", CheatFeatures::SuperManBool, "Fly around like a superman!");
-	if (GUI::Option("Give BST", "Get Bull Shark Testosterone - GTAO Only")) { globalHandle(GLOBAL_BULLSHARKTESTOSTERONE[0]).At(GLOBAL_BULLSHARKTESTOSTERONE[1]).As<bool>() = true; }
 	if (GUI::Option("Suicide", "Kill your character")) { PED::APPLY_DAMAGE_TO_PED(GameFunctions::PlayerPedID, 1000.f, false, false); }
 	if (GUI::Option("Clean", "Remove any damage from player character")) { PED::CLEAR_PED_BLOOD_DAMAGE(GameFunctions::PlayerPedID); PED::RESET_PED_VISIBLE_DAMAGE(GameFunctions::PlayerPedID); GameFunctions::MinimapNotification("Player Cleaned"); }
 }

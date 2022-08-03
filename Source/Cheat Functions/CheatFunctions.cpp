@@ -593,28 +593,21 @@ void Cheat::CheatFunctions::CheckCheatUpdate()
 	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(CHEAT_BUILD_NUMBER, ".");
 	std::string LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(GetLatestCheatBuildNumber(), "v.");
 
-	if (CurrentLocalVersionString.find("dev") != std::string::npos)
+	if (!LatestOnlineVersionString.empty())
 	{
-		Logger::DebugMessage("Dev build - skipping update availability check");
-	}
-	else
-	{
-		if (!LatestOnlineVersionString.empty())
+		if (StringIsInteger(CurrentLocalVersionString) && StringIsInteger(LatestOnlineVersionString))
 		{
-			if (StringIsInteger(CurrentLocalVersionString) && StringIsInteger(LatestOnlineVersionString))
-			{
-				int CurrentLocalVersion = StringToInt(CurrentLocalVersionString);
-				int LatestOnlineVersion = StringToInt(LatestOnlineVersionString);
+			int CurrentLocalVersion = StringToInt(CurrentLocalVersionString);
+			int LatestOnlineVersion = StringToInt(LatestOnlineVersionString);
 
-				if (CurrentLocalVersion < LatestOnlineVersion)
-				{
-					NewCheatVersionString = "v" + LatestOnlineVersionString;
-					Logger::DebugMessage("A newer version of the cheat is available on GitHub");
-				}
-				else
-				{
-					Logger::DebugMessage("No newer cheat version available");
-				}
+			if (CurrentLocalVersion < LatestOnlineVersion)
+			{
+				NewCheatVersionString = "v" + LatestOnlineVersionString;
+				Logger::DebugMessage("A newer version of the cheat is available on GitHub");
+			}
+			else
+			{
+				Logger::DebugMessage("No newer cheat version available");
 			}
 		}
 	}

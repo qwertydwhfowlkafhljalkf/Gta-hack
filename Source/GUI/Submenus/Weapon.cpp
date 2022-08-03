@@ -12,7 +12,6 @@ void GUI::Submenus::Weapon()
 	GUI::Break("General", SELECTABLE_CENTER_TEXT);
 	GUI::Toggle("No Reload", CheatFeatures::NoWeaponReloadBool, "Disables the reload animation of all weapons");
 	GUI::Toggle("Infinite Ammo", CheatFeatures::InfiniteAmmoBool, "Never run out of ammo again");
-	GUI::Toggle("Delete Gun", CheatFeatures::DeleteGunBool, "Use SNS Pistol with this option");
 	GUI::Toggle("Rapid Fire", CheatFeatures::WeaponRapidFireBool, "Shoot very fast");
 	GUI::Toggle("One Shot One Kill", CheatFeatures::OneHitKillBool, "");
 	GUI::Break("Entity Control", SELECTABLE_CENTER_TEXT);
