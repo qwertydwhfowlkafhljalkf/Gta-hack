@@ -361,9 +361,9 @@ void GameHooking::Initialize()
 	c_location == nullptr ? Cheat::Logger::Error("Failed to load World Pointer", true) : m_worldPtr = reinterpret_cast<uint64_t>(c_location) + *reinterpret_cast<int*>(reinterpret_cast<uint64_t>(c_location) + 3) + 7;
 
 	// Load Active Game Thread
-	Cheat::Logger::DebugMessage("Load 'Active Game Thread'");
-	c_location = Memory::pattern("E8 ? ? ? ? 48 8B 88 ? 01 00 00 ? 02").count(1).get(0).get<char>(1);
-	c_location == nullptr ? Cheat::Logger::Error("Failed to load Active Game Thread", true) : GetActiveThread = reinterpret_cast<decltype(GetActiveThread)>(c_location + *(int32_t*)c_location + 4);
+	//Cheat::Logger::DebugMessage("Load 'Active Game Thread'");
+	//c_location = Memory::pattern("E8 ? ? ? ? 48 8B 88 ? 01 00 00 ? 02").count(1).get(0).get<char>(1);
+	//c_location == nullptr ? Cheat::Logger::Error("Failed to load Active Game Thread", true) : GetActiveThread = reinterpret_cast<decltype(GetActiveThread)>(c_location + *(int32_t*)c_location + 4);
 
 	// Get Global Pointer
 	Cheat::Logger::DebugMessage("Load 'Global Pointer'");

@@ -236,7 +236,7 @@ void Cheat::CheatFeatures::Loop()
 	RainbowGunBool ? RainbowGun() : NULL;
 	DisableMobilePhoneBool ? DisableMobilePhone() : NULL;
 	NoIdleKickBool ? NoIdleKick() : NULL;
-	CopsTurnBlindEyeBool ? CopsTurnBlindEye() : CopsTurnBlindEyeWasEnabled ? GameFunctions::StartCopsTurnBlindEye(), CopsTurnBlindEyeWasEnabled = false : NULL;
+	CopsTurnBlindEyeBool ? CopsTurnBlindEye() : NULL;
 	VehicleWeaponsBool ? VehicleWeapons() : NULL;
 	AutoGiveAllWeaponsBool ? AutoGiveAllWeapons() : NULL;
 	AutoGiveAllWeaponUpgradesBool ? AutoGiveAllWeaponUpgrades() : NULL;
@@ -1068,10 +1068,10 @@ void Cheat::CheatFeatures::OffRadar()
 }
 
 bool Cheat::CheatFeatures::CopsTurnBlindEyeBool = false;
-bool Cheat::CheatFeatures::CopsTurnBlindEyeWasEnabled = false;
 void Cheat::CheatFeatures::CopsTurnBlindEye()
 {
-	GameFunctions::StartCopsTurnBlindEye();
+	globalHandle(2815059).At(4624).As<int>() = 5;
+	globalHandle(2815059).At(4627).As<int>() = NETWORK::GET_NETWORK_TIME();
 }
 
 bool Cheat::CheatFeatures::ExplodeLoopSelectedPlayerBool = false;

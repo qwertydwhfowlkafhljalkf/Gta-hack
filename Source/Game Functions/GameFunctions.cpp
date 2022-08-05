@@ -1197,16 +1197,6 @@ void Cheat::GameFunctions::ToggleOffRadar(bool state)
 	}
 }
 
-void Cheat::GameFunctions::StartCopsTurnBlindEye()
-{
-	if (NETWORK::NETWORK_IS_SESSION_STARTED())
-	{
-		globalHandle(2810701).At(4624).As<int>() = 5;
-		globalHandle(2810701).At(4627).As<int>() = 1;
-		globalHandle(2544210).At(4625).As<int>() = NETWORK::GET_NETWORK_TIME();
-	}
-}
-
 //https://codepen.io/Codepixl/pen/ogWWaK
 void Cheat::GameFunctions::FadeRGB(int& r, int& g, int& b)
 {

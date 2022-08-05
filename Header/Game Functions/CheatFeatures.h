@@ -167,7 +167,6 @@ namespace Cheat
 		extern bool NoIdleKickBool;
 		void NoIdleKick();
 		extern bool CopsTurnBlindEyeBool;
-		extern bool CopsTurnBlindEyeWasEnabled;
 		void CopsTurnBlindEye();
 		extern bool VehicleWeaponsBool;
 		extern bool VehicleWeapons_TankRounds;
