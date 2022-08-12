@@ -708,17 +708,17 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(std::to_string(Cheat::GameFunctions::ReturnPlayerRockstarID(PlayerID)), NULL, NULL, NULL, 5);
 
 		// IP Addresses
-		std::string ExternalIP, InternalIP;
-		Cheat::GameFunctions::ReturnPlayerIPAddresses(PlayerID, ExternalIP, InternalIP);
-		Cheat::GUI::AddPlayerInfoBoxTextEntry("External IP Addr.", NULL, NULL, 6);
-		Cheat::GUI::AddPlayerInfoBoxTextEntry(ExternalIP, NULL, NULL, NULL, 6);
-		Cheat::GUI::AddPlayerInfoBoxTextEntry("Internal IP Addr.", NULL, NULL, 7);
-		Cheat::GUI::AddPlayerInfoBoxTextEntry(InternalIP, NULL, NULL, NULL, 7);
+		//std::string ExternalIP, InternalIP;
+		//Cheat::GameFunctions::ReturnPlayerIPAddresses(PlayerID, ExternalIP, InternalIP);
+		//Cheat::GUI::AddPlayerInfoBoxTextEntry("External IP Addr.", NULL, NULL, 6);
+		//Cheat::GUI::AddPlayerInfoBoxTextEntry(ExternalIP, NULL, NULL, NULL, 6);
+		//Cheat::GUI::AddPlayerInfoBoxTextEntry("Internal IP Addr.", NULL, NULL, 7);
+		//Cheat::GUI::AddPlayerInfoBoxTextEntry(InternalIP, NULL, NULL, NULL, 7);
 
 		// Kill/Death Ratio
 		float KDRatio = globalHandle(1853131).At(PlayerID, 888).At(205).At(26).As<float>();
-		Cheat::GUI::AddPlayerInfoBoxTextEntry("K/D", NULL, NULL, 8);
-		Cheat::GUI::AddPlayerInfoBoxTextEntry(std::to_string(KDRatio), NULL, NULL, NULL, 8);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("K/D", NULL, NULL, 6);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(std::to_string(KDRatio), NULL, NULL, NULL, 6);
 	}
 }
 

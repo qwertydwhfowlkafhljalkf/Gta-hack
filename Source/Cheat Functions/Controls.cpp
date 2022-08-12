@@ -5,7 +5,7 @@ bool Cheat::Controls::SelectPressed				= false;
 bool Cheat::Controls::LeftPressed				= false;
 bool Cheat::Controls::RightPressed				= false;
 
-int Cheat::Controls::KeyPressDelay = 150;
+int Cheat::Controls::KeyPressDelay				= 150;
 int Cheat::Controls::KeyPressDelayPreviousTick	= GetTickCount64();
 int Cheat::Controls::OpenMenuGUIKey				= VK_F4;
 int Cheat::Controls::CursorNavigationKey		= VK_F5;
