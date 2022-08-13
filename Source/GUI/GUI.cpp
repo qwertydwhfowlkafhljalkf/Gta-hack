@@ -14,6 +14,7 @@ float GUI::SelectableInfoBoxY	= 0.850f;
 float GUI::SelectableHeight		= 0.040f;
 bool GUI::ShowHeaderBackground	= true;
 bool GUI::ShowHeaderTexture		= true;
+bool GUI::DisableMenuGUIOpenCloseFade = false;
 bool GUI::HideGUIElements		= false; // Prevents all (but ImGui) GUI elements from being visible when True
 bool GUI::CheatGUIHasBeenOpened	= false;
 bool GUI::CurrentOptionIsSavable	= false;
@@ -710,6 +711,8 @@ void GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 	GUI::CurrentTheme = ThemeFileName;
 	try
 	{
+		DisableMenuGUIOpenCloseFade = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Menu", "open/close fade disabled"));
+
 		GUI::guiX = std::stof(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "menu_gui_x"));
 		GUI::guiY = std::stof(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "menu_gui_y"));
 		GUI::SelectableInfoBoxX = std::stof(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "selectable_information_box_x"));
@@ -736,13 +739,13 @@ void GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 	}
 	catch (...) {}
 
-	//Check Theme File Version
-	if (CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Theme", "theme_file_version") != "2.1")
+	// Check Theme File Version
+	if (CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Theme", "theme_file_version") != "2.2")
 	{
 		GameFunctions::SubtitleNotification("The loaded Theme is outdated. Please resave it", 5000);
 	}
 
-	//Save New Active Theme Name To Config File
+	// Save New Active Theme Name To Config File
 	if (!StartUp) 
 	{
 		CheatFunctions::IniFileWriteString(GUI::CurrentTheme, CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Active Theme");
@@ -761,7 +764,9 @@ void GUI::DeleteLoadedTheme()
 
 void GUI::SaveTheme(std::string ThemeFileName)
 {
-	CheatFunctions::IniFileWriteString("2.1", CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Theme", "theme_file_version");
+	CheatFunctions::IniFileWriteString("2.2", CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Theme", "theme_file_version");
+
+	CheatFunctions::WriteBoolToIni(DisableMenuGUIOpenCloseFade, CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Menu", "open/close fade disabled");
 
 	CheatFunctions::IniFileWriteString(std::to_string(GUI::guiX), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "menu_gui_x");
 	CheatFunctions::IniFileWriteString(std::to_string(GUI::guiY), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Positioning", "menu_gui_y");

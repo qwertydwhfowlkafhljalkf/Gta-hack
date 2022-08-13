@@ -53,12 +53,22 @@ void Cheat::Controls::Loop()
 					{
 						GUI::MoveMenu(GUI::Submenus::Home);
 					}
-					DoMenuGUIFade(true);
+					if (!GUI::DisableMenuGUIOpenCloseFade)
+					{
+						DoMenuGUIFade(true);
+					}
 				}
 				else
 				{
 					Cheat::GameFunctions::PlayFrontendSoundDefault("NO");
-					DoMenuGUIFade(false);
+					if (!GUI::DisableMenuGUIOpenCloseFade)
+					{
+						DoMenuGUIFade(false);
+					}
+					else
+					{
+						GUI::CloseMenuGUI();
+					}
 				}
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}

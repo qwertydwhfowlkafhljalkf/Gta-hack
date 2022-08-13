@@ -119,6 +119,7 @@ void GUI::Submenus::Theme()
 		}
 	}
 	GUI::Break("Menu", SELECTABLE_CENTER_TEXT);
+	GUI::Toggle("Disable Open/Close Fade", GUI::DisableMenuGUIOpenCloseFade, "", SELECTABLE_DISABLE_SAVE);
 	GUI::Float("X-Axis", GUI::guiX, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
 	GUI::Float("Y-Axis", GUI::guiY, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
 	GUI::Float("Selectable Height", GUI::SelectableHeight, 0.035f, 0.045f, 0.001f, "This also slightly stretches the header element as a result of the rescale");

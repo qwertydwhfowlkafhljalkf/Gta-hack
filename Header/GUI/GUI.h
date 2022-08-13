@@ -39,6 +39,7 @@ namespace Cheat
 		extern std::vector <std::string> ThemeFilesVector;
 		extern bool ShowHeaderBackground;
 		extern bool ShowHeaderTexture;
+		extern bool DisableMenuGUIOpenCloseFade;
 		extern bool HideGUIElements;
 		extern bool CheatGUIHasBeenOpened;
 		extern bool CurrentOptionIsSavable;
