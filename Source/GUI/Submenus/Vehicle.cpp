@@ -22,12 +22,12 @@ void GUI::Submenus::Vehicle()
 			if (GameFunctions::DisplayKeyboardAndReturnInputInteger(3, "Enter the desired max speed", MaxSpeedInput))
 			{
 				::Vehicle VehicleHandle = PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID);
-				if (CheatFeatures::MeasurementSystemVectorPosition == 0)
+				if (MISC::SHOULD_USE_METRIC_MEASUREMENTS())
 				{
 					ENTITY::SET_ENTITY_MAX_SPEED(VehicleHandle, GameFunctions::KMHToMS(MaxSpeedInput));
 					GameFunctions::MinimapNotification("Max Speed Set (KM/H)");
 				}
-				else if (CheatFeatures::MeasurementSystemVectorPosition == 1)
+				else
 				{
 					ENTITY::SET_ENTITY_MAX_SPEED(VehicleHandle, GameFunctions::MPHToMS(MaxSpeedInput));
 					GameFunctions::MinimapNotification("Max Speed Set (MP/H)");

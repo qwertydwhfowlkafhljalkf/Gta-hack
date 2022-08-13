@@ -3,7 +3,6 @@
 int Cheat::CheatFeatures::SelectedPlayer;
 int Cheat::CheatFeatures::SpeedometerVectorPosition = 0;
 int Cheat::CheatFeatures::AimbotBoneVectorPosition = 0;
-int Cheat::CheatFeatures::MeasurementSystemVectorPosition = 0;
 int Cheat::CheatFeatures::ImpactAmmoVectorPosition = 0;
 int Cheat::CheatFeatures::CustomAmmoVectorPosition = 0;
 int Cheat::CheatFeatures::FontTypeVectorPosition = 0;
@@ -65,22 +64,22 @@ void Cheat::CheatFeatures::Loop()
 	PAD::DISABLE_CONTROL_ACTION(2, INPUT_ENTER_CHEAT_CODE, true);
 
 	// New session member notification feature
-	Cheat::GameFunctions::CheckNewSessionMembersLoop();
+	GameFunctions::CheckNewSessionMembersLoop();
 
 	// Speedometer
-	if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, false)) 
+	if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false)) 
 	{
 		std::ostringstream Speed;
-		if (CheatFeatures::MeasurementSystemVectorPosition == 0)
+		if (MISC::SHOULD_USE_METRIC_MEASUREMENTS())
 		{
-			Speed << Cheat::GameFunctions::MSToKMH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0))) << " KM/H";
+			Speed << GameFunctions::MSToKMH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0))) << " KM/H";
 		}
-		else if (CheatFeatures::MeasurementSystemVectorPosition == 1)
+		else
 		{
-			Speed << Cheat::GameFunctions::MSToMPH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0))) << " MP/H";
+			Speed << GameFunctions::MSToMPH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0))) << " MP/H";
 		}
 		if (SpeedometerVectorPosition == 1 || SpeedometerVectorPosition == 3) { GUI::DrawTextInGame(Speed.str(), { 0, 0, 255, 255 }, { 0.85f, 0.5000f }, { 0.70f, 0.70f }, false); }
-		if (SpeedometerVectorPosition == 2 || SpeedometerVectorPosition == 3) { VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, 0), CheatFunctions::StringToChar(Speed.str())); }
+		if (SpeedometerVectorPosition == 2 || SpeedometerVectorPosition == 3) { VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0), CheatFunctions::StringToChar(Speed.str())); }
 	}
 
 	// Impact ammo

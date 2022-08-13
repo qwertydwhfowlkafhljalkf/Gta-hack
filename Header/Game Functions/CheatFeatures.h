@@ -6,7 +6,6 @@ namespace Cheat
 	{
 		extern int SpeedometerVectorPosition;
 		extern int AimbotBoneVectorPosition;
-		extern int MeasurementSystemVectorPosition;
 		extern int ImpactAmmoVectorPosition;
 		extern int CustomAmmoVectorPosition;
 		extern int FontTypeVectorPosition;

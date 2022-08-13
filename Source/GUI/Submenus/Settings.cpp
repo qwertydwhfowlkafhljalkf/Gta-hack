@@ -8,7 +8,6 @@ void GUI::Submenus::Settings()
 	GUI::MenuOption("Hide Elements", Submenus::HideElements);
 	GUI::Int("Max Visible Menu Options", GUI::maxVisOptions, 5, 16, 1, "", SELECTABLE_RETURN_VALUE_CHANGE);
 	GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu");
-	GUI::StringVector("Measurement System", { "Metric", "Imperial" }, CheatFeatures::MeasurementSystemVectorPosition, "Metric = KM/H, Imperial = MP/H", SELECTABLE_RETURN_VALUE_CHANGE);
 	GUI::Break("Keys", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Menu GUI: ~c~" + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey), "Select to change"))
 	{

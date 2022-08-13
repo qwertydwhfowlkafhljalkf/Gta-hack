@@ -170,11 +170,11 @@ bool GUI::VehicleOption(std::string VehicleModel, std::string ModelName)
 		if (!CheatFeatures::HideVehicleInfoAndPreview)
 		{
 			std::ostringstream ModelMaxSpeed;
-			if (CheatFeatures::MeasurementSystemVectorPosition == 0)
+			if (MISC::SHOULD_USE_METRIC_MEASUREMENTS())
 			{
 				ModelMaxSpeed << "Max Speed: " << GameFunctions::MSToKMH(VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))) << " KM/H";
 			}
-			else if (CheatFeatures::MeasurementSystemVectorPosition == 1)
+			else
 			{
 				ModelMaxSpeed << "Max Speed: " << GameFunctions::MSToMPH(VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))) << " MP/H";
 			}
