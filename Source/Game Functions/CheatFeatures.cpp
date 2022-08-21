@@ -18,6 +18,7 @@ bool Cheat::CheatFeatures::BlockMaliciousScriptEvents = false;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
 bool Cheat::CheatFeatures::HideOwnIPAddress = true;
 bool Cheat::CheatFeatures::HideOnScreenGameAndCheatInfo = false;
+bool Cheat::CheatFeatures::DisableTransactionErrorWarning = true;
 bool Cheat::CheatFeatures::HideVehicleInfoAndPreview = false;
 bool Cheat::CheatFeatures::ShowJoiningPlayersNotification = false;
 bool Cheat::CheatFeatures::LogChatMessages = true;
@@ -181,6 +182,14 @@ void Cheat::CheatFeatures::Loop()
 			}
 			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(spawnPosition.x, spawnPosition.y, spawnPosition.z, endPosition.x, endPosition.y, endPosition.z, 250, 1, WeaponAsset, GameFunctions::PlayerPedID, 1, 0, -1.0);
 		}
+	}
+
+	// Disable Transaction Error Warnings
+	if (DisableTransactionErrorWarning)
+	{
+		globalHandle(GLOBAL_TRANS_ERROR_SHOWN_1).As<BOOL>() = false;
+		globalHandle(GLOBAL_TRANS_ERROR_SHOWN_2).As<BOOL>() = false;
+		globalHandle(GLOBAL_TRANS_ERROR_SHOWN_3).As<BOOL>() = false;
 	}
 	
 	GodmodeBool ? Godmode(true) : Godmode(false);
