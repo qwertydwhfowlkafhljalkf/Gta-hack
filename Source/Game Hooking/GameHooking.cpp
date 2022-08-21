@@ -34,7 +34,6 @@ bool IsDLCPresentHooked(std::uint32_t DLCHash)
 		Last = Current;
 		GameHooking::OnTickInit();
 	}
-	if (DLCHash == 2532323046 && Cheat::CheatFeatures::GTAODeveloperMode) { return true; }
 	return IsDLCPresentOriginal(DLCHash);
 }
 

@@ -19,7 +19,6 @@ void GUI::Submenus::Miscellaneous()
 	GUI::Toggle("Jump Around Mode", CheatFeatures::JumpAroundModeBool, "Nearby vehicles will 'jump around'");
 	GUI::Toggle("Free Cam", CheatFeatures::FreeCamBool, "Use W and S to control. Shift to go faster");
 	GUI::Toggle("Show Joining Players Notification", CheatFeatures::ShowJoiningPlayersNotification, "");
-	GUI::Toggle("Rockstar Developer Mode", CheatFeatures::GTAODeveloperMode, "Toggles GTAO Spectator Options");
 	GUI::Toggle("Show FPS", CheatFeatures::ShowFPSBool, "");
 	GUI::Toggle("Close Game Immediately", CheatFeatures::CloseGameImmediatelyBool, "Closes the game immediately when ALT + F4 is pressed");
 	if (GUI::Option("Stop Cutscene", ""))

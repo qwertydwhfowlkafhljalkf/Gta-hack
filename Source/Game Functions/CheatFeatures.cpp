@@ -22,7 +22,6 @@ bool Cheat::CheatFeatures::DisableTransactionErrorWarning = true;
 bool Cheat::CheatFeatures::HideVehicleInfoAndPreview = false;
 bool Cheat::CheatFeatures::ShowJoiningPlayersNotification = false;
 bool Cheat::CheatFeatures::LogChatMessages = true;
-bool Cheat::CheatFeatures::GTAODeveloperMode = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnInsideVehicle = false;
 bool Cheat::CheatFeatures::VehicleSpawnerDeleteOldVehicle = false;
 bool Cheat::CheatFeatures::VehicleSpawnerSpawnWithBlip = false;

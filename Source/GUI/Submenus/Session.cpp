@@ -50,4 +50,21 @@ void GUI::Submenus::Session()
 	{
 		GameFunctions::ChangeGTAOSessionType(SessionTypeJoinCrew);
 	}
+	GUI::Break("SCTV", SELECTABLE_CENTER_TEXT);
+	if (GUI::Option("Start SCTV Public Session", "Also known as Rockstar Dev/Spectator Mode"))
+	{
+		globalHandle(GLOBAL_SCTV).As<bool>() = true;
+		GameFunctions::ChangeGTAOSessionType(SessionTypeJoinPublic);
+	}
+	if (globalHandle(GLOBAL_SCTV).As<bool>())
+	{
+		if (GUI::Option("Exit/disable SCTV", ""))
+		{
+			globalHandle(GLOBAL_SCTV).As<bool>() = false;
+			if (NETWORK::NETWORK_IS_SESSION_STARTED())
+			{
+				NETWORK::_SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE();
+			}
+		}
+	}
 }
