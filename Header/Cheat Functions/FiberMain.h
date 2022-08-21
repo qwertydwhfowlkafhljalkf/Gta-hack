@@ -24,6 +24,7 @@
 #include <fcntl.h>
 #include <array>
 #include <thread>
+#include <mutex>
 #include <WinINet.h>
 #pragma comment(lib, "WinINet.lib")
 #pragma comment(lib, "Winmm.lib")

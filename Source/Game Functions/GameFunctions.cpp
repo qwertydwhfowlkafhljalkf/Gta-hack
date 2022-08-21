@@ -1188,16 +1188,7 @@ void Cheat::GameFunctions::ShowTeleportLocationsMenu(std::vector<TeleportLocatio
 	}
 }
 
-void Cheat::GameFunctions::ToggleOffRadar(bool state)
-{
-	if (NETWORK::NETWORK_IS_SESSION_STARTED())
-	{
-		globalHandle(2689224).At(1 + (Cheat::GameFunctions::PlayerID * 451)).At(207).As<bool>() = state;
-		globalHandle(2703735).At(56).As<int>() = NETWORK::GET_NETWORK_TIME();
-	}
-}
-
-//https://codepen.io/Codepixl/pen/ogWWaK
+// https://codepen.io/Codepixl/pen/ogWWaK
 void Cheat::GameFunctions::FadeRGB(int& r, int& g, int& b)
 {
 	if (r > 0 && b == 0)

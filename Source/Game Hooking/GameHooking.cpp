@@ -87,9 +87,8 @@ bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argS
 			std::string MessageString = "Script Event Blocked~n~ID: " + std::to_string(argStruct[0]);
 			if (PlayerName != "**Invalid**")
 			{
-				MessageString.append(" ~n~Sender: " + (std::string)PLAYER::GET_PLAYER_NAME(argStruct[1]));
-			}
-						
+				MessageString.append(" ~n~Sender: " + PlayerName);
+			}				
 			Cheat::GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Protection", "", 0.8f, "");
 			return false;
 		}

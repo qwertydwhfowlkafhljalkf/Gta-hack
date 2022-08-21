@@ -149,7 +149,6 @@ namespace Cheat
 		extern bool PlayerESPBool;
 		void PlayerESP();
 		extern bool OffRadarBool;
-		extern bool OffRadarWasEnabled;
 		void OffRadar();
 		extern bool ExplodeLoopSelectedPlayerBool;
 		void ExplodeLoopSelectedPlayer();

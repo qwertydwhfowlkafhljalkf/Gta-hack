@@ -41,6 +41,7 @@ bool Cheat::CheatFeatures::TeleportTransition = false;
 
 void Cheat::CheatFeatures::Loop()
 {
+	// Commonly used game functions
 	GameFunctions::PlayerID = PLAYER::PLAYER_ID();
 	GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
 
@@ -227,7 +228,7 @@ void Cheat::CheatFeatures::Loop()
 	UnlimitedRocketBoostBool ? UnlimitedRocketBoost() : NULL;
 	ShootEntitiesBool ? ShootEntities() : NULL;
 	PlayerESPBool ? PlayerESP() : NULL;
-	OffRadarBool ? OffRadar() : OffRadarWasEnabled ? GameFunctions::ToggleOffRadar(false), OffRadarWasEnabled = false : NULL;
+	OffRadarBool ? OffRadar() : NULL;
 	ExplodeLoopSelectedPlayerBool ? ExplodeLoopSelectedPlayer() : NULL;
 	DriveOnWaterBool ? DriveOnWater() : NULL;
 	SuperManBool ? SuperMan() : NULL;
@@ -706,14 +707,14 @@ void Cheat::CheatFeatures::FreezeStation()
 bool Cheat::CheatFeatures::WeaponRapidFireBool = false;
 void Cheat::CheatFeatures::WeaponRapidFire()
 {
-	if (!PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, false)) 
+	if (!PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false)) 
 	{
-		PLAYER::DISABLE_PLAYER_FIRING(Cheat::GameFunctions::PlayerPedID, true);
-		Vector3 GameplayCamDirection = Cheat::GameFunctions::RotationToDirection(&CAM::GET_GAMEPLAY_CAM_ROT(0));
-		Vector3 StartCoords = Cheat::GameFunctions::AddVector(CAM::GET_FINAL_RENDERED_CAM_COORD(), Cheat::GameFunctions::MultiplyVector(GameplayCamDirection, 1.0f));
-		Vector3 EndCoords = Cheat::GameFunctions::AddVector(StartCoords, Cheat::GameFunctions::MultiplyVector(GameplayCamDirection, 500.0f));
+		PLAYER::DISABLE_PLAYER_FIRING(GameFunctions::PlayerPedID, true);
+		Vector3 GameplayCamDirection = GameFunctions::RotationToDirection(&CAM::GET_GAMEPLAY_CAM_ROT(0));
+		Vector3 StartCoords = GameFunctions::AddVector(CAM::GET_FINAL_RENDERED_CAM_COORD(), GameFunctions::MultiplyVector(GameplayCamDirection, 1.0f));
+		Vector3 EndCoords = GameFunctions::AddVector(StartCoords, GameFunctions::MultiplyVector(GameplayCamDirection, 500.0f));
 		Hash weaponhash;
-		WEAPON::GET_CURRENT_PED_WEAPON(Cheat::GameFunctions::PlayerPedID, &weaponhash, false);
+		WEAPON::GET_CURRENT_PED_WEAPON(GameFunctions::PlayerPedID, &weaponhash, false);
 		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_ATTACK) && !UI::IS_PAUSE_MENU_ACTIVE())
 		{
 			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(StartCoords.x, StartCoords.y, StartCoords.z, EndCoords.x, EndCoords.y, EndCoords.z, 50, true, weaponhash, Cheat::GameFunctions::PlayerPedID, true, false, 0xbf800000);
@@ -721,11 +722,10 @@ void Cheat::CheatFeatures::WeaponRapidFire()
 	}
 }
 
-
 bool Cheat::CheatFeatures::PlayerIgnoredBool = false;
 void Cheat::CheatFeatures::PlayerIgnored(bool toggle)
 {
-	PLAYER::SET_EVERYONE_IGNORE_PLAYER(Cheat::GameFunctions::PlayerPedID, toggle);
+	PLAYER::SET_EVERYONE_IGNORE_PLAYER(GameFunctions::PlayerPedID, toggle);
 }
 
 bool Cheat::CheatFeatures::NoClipBool = false;
@@ -1059,11 +1059,10 @@ void Cheat::CheatFeatures::PlayerESP()
 }
 
 bool Cheat::CheatFeatures::OffRadarBool = false;
-bool Cheat::CheatFeatures::OffRadarWasEnabled = false;
 void Cheat::CheatFeatures::OffRadar()
 {
-	GameFunctions::ToggleOffRadar(true);
-	OffRadarWasEnabled = true;
+	globalHandle(2689235).At(1 + (Cheat::GameFunctions::PlayerID * 453)).At(208).As<bool>() = true;
+	globalHandle(2815059).At(4627).As<int>() = NETWORK::GET_NETWORK_TIME();
 }
 
 bool Cheat::CheatFeatures::CopsTurnBlindEyeBool = false;
