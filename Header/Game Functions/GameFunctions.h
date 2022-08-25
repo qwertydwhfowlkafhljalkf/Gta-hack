@@ -38,7 +38,6 @@ namespace Cheat
 		float Get3DDistance(Vector3 a, Vector3 b);
 		void ApplyForceToEntity(Entity e, float x, float y, float z);
 		void SpawnVehicle(const char* ModelHash);
-		void SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID);
 		void MaxDowngradeVehicle(int VehicleHandle);
 		void MaxUpgradeVehicle(int VehicleHandle);
 		void EnableDisableAntiCrashCamera();

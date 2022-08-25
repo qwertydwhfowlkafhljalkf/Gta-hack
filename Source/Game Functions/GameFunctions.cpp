@@ -20,11 +20,6 @@ void Cheat::GameFunctions::RepairAndCleanVehicle(Vehicle vehicle)
 	Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Repaired & Cleaned", "Textures", "AdvancedNotificationImage", false, 4, "Los Santos Customs", "", 1.0, "");
 }
 
-void Cheat::GameFunctions::SetPedTexture(Ped Ped, int ComponentID, int DrawableID, int TextureID)
-{ 
-	PED::SET_PED_COMPONENT_VARIATION(Ped, ComponentID, DrawableID, TextureID, 0);
-}
-
 void Cheat::GameFunctions::TeleportToBlipCoord(Blip TargetBlip)
 {
 	if (TargetBlip == SpriteWaypoint && !UI::IS_WAYPOINT_ACTIVE())
