@@ -58,9 +58,6 @@
     <ClCompile Include="Source\GUI\Submenus\AllPlayers.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\Online.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GUI\Submenus\Session.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
@@ -401,6 +398,9 @@
       <Filter>Source Files\Cheat Functions</Filter>
     </ClCompile>
     <ClCompile Include="Source\GUI\Submenus\TheCriminalEnterprisesDLC.cpp">
+      <Filter>Source Files\GUI\Submenus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\Submenus\SessionStarter.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
   </ItemGroup>

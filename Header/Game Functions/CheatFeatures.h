@@ -47,16 +47,20 @@ namespace Cheat
 
 		void Loop();
 		extern bool GodmodeBool;
+		extern bool GodmodeWasEnabled;
 		void Godmode(bool toggle);
 		extern bool NeverWantedBool;
-		void NeverWanted(bool toggle);
+		void NeverWanted();
 		extern bool NoWeaponReloadBool;
 		void NoWeaponReload();
 		extern bool InfiniteAmmoBool;
+		extern bool InfiniteAmmoWasEnabled;
 		void InfiniteAmmo(bool toggle);
 		extern bool SlowMotionBool;
+		extern bool SlowMotionWasEnabled;
 		void SlowMotion(bool toggle);
 		extern bool WorldBlackoutBool;
+		extern bool WorldBlackoutWasEnabled;
 		void WorldBlackout(bool toggle);
 		extern float GravityGunEntityDistance;
 		extern bool GravityGunBool;
@@ -67,8 +71,10 @@ namespace Cheat
 		extern bool HideMinimapWasEnabled;
 		void HideMinimap();
 		extern bool NoGravityBool;
+		extern bool NoGravityWasEnabled;
 		void NoGravity(bool toggle);
 		extern bool WorldSnowLocalBool;
+		extern bool WorldSnowLocalWasEnabled;
 		void WorldSnowLocal(bool toggle);
 		extern bool AutoTeleportToWaypointBool;
 		void AutoTeleportToWaypoint();
@@ -131,6 +137,7 @@ namespace Cheat
 		extern bool EntityInformationGunBool;
 		void EntityInformationGun();
 		extern bool SpectatePlayerBool;
+		extern bool SpectatePlayerWasEnabled;
 		void SpectatePlayer(bool toggle);
 		extern bool NoRagdollAndSeatbeltBool;
 		void NoRagdollAndSeatbelt(bool toggle);
@@ -190,6 +197,7 @@ namespace Cheat
 		extern bool RGBDiscoFirstCall;
 		void RGBDisco();
 		extern bool WeaponInvisibilityBool;
+		extern bool WeaponInvisibilityWasEnabled;
 		void WeaponInvisibility(bool toggle);
 		extern bool SessionLockFriendsOnlyBool;
 		void SessionLockFriendsOnly();

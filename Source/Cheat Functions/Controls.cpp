@@ -72,7 +72,7 @@ void Cheat::Controls::Loop()
 				}
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD0, true))
+			else if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_CANCEL))
 			{
 				if (GUI::menuLevel > 0)
 				{
@@ -81,7 +81,7 @@ void Cheat::Controls::Loop()
 				}
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD8, true))
+			else if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_UP))
 			{
 				GUI::currentOption > 1 ? GUI::currentOption-- : GUI::currentOption = GUI::optionCount;
 				if (GUI::menuLevel > 0)
@@ -90,7 +90,7 @@ void Cheat::Controls::Loop()
 				}
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD2, true))
+			else if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_DOWN))
 			{
 				GUI::currentOption < GUI::optionCount ? GUI::currentOption++ : GUI::currentOption = 1;
 				if (GUI::menuLevel > 0)
@@ -99,7 +99,7 @@ void Cheat::Controls::Loop()
 				}
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD6, true))
+			else if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_RIGHT))
 			{
 				LeftPressed = true;
 				if (GUI::menuLevel > 0)
@@ -108,7 +108,7 @@ void Cheat::Controls::Loop()
 				}
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD4, true))
+			else if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_LEFT))
 			{
 				RightPressed = true;
 				if (GUI::menuLevel > 0)
@@ -117,7 +117,7 @@ void Cheat::Controls::Loop()
 				}
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}
-			else if (Cheat::CheatFunctions::IsKeyCurrentlyPressed(VK_NUMPAD5, true))
+			else if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_ACCEPT))
 			{
 				SelectPressed = true;
 				if (GUI::menuLevel > 0)

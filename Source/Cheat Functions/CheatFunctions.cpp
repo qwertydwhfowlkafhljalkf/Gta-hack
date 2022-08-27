@@ -109,7 +109,7 @@ void Cheat::CheatFunctions::Loop()
 		{
 			GUI::PreviousMenu = nullptr;
 			GUI::MoveMenu(GUI::Submenus::Home);
-			GUI::MoveMenu(GUI::Submenus::Online);
+			GUI::MoveMenu(GUI::Submenus::Session);
 		}
 	}
 	if (GUI::currentMenu == GUI::Submenus::ThemeFiles)

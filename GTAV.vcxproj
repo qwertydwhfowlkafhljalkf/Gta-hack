@@ -177,7 +177,7 @@
     <ClCompile Include="Source\GUI\Submenus\NearbyVehicles.cpp" />
     <ClCompile Include="Source\GUI\Submenus\ObjectSpawn.cpp" />
     <ClCompile Include="Source\GUI\Submenus\OffroadVehicles.cpp" />
-    <ClCompile Include="Source\GUI\Submenus\Online.cpp" />
+    <ClCompile Include="Source\GUI\Submenus\Session.cpp" />
     <ClCompile Include="Source\GUI\Submenus\PedSpawn.cpp" />
     <ClCompile Include="Source\GUI\Submenus\PlaneVehicles.cpp" />
     <ClCompile Include="Source\GUI\Submenus\PlayerList.cpp" />
@@ -199,8 +199,8 @@
     <ClCompile Include="Source\GUI\Submenus\Self.cpp" />
     <ClCompile Include="Source\GUI\Submenus\SelfModel.cpp" />
     <ClCompile Include="Source\GUI\Submenus\ServiceVehicles.cpp" />
-    <ClCompile Include="Source\GUI\Submenus\Session.cpp" />
     <ClCompile Include="Source\GUI\Submenus\SessionChat.cpp" />
+    <ClCompile Include="Source\GUI\Submenus\SessionStarter.cpp" />
     <ClCompile Include="Source\GUI\Submenus\Settings.cpp" />
     <ClCompile Include="Source\GUI\Submenus\ShootEntities.cpp" />
     <ClCompile Include="Source\GUI\Submenus\SmugglersRunDLC.cpp" />

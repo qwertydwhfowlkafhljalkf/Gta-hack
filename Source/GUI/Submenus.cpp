@@ -3,8 +3,7 @@ using namespace Cheat;
 using namespace GUI;
 
 void (*Submenus::FunctionPointers[])() = {
-	Submenus::Home, Submenus::Self, Submenus::AllPlayersExclusions, Submenus::AllPlayers,
-	Submenus::Online, Submenus::Session, Submenus::SessionChat, Submenus::RecoverySubmenuWarning,
+	Submenus::Home, Submenus::Self, Submenus::AllPlayersExclusions, Submenus::AllPlayers, Submenus::Session, Submenus::SessionChat, Submenus::RecoverySubmenuWarning,
 	Submenus::RecoveryStatistics, Submenus::Recovery, Submenus::ReportStatistics, Submenus::SelfModel,
 	Submenus::SpawnedVehicles, Submenus::Spawn, Submenus::PlayerList, Submenus::PedSpawn, Submenus::DLCVehicles,
 	Submenus::ThemeFiles, Submenus::Theme, Submenus::About, Submenus::Settings,
@@ -28,6 +27,6 @@ void (*Submenus::FunctionPointers[])() = {
 	Submenus::MotorcycleVehicles, Submenus::MilitaryVehicles, Submenus::IndustrialVehicles, Submenus::HelicopterVehicles,
 	Submenus::EmergencyVehicles, Submenus::SportClassicVehicles, Submenus::OffroadVehicles, Submenus::SedanVehicles,
 	Submenus::CoupesVehicles, Submenus::MuscleVehicles, Submenus::BoatVehicles, Submenus::CommercialVehicles,
-	Submenus::CompactVehicles, Submenus::CycleVehicles, Submenus::TheCriminalEnterprisesDLC
+	Submenus::CompactVehicles, Submenus::CycleVehicles, Submenus::TheCriminalEnterprisesDLC, Submenus::SessionStarter
 };
 int Submenus::NumberOfSubmenus = sizeof(Submenus::FunctionPointers) / sizeof(Submenus::FunctionPointers[0]);

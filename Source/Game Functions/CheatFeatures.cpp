@@ -218,16 +218,16 @@ void Cheat::CheatFeatures::Loop()
 		globalHandle(GLOBAL_TRANS_ERROR_SHOWN_3).As<BOOL>() = false;
 	}
 	
-	GodmodeBool ? Godmode(true) : Godmode(false);
-	NeverWantedBool ? NeverWanted(true) : NeverWanted(false);
+	GodmodeBool ? Godmode(true) : GodmodeWasEnabled ? Godmode(false), GodmodeWasEnabled = false : NULL;
+	NeverWantedBool ? NeverWanted() : NULL;
 	NoWeaponReloadBool ? NoWeaponReload() : NULL;
-	InfiniteAmmoBool ? InfiniteAmmo(true) : InfiniteAmmo(false);
-	SlowMotionBool ? SlowMotion(true) : SlowMotion(false);
-	WorldBlackoutBool ? WorldBlackout(true) : WorldBlackout(false);
+	InfiniteAmmoBool ? InfiniteAmmo(true) : InfiniteAmmoWasEnabled ? InfiniteAmmo(false), InfiniteAmmoWasEnabled = false : NULL;
+	SlowMotionBool ? SlowMotion(true) : SlowMotionWasEnabled ? SlowMotion(false), SlowMotionWasEnabled = false : NULL;
+	WorldBlackoutBool ? WorldBlackout(true) : WorldBlackoutWasEnabled ? WorldBlackout(false), WorldBlackoutWasEnabled = false : NULL;
 	GravityGunBool ? GravityGun() : NULL;
 	DisableHUDBool ? DisableHUD() : NULL;
-	NoGravityBool ? NoGravity(true) : NoGravity(false);
-	WorldSnowLocalBool ? WorldSnowLocal(true) : WorldSnowLocal(false);
+	NoGravityBool ? NoGravity(true) : NoGravityWasEnabled ? NoGravity(false), NoGravityWasEnabled = false : NULL;
+	WorldSnowLocalBool ? WorldSnowLocal(true) : WorldSnowLocalWasEnabled ? WorldSnowLocal(false), WorldSnowLocalWasEnabled = false : NULL;
 	AutoTeleportToWaypointBool ? AutoTeleportToWaypoint() : NULL;
 	OneHitKillBool ? OneHitKill() : OneHitKillWasEnabled ? PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 1.f), PLAYER::SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 1.f, false), OneHitKillWasEnabled  = false: NULL;
 	PauseTimeBool ? PauseTime(true) : PauseTime(false);
@@ -254,7 +254,7 @@ void Cheat::CheatFeatures::Loop()
 	RainbowVehicleBool ? RainbowVehicle() : NULL;
 	DeleteGunBool ? DeleteGun() : NULL;
 	NerfBulletsBool ? NerfBullets() : NerfBulletsWasEnabled ? PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 1.f), NerfBulletsWasEnabled = false : NULL;
-	SpectatePlayerBool ? SpectatePlayer(true) : SpectatePlayer(false);
+	SpectatePlayerBool ? SpectatePlayer(true) : SpectatePlayerWasEnabled ? SpectatePlayer(false), SpectatePlayerWasEnabled = false : NULL;
 	NoRagdollAndSeatbeltBool ? NoRagdollAndSeatbelt(true) : NoRagdollAndSeatbelt(false);
 	FreezeSelectedPlayerBool ? FreezeSelectedPlayer() : NULL;
 	FreezeAllPlayersBool ? FreezeAllPlayers() : NULL;
@@ -282,27 +282,24 @@ void Cheat::CheatFeatures::Loop()
 	RGBDiscoBool ? RGBDisco() : !RGBDiscoFirstCall ? RGBDiscoFirstCall = true : NULL;
 	FreezeStationBool ? FreezeStation() : FreezeStationWasEnabled ? AUDIO::UNFREEZE_RADIO_STATION(AUDIO::GET_PLAYER_RADIO_STATION_NAME()), FreezeStationWasEnabled = false : NULL;
 	HideMinimapBool ? HideMinimap() : HideMinimapWasEnabled ? UI::DISPLAY_RADAR(true), HideMinimapWasEnabled = false : NULL;
-	WeaponInvisibilityBool ? WeaponInvisibility(true) : WeaponInvisibility(false);
+	WeaponInvisibilityBool ? WeaponInvisibility(true) : WeaponInvisibilityWasEnabled ? WeaponInvisibility(false), WeaponInvisibilityWasEnabled = false : NULL;
 	SessionLockFriendsOnlyBool ? SessionLockFriendsOnly() : NULL;
 }
 
 bool Cheat::CheatFeatures::GodmodeBool = false;
+bool Cheat::CheatFeatures::GodmodeWasEnabled = false;
 void Cheat::CheatFeatures::Godmode(bool toggle)
 {
+	GodmodeWasEnabled = true;
 	ENTITY::SET_ENTITY_INVINCIBLE(GameFunctions::PlayerPedID, toggle);
 }
 
 bool Cheat::CheatFeatures::NeverWantedBool = false;
-void Cheat::CheatFeatures::NeverWanted(bool toggle)
+void Cheat::CheatFeatures::NeverWanted()
 {
-	if (toggle)
+	if (PLAYER::GET_PLAYER_WANTED_LEVEL(GameFunctions::PlayerID) > 0)
 	{
 		PLAYER::CLEAR_PLAYER_WANTED_LEVEL(GameFunctions::PlayerID);
-		PLAYER::SET_MAX_WANTED_LEVEL(0);
-	}
-	else
-	{
-		PLAYER::SET_MAX_WANTED_LEVEL(5);
 	}
 }
 
@@ -320,8 +317,10 @@ void Cheat::CheatFeatures::NoWeaponReload()
 }
 
 bool Cheat::CheatFeatures::InfiniteAmmoBool = false;
+bool Cheat::CheatFeatures::InfiniteAmmoWasEnabled = false;
 void Cheat::CheatFeatures::InfiniteAmmo(bool toggle)
 {
+	InfiniteAmmoWasEnabled = true;
 	for (auto const& i : GameArrays::WeaponsHashList)
 	{
 		WEAPON::SET_PED_INFINITE_AMMO(GameFunctions::PlayerPedID, toggle, i.WeaponHash);
@@ -329,10 +328,12 @@ void Cheat::CheatFeatures::InfiniteAmmo(bool toggle)
 }
 
 bool Cheat::CheatFeatures::SlowMotionBool = false;
+bool Cheat::CheatFeatures::SlowMotionWasEnabled = false;
 void Cheat::CheatFeatures::SlowMotion(bool toggle)
 {
 	if (toggle)
 	{
+		SlowMotionWasEnabled = true;
 		MISC::SET_TIME_SCALE(0.2f);
 	}
 	else
@@ -342,9 +343,18 @@ void Cheat::CheatFeatures::SlowMotion(bool toggle)
 }
 
 bool Cheat::CheatFeatures::WorldBlackoutBool = false;
+bool Cheat::CheatFeatures::WorldBlackoutWasEnabled = false;
 void Cheat::CheatFeatures::WorldBlackout(bool toggle)
 {
-	GRAPHICS::SET_ARTIFICIAL_LIGHTS_STATE(toggle);
+	if (toggle)
+	{
+		WorldBlackoutWasEnabled = true;
+		GRAPHICS::SET_ARTIFICIAL_LIGHTS_STATE(toggle);
+	}
+	else
+	{
+		GRAPHICS::SET_ARTIFICIAL_LIGHTS_STATE(toggle);
+	}
 }
 
 float Cheat::CheatFeatures::GravityGunEntityDistance = 5.f;
@@ -426,10 +436,12 @@ void Cheat::CheatFeatures::HideMinimap()
 }
 
 bool Cheat::CheatFeatures::NoGravityBool = false;
+bool Cheat::CheatFeatures::NoGravityWasEnabled = false;
 void Cheat::CheatFeatures::NoGravity(bool toggle)
 {
 	if (toggle)
 	{
+		NoGravityWasEnabled = true;
 		MISC::SET_GRAVITY_LEVEL(3);
 	}
 	else
@@ -439,9 +451,11 @@ void Cheat::CheatFeatures::NoGravity(bool toggle)
 }
 
 bool Cheat::CheatFeatures::WorldSnowLocalBool = false;
+bool Cheat::CheatFeatures::WorldSnowLocalWasEnabled = false;
 void Cheat::CheatFeatures::WorldSnowLocal(bool toggle)
 {
-	globalHandle(GLOBAL_SNOW[0]).At(GLOBAL_SNOW[1]).As<BOOL>() = toggle;
+	WorldSnowLocalWasEnabled = true;
+	globalHandle(GLOBAL_SNOW[0]).At(GLOBAL_SNOW[1]).As<bool>() = toggle;
 }
 
 bool Cheat::CheatFeatures::AutoTeleportToWaypointBool = false;
@@ -862,10 +876,12 @@ void Cheat::CheatFeatures::NerfBullets()
 }
 
 bool Cheat::CheatFeatures::SpectatePlayerBool = false;
+bool Cheat::CheatFeatures::SpectatePlayerWasEnabled = false;
 void Cheat::CheatFeatures::SpectatePlayer(bool toggle)
 {
 	if (toggle)
 	{
+		SpectatePlayerWasEnabled = true;
 		NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(GameFunctions::PlayerPedID, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(SelectedPlayer));
 		std::string String = "Spectating '" + (std::string)PLAYER::GET_PLAYER_NAME(SelectedPlayer) + "'";
 		GameFunctions::SubtitleNotification(CheatFunctions::StringToChar(String), 1);
@@ -1315,8 +1331,10 @@ void Cheat::CheatFeatures::RGBDisco()
 }
 
 bool Cheat::CheatFeatures::WeaponInvisibilityBool = false;
+bool Cheat::CheatFeatures::WeaponInvisibilityWasEnabled = false;
 void Cheat::CheatFeatures::WeaponInvisibility(bool toggle)
 {
+	WeaponInvisibilityWasEnabled = true;
 	ENTITY::SET_ENTITY_VISIBLE(WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX(GameFunctions::PlayerPedID, 0), !toggle, false);
 }
 

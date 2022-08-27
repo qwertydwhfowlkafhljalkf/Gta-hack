@@ -12,8 +12,8 @@ namespace Cheat
 			void Self();
 			void AllPlayersExclusions();
 			void AllPlayers();
-			void Online();
 			void Session();
+			void SessionStarter();
 			void SessionChat();
 			void RecoverySubmenuWarning();
 			void RecoveryStatistics();
