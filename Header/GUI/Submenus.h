@@ -45,6 +45,7 @@ namespace Cheat
 			void Vision();
 			void HideElements();
 			void Protection();
+			void ProtectionScriptEvents();
 			void Wardrobe();
 			void IPLLoader();
 			void Weapons();

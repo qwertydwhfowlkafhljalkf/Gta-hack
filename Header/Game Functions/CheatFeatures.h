@@ -19,8 +19,13 @@ namespace Cheat
 		extern int PlayerListMarkerPosition;
 		extern int SelectedPlayer;
 		extern int PlayerOpacityInt;
-		extern bool BlockMaliciousScriptEvents;
 		extern bool BlockAllScriptEvents;
+		extern bool ProtectionScriptEvents_Kicks;
+		extern bool ProtectionScriptEvents_CEOKick;
+		extern bool ProtectionScriptEvents_CEOBan;
+		extern bool ProtectionScriptEvents_PropertyTeleport;
+		extern bool ProtectionScriptEvents_CayoPericoTeleport;
+		extern bool ProtectionScriptEvents_ForceIntoMission;
 		extern bool HideOwnIPAddress;
 		extern bool HideOnScreenGameAndCheatInfo;
 		extern bool DisableTransactionErrorWarning;

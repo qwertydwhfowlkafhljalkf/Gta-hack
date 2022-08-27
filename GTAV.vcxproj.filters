@@ -151,7 +151,7 @@
     <ClCompile Include="Source\GUI\Submenus\HideElements.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\Protections.cpp">
+    <ClCompile Include="Source\GUI\Submenus\Protection.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
     <ClCompile Include="Source\GUI\Submenus\Wardrobe.cpp">
@@ -401,6 +401,9 @@
       <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
     <ClCompile Include="Source\GUI\Submenus\SessionStarter.cpp">
+      <Filter>Source Files\GUI\Submenus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\Submenus\ProtectionScriptEvents.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
   </ItemGroup>

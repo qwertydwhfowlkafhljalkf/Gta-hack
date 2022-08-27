@@ -177,11 +177,12 @@
     <ClCompile Include="Source\GUI\Submenus\NearbyVehicles.cpp" />
     <ClCompile Include="Source\GUI\Submenus\ObjectSpawn.cpp" />
     <ClCompile Include="Source\GUI\Submenus\OffroadVehicles.cpp" />
+    <ClCompile Include="Source\GUI\Submenus\ProtectionScriptEvents.cpp" />
     <ClCompile Include="Source\GUI\Submenus\Session.cpp" />
     <ClCompile Include="Source\GUI\Submenus\PedSpawn.cpp" />
     <ClCompile Include="Source\GUI\Submenus\PlaneVehicles.cpp" />
     <ClCompile Include="Source\GUI\Submenus\PlayerList.cpp" />
-    <ClCompile Include="Source\GUI\Submenus\Protections.cpp" />
+    <ClCompile Include="Source\GUI\Submenus\Protection.cpp" />
     <ClCompile Include="Source\GUI\Submenus\Radio.cpp" />
     <ClCompile Include="Source\GUI\Submenus\Recovery.cpp" />
     <ClCompile Include="Source\GUI\Submenus\RecoveryStatistics.cpp" />
