@@ -874,8 +874,7 @@ enum SessionTypes
 	SessionTypeFindFriend = 9,
 	SessionTypeSolo,
 	SessionTypeInviteOnly,
-	SessionTypeJoinCrew,
-	SessionTypeLeaveOnline = -1
+	SessionTypeJoinCrew
 };
 
 enum ScriptEventTypes

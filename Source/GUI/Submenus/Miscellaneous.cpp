@@ -53,5 +53,5 @@ void GUI::Submenus::Miscellaneous()
 		else { GameFunctions::MinimapNotification("Please set a waypoint first to use this feature"); }
 	}
 	if (GUI::Option("Get Empty Session", "Get Empty (Public) Session")) { Sleep(10000); }
-	if (GUI::Option("Exit to Single Player", "")) { if (NETWORK::NETWORK_IS_SESSION_STARTED()) { GameFunctions::ChangeGTAOSessionType(SessionTypeLeaveOnline); } }
+	if (GUI::Option("Exit to Single Player", "")) { if (NETWORK::NETWORK_IS_SESSION_STARTED()) { NETWORK::_SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE(); } }
 }
