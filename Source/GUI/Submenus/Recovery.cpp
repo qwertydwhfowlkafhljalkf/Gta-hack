@@ -665,9 +665,9 @@ void GUI::Submenus::Recovery()
 	if (GUI::Option("Clear Badsport", "Clears Badsport status"))
 	{
 		DWORD date[12];
-		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY("MPPLY_CHAR_IS_BADSPORT "), 0, true);
-		STATS::STAT_SET_INT(MISC::GET_HASH_KEY("MP0_BAD_SPORT_BITSET"), 0, true);
-		STATS::STAT_SET_INT(MISC::GET_HASH_KEY("MP1_BAD_SPORT_BITSET"), 0, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY("MPPLY_CHAR_IS_BADSPORT "), false, true);
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY("MP0_BAD_SPORT_BITSET"), false, true);
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY("MP1_BAD_SPORT_BITSET"), false, true);
 		STATS::STAT_SET_DATE(MISC::GET_HASH_KEY("MPPLY_BECAME_BADSPORT_DT"), &date[0], 7, true);
 		GameFunctions::MinimapNotification("Cleared Badsport Status");
 	}

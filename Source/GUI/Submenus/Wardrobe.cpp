@@ -93,8 +93,8 @@ void GUI::Submenus::Wardrobe()
 	{
 		PED::CLEAR_ALL_PED_PROPS(GameFunctions::PlayerPedID);
 	}
-	GUI::Break("Hair Color", SELECTABLE_CENTER_TEXT);
-	if (GUI::Int("Hair Color", HairColor, 0, PED::_GET_NUM_HAIR_COLORS(), 1, "", SELECTABLE_DISABLE_SAVE | SELECTABLE_RETURN_VALUE_CHANGE))
+	GUI::Break("Hair", SELECTABLE_CENTER_TEXT);
+	if (GUI::Int("Color", HairColor, 0, PED::_GET_NUM_HAIR_COLORS(), 1, "", SELECTABLE_DISABLE_SAVE | SELECTABLE_RETURN_VALUE_CHANGE))
 	{
 		PED::_SET_PED_HAIR_COLOR(GameFunctions::PlayerPedID, HairColor, 0);
 	}

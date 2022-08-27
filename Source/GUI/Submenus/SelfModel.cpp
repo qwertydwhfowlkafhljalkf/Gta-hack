@@ -22,7 +22,7 @@ void GUI::Submenus::SelfModel()
 		}	
 	}
 	GUI::Break("Ped List", SELECTABLE_CENTER_TEXT);
-	if (GUI::Option("Search", "Enter keywords to filter peds list"))
+	if (GUI::Option("Search", "Enter keywords to filter ped list"))
 	{
 		const char* KeyboardInput;
 		if (GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter search term", KeyboardInput))

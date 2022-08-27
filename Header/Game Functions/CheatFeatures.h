@@ -8,6 +8,7 @@ namespace Cheat
 		extern int AimbotBoneVectorPosition;
 		extern int ImpactAmmoVectorPosition;
 		extern int CustomAmmoVectorPosition;
+		extern int ParticleAmmoVectorPosition;
 		extern int FontTypeVectorPosition;
 		extern int AnimationsVectorPosition;
 		extern int ScenariosVectorPosition;
@@ -181,8 +182,6 @@ namespace Cheat
 		void CrossHair();
 		extern bool FreeCamBool;
 		void FreeCam(bool toggle);
-		extern bool CartoonGunBool;
-		void CartoonGun();
 		extern bool RGBDiscoBool;
 		extern bool RGBDiscoFirstCall;
 		void RGBDisco();

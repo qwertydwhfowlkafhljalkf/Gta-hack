@@ -1058,11 +1058,13 @@ void Cheat::GameFunctions::EnableDisableCursorNavigation()
 
 void Cheat::GameFunctions::ChangePedModelLocalPlayer(Hash PedModel)
 {
-	if (STREAMING::IS_MODEL_VALID(PedModel))
+	if (STREAMING::IS_MODEL_A_PED(PedModel))
 	{
 		while (!STREAMING::HAS_MODEL_LOADED(PedModel)) { STREAMING::REQUEST_MODEL(PedModel); GameHooking::PauseMainFiber(0); }
 		PLAYER::SET_PLAYER_MODEL(PlayerID, PedModel);
+		GameHooking::PauseMainFiber(100);
 		PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PlayerPedID);
+		PED::CLEAR_ALL_PED_PROPS(PlayerPedID);
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(PedModel);
 	}
 }

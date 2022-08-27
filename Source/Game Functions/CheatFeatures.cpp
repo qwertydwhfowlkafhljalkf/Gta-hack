@@ -5,6 +5,7 @@ int Cheat::CheatFeatures::SpeedometerVectorPosition = 0;
 int Cheat::CheatFeatures::AimbotBoneVectorPosition = 0;
 int Cheat::CheatFeatures::ImpactAmmoVectorPosition = 0;
 int Cheat::CheatFeatures::CustomAmmoVectorPosition = 0;
+int Cheat::CheatFeatures::ParticleAmmoVectorPosition = 0;
 int Cheat::CheatFeatures::FontTypeVectorPosition = 0;
 int Cheat::CheatFeatures::AnimationsVectorPosition = 0;
 int Cheat::CheatFeatures::ScenariosVectorPosition = 0;
@@ -183,6 +184,33 @@ void Cheat::CheatFeatures::Loop()
 		}
 	}
 
+	// Particle ammo
+	if (ParticleAmmoVectorPosition != 0)
+	{
+		Vector3 v0, v1;
+		const char* PTFX;
+		const char* EffectName;
+
+		if (ParticleAmmoVectorPosition == 1)
+		{
+			PTFX = "scr_rcbarry2";
+			EffectName = "muz_clown";
+		}
+
+		Vector3 BulletCoord;
+		if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(GameFunctions::PlayerPedID, &BulletCoord))
+		{
+			while (!STREAMING::HAS_NAMED_PTFX_ASSET_LOADED(PTFX))
+			{
+				STREAMING::REQUEST_NAMED_PTFX_ASSET(PTFX);
+				GameHooking::PauseMainFiber(0, false); 
+			}
+			GRAPHICS::USE_PARTICLE_FX_ASSET(PTFX);
+			GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(EffectName, BulletCoord.x, BulletCoord.y, BulletCoord.z + 0.3f, 0.f, 0.f, 0.f, 1.f, true, true, true, true);
+		}
+		STREAMING::REMOVE_NAMED_PTFX_ASSET(PTFX);
+	}
+
 	// Disable Transaction Error Warnings
 	if (DisableTransactionErrorWarning)
 	{
@@ -249,7 +277,6 @@ void Cheat::CheatFeatures::Loop()
 	AutoGiveAllWeaponsBool ? AutoGiveAllWeapons() : NULL;
 	AutoGiveAllWeaponUpgradesBool ? AutoGiveAllWeaponUpgrades() : NULL;
 	FreeCamBool ? FreeCam(true) : FreeCam(false);
-	CartoonGunBool ? CartoonGun() : NULL;
 	EntityInformationGunBool ? EntityInformationGun() : NULL;
 	CrossHairBool ? CrossHair() : NULL;
 	RGBDiscoBool ? RGBDisco() : !RGBDiscoFirstCall ? RGBDiscoFirstCall = true : NULL;
@@ -808,20 +835,6 @@ void Cheat::CheatFeatures::EntityInformationGun()
 		else if (ENTITY::IS_ENTITY_AN_OBJECT(AimedEntityHandle)) { EntityTypeMessageString = "Entity Type: Object"; }
 		else { EntityTypeMessageString = "Entity Type: Generic"; }
 		GUI::DrawTextInGame(EntityTypeMessageString, { 255, 255, 255, 255, 0 }, { 0.500f, 0.440f }, { 0.35f, 0.35f }, false);
-	}
-}
-
-bool Cheat::CheatFeatures::CartoonGunBool = false;
-void Cheat::CheatFeatures::CartoonGun()
-{
-	Vector3 v0, v1;
-	Entity WeaponEntityHandle = WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX(GameFunctions::PlayerPedID, 0);
-	if (PED::IS_PED_SHOOTING(GameFunctions::PlayerPedID))
-	{
-		while (!STREAMING::HAS_NAMED_PTFX_ASSET_LOADED("scr_rcbarry2")) { STREAMING::REQUEST_NAMED_PTFX_ASSET("scr_rcbarry2"); GameHooking::PauseMainFiber(0, false); }
-		MISC::GET_MODEL_DIMENSIONS(WEAPON::GET_SELECTED_PED_WEAPON(GameFunctions::PlayerPedID), &v0, &v1);
-		GRAPHICS::USE_PARTICLE_FX_ASSET("scr_rcbarry2");
-		GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY("muz_clown", WeaponEntityHandle, (v0.x - v1.x) / 2.0f + 0.7f, 0.f, 0.f, 0.f, 180.f, 0.f, 1.f, true, true, true);
 	}
 }
 
