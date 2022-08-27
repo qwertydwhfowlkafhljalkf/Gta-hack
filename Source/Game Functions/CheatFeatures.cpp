@@ -187,7 +187,6 @@ void Cheat::CheatFeatures::Loop()
 	// Particle ammo
 	if (ParticleAmmoVectorPosition != 0)
 	{
-		Vector3 v0, v1;
 		const char* PTFX;
 		const char* EffectName;
 
@@ -230,7 +229,7 @@ void Cheat::CheatFeatures::Loop()
 	NoGravityBool ? NoGravity(true) : NoGravity(false);
 	WorldSnowLocalBool ? WorldSnowLocal(true) : WorldSnowLocal(false);
 	AutoTeleportToWaypointBool ? AutoTeleportToWaypoint() : NULL;
-	OneHitKillBool ? OneHitKill(true) : OneHitKill(false);
+	OneHitKillBool ? OneHitKill() : OneHitKillWasEnabled ? PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 1.f), PLAYER::SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 1.f, false), OneHitKillWasEnabled  = false: NULL;
 	PauseTimeBool ? PauseTime(true) : PauseTime(false);
 	ExplosiveMeleeBool ? ExplosiveMelee() : NULL;
 	OrbitalCannonCooldownBypassBool ? OrbitalCannonCooldownBypass() : NULL;
@@ -254,6 +253,7 @@ void Cheat::CheatFeatures::Loop()
 	NoClipBool ? NoClip() : NoClipWasEnabled ? ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, true, true), NoClipWasEnabled = false : NULL;
 	RainbowVehicleBool ? RainbowVehicle() : NULL;
 	DeleteGunBool ? DeleteGun() : NULL;
+	NerfBulletsBool ? NerfBullets() : NerfBulletsWasEnabled ? PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 1.f), NerfBulletsWasEnabled = false : NULL;
 	SpectatePlayerBool ? SpectatePlayer(true) : SpectatePlayer(false);
 	NoRagdollAndSeatbeltBool ? NoRagdollAndSeatbelt(true) : NoRagdollAndSeatbelt(false);
 	FreezeSelectedPlayerBool ? FreezeSelectedPlayer() : NULL;
@@ -458,18 +458,12 @@ void Cheat::CheatFeatures::AutoTeleportToWaypoint()
 }
 
 bool Cheat::CheatFeatures::OneHitKillBool = false;
-void Cheat::CheatFeatures::OneHitKill(bool toggle)
+bool Cheat::CheatFeatures::OneHitKillWasEnabled = false;
+void Cheat::CheatFeatures::OneHitKill()
 {
-	if (toggle)
-	{
-		PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::GameFunctions::PlayerPedID), 999999.f);
-		PLAYER::SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::GameFunctions::PlayerPedID), 999999.f, false);
-	}
-	else
-	{
-		PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::GameFunctions::PlayerPedID), 1.f);
-		PLAYER::SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::GameFunctions::PlayerPedID), 1.f, false);
-	}
+	OneHitKillWasEnabled = true;
+	PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 999999.f);
+	PLAYER::SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 999999.f, false);
 }
 
 bool PauseTime_IsCurrentTimeSet = false;
@@ -857,6 +851,14 @@ void Cheat::CheatFeatures::DeleteGun()
 			}
 		}
 	}
+}
+
+bool Cheat::CheatFeatures::NerfBulletsBool = false;
+bool Cheat::CheatFeatures::NerfBulletsWasEnabled = false;
+void Cheat::CheatFeatures::NerfBullets()
+{
+	NerfBulletsWasEnabled = true;
+	PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 0.1f);
 }
 
 bool Cheat::CheatFeatures::SpectatePlayerBool = false;

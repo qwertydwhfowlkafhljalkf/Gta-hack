@@ -73,7 +73,8 @@ namespace Cheat
 		extern bool AutoTeleportToWaypointBool;
 		void AutoTeleportToWaypoint();
 		extern bool OneHitKillBool;
-		void OneHitKill(bool toggle);
+		extern bool OneHitKillWasEnabled;
+		void OneHitKill();
 		extern bool PauseTimeBool;
 		void PauseTime(bool toggle);
 		extern bool ExplosiveMeleeBool;
@@ -124,6 +125,9 @@ namespace Cheat
 		void RainbowVehicle();
 		extern bool DeleteGunBool;
 		void DeleteGun();
+		extern bool NerfBulletsBool;
+		extern bool NerfBulletsWasEnabled;
+		void NerfBullets();
 		extern bool EntityInformationGunBool;
 		void EntityInformationGun();
 		extern bool SpectatePlayerBool;
