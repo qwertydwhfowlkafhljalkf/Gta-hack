@@ -28,6 +28,6 @@ void (*Submenus::FunctionPointers[])() = {
 	Submenus::EmergencyVehicles, Submenus::SportClassicVehicles, Submenus::OffroadVehicles, Submenus::SedanVehicles,
 	Submenus::CoupesVehicles, Submenus::MuscleVehicles, Submenus::BoatVehicles, Submenus::CommercialVehicles,
 	Submenus::CompactVehicles, Submenus::CycleVehicles, Submenus::TheCriminalEnterprisesDLC, Submenus::SessionStarter,
-	Submenus::ProtectionScriptEvents
+	Submenus::ProtectionScriptEvents, Submenus::ProtectionNetworkEvents
 };
 int Submenus::NumberOfSubmenus = sizeof(Submenus::FunctionPointers) / sizeof(Submenus::FunctionPointers[0]);

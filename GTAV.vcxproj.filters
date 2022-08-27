@@ -406,6 +406,9 @@
     <ClCompile Include="Source\GUI\Submenus\ProtectionScriptEvents.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GUI\Submenus\ProtectionNetworkEvents.cpp">
+      <Filter>Source Files\GUI\Submenus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\resource.h">

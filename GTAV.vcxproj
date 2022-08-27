@@ -177,6 +177,7 @@
     <ClCompile Include="Source\GUI\Submenus\NearbyVehicles.cpp" />
     <ClCompile Include="Source\GUI\Submenus\ObjectSpawn.cpp" />
     <ClCompile Include="Source\GUI\Submenus\OffroadVehicles.cpp" />
+    <ClCompile Include="Source\GUI\Submenus\ProtectionNetworkEvents.cpp" />
     <ClCompile Include="Source\GUI\Submenus\ProtectionScriptEvents.cpp" />
     <ClCompile Include="Source\GUI\Submenus\Session.cpp" />
     <ClCompile Include="Source\GUI\Submenus\PedSpawn.cpp" />

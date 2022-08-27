@@ -518,14 +518,13 @@ void Cheat::CheatFeatures::ExplosiveMelee()
 bool Cheat::CheatFeatures::OrbitalCannonCooldownBypassBool = false;
 void Cheat::CheatFeatures::OrbitalCannonCooldownBypass()
 {
-	if (NETWORK::NETWORK_IS_SESSION_STARTED()) { STATS::STAT_SET_INT(MISC::GET_HASH_KEY("MP0_ORBITAL_CANNON_COOLDOWN"), 0, 0); STATS::STAT_SET_INT(MISC::GET_HASH_KEY("MP1_ORBITAL_CANNON_COOLDOWN"), 0, 0); }
+	if (NETWORK::NETWORK_IS_SESSION_STARTED()) { STATS::STAT_SET_INT(MISC::GET_HASH_KEY("MP0_ORBITAL_CANNON_COOLDOWN"), 0, true); STATS::STAT_SET_INT(MISC::GET_HASH_KEY("MP1_ORBITAL_CANNON_COOLDOWN"), 0, true); }
 }
 
 bool Cheat::CheatFeatures::ProtectionVoteKickBool = false;
 void Cheat::CheatFeatures::ProtectionVoteKick(bool toggle)
 {
 	GameHooking::defuseEvent(KICK_VOTES_EVENT, toggle);
-	GameHooking::defuseEvent(REMOTE_SCRIPT_LEAVE_EVENT, toggle);
 }
 
 bool Cheat::CheatFeatures::ProtectionFreezeBool = false;
@@ -535,7 +534,6 @@ void Cheat::CheatFeatures::ProtectionFreeze(bool toggle)
 	GameHooking::defuseEvent(INCIDENT_ENTITY_EVENT, toggle);
 	GameHooking::defuseEvent(NETWORK_CLEAR_PED_TASKS_EVENT, toggle);
 }
-
 
 bool Cheat::CheatFeatures::ProtectionWorldEventsBool = false;
 void Cheat::CheatFeatures::ProtectionWorldEvents(bool toggle)

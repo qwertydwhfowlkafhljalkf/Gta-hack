@@ -392,11 +392,6 @@ void GameHooking::Initialize()
 	c_location = Memory::pattern("48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07").count(1).get(0).get<char>(0);
 	c_location == nullptr ? Logger::Error("Failed to load World Pointer", true) : m_worldPtr = reinterpret_cast<uint64_t>(c_location) + *reinterpret_cast<int*>(reinterpret_cast<uint64_t>(c_location) + 3) + 7;
 
-	// Load Active Game Thread
-	//Logger::DebugMessage("Load 'Active Game Thread'");
-	//c_location = Memory::pattern("E8 ? ? ? ? 48 8B 88 ? 01 00 00 ? 02").count(1).get(0).get<char>(1);
-	//c_location == nullptr ? Logger::Error("Failed to load Active Game Thread", true) : GetActiveThread = reinterpret_cast<decltype(GetActiveThread)>(c_location + *(int32_t*)c_location + 4);
-
 	// Get Global Pointer
 	Logger::DebugMessage("Load 'Global Pointer'");
 	c_location = Memory::pattern("4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11").count(1).get(0).get<char>(0);

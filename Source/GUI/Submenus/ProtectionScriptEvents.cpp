@@ -4,7 +4,7 @@ using namespace Cheat;
 void GUI::Submenus::ProtectionScriptEvents()
 {
 	GUI::Title("Script Events Protection");
-	GUI::Toggle("Block All", CheatFeatures::BlockAllScriptEvents, "Blocks ~bold~all~s~ script events send to you - join a session before enabling", SELECTABLE_DISABLE_SAVE);
+	GUI::Toggle("Block All", CheatFeatures::BlockAllScriptEvents, "Blocks all script events send to you - join a session before enabling", SELECTABLE_DISABLE_SAVE);
 	GUI::Break("Script Events", SELECTABLE_CENTER_TEXT);
 	GUI::Toggle("Kicks", CheatFeatures::ProtectionScriptEvents_Kicks, "");
 	GUI::Toggle("CEO Kick", CheatFeatures::ProtectionScriptEvents_CEOKick, "");
