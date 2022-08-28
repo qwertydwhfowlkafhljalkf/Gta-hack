@@ -4,6 +4,7 @@ using namespace Cheat;
 std::string ObjectSpawnSearchTerm;
 void GUI::Submenus::ObjectSpawn()
 {
+	/* TODO
 	GUI::Title("Object Spawn");
 	GUI::Break("Object List", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Search", "Enter keywords to filter object list"))
@@ -35,4 +36,5 @@ void GUI::Submenus::ObjectSpawn()
 			}
 		}
 	}
+	*/
 }

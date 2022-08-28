@@ -5,7 +5,6 @@ int ChangeSessionInteger = 0;
 void GUI::Submenus::SessionStarter()
 {
 	GUI::Title("Session Starter");
-	GUI::Break("Lock", SELECTABLE_CENTER_TEXT);
 	GUI::Toggle("Lock to friends", CheatFeatures::SessionLockFriendsOnlyBool, "Continually kicks non-friends from session");
 	GUI::Break("Join/Change", SELECTABLE_CENTER_TEXT);
 	if (GUI::StringVector(NETWORK::NETWORK_IS_SESSION_STARTED() ? "Change Session" : "Join Session", { "Join Public", "New Public", "Closed Crew", "Crew", "Closed Friend", "Solo", "Invite Only" }, ChangeSessionInteger, "", SELECTABLE_DISABLE_SAVE))
