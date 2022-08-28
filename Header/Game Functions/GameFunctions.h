@@ -75,6 +75,7 @@ namespace Cheat
 		void FadeRGB(int& r, int& g, int& b);
 		bool ShowFullScreenMessage(std::string Message);
 		void SetCharacterSkillStat(std::string Skill, int Level);
+		int GetCharacterSkillStat(std::string Skill);
 		void ChangeGTAOSessionType(SessionTypes SessionType);
 		void TriggerScriptEvent(ScriptEventTypes EventType, Player TargetPlayer, int property_teleport_index = -1);
 	}

@@ -1230,6 +1230,13 @@ void Cheat::GameFunctions::SetCharacterSkillStat(std::string Skill, int Level)
 	STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_" + Skill)), Level, true);
 }
 
+int Cheat::GameFunctions::GetCharacterSkillStat(std::string Skill)
+{
+	int SkillLevelPercentage = 0;
+	STATS::STAT_GET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ReturnCurrentGTAOCharacter() + "_SCRIPT_INCREASE_" + Skill)), &SkillLevelPercentage, -1);
+	return SkillLevelPercentage;
+}
+
 void Cheat::GameFunctions::ChangeGTAOSessionType(SessionTypes SessionType)
 {
 	if (SessionType >= 0 && SessionType <= 12)

@@ -4,7 +4,7 @@ using namespace Cheat;
 void GUI::Submenus::Recovery()
 {
 	GUI::Title("Recovery");
-	GUI::MenuOption("Stats", RecoveryStatistics);
+	GUI::MenuOption("Stats", Submenus::RecoveryStatistics);
 	GUI::Break("Unlocks", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Unlock All", "Unlocks many unlockable GTA Online items"))
 	{
@@ -398,9 +398,6 @@ void GUI::Submenus::Recovery()
 		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_LIFETIME_BKR_SELL_EARNINGS3")), 20000000, true);
 		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_LIFETIME_BKR_SELL_EARNINGS4")), 20000000, true);
 		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_LIFETIME_BKR_SELL_EARNINGS5")), 20000000, true);
-		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_TIER_1_REWARD")), true, true);
-		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_TIER_3_REWARD")), true, true);
-		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_INCREASE_THROW_CAP")), true, true);
 		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "MPPLY_AWD_COMPLET_HEIST_MEM")), true, true);
 		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "MPPLY_AWD_FLEECA_FIN")), true, true);
 		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "MPPLY_AWD_HST_ORDER")), true, true);
@@ -638,6 +635,65 @@ void GUI::Submenus::Recovery()
 		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CHAR_WANTED_LEVEL_TIME5STAR")), 2147483647, 1);
 		STATS::STAT_SET_FLOAT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_LONGEST_WHEELIE_DIST")), 1000, 1);
 		GameFunctions::MinimapNotification("GTA Online Awards & Trophies unlocked");
+	}
+	if (GUI::Option("Allow Character Gender Change", ""))
+	{
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_ALLOW_GENDER_CHANGE")), true, true);
+	}
+	if (GUI::Option("Complete Flight School", ""))
+	{
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_ASPASSEDLESSON_0")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_ASPASSEDLESSON_1")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_ASPASSEDLESSON_2")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_ASPASSEDLESSON_3")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_ASPASSEDLESSON_4")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_ASPASSEDLESSON_5")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_ASPASSEDLESSON_6")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_ASPASSEDLESSON_7")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_ASPASSEDLESSON_8")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_ASPASSEDLESSON_9")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_SCHOOL_MEDAL_0")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_SCHOOL_MEDAL_1")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_SCHOOL_MEDAL_2")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_SCHOOL_MEDAL_3")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_SCHOOL_MEDAL_4")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_SCHOOL_MEDAL_5")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_SCHOOL_MEDAL_6")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_SCHOOL_MEDAL_7")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_SCHOOL_MEDAL_8")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PILOT_SCHOOL_MEDAL_9")), true, true);
+	}
+	if (GUI::Option("Unlock Increased Throwables Amount", "Also unlocks Shooting Range High Score"))
+	{
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_HIGHSCORE_1")), 690, true);
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_HIGHSCORE_2")), 1860, true);
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_HIGHSCORE_3")), 2690, true);
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_HIGHSCORE_4")), 2660, true);
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_HIGHSCORE_5")), 2650, true);
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_HIGHSCORE_6")), 450, true);
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_TARGETS_HIT")), 269, true);
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_WEAPON_BIT_SET")), 0xFFFFFFFF, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_TIER_1_REWARD")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_INCREASE_THROW_CAP")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_SR_TIER_3_REWARD")), true, true);
+	}
+	if (GUI::Option("Skip Casino Mission and unlock Armored Paragon", ""))
+	{
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_VCM_FLOW_CS_RSC_SEEN")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_VCM_FLOW_CS_BWL_SEEN")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_VCM_FLOW_CS_MTG_SEEN")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_VCM_FLOW_CS_OIL_SEEN")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_VCM_FLOW_CS_DEF_SEEN")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_VCM_FLOW_CS_FIN_SEEN")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CAS_VEHICLE_REWARD")), false, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CASINOPSTAT_BOOL0")), true, true);
+		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CASINOPSTAT_BOOL1")), true, true);
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_VCM_FLOW_PROGRESS")), -1, true);
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_VCM_STORY_PROGRESS")), -1, true);
+	}
+	if (GUI::Option("Unlock All Bunker Missions", ""))
+	{
+		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_LFETIME_BIKER_BUY_COMPLET5")), 14, true);
 	}
 	GUI::Break("Rank", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Set Rank", "Input a custom Rank"))
