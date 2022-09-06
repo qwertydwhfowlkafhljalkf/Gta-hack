@@ -49,7 +49,7 @@ int GUI::OnlinePlayerPictureTransparency = 255;
 
 int GUI::MenuArrowAnimationDelay		= 1000;
 
-
+std::string CursorBackCloseString;
 void GUI::Title(std::string TitleName)
 {
 	if (ShowHeaderBackground) { DrawRectInGame({ PrimaryColor.r, PrimaryColor.g, PrimaryColor.b, HeaderBackgroundTransparency }, { guiX, GUI::guiY - SelectableHeight - 0.181f }, { guiWidth, SelectableHeight + 0.045f }); }
@@ -59,8 +59,7 @@ void GUI::Title(std::string TitleName)
 
 	if (CheatFeatures::CursorNavigationState)
 	{
-		std::string CursorBackCloseString;
-		if (GUI::currentMenu == GUI::Submenus::Home) { CursorBackCloseString = "Close"; }
+		if (GUI::currentMenu == Submenus::Home) { CursorBackCloseString = "Close"; }
 		else { CursorBackCloseString = "Back"; }
 		DrawSpriteInGame("commonmenu", "arrowleft", GUI::guiX - 0.100f, GUI::guiY - 0.160f, 0.015f, 0.025f, 0, 255, 255, 255, 255);
 		DrawTextInGame(CursorBackCloseString, TextColorAndFont, { GUI::guiX - 0.094f, GUI::guiY - 0.174f }, { 0.35f, 0.37f }, false, true);
@@ -122,23 +121,14 @@ bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
 		GUI::previousOption = GUI::currentOption;
 		if (InformationText == "") { SelectableInformationText.clear(); }
 		else { SelectableInformationText = InformationText; }
-		if (Controls::SelectPressed)
+		if (Controls::SelectPressed || (GameFunctions::IsCursorAtXYPosition(RectPosition, { GUI::guiWidth, SelectableHeight }) && CheatFeatures::CursorNavigationState && PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, INPUT_ATTACK)))
 		{
-			SelectAction:
 			if (BitFlags & SELECTABLE_DISABLED)
 			{
 				GameFunctions::AdvancedMinimapNotification("This selectable is currently disabled", "Textures", "AdvancedNotificationImage", false, 4, "Cheat", "", 0.5f, "");
 				return false;
 			}
 			return true;
-		}
-	}
-
-	if (GameFunctions::IsCursorAtXYPosition(RectPosition, { GUI::guiWidth, SelectableHeight }) && CheatFeatures::CursorNavigationState)
-	{
-		if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, INPUT_CURSOR_ACCEPT))
-		{
-			goto SelectAction;
 		}
 	}
 	return false;

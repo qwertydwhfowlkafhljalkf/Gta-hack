@@ -1034,7 +1034,7 @@ VECTOR2 Cheat::GameFunctions::ReturnCursorYXCoords()
 	return { PAD::GET_DISABLED_CONTROL_NORMAL(2, INPUT_CURSOR_X), PAD::GET_DISABLED_CONTROL_NORMAL(2, INPUT_CURSOR_Y) };
 }
 
-//https://github.com/MAFINS/MenyooSP/blob/v1.3.0/Solution/source/Menu/Menu.cpp
+// https://github.com/MAFINS/MenyooSP/blob/v1.3.0/Solution/source/Menu/Menu.cpp
 bool Cheat::GameFunctions::IsCursorAtXYPosition(VECTOR2 const& boxCentre, VECTOR2 const& boxSize)
 {
 	return (ReturnCursorYXCoords().x >= boxCentre.x - boxSize.x / 2 && ReturnCursorYXCoords().x <= boxCentre.x + boxSize.x / 2)

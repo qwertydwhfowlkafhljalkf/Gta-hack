@@ -152,9 +152,10 @@ void Cheat::CheatFunctions::Loop()
 					GUI::SelectableInfoBoxY = GameFunctions::ReturnCursorYXCoords().y;
 				}
 			}
+			// Menu GUI Close/Back Button
 			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX - 0.100f, GUI::guiY - 0.156f }, { 0.060f, 0.025f }))
 			{
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
+				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, INPUT_CURSOR_ACCEPT))
 				{
 					GUI::BackMenu();
 				}
