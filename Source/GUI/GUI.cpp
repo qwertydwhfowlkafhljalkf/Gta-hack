@@ -121,7 +121,7 @@ bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
 		GUI::previousOption = GUI::currentOption;
 		if (InformationText == "") { SelectableInformationText.clear(); }
 		else { SelectableInformationText = InformationText; }
-		if (Controls::SelectPressed || (GameFunctions::IsCursorAtXYPosition(RectPosition, { GUI::guiWidth, SelectableHeight }) && CheatFeatures::CursorNavigationState && PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, INPUT_ATTACK)))
+		if (Controls::SelectPressed || (GameFunctions::IsCursorAtXYPosition(RectPosition, { GUI::guiWidth, SelectableHeight }) && CheatFeatures::CursorNavigationState && PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, INPUT_CURSOR_ACCEPT)))
 		{
 			if (BitFlags & SELECTABLE_DISABLED)
 			{

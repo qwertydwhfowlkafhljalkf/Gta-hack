@@ -160,19 +160,29 @@ void Cheat::CheatFunctions::Loop()
 					GUI::BackMenu();
 				}
 			}
+			// Scroll Up
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_UP) && !ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow))
 			{
 				if (GUI::currentOption > 1)
 				{
 					GUI::currentOption -= 1;
 				}
+				else
+				{
+					GUI::currentOption = GUI::optionCount;
+				}
 				GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 			}
+			// Scroll Down
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_DOWN))
 			{
 				if (GUI::TotalOptionsCount > GUI::currentOption)
 				{
 					GUI::currentOption += 1;
+				}
+				else
+				{
+					GUI::currentOption = 1;
 				}
 				GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
 			}

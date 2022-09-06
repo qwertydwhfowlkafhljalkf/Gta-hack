@@ -1,6 +1,6 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
-bool Cheat::Controls::ControlsDisabled			= false; //All control inputs are ignored when True
+bool Cheat::Controls::ControlsDisabled			= false; //All key control inputs are ignored when True
 bool Cheat::Controls::SelectPressed				= false;
 bool Cheat::Controls::LeftPressed				= false;
 bool Cheat::Controls::RightPressed				= false;
