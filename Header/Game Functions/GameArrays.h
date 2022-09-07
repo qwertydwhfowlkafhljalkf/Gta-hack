@@ -109,5 +109,12 @@ namespace Cheat
 		extern const std::vector<TSEPropertyListStruct> TSEPropertyList;
 		extern const std::vector<std::string> HUDColors;
 		extern std::vector<DefaultHUDColorsStruct> DefaultHUDColors;
+		extern const std::vector<const char*> IPLNorthYankton;
+		extern const std::vector<const char*> IPLDignityHeistYacht;
+		extern const std::vector<const char*> IPLDestroyedHospital;
+		extern const std::vector<const char*> IPLJewelryStore;
+		extern const std::vector<const char*> IPLMorgue;
+		extern const std::vector<const char*> IPLCargoship;
+		extern const std::vector<const char*> IPLAircraftCarrier;
 	}
 }

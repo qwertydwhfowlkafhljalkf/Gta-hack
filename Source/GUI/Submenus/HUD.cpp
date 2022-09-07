@@ -6,7 +6,7 @@ int HUDColorAlpha = 255;
 int SelectedComponent, ResetColorStringVector;
 void GUI::Submenus::HUD()
 {
-	GUI::Title("HUD");
+	GUI::Title("Head-up Display");
 	GUI::Toggle("Disable HUD", CheatFeatures::DisableHUDBool, "Disables all HUD elements");
 	GUI::Toggle("Hide Minimap", CheatFeatures::HideMinimapBool, "");
 	GUI::Break("Color", SELECTABLE_CENTER_TEXT);

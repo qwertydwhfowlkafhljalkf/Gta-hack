@@ -8,7 +8,7 @@ void GUI::Submenus::Miscellaneous()
 	GUI::MenuOption("Report Statistics", Submenus::ReportStatistics);
 	GUI::MenuOption("Radio", Submenus::Radio);
 	GUI::MenuOption("Extra-sensory Perception", Submenus::ESP);
-	GUI::MenuOption("HUD", Submenus::HUD);
+	GUI::MenuOption("Head-up Display", Submenus::HUD);
 	GUI::MenuOption("IPL Loader", Submenus::IPLLoader);
 	if (GUI::Int("Fake Wanted Level", FakeWantedLevelInteger, 0, 6, 1, "", SELECTABLE_DISABLE_SAVE | SELECTABLE_RETURN_VALUE_CHANGE))
 	{

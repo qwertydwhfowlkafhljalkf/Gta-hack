@@ -6,7 +6,7 @@ void GUI::Submenus::IPLTeleports()
 	GUI::Title("IPL Teleports");
 	if (GUI::Option("North Yankton", ""))
 	{
-		Vector3 Coords = { 5309.519f, -5212.37f, 83.522f };
+		Vector3 Coords = { 5309.519f, -5212.375f, 83.522f };
 		GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
 	}
 	if (GUI::Option("Yacht", ""))
@@ -32,6 +32,11 @@ void GUI::Submenus::IPLTeleports()
 	if (GUI::Option("Cargo Ship", ""))
 	{
 		Vector3 Coords = { -90.0f, -2365.8f, 14.3f };
+		GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
+	}
+	if (GUI::Option("Aircraft Carrier", ""))
+	{
+		Vector3 Coords = { 3073.6f, -4715.4f, 16.f };
 		GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coords, false, false);
 	}
 }
