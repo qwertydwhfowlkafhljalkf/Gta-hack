@@ -134,57 +134,61 @@ bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
 	return false;
 }
 
-bool GUI::VehicleOption(std::string VehicleModel, std::string ModelName)
+bool GUI::VehicleOption(DWORD VehicleHash)
 {
-	std::string option = UI::_GET_LABEL_TEXT(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(VehicleModel))));
-	if (option == "NULL") { option = VehicleModel; }
-	if (Option(option, ""))
+	if (STREAMING::IS_MODEL_A_VEHICLE(VehicleHash))
 	{
-		return true;
-	}
-	if (GUI::currentOption == GUI::optionCount)
-	{
-		std::string VehiclePreviewDictName, VehiclePreviewName;
-		std::transform(ModelName.begin(), ModelName.end(), ModelName.begin(), tolower);
-		VehiclePreviewDictName = "Textures";
-		VehiclePreviewName	   = "NoVehiclePreviewAvailable";
+		std::string ModelName = VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(VehicleHash);
+		std::string OptionText = UI::_GET_LABEL_TEXT(ModelName.c_str());
 
-		for (auto& Vector : GameArrays::VehicleModelPictures)
+		if (Option(OptionText == "NULL" ? ModelName : OptionText, ""))
 		{
-			if (Vector.PreviewName == ModelName)
-			{
-				VehiclePreviewDictName = Vector.DictName;
-				VehiclePreviewName = Vector.PreviewName;
-			}
+			return true;
 		}
-		
-		if (!CheatFeatures::HideVehicleInfoAndPreview)
+		if (GUI::currentOption == GUI::optionCount)
 		{
-			std::ostringstream ModelMaxSpeed;
-			if (MISC::SHOULD_USE_METRIC_MEASUREMENTS())
+			std::string VehiclePreviewDictName, VehiclePreviewName;
+			std::transform(ModelName.begin(), ModelName.end(), ModelName.begin(), tolower);
+			VehiclePreviewDictName = "Textures";
+			VehiclePreviewName = "NoVehiclePreviewAvailable";
+
+			for (auto& Vector : GameArrays::VehicleModelPictures)
 			{
-				ModelMaxSpeed << "Max Speed: " << GameFunctions::MSToKMH(VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))) << " KM/H";
-			}
-			else
-			{
-				ModelMaxSpeed << "Max Speed: " << GameFunctions::MSToMPH(VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))) << " MP/H";
+				if (Vector.PreviewName == ModelName)
+				{
+					VehiclePreviewDictName = Vector.DictName;
+					VehiclePreviewName = Vector.PreviewName;
+				}
 			}
 
-			if (guiX < 0.71f)
+			if (!CheatFeatures::HideVehicleInfoAndPreview)
 			{
-				DrawTextInGame("Model Name: " + ModelName, TextColorAndFont, { guiX + 0.111f,  guiY - 0.005f }, { 0.45f, 0.30f }, false);
-				DrawTextInGame(ModelMaxSpeed.str(), TextColorAndFont, { guiX + 0.111f, guiY + 0.010f }, { 0.45f, 0.30f }, false);
-				DrawTextInGame("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { guiX + 0.111f, guiY + 0.025f}, {0.45f, 0.30f}, false);
-				DrawRectInGame({ 0, 0, 0, 150 }, { guiX + 0.187f, GUI::guiY - 0.061f }, { 0.16f, 0.22f });
-				DrawSpriteInGame(VehiclePreviewDictName, VehiclePreviewName, guiX + 0.187f, guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
-			}
-			else
-			{
-				DrawTextInGame("Model Name: " + ModelName, TextColorAndFont, { guiX - 0.262f, guiY - 0.005f }, { 0.45f, 0.30f }, false);
-				DrawTextInGame(ModelMaxSpeed.str(), TextColorAndFont, { guiX - 0.262f, guiY + 0.010f }, { 0.45f, 0.30f }, false);
-				DrawTextInGame("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ModelName)))), TextColorAndFont, { guiX - 0.262f, guiY + 0.025f }, { 0.45f, 0.30f }, false);
-				DrawRectInGame({ 0, 0, 0, 150 }, { guiX - 0.187f, guiY - 0.061f }, { 0.16f, 0.22f });
-				DrawSpriteInGame(VehiclePreviewDictName, VehiclePreviewName, guiX - 0.187f, guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
+				std::ostringstream ModelMaxSpeed;
+				if (MISC::SHOULD_USE_METRIC_MEASUREMENTS())
+				{
+					ModelMaxSpeed << "Max Speed: " << GameFunctions::MSToKMH(VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(VehicleHash)) << " KM/H";
+				}
+				else
+				{
+					ModelMaxSpeed << "Max Speed: " << GameFunctions::MSToMPH(VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(VehicleHash)) << " MP/H";
+				}
+
+				if (guiX < 0.71f)
+				{
+					DrawTextInGame("Model Name: " + ModelName, TextColorAndFont, { guiX + 0.111f,  guiY - 0.005f }, { 0.45f, 0.30f }, false);
+					DrawTextInGame(ModelMaxSpeed.str(), TextColorAndFont, { guiX + 0.111f, guiY + 0.010f }, { 0.45f, 0.30f }, false);
+					DrawTextInGame("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(VehicleHash)), TextColorAndFont, { guiX + 0.111f, guiY + 0.025f }, { 0.45f, 0.30f }, false);
+					DrawRectInGame({ 0, 0, 0, 150 }, { guiX + 0.187f, GUI::guiY - 0.061f }, { 0.16f, 0.22f });
+					DrawSpriteInGame(VehiclePreviewDictName, VehiclePreviewName, guiX + 0.187f, guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
+				}
+				else
+				{
+					DrawTextInGame("Model Name: " + ModelName, TextColorAndFont, { guiX - 0.262f, guiY - 0.005f }, { 0.45f, 0.30f }, false);
+					DrawTextInGame(ModelMaxSpeed.str(), TextColorAndFont, { guiX - 0.262f, guiY + 0.010f }, { 0.45f, 0.30f }, false);
+					DrawTextInGame("Seats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(VehicleHash)), TextColorAndFont, { guiX - 0.262f, guiY + 0.025f }, { 0.45f, 0.30f }, false);
+					DrawRectInGame({ 0, 0, 0, 150 }, { guiX - 0.187f, guiY - 0.061f }, { 0.16f, 0.22f });
+					DrawSpriteInGame(VehiclePreviewDictName, VehiclePreviewName, guiX - 0.187f, guiY - 0.085f, 0.15f, 0.15f, 0.f, 255, 255, 255, 255);
+				}
 			}
 		}
 	}

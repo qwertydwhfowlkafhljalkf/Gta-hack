@@ -88,14 +88,14 @@ void Cheat::Logger::CheatWindow()
 
     if (CheatWindowVisible)
     {
-        ImGui::Begin("Cheat Log", &CheatWindowVisible, ImGuiWindowFlags_NoCollapse);
+        ImGui::Begin("GTAV Cheat Log", &CheatWindowVisible, ImGuiWindowFlags_NoCollapse);
         if (CheatFunctions::CheatInitEntirelyCompleted && !CheatWindowClosedAtInit)
         {
             CheatWindowVisible = false;
             CheatWindowClosedAtInit = true;
         }
         ImGui::End();
-        MainLoggerObject.Draw("Cheat Log", &CheatWindowVisible);
+        MainLoggerObject.Draw("GTAV Cheat Log", &CheatWindowVisible);
     } 
 }
 

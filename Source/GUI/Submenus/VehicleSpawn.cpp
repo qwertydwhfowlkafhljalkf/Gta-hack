@@ -1,6 +1,7 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
 using namespace Cheat;
+int VehicleCategory;
 void GUI::Submenus::VehicleSpawn()
 {
 	GUI::Title("Vehicle Spawn");
@@ -10,33 +11,22 @@ void GUI::Submenus::VehicleSpawn()
 	{
 		const char* KeyboardInput;
 		if (GameFunctions::DisplayKeyboardAndReturnInput(30, "Enter Vehicle Model Name", KeyboardInput))
-		{  
+		{
 			GameFunctions::SpawnVehicle(KeyboardInput);
-		}	
+		}
 	}
-	GUI::Break("Categories", SELECTABLE_CENTER_TEXT);
-	GUI::MenuOption("DLC Vehicles", Submenus::DLCVehicles);
-	GUI::MenuOption("Super", Submenus::SuperVehicles);
-	GUI::MenuOption("Sports", Submenus::SportVehicles);
-	GUI::MenuOption("Sport Classic", Submenus::SportClassicVehicles);
-	GUI::MenuOption("Offroad", Submenus::OffroadVehicles);
-	GUI::MenuOption("Sedans", Submenus::SedanVehicles);
-	GUI::MenuOption("Coupes", Submenus::CoupesVehicles);
-	GUI::MenuOption("Muscle", Submenus::MuscleVehicles);
-	GUI::MenuOption("Boats", Submenus::BoatVehicles);
-	GUI::MenuOption("Commercial", Submenus::CommercialVehicles);
-	GUI::MenuOption("Compacts", Submenus::CompactVehicles);
-	GUI::MenuOption("Cycles", Submenus::CycleVehicles);
-	GUI::MenuOption("Emergency", Submenus::EmergencyVehicles);
-	GUI::MenuOption("Helicopters", Submenus::HelicopterVehicles);
-	GUI::MenuOption("Industrial", Submenus::IndustrialVehicles);
-	GUI::MenuOption("Military", Submenus::MilitaryVehicles);
-	GUI::MenuOption("Motorcycles", Submenus::MotorcycleVehicles);
-	GUI::MenuOption("Planes", Submenus::PlaneVehicles);
-	GUI::MenuOption("Service", Submenus::ServiceVehicles);
-	GUI::MenuOption("SUV", Submenus::SUVVehicles);
-	GUI::MenuOption("Trailer", Submenus::TrailerVehicles);
-	GUI::MenuOption("Trains", Submenus::TrainVehicles);
-	GUI::MenuOption("Utility", Submenus::UtilityVehicles);
-	GUI::MenuOption("Vans", Submenus::VanVehicles);
+	GUI::StringVector("Category", { "All", "Compacts", "Sedans", "SUVs", "Coupes", "Muscle", "Sports Classics", "Sports", 
+					  "Super", "Motorcycles", "Off-road", "Industrial", "Utility", "Vans", "Cycles", "Boats", "Helicopters", 
+					  "Planes", "Service", "Emergency", "Military", "Commercial", "Trains", "Open Wheel" }, VehicleCategory, "");
+	GUI::Break("List", SELECTABLE_CENTER_TEXT);
+	for (auto const&VehicleHash : GameArrays::VehicleModels)
+	{
+		if (VehicleCategory == 0 || VEHICLE::GET_VEHICLE_CLASS_FROM_NAME(VehicleHash) == VehicleCategory - 1)
+		{
+			if (GUI::VehicleOption(VehicleHash))
+			{
+				GameFunctions::SpawnVehicle(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(VehicleHash));
+			}
+		}
+	}
 }

@@ -26,7 +26,6 @@ namespace Cheat
 			void ObjectSpawn();
 			void PlayerList();
 			void PedSpawn();
-			void DLCVehicles();
 			void ThemeFiles();
 			void Theme();
 			void About();
@@ -76,43 +75,6 @@ namespace Cheat
 			void SafehousesTeleportLocations();
 			void HighAltitudeTeleportLocations();
 			void UnderwaterTeleportLocations();
-			void TheContractDLC();
-			void LosSantosTunersDLC();
-			void CayoPericoHeistDLC();
-			void SummerSpecialDLC();
-			void CunningStuntsDLC();
-			void DiamondCasinoHeistDLC();
-			void DiamondCasinoResortDLC();
-			void ArenaWarDLC();
-			void SmugglersRunDLC();
-			void AfterHoursDLC();
-			void TheCriminalEnterprisesDLC();
-			void GunrunningDLC();
-			void DoomsdayHeistDLC();
-			void SSASSSDLC();
-			void VanVehicles();
-			void UtilityVehicles();
-			void TrainVehicles();
-			void TrailerVehicles();
-			void SuperVehicles();
-			void SportVehicles();
-			void SUVVehicles();
-			void ServiceVehicles();
-			void PlaneVehicles();
-			void MotorcycleVehicles();
-			void MilitaryVehicles();
-			void IndustrialVehicles();
-			void HelicopterVehicles();
-			void EmergencyVehicles();
-			void SportClassicVehicles();
-			void OffroadVehicles();
-			void SedanVehicles();
-			void CoupesVehicles();
-			void MuscleVehicles();
-			void BoatVehicles();
-			void CommercialVehicles();
-			void CompactVehicles();
-			void CycleVehicles();
 		}
 	}
 }

@@ -5,7 +5,7 @@ using namespace GUI;
 void (*Submenus::FunctionPointers[])() = {
 	Submenus::Home, Submenus::Self, Submenus::AllPlayersExclusions, Submenus::AllPlayers, Submenus::Session, Submenus::SessionChat, Submenus::RecoverySubmenuWarning,
 	Submenus::RecoveryStatistics, Submenus::Recovery, Submenus::ReportStatistics, Submenus::SelfModel,
-	Submenus::SpawnedVehicles, Submenus::Spawn, Submenus::PlayerList, Submenus::PedSpawn, Submenus::DLCVehicles,
+	Submenus::SpawnedVehicles, Submenus::Spawn, Submenus::PlayerList, Submenus::PedSpawn,
 	Submenus::ThemeFiles, Submenus::Theme, Submenus::About, Submenus::Settings,
 	Submenus::World, Submenus::NearbyPeds, Submenus::NearbyVehicles, Submenus::Time,
 	Submenus::Vehicle, Submenus::VehicleCustomizer, Submenus::VehicleCustomizerColor,
@@ -18,16 +18,7 @@ void (*Submenus::FunctionPointers[])() = {
 	Submenus::SelectedPlayerRemote, Submenus::SelectedPlayerApartmentTeleport, Submenus::SelectedPlayerAttachments,
 	Submenus::SelectedPlayerFriendly, Submenus::SelectedPlayerGriefing, Submenus::Aimbot, Submenus::IPLTeleports,
 	Submenus::WeaponAmmo, Submenus::LandmarkTeleportLocations, Submenus::SafehousesTeleportLocations,
-	Submenus::HighAltitudeTeleportLocations, Submenus::UnderwaterTeleportLocations, Submenus::TheContractDLC, 
-	Submenus::LosSantosTunersDLC, Submenus::CayoPericoHeistDLC, Submenus::SummerSpecialDLC, Submenus::CunningStuntsDLC,
-	Submenus::DiamondCasinoHeistDLC, Submenus::DiamondCasinoResortDLC, Submenus::ArenaWarDLC, Submenus::SmugglersRunDLC,
-	Submenus::AfterHoursDLC, Submenus::GunrunningDLC, Submenus::DoomsdayHeistDLC, Submenus::SSASSSDLC, Submenus::VanVehicles,
-	Submenus::UtilityVehicles, Submenus::TrainVehicles, Submenus::TrailerVehicles, Submenus::SuperVehicles,
-	Submenus::SportVehicles, Submenus::SUVVehicles, Submenus::ServiceVehicles, Submenus::PlaneVehicles,
-	Submenus::MotorcycleVehicles, Submenus::MilitaryVehicles, Submenus::IndustrialVehicles, Submenus::HelicopterVehicles,
-	Submenus::EmergencyVehicles, Submenus::SportClassicVehicles, Submenus::OffroadVehicles, Submenus::SedanVehicles,
-	Submenus::CoupesVehicles, Submenus::MuscleVehicles, Submenus::BoatVehicles, Submenus::CommercialVehicles,
-	Submenus::CompactVehicles, Submenus::CycleVehicles, Submenus::TheCriminalEnterprisesDLC, Submenus::SessionStarter,
+	Submenus::HighAltitudeTeleportLocations, Submenus::UnderwaterTeleportLocations, Submenus::SessionStarter,
 	Submenus::ProtectionScriptEvents, Submenus::ProtectionNetworkEvents
 };
 int Submenus::NumberOfSubmenus = sizeof(Submenus::FunctionPointers) / sizeof(Submenus::FunctionPointers[0]);

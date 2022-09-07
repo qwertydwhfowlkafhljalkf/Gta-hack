@@ -17,7 +17,7 @@ void GUI::Submenus::Miscellaneous()
 	GUI::Toggle("Disable Mobile Phone", CheatFeatures::DisableMobilePhoneBool, "Disable Mobile Phone");
 	GUI::Toggle("No-Clip", CheatFeatures::NoClipBool, "Use W and mouse to control");
 	GUI::Toggle("Jump Around Mode", CheatFeatures::JumpAroundModeBool, "Nearby vehicles will 'jump around'");
-	GUI::Toggle("Free Cam", CheatFeatures::FreeCamBool, "Use W and S to control. Shift to go faster");
+	GUI::Toggle("Free Cam", CheatFeatures::FreeCamBool, "Use W and S to control. Shift to go faster", SELECTABLE_DISABLE_SAVE);
 	GUI::Toggle("Show Joining Players Notification", CheatFeatures::ShowJoiningPlayersNotification, "");
 	GUI::Toggle("Show FPS", CheatFeatures::ShowFPSBool, "");
 	GUI::Toggle("Close Game Immediately", CheatFeatures::CloseGameImmediatelyBool, "Closes the game immediately when ALT + F4 is pressed");
@@ -25,7 +25,7 @@ void GUI::Submenus::Miscellaneous()
 	{
 		CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
 	}
-	if (GUI::Option("Stop spectating player", ""))
+	if (GUI::Option("Stop Spectating Player", ""))
 	{
 		CheatFeatures::SpectatePlayerBool = false;
 	}

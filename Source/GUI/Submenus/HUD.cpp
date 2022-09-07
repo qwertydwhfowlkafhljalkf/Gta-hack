@@ -25,7 +25,7 @@ void GUI::Submenus::HUD()
 		CheatFunctions::IniFileWriteString(std::to_string(HUDColorBlue), CheatFunctions::ReturnHUDColorsFilePath(), GameArrays::HUDColors[SelectedComponent], "b");
 		CheatFunctions::IniFileWriteString(std::to_string(HUDColorAlpha), CheatFunctions::ReturnHUDColorsFilePath(), GameArrays::HUDColors[SelectedComponent], "a");
 	}
-	if (GUI::StringVector("Reset Color", { "Selected", "All" }, ResetColorStringVector, ""))
+	if (GUI::StringVector("Reset Color", { "Selected", "All" }, ResetColorStringVector, "", SELECTABLE_DISABLE_SAVE))
 	{
 		// Set color(s) back to its/their default(s)
 		int index = 0;

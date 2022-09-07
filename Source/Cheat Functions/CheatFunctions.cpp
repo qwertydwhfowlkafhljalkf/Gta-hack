@@ -238,8 +238,9 @@ void Cheat::CheatFunctions::SaveSelectable(std::string OptionName, std::string O
 	{
 		if (IsSavable)
 		{
-			std::string LogMessage = "'" + OptionName + "' saved";
+			std::string LogMessage = "'" + OptionName + "' (" + GUI::CurrentSubmenu + " submenu) selectable state saved";
 			Cheat::GameFunctions::AdvancedMinimapNotification(StringToChar(LogMessage), "Textures", "AdvancedNotificationImage", false, 4, "Config", "", 0.5f, "");
+			Logger::DebugMessage(LogMessage);
 			IniFileWriteString(OptionValue, ReturnConfigFilePath(), "submenu_" + GUI::CurrentSubmenu, OptionName);
 		}
 	}

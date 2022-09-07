@@ -97,9 +97,6 @@
     <ClCompile Include="Source\GUI\Submenus\PedSpawn.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\DLCVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GUI\Submenus\ThemeFiles.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
@@ -244,114 +241,6 @@
     <ClCompile Include="Source\GUI\Submenus.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\TheContractDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\LosSantosTunersDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\CayoPericoHeistDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\SummerSpecialDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\CunningStuntsDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\DiamondCasinoHeistDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\DiamondCasinoResortDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\ArenaWarDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\SmugglersRunDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\AfterHoursDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\GunrunningDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\DoomsdayHeistDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\SSASSSDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\VanVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\UtilityVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\TrainVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\TrailerVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\SuperVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\SportVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\SUVVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\ServiceVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\PlaneVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\MotorcycleVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\MilitaryVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\IndustrialVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\HelicopterVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\EmergencyVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\SportClassicVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\OffroadVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\SedanVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\CoupesVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\MuscleVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\BoatVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\CommercialVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\CompactVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\CycleVehicles.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
     <ClCompile Include="ThirdParty\ImGui\imgui.cpp">
       <Filter>ThirdParty\ImGui</Filter>
     </ClCompile>
@@ -396,9 +285,6 @@
     </ClCompile>
     <ClCompile Include="Source\Cheat Functions\Controls.cpp">
       <Filter>Source Files\Cheat Functions</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Submenus\TheCriminalEnterprisesDLC.cpp">
-      <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
     <ClCompile Include="Source\GUI\Submenus\SessionStarter.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
