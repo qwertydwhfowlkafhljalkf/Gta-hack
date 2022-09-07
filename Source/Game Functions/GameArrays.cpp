@@ -109,7 +109,7 @@ const std::vector<WeaponHashesStruct> Cheat::GameArrays::WeaponsHashList = {
 	{ "Compact EMP Launcher", 0xDB26713A	}, //WeaponEMPLauncher
 	{ "StunGun MP", 0x45CD9CF3				}, //WeaponStunGunMP
 	{ "Precision Rifle", 0x6E7DDDEC			}, //WeaponPrecisionRifle
-	{ "Tactical Rifle", 0xD1D5F52B			}  //WeaponTecticalRifle
+	{ "Tactical Rifle", 0xD1D5F52B			}  //WeaponTacticalRifle
 };
 
 const std::vector<std::string> Cheat::GameArrays::PedModels = {
@@ -2238,7 +2238,11 @@ const std::vector<MaxUpgradeWeaponComponentsStruct> Cheat::GameArrays::MaxUpgrad
 	{ 0xA284510B, "COMPONENT_GRENADELAUNCHER_CLIP_01" },
 	{ 0xA284510B, "COMPONENT_AT_AR_FLSH" },
 	{ 0xA284510B, "COMPONENT_AT_AR_AFGRIP" },
-	{ 0xA284510B, "COMPONENT_AT_SCOPE_SMALL" }
+	{ 0xA284510B, "COMPONENT_AT_SCOPE_SMALL" },
+	{ 0xD1D5F52B, "COMPONENT_AT_AR_AFGRIP" },
+	{ 0xD1D5F52B, "COMPONENT_TACTICALRIFLE_CLIP_02" },
+	{ 0xD1D5F52B, "COMPONENT_AT_AR_FLSH_REH" },
+	{ 0xD1D5F52B, "COMPONENT_AT_AR_SUPP_02" }
 };
 
 const std::vector<AnimationsStruct> Cheat::GameArrays::Animations = {
