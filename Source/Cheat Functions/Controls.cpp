@@ -1,9 +1,9 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
-bool Cheat::Controls::ControlsDisabled			= false; //All key control inputs are ignored when True
-bool Cheat::Controls::SelectPressed				= false;
-bool Cheat::Controls::LeftPressed				= false;
-bool Cheat::Controls::RightPressed				= false;
+bool Cheat::Controls::KeyInputDisabled			= false; // All cheat-provided game functions & Dear ImGui key control inputs are disabled when True
+bool Cheat::Controls::SelectPressed				= false; // Internal boolean used by logic - do not manually modify
+bool Cheat::Controls::LeftPressed				= false; // Internal boolean used by logic - do not manually modify
+bool Cheat::Controls::RightPressed				= false; // Internal boolean used by logic - do not manually modify
 
 int Cheat::Controls::KeyPressDelay				= 150;
 int Cheat::Controls::KeyPressDelayPreviousTick	= GetTickCount64();
@@ -13,7 +13,7 @@ int Cheat::Controls::SaveSelectableKey			= VK_F12;
 
 void Cheat::Controls::Loop()
 {
-	if (!ControlsDisabled)
+	if (!KeyInputDisabled)
 	{
 		SelectPressed = false;
 		LeftPressed = false;
@@ -130,19 +130,79 @@ void Cheat::Controls::Loop()
 		GUI::optionCount = 0;
 		GUI::optionCountVisible = 0;
 	}
+
+	// Cursor Navigation Handler
+	if (CheatFeatures::CursorNavigationState)
+	{
+		// Handle menu GUI navigation - only when the menu is actually open/visible
+		// ImGui has priority over mouse control
+		if (GUI::menuLevel > 0)
+		{
+			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - GUI::SelectableHeight - 0.181f }, { GUI::guiWidth, GUI::SelectableHeight + 0.045f }))
+			{
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
+				{
+					GUI::guiX = GameFunctions::ReturnCursorYXCoords().x;
+					GUI::guiY = GameFunctions::ReturnCursorYXCoords().y + 0.20f;
+				}
+			}
+			if (GameFunctions::IsCursorAtXYPosition({ GUI::SelectableInfoBoxX, GUI::SelectableInfoBoxY }, { 0.25f, 0.080f }))
+			{
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
+				{
+					GUI::SelectableInfoBoxX = GameFunctions::ReturnCursorYXCoords().x;
+					GUI::SelectableInfoBoxY = GameFunctions::ReturnCursorYXCoords().y;
+				}
+			}
+			// Menu GUI Close/Back Button
+			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX - 0.100f, GUI::guiY - 0.156f }, { 0.060f, 0.025f }))
+			{
+				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, INPUT_CURSOR_ACCEPT))
+				{
+					GUI::BackMenu();
+				}
+			}
+			// Scroll Up
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_UP) && !ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow))
+			{
+				if (GUI::currentOption > 1)
+				{
+					GUI::currentOption -= 1;
+				}
+				else
+				{
+					GUI::currentOption = GUI::TotalOptionsCount;
+				}
+				GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
+			}
+			// Scroll Down
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_DOWN))
+			{
+				if (GUI::TotalOptionsCount > GUI::currentOption)
+				{
+					GUI::currentOption += 1;
+				}
+				else
+				{
+					GUI::currentOption = 1;
+				}
+				GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
+			}
+		}
+	}
 }
 
 void Cheat::Controls::ChangeControlsState(bool State)
 {
 	if (State)
 	{
-		Cheat::Logger::DebugMessage("Enabled Controls");
-		Controls::ControlsDisabled = false;
+		Cheat::Logger::DebugMessage("Enabled Key Controls");
+		Controls::KeyInputDisabled = false;
 	}
 	else
 	{
-		Cheat::Logger::DebugMessage("Disabled Controls");
-		Controls::ControlsDisabled = true;
+		Cheat::Logger::DebugMessage("Disabled Key Controls");
+		Controls::KeyInputDisabled = true;
 	}
 }
 

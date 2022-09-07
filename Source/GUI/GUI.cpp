@@ -119,13 +119,13 @@ bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
 		GUI::currentOptionVisible = GUI::optionCount - (GUI::optionCount - GUI::optionCountVisible);
 		GUI::CurrentOptionIsSavable = false;
 		GUI::previousOption = GUI::currentOption;
-		if (InformationText == "") { SelectableInformationText.clear(); }
-		else { SelectableInformationText = InformationText; }
+		SelectableInformationText = InformationText;
+
 		if (Controls::SelectPressed || (GameFunctions::IsCursorAtXYPosition(RectPosition, { GUI::guiWidth, SelectableHeight }) && CheatFeatures::CursorNavigationState && PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, INPUT_CURSOR_ACCEPT)))
 		{
 			if (BitFlags & SELECTABLE_DISABLED)
 			{
-				GameFunctions::AdvancedMinimapNotification("This selectable is currently disabled", "Textures", "AdvancedNotificationImage", false, 4, "Cheat", "", 0.5f, "");
+				GameFunctions::AdvancedMinimapNotification("This selectable is disabled", "Textures", "AdvancedNotificationImage", false, 4, "GTAV Cheat", "", 0.5f, "");
 				return false;
 			}
 			return true;

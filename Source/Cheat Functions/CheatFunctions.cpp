@@ -128,66 +128,6 @@ void Cheat::CheatFunctions::Loop()
 
 	// GUI - must be called after (^) rendering a submenu
 	GUI::MenuGUIBottom();
-
-	// Cursor Navigation Handler
-	if (CheatFeatures::CursorNavigationState)
-	{
-		// Handle menu GUI navigation - only when the menu is actually open/visible
-		// ImGui has priority over mouse control
-		if (GUI::menuLevel > 0)
-		{
-			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - GUI::SelectableHeight - 0.181f }, { GUI::guiWidth, GUI::SelectableHeight + 0.045f }))
-			{
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
-				{
-					GUI::guiX = GameFunctions::ReturnCursorYXCoords().x;
-					GUI::guiY = GameFunctions::ReturnCursorYXCoords().y + 0.20f;
-				}
-			}
-			if (GameFunctions::IsCursorAtXYPosition({ GUI::SelectableInfoBoxX, GUI::SelectableInfoBoxY }, { 0.25f, 0.080f }))
-			{
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
-				{
-					GUI::SelectableInfoBoxX = GameFunctions::ReturnCursorYXCoords().x;
-					GUI::SelectableInfoBoxY = GameFunctions::ReturnCursorYXCoords().y;
-				}
-			}
-			// Menu GUI Close/Back Button
-			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX - 0.100f, GUI::guiY - 0.156f }, { 0.060f, 0.025f }))
-			{
-				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, INPUT_CURSOR_ACCEPT))
-				{
-					GUI::BackMenu();
-				}
-			}
-			// Scroll Up
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_UP) && !ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow))
-			{
-				if (GUI::currentOption > 1)
-				{
-					GUI::currentOption -= 1;
-				}
-				else
-				{
-					GUI::currentOption = GUI::optionCount;
-				}
-				GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
-			}
-			// Scroll Down
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_DOWN))
-			{
-				if (GUI::TotalOptionsCount > GUI::currentOption)
-				{
-					GUI::currentOption += 1;
-				}
-				else
-				{
-					GUI::currentOption = 1;
-				}
-				GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
-			}
-		}	
-	}
 }
 
 void Cheat::CheatFunctions::NonLooped()
@@ -464,7 +404,7 @@ bool Cheat::CheatFunctions::StringToBool(std::string String)
 
 bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool RepeatInput)
 {
-	if (IsGameWindowFocussed() && !Controls::ControlsDisabled)
+	if (IsGameWindowFocussed() && !Controls::KeyInputDisabled)
 	{
 		if (!RepeatInput)
 		{

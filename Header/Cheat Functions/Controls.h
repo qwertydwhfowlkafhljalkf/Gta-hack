@@ -8,7 +8,7 @@ namespace Cheat
 		void ChangeControlsState(bool State);
 		void MenuGUIFadeFunction(int Type, bool FadeIn);
 		void DoMenuGUIFade(bool FadeIn);
-		extern bool ControlsDisabled;
+		extern bool KeyInputDisabled;
 		extern int KeyPressDelay;
 		extern int KeyPressDelayPreviousTick;
 		extern int OpenMenuGUIKey;

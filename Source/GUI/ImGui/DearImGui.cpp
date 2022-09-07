@@ -27,7 +27,6 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 HRESULT hkResizeBuffers(IDXGISwapChain* pThis, UINT BufferCount, UINT Width, UINT Height, DXGI_FORMAT NewFormat, UINT SwapChainFlags);
 DWORD WINAPI RenderHookThread(HMODULE hmod);
 
-
 void GUI::DearImGui::Init()
 {
 	CreateThread(nullptr, NULL, (LPTHREAD_START_ROUTINE)RenderHookThread, CheatModuleHandle, NULL, nullptr);
@@ -44,7 +43,7 @@ LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		}
 		break;
 	default:
-		if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+		if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam) && !Controls::KeyInputDisabled)
 		{
 			return true;
 		}
