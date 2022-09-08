@@ -23,7 +23,6 @@ public:
 	static GetChatData					    get_chat_data;
 
 	static void Initialize();
-	static void Unload();
 	static void PauseMainFiber(DWORD ms, bool ShowMessage = true);
 	static uint64_t getWorldPtr();
 	static void OnTickInit();

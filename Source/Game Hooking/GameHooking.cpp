@@ -530,28 +530,3 @@ __int64** GameHooking::getGlobalPtr()
 {
 	return m_globalPtr;
 }
-
-DWORD WINAPI UnloadThread(LPVOID lpParam)
-{
-	// Stop threads
-	CheatFunctions::SendThreadTerminateSignal = true;
-
-	// Stop DirectX hook - TODO; remove the hooks and unload ImGui
-	kiero::shutdown();
-
-	// Disable MinHook hooks
-	MH_DisableHook(MH_ALL_HOOKS); // TODO; remove all hooks, don't just disable them
-	MH_Uninitialize();
-
-	// Unitializing Logger
-	Logger::Uninit();
-
-	// Exit
-	FreeLibraryAndExitThread(CheatModuleHandle, EXIT_SUCCESS);
-}
-
-void GameHooking::Unload()
-{
-	Logger::DebugMessage("Unloading");
-	CreateThread(NULL, NULL, UnloadThread, NULL, NULL, NULL);
-}
