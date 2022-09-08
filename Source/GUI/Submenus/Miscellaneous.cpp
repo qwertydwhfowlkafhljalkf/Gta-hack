@@ -6,6 +6,7 @@ void GUI::Submenus::Miscellaneous()
 {
 	GUI::Title("Miscellaneous");
 	GUI::MenuOption("Report Statistics", Submenus::ReportStatistics);
+	GUI::MenuOption("Disables", Submenus::Disables);
 	GUI::MenuOption("Radio", Submenus::Radio);
 	GUI::MenuOption("Extra-sensory Perception", Submenus::ESP);
 	GUI::MenuOption("Head-up Display", Submenus::HUD);
@@ -14,7 +15,6 @@ void GUI::Submenus::Miscellaneous()
 	{
 		MISC::SET_FAKE_WANTED_LEVEL(FakeWantedLevelInteger);
 	}
-	GUI::Toggle("Disable Mobile Phone", CheatFeatures::DisableMobilePhoneBool, "Disable Mobile Phone");
 	GUI::Toggle("No-Clip", CheatFeatures::NoClipBool, "Use W and mouse to control");
 	GUI::Toggle("Jump Around Mode", CheatFeatures::JumpAroundModeBool, "Nearby vehicles will 'jump around'");
 	GUI::Toggle("Free Cam", CheatFeatures::FreeCamBool, "Use W and S to control. Shift to go faster", SELECTABLE_DISABLE_SAVE);

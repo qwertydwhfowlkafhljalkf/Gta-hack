@@ -17,7 +17,7 @@ void GUI::Submenus::VehicleSpawn()
 	}
 	GUI::StringVector("Category", { "All", "Compacts", "Sedans", "SUVs", "Coupes", "Muscle", "Sports Classics", "Sports", 
 					  "Super", "Motorcycles", "Off-road", "Industrial", "Utility", "Vans", "Cycles", "Boats", "Helicopters", 
-					  "Planes", "Service", "Emergency", "Military", "Commercial", "Trains", "Open Wheel" }, VehicleCategory, "");
+					  "Planes", "Service", "Emergency", "Military", "Commercial", "Trains", "Open Wheel" }, VehicleCategory, "", SELECTABLE_DISABLE_SAVE);
 	GUI::Break("List", SELECTABLE_CENTER_TEXT);
 	for (auto const&VehicleHash : GameArrays::VehicleModels)
 	{

@@ -142,6 +142,7 @@
     <ClCompile Include="Source\GUI\Submenus\AllPlayersExclusions.cpp" />
     <ClCompile Include="Source\GUI\Submenus\Animations.cpp" />
     <ClCompile Include="Source\GUI\Submenus\CustomTeleportLocations.cpp" />
+    <ClCompile Include="Source\GUI\Submenus\Disables.cpp" />
     <ClCompile Include="Source\GUI\Submenus\ESP.cpp" />
     <ClCompile Include="Source\GUI\Submenus\Globals.cpp" />
     <ClCompile Include="Source\GUI\Submenus\HideElements.cpp" />

@@ -25,6 +25,7 @@ bool Cheat::CheatFeatures::ProtectionScriptEvents_ForceIntoMission = false;
 bool Cheat::CheatFeatures::HideOwnIPAddress = true;
 bool Cheat::CheatFeatures::HideOnScreenGameAndCheatInfo = false;
 bool Cheat::CheatFeatures::DisableTransactionErrorWarning = true;
+bool Cheat::CheatFeatures::DisableCutscenes = false;
 bool Cheat::CheatFeatures::HideVehicleInfoAndPreview = false;
 bool Cheat::CheatFeatures::ShowJoiningPlayersNotification = false;
 bool Cheat::CheatFeatures::LogChatMessages = true;
@@ -222,7 +223,16 @@ void Cheat::CheatFeatures::Loop()
 		globalHandle(GLOBAL_TRANS_ERROR_SHOWN_2).As<BOOL>() = false;
 		globalHandle(GLOBAL_TRANS_ERROR_SHOWN_3).As<BOOL>() = false;
 	}
-	
+
+	// Disable Cutscenes
+	if (DisableCutscenes)
+	{
+		if (CUTSCENE::IS_CUTSCENE_ACTIVE())
+		{
+			CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
+		}
+	}
+
 	GodmodeBool ? Godmode(true) : GodmodeWasEnabled ? Godmode(false), GodmodeWasEnabled = false : NULL;
 	NeverWantedBool ? NeverWanted() : NULL;
 	NoWeaponReloadBool ? NoWeaponReload() : NULL;

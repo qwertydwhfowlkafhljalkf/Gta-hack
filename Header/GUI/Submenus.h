@@ -75,6 +75,7 @@ namespace Cheat
 			void SafehousesTeleportLocations();
 			void HighAltitudeTeleportLocations();
 			void UnderwaterTeleportLocations();
+			void Disables();
 		}
 	}
 }

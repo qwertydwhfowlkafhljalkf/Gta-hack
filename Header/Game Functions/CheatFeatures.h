@@ -29,6 +29,7 @@ namespace Cheat
 		extern bool HideOwnIPAddress;
 		extern bool HideOnScreenGameAndCheatInfo;
 		extern bool DisableTransactionErrorWarning;
+		extern bool DisableCutscenes;
 		extern bool HideVehicleInfoAndPreview;
 		extern bool CursorNavigationState;
 		extern bool ShowJoiningPlayersNotification;
