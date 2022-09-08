@@ -2,7 +2,6 @@
 
 void Cheat::FiberMain()
 {
-	CheatFunctions::NonLooped();
 	for (;;)
 	{
 		CheatFunctions::Loop();

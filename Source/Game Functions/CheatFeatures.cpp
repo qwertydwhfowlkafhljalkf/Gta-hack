@@ -45,6 +45,7 @@ bool Cheat::CheatFeatures::AllPlayersExclusionsFriends = false;
 bool Cheat::CheatFeatures::AllPlayersExclusionsHost = false;
 bool Cheat::CheatFeatures::CloseGameImmediatelyBool = true;
 bool Cheat::CheatFeatures::TeleportTransition = false;
+bool Cheat::CheatFeatures::NoTextureFileOverwrite = false;
 
 void Cheat::CheatFeatures::Loop()
 {
@@ -63,7 +64,7 @@ void Cheat::CheatFeatures::Loop()
 	GameFunctions::InGameKeyboardWindowTitle.clear();
 
 	// New cheat update notification
-	if (!CheatFunctions::NewCheatVersionString.empty())
+	if (!CheatFunctions::NewCheatVersionString.empty() && CheatFunctions::CheatInitEntirelyCompleted)
 	{
 		GUI::DrawTextInGame("~bold~A newer cheat version (" + CheatFunctions::NewCheatVersionString + ") is available on GitHub.", { 255, 255, 255, 255, FontChaletLondon }, { 0.003f, 0.001f }, { 0.25f, 0.25f }, false);
 	}

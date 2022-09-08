@@ -1,10 +1,11 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
 std::string Cheat::CheatFunctions::NewCheatVersionString;
-bool Cheat::CheatFunctions::CheatInitCompleted = false; // Set to True when everything in regards to initialization except for post init task(s) is done (such as loading config file)
-bool Cheat::CheatFunctions::CheatInitEntirelyCompleted = false; // Set to True when all init work is done and the cheat is ready to be used
-std::vector <std::string> Cheat::CheatFunctions::LoadedSelectablesVector;
-bool Cheat::CheatFunctions::SendThreadTerminateSignal = false;	// This MUST ONLY be set to True when the cheat is unloading
+bool Cheat::CheatFunctions::CheatInitEntirelyCompleted = false;									// Set when both CheatInitCompleted and ConfigLoaded are set
+bool Cheat::CheatFunctions::CheatInitCompleted = false;											// Set when all initialization is completed (except for async tasks such as LoadConfig())
+bool Cheat::CheatFunctions::ConfigLoaded = false;												// Set when the LoadConfig thread is completed
+std::vector <std::string> Cheat::CheatFunctions::LoadedSelectablesVector;						// Used during the async LoadConfig process to determine which selectables have been loaded
+bool Cheat::CheatFunctions::SendThreadTerminateSignal = false;									// This MUST ONLY be set to True when the cheat is unloading
 
 void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 {
@@ -87,8 +88,76 @@ bool Cheat::CheatFunctions::FileOrDirectoryExists(std::string Path)
 	return false;
 }
 
+static std::once_flag CheatInitialization;
 void Cheat::CheatFunctions::Loop()
 {
+	std::call_once(CheatInitialization, []()
+	{
+		// Check for newer cheat version
+		CheckCheatUpdate();
+
+		// Create Menu Selectable Arrow Animation Thread
+		std::thread MenuSelectableAnimationThreadHandle([]()
+			{
+				while (!CheatFunctions::SendThreadTerminateSignal)
+				{
+					if (GUI::menuLevel > 0)
+					{
+						GUI::MenuOptionArrowAnimationState = !GUI::MenuOptionArrowAnimationState;
+						Sleep(GUI::MenuArrowAnimationDelay);
+					}
+				}
+			});
+		MenuSelectableAnimationThreadHandle.detach();
+
+		// Load configuration file
+		LoadConfig();
+
+		// Load texture file
+		GUI::LoadTextureFile();
+
+		// Load 'multiplayer vehicles in Single Player' bypass
+		globalHandle(GLOBAL_SP_DESPAWN_BYPASS).As<BOOL>() = true;
+		Cheat::Logger::DebugMessage("Loaded single player vehicle spawn bypass");
+
+		// Fetch default HUD colors
+		for (int i = 0; i <= GameArrays::HUDColors.size(); i++)
+		{
+			DefaultHUDColorsStruct data{};
+			UI::GET_HUD_COLOUR(i, &data.R, &data.G, &data.B, &data.A);
+			GameArrays::DefaultHUDColors.push_back(data);
+		}
+		Cheat::Logger::DebugMessage("Fetched default HUD colors");
+
+		// Load saved HUD colors
+		if (FileOrDirectoryExists(ReturnHUDColorsFilePath()))
+		{
+			int SavedHUDColorsIndex = 0;
+			for (auto const& HUDColorComponentName : GameArrays::HUDColors)
+			{
+				std::string Red = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "r");
+				std::string Green = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "g");
+				std::string Blue = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "b");
+				std::string Alpha = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "a");
+
+				if (!Red.empty() && !Green.empty() && !Blue.empty() && !Alpha.empty())
+				{
+					try
+					{
+						UI::REPLACE_HUD_COLOUR_WITH_RGBA(SavedHUDColorsIndex, std::stoi(Red), std::stoi(Green), std::stoi(Blue), std::stoi(Alpha));
+					}
+					catch (...) {}
+					Cheat::Logger::DebugMessage("Loaded custom HUD color '" + HUDColorComponentName + "'");
+				}
+				SavedHUDColorsIndex++;
+			}
+		}
+
+		// Cheat init completed
+		CheatFunctions::CheatInitCompleted = true;
+		Logger::DebugMessage("Cheat init completed");
+	});
+
 	// Submenu handlers - additional submenu logic is looped here
 	for (int FuncPointerIndex = 0; FuncPointerIndex < Cheat::GUI::Submenus::NumberOfSubmenus; ++FuncPointerIndex)
 	{
@@ -133,73 +202,9 @@ void Cheat::CheatFunctions::Loop()
 
 	// GUI - must be called after (^) rendering a submenu
 	GUI::MenuGUIBottom();
-}
 
-void Cheat::CheatFunctions::NonLooped()
-{
-	// Check for newer cheat version
-	CheckCheatUpdate();
-
-	// Create Menu Selectable Arrow Animation Thread
-	std::thread MenuSelectableAnimationThreadHandle([]()
-		{
-			while (!CheatFunctions::SendThreadTerminateSignal)
-			{
-				if (GUI::menuLevel > 0)
-				{
-					GUI::MenuOptionArrowAnimationState = !GUI::MenuOptionArrowAnimationState;
-					Sleep(GUI::MenuArrowAnimationDelay);
-				}
-			}
-		});
-	MenuSelectableAnimationThreadHandle.detach();
-
-	// Load texture file
-	GUI::LoadTextureFile();
-
-	// Load configuration file
-	LoadConfig();
-
-	// Load 'multiplayer vehicles in Single Player' bypass
-	globalHandle(GLOBAL_SP_DESPAWN_BYPASS).As<BOOL>() = true;
-	Cheat::Logger::DebugMessage("Loaded single player vehicle spawn bypass");
-
-	// Fetch default HUD colors
-	for (int i = 0; i <= GameArrays::HUDColors.size(); i++)
-	{
-		DefaultHUDColorsStruct data{};
-		UI::GET_HUD_COLOUR(i, &data.R, &data.G, &data.B, &data.A);
-		GameArrays::DefaultHUDColors.push_back(data);
-	}
-	Cheat::Logger::DebugMessage("Fetched default HUD colors");
-
-	// Load saved HUD colors
-	if (FileOrDirectoryExists(ReturnHUDColorsFilePath()))
-	{
-		int SavedHUDColorsIndex = 0;
-		for (auto const& HUDColorComponentName : GameArrays::HUDColors)
-		{
-			std::string Red = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "r");
-			std::string Green = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "g");
-			std::string Blue = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "b");
-			std::string Alpha = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "a");
-
-			if (!Red.empty() && !Green.empty() && !Blue.empty() && !Alpha.empty())
-			{
-				try
-				{
-					UI::REPLACE_HUD_COLOUR_WITH_RGBA(SavedHUDColorsIndex, std::stoi(Red), std::stoi(Green), std::stoi(Blue), std::stoi(Alpha));
-				}
-				catch (...) {}
-				Cheat::Logger::DebugMessage("Loaded custom HUD color '" + HUDColorComponentName + "'");
-			}
-			SavedHUDColorsIndex++;
-		}
-	}
-	
-	// Cheat init completed
-	CheatFunctions::CheatInitCompleted = true;
-	Logger::DebugMessage("Cheat init completed");
+	// Set CheatInitEntirelyCompleted when all init is completed
+	CheatInitEntirelyCompleted = CheatInitCompleted && ConfigLoaded;
 }
 
 bool Cheat::CheatFunctions::IsGameWindowFocussed()
@@ -258,7 +263,7 @@ std::string Cheat::CheatFunctions::GetSelectableValueFromConfig(std::string Opti
 
 void LoadConfigThreadFunction()
 {
-	Cheat::Controls::ChangeControlsState(false);
+	Cheat::Controls::ChangeKeyInputState(false);
 	Cheat::GUI::HideGUIElements = true;
 	for (int FuncPointerIndex = 0; FuncPointerIndex < Cheat::GUI::Submenus::NumberOfSubmenus; ++FuncPointerIndex)
 	{
@@ -267,16 +272,15 @@ void LoadConfigThreadFunction()
 	}
 	Cheat::GUI::CloseMenuGUI();
 	Cheat::GUI::PreviousMenu = nullptr;
-	Cheat::Controls::ChangeControlsState(true);
+	Cheat::Controls::ChangeKeyInputState(true);
 	Cheat::GUI::HideGUIElements = false;
-	Cheat::CheatFunctions::CheatInitEntirelyCompleted = true;
+	Cheat::CheatFunctions::LoadedSelectablesVector.empty();
+	Cheat::CheatFunctions::ConfigLoaded = true;
 }
 
 void Cheat::CheatFunctions::LoadConfig()
 {
 	Cheat::Logger::Message("Loading Configuration");
-	std::thread LoadConfigThreadHandle(LoadConfigThreadFunction);
-	LoadConfigThreadHandle.detach();
 
 	// Load hotkeys
 	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Menu GUI Key");
@@ -295,6 +299,12 @@ void Cheat::CheatFunctions::LoadConfig()
 	// Load Vehicle Spawner Custom License Plate Text
 	std::string VehicleSpawnerCustomLicensePlateText = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_vehicle spawn settings", "Custom License Plate Text");
 	if (!VehicleSpawnerCustomLicensePlateText.empty()) { CheatFeatures::VehicleSpawnerCustomLicensePlateTextString = VehicleSpawnerCustomLicensePlateText; }
+
+	// Do not overwrite "Textures.ytd" at init feature - setting must be loaded immediatly (not async)
+	CheatFeatures::NoTextureFileOverwrite = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "do not overwrite \"textures.ytd\" at init"));
+
+	std::thread LoadConfigThreadHandle(LoadConfigThreadFunction);
+	LoadConfigThreadHandle.detach();
 }
 
 bool Cheat::CheatFunctions::IsSelectableRegisteredAsLoaded(std::string OptionName)

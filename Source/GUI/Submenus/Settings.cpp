@@ -42,6 +42,7 @@ void GUI::Submenus::Settings()
 	GUI::Int("Key Press Delay", Controls::KeyPressDelay, 1, 250, 5, "", SELECTABLE_RETURN_VALUE_CHANGE);
 	GUI::Int("Menu Arrow Animation Delay", GUI::MenuArrowAnimationDelay, 250, 2500, 25, "", SELECTABLE_RETURN_VALUE_CHANGE);
 	GUI::Toggle("Gameplay While Cursor Is Active", Controls::AllowGameplayWithCursorNavigationActive, "");
-	GUI::Toggle("Disable Cursor When Menu Is Closed", Controls::DisableCursorNavigationWhenMenuGUIIsClosed, "");
+	GUI::Toggle("Disable Cursor When Menu Gets Closed", Controls::DisableCursorNavigationWhenMenuGUIIsClosed, "");
+	GUI::Toggle("Do not overwrite \"Textures.ytd\" at init", CheatFeatures::NoTextureFileOverwrite, "Prevents the texture file from being ovewritten so you can use your own instead");
 	GUI::MenuOption("About", Submenus::About);
 }

@@ -8,6 +8,7 @@ namespace Cheat
 		extern std::string NewCheatVersionString;
 		extern bool CheatInitCompleted;
 		extern bool CheatInitEntirelyCompleted;
+		extern bool ConfigLoaded;
 		extern std::vector <std::string> LoadedSelectablesVector;
 		const std::string ReturnConfigFilePath();
 		const std::string ReturnMainLogFilePath();
@@ -19,7 +20,7 @@ namespace Cheat
 		bool IsSelectableRegisteredAsLoaded(std::string OptionName);
 		template<typename T> void LoadConfigOption(std::string OptionName, T& ReturnedVariable)
 		{
-			if (!CheatFunctions::IsSelectableRegisteredAsLoaded(OptionName))
+			if (!ConfigLoaded && !CheatFunctions::IsSelectableRegisteredAsLoaded(OptionName))
 			{
 				std::string TypeName = typeid(ReturnedVariable).name();
 
@@ -62,7 +63,6 @@ namespace Cheat
 		bool FileOrDirectoryExists(std::string Path);
 		void CreateNewDirectory(std::string Path);
 		void Loop();
-		void NonLooped();
 		bool IsGameWindowFocussed();
 		bool StringIsInteger(std::string String);
 		std::string ReturnTextureFilePath();

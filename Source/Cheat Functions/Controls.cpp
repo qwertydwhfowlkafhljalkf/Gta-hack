@@ -194,7 +194,7 @@ void Cheat::Controls::Loop()
 	}
 }
 
-void Cheat::Controls::ChangeControlsState(bool State)
+void Cheat::Controls::ChangeKeyInputState(bool State)
 {
 	if (State)
 	{

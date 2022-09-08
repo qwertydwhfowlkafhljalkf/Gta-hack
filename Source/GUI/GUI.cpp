@@ -803,33 +803,36 @@ static FileRegister RegisterTextureFile = (FileRegister)(Memory::pattern("48 89 
 void GUI::LoadTextureFile()
 {
 	Logger::Message("Loading Texture File");
-	remove(CheatFunctions::StringToChar(CheatFunctions::ReturnTextureFilePath()));
+	if (!CheatFeatures::NoTextureFileOverwrite)
+	{
+		remove(CheatFunctions::StringToChar(CheatFunctions::ReturnTextureFilePath()));
 
-	// Find and load the resource
-	HRSRC hResource = FindResourceA(CheatModuleHandle, MAKEINTRESOURCEA(140), "CHEAT_DATA");
-	if (!hResource) { goto Error; }
-	HGLOBAL hFileResource = LoadResource(CheatModuleHandle, hResource);
-	if (!hFileResource) { goto Error; }
+		// Find and load the resource
+		HRSRC hResource = FindResourceA(CheatModuleHandle, MAKEINTRESOURCEA(140), "CHEAT_DATA");
+		if (!hResource) { goto Error; }
+		HGLOBAL hFileResource = LoadResource(CheatModuleHandle, hResource);
+		if (!hFileResource) { goto Error; }
 
-	// Open and map this to a disk file
-	LPVOID lpFile = LockResource(hFileResource);
-	DWORD dwSize = SizeofResource(CheatModuleHandle, hResource);
+		// Open and map this to a disk file
+		LPVOID lpFile = LockResource(hFileResource);
+		DWORD dwSize = SizeofResource(CheatModuleHandle, hResource);
 
-	// Open the file and filemap
-	HANDLE hFile = CreateFileA(CheatFunctions::StringToChar(CheatFunctions::ReturnTextureFilePath()), GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	HANDLE hFileMap = CreateFileMapping(hFile, NULL, PAGE_READWRITE, 0, dwSize, NULL);
-	if (!hFileMap) { goto Error; }
+		// Open the file and filemap
+		HANDLE hFile = CreateFileA(CheatFunctions::StringToChar(CheatFunctions::ReturnTextureFilePath()), GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		HANDLE hFileMap = CreateFileMapping(hFile, NULL, PAGE_READWRITE, 0, dwSize, NULL);
+		if (!hFileMap) { goto Error; }
 
-	LPVOID lpAddress = MapViewOfFile(hFileMap, FILE_MAP_WRITE, 0, 0, 0);
-	if (!lpAddress) { goto Error; }
+		LPVOID lpAddress = MapViewOfFile(hFileMap, FILE_MAP_WRITE, 0, 0, 0);
+		if (!lpAddress) { goto Error; }
 
-	// Write the file
-	CopyMemory(lpAddress, lpFile, dwSize);
+		// Write the file
+		CopyMemory(lpAddress, lpFile, dwSize);
 
-	// Un-map the file and close the handles
-	UnmapViewOfFile(lpAddress);
-	CloseHandle(hFileMap);
-	CloseHandle(hFile);
+		// Un-map the file and close the handles
+		UnmapViewOfFile(lpAddress);
+		CloseHandle(hFileMap);
+		CloseHandle(hFile);
+	}
 
 	int textureID;
 	if (CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnTextureFilePath()))
@@ -844,8 +847,8 @@ void GUI::LoadTextureFile()
 
 	//Error
 Error:
-	GameFunctions::MinimapNotification("~r~Failed to load Texture");
-	Logger::DebugMessage("Failed to load Texture");
+	GameFunctions::MinimapNotification("~r~Failed to load Texture file");
+	Logger::DebugMessage("Failed to load Texture file; missing");
 }
 
 void GUI::DrawTextInGame(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center, bool Outline)

@@ -5,7 +5,7 @@ namespace Cheat
 	namespace Controls
 	{
 		void Loop();
-		void ChangeControlsState(bool State);
+		void ChangeKeyInputState(bool State);
 		void MenuGUIFadeFunction(int Type, bool FadeIn);
 		void DoMenuGUIFade(bool FadeIn);
 		extern bool KeyInputDisabled;

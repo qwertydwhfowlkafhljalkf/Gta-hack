@@ -147,7 +147,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	Logger::GameChatWindow();
 
 	// Cheat initialization menu
-	if (!CheatFunctions::CheatInitEntirelyCompleted && CheatFunctions::CheatInitCompleted)
+	if (!CheatFunctions::CheatInitEntirelyCompleted)
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
 		ImGui::Begin("CheatInitLoadingMenu", NULL, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove);
