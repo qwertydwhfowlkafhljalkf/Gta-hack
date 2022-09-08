@@ -9,6 +9,8 @@ namespace Cheat
 		void MenuGUIFadeFunction(int Type, bool FadeIn);
 		void DoMenuGUIFade(bool FadeIn);
 		extern bool KeyInputDisabled;
+		extern bool AllowGameplayWithCursorNavigationActive;
+		extern bool DisableCursorNavigationWhenMenuGUIIsClosed;
 		extern int KeyPressDelay;
 		extern int KeyPressDelayPreviousTick;
 		extern int OpenMenuGUIKey;

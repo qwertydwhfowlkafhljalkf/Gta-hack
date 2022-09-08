@@ -1047,12 +1047,18 @@ void Cheat::GameFunctions::EnableDisableCursorNavigation()
 	if (CheatFeatures::CursorNavigationState)
 	{
 		CheatFeatures::CursorNavigationState = false;
-		PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, true, 0);
+		if (!Controls::AllowGameplayWithCursorNavigationActive)
+		{
+			PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, true, 0);
+		}	
 	}
 	else
 	{
 		CheatFeatures::CursorNavigationState = true;
-		PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, false, 0);
+		if (!Controls::AllowGameplayWithCursorNavigationActive)
+		{
+			PLAYER::SET_PLAYER_CONTROL(GameFunctions::PlayerID, false, 0);
+		}
 	}
 }
 

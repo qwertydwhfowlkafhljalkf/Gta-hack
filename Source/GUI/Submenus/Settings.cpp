@@ -41,5 +41,7 @@ void GUI::Submenus::Settings()
 	}
 	GUI::Int("Key Press Delay", Controls::KeyPressDelay, 1, 250, 5, "", SELECTABLE_RETURN_VALUE_CHANGE);
 	GUI::Int("Menu Arrow Animation Delay", GUI::MenuArrowAnimationDelay, 250, 2500, 25, "", SELECTABLE_RETURN_VALUE_CHANGE);
+	GUI::Toggle("Gameplay While Cursor Is Active", Controls::AllowGameplayWithCursorNavigationActive, "");
+	GUI::Toggle("Cursor When Menu Is Closed", Controls::DisableCursorNavigationWhenMenuGUIIsClosed, "");
 	GUI::MenuOption("About", Submenus::About);
 }

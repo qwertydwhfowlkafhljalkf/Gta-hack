@@ -632,6 +632,13 @@ void GUI::CloseMenuGUI()
 	GUI::menuLevel = 0;
 	GUI::currentMenu = GUI::menusArray[GUI::menuLevel];
 	GUI::currentOption = GUI::optionsArray[GUI::menuLevel];
+	if (Controls::DisableCursorNavigationWhenMenuGUIIsClosed)
+	{
+		if (CheatFeatures::CursorNavigationState)
+		{
+			GameFunctions::EnableDisableCursorNavigation();
+		}
+	}
 }
 
 void GUI::BackMenu()

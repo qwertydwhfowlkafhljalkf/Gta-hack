@@ -1,6 +1,8 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
 bool Cheat::Controls::KeyInputDisabled			= false; // All cheat-provided game functions & Dear ImGui key control inputs are disabled when True
+bool Cheat::Controls::AllowGameplayWithCursorNavigationActive = false;
+bool Cheat::Controls::DisableCursorNavigationWhenMenuGUIIsClosed = false;
 bool Cheat::Controls::SelectPressed				= false; // Internal boolean used by logic - do not manually modify
 bool Cheat::Controls::LeftPressed				= false; // Internal boolean used by logic - do not manually modify
 bool Cheat::Controls::RightPressed				= false; // Internal boolean used by logic - do not manually modify
