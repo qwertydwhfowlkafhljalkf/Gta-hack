@@ -20,7 +20,7 @@ void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 	}
 }
 
-//See https://en.cppreference.com/w/cpp/io/manip/put_time
+// See https://en.cppreference.com/w/cpp/io/manip/put_time
 std::string Cheat::CheatFunctions::ReturnDateTimeFormatAsString(const char* DateTimeFormat)
 {
 	struct tm NewTimeHandle;
@@ -38,39 +38,44 @@ std::string Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath()
 	return std::filesystem::path(CheatModuleFilePath).parent_path().string();
 }
 
+std::string Cheat::CheatFunctions::GetWindowsUserDocumentsFolderPath()
+{
+	return std::getenv("userprofile") + (std::string)"\\Documents";
+}
+
 const std::string Cheat::CheatFunctions::ReturnConfigFilePath()
 {
-	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Config.ini";
+	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Config.ini";
 }
 
 const std::string Cheat::CheatFunctions::ReturnMainLogFilePath()
 {
-	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Logs\\Main.log";
+	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Logs\\Main.log";
 }
 
 const std::string Cheat::CheatFunctions::ReturnChatLogFilePath()
 {
-	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Logs\\Chats.log";
+	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Logs\\Chats.log";
 }
 
 const std::string Cheat::CheatFunctions::ReturnCustomTeleportLocationsFilePath()
 {
-	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\CustomTeleportLocations.json";
+	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\CustomTeleportLocations.json";
 }
 
 const std::string Cheat::CheatFunctions::ReturnHUDColorsFilePath()
 {
-	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\HUDColors.ini";
+	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\HUDColors.ini";
 }
 
 const std::string Cheat::CheatFunctions::ReturnThemeFilePath(std::string ThemeName)
 {
-	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes\\" + ThemeName + ".ini";
+	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Themes\\" + ThemeName + ".ini";
 }
 
 std::string Cheat::CheatFunctions::ReturnTextureFilePath()
 {
-	return ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Textures.ytd";
+	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Textures.ytd";
 }
 
 bool Cheat::CheatFunctions::FileOrDirectoryExists(std::string Path)
@@ -115,7 +120,7 @@ void Cheat::CheatFunctions::Loop()
 	if (GUI::currentMenu == GUI::Submenus::ThemeFiles)
 	{
 		GUI::ThemeFilesVector.clear();
-		std::string ThemeFolderPath = CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\gtav\\Themes";
+		std::string ThemeFolderPath = CheatFunctions::GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Themes";
 		if (!Cheat::CheatFunctions::FileOrDirectoryExists(ThemeFolderPath)) { CheatFunctions::CreateNewDirectory(ThemeFolderPath); }
 		for (const auto& file : std::filesystem::directory_iterator(ThemeFolderPath))
 		{

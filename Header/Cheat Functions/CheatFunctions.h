@@ -56,6 +56,7 @@ namespace Cheat
 			}
 		}
 		std::string ReturnCheatModuleDirectoryPath();
+		std::string GetWindowsUserDocumentsFolderPath();
 		void SaveSelectable(std::string OptionName, std::string OptionValue, bool IsSavable);
 		std::string GetSelectableValueFromConfig(std::string OptionName);
 		bool FileOrDirectoryExists(std::string Path);
