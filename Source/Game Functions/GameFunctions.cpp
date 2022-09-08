@@ -461,19 +461,16 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		// Draw Title and Background
 		if (Cheat::GUI::guiX < 0.54f)
 		{
-			GUI::DrawRectInGame(GUI::PrimaryColor, { Cheat::GUI::guiX + 0.266f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
-			GUI::DrawTextInGame("Player Information", { GUI::TextColorAndFont }, { Cheat::GUI::guiX + 0.260f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
-			GUI::DrawRectInGame({ 0, 0, 0, 210 }, { Cheat::GUI::guiX + 0.266f, GUI::guiY - 0.156f }, { 0.32f, 0.030f });
+			GUI::DrawRectInGame(GUI::PrimaryColor, { Cheat::GUI::guiX + (GUI::guiWidth * 127 / 100), GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
+			GUI::DrawTextInGame("Player Information", { GUI::TextColorAndFont }, { Cheat::GUI::guiX + (GUI::guiWidth * 124 / 100), GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
+			GUI::DrawRectInGame({ 0, 0, 0, 210 }, { Cheat::GUI::guiX + (GUI::guiWidth * 127 / 100), GUI::guiY - 0.156f }, { 0.32f, 0.030f });
 		}
 		else
 		{
-			GUI::DrawRectInGame(GUI::PrimaryColor, { Cheat::GUI::guiX - 0.266f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
-			GUI::DrawTextInGame("Player Information", { GUI::TextColorAndFont }, { Cheat::GUI::guiX - 0.260f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
-			GUI::DrawRectInGame({ 0, 0, 0, 210 }, { Cheat::GUI::guiX - 0.266f,GUI::guiY - 0.156f }, { 0.32f, 0.030f });
+			GUI::DrawRectInGame(GUI::PrimaryColor, { Cheat::GUI::guiX - (GUI::guiWidth * 127 / 100), GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
+			GUI::DrawTextInGame("Player Information", { GUI::TextColorAndFont }, { Cheat::GUI::guiX - (GUI::guiWidth * 124 / 100), GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
+			GUI::DrawRectInGame({ 0, 0, 0, 210 }, { Cheat::GUI::guiX - (GUI::guiWidth * 127 / 100),GUI::guiY - 0.156f }, { 0.32f, 0.030f });
 		}
-
-		// Draw World Map
-		// GUI::DrawSpriteInGame("mp_freemode_mc", "debugmap", 0.60f, 0.50f, 0.15f, 0.4f, 0, 255, 255, 255, 255);
 
 		// Text Entry's
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Name", 1);

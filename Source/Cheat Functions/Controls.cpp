@@ -41,7 +41,7 @@ void Cheat::Controls::Loop()
 			// Menu GUI
 			if (CheatFunctions::IsKeyCurrentlyPressed(OpenMenuGUIKey))
 			{
-				GUI::CheatGUIHasBeenOpened = true;
+				GUI::MenuGUIHasBeenOpened = true;
 				if (GUI::menuLevel == 0)
 				{
 					GameFunctions::PlayFrontendSoundDefault("YES");

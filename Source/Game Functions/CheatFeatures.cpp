@@ -53,7 +53,7 @@ void Cheat::CheatFeatures::Loop()
 	GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
 
 	// POST initialization notification
-	if (CheatFunctions::CheatInitEntirelyCompleted && !GUI::CheatGUIHasBeenOpened)
+	if (CheatFunctions::CheatInitEntirelyCompleted && !GUI::MenuGUIHasBeenOpened)
 	{
 		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to open cheat GUI";
 		std::string WelcomeText = "Welcome " + (std::string)SOCIALCLUB::_SC_GET_NICKNAME() + ", have fun!";

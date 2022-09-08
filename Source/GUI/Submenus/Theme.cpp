@@ -122,11 +122,13 @@ void GUI::Submenus::Theme()
 	GUI::Toggle("Disable Open/Close Fade", GUI::DisableMenuGUIOpenCloseFade, "", SELECTABLE_DISABLE_SAVE);
 	GUI::Float("X-Axis", GUI::guiX, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
 	GUI::Float("Y-Axis", GUI::guiY, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
+	GUI::Float("Width", GUI::guiWidth, 0.20f, 0.30f, 0.01f, "");
 	GUI::Float("Selectable Height", GUI::SelectableHeight, 0.035f, 0.045f, 0.001f, "This also slightly stretches the header element as a result of the rescale");
 	if (GUI::Option("Reset Position", ""))
 	{
 		GUI::guiX = GUI::guiX_Default;
 		GUI::guiY = GUI::guiY_Default;
+		GUI::guiWidth = GUI::guiWidth_Default;
 	}
 	GUI::Break("Selectable Information Box", SELECTABLE_CENTER_TEXT);
 	GUI::Float("X-Axis", GUI::SelectableInfoBoxX, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);

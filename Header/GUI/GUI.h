@@ -41,8 +41,8 @@ namespace Cheat
 		extern bool ShowHeaderTexture;
 		extern bool DisableMenuGUIOpenCloseFade;
 		extern bool HideGUIElements;
-		extern bool CheatGUIHasBeenOpened;
-		extern bool CurrentOptionIsSavable;
+		extern bool MenuGUIHasBeenOpened;
+		extern bool CurrentSelectableIsSavable;
 		extern std::string CurrentTheme;
 		extern std::string CurrentSubmenu;
 		extern bool RestorePreviousSubmenu;
