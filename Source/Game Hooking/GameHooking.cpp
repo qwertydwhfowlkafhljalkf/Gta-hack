@@ -15,6 +15,7 @@ GetChatData														    GameHooking::get_chat_data;
 
 static eGameState* 													m_gameState;
 static uint64_t														m_worldPtr;
+static PVOID														m_ownedExplosionBypass;
 static GameHooking::NativeRegistrationNew**							m_registrationTable;
 static std::unordered_map<uint64_t, GameHooking::NativeHandler>		m_handlerCache;
 static __int64**													m_globalPtr;
@@ -37,48 +38,67 @@ const char* GetLabelTextHooked										(void* this_, const char* label);
 
 void GameHooking::Init()
 {
-	// Load patterns
+	// Load pointers
+
+	Logger::DebugMessage("Getting is_dlc_present pointer");
 	GameHooking::is_dlc_present = static_cast<IsDLCPresent>(Memory::pattern("48 89 5C 24 ? 57 48 83 EC 20 81 F9 ? ? ? ?").count(1).get(0).get<void>(0));
+
+	Logger::DebugMessage("Getting get_label_text pointer");
 	GameHooking::get_label_text = static_cast<GetLabelText>(Memory::pattern("48 89 5C 24 ? 57 48 83 EC 20 48 8B DA 48 8B F9 48 85 D2 75 44 E8").count(1).get(0).get<void>(0));
+	
+	Logger::DebugMessage("Getting get_script_handler_if_networked pointer");
 	GameHooking::get_script_handler_if_networked = static_cast<GetScriptHandlerIfNetworked>(Memory::pattern("40 53 48 83 EC 20 E8 ? ? ? ? 48 8B D8 48 85 C0 74 12 48 8B 10 48 8B C8").count(1).get(0).get<void>(0));
+	
+	Logger::DebugMessage("Getting get_script_handler pointer");
 	GameHooking::get_script_handler = static_cast<GetScriptHandler>(Memory::pattern("48 83 EC 28 E8 ? ? ? ? 33 C9 48 85 C0 74 0C E8 ? ? ? ? 48 8B 88 ? ? ? ?").count(1).get(0).get<void>(0));
+	
+	Logger::DebugMessage("Getting get_event_data pointer");
 	GameHooking::get_event_data = static_cast<GetEventData>(Memory::pattern("48 85 C0 74 14 4C 8B 10").count(1).get(0).get<void>(-28));
+	
+	Logger::DebugMessage("Getting texture_file_register pointer");
 	GameHooking::texture_file_register = static_cast<TextureFileRegister>(Memory::pattern("48 89 5C 24 ? 48 89 6C 24 ? 48 89 7C 24 ? 41 54 41 56 41 57 48 83 EC 50 48 8B EA 4C 8B FA 48 8B D9 4D 85 C9").count(1).get(0).get<void>());
+	
+	Logger::DebugMessage("Getting get_player_address pointer");
 	GameHooking::get_player_address = static_cast<GetPlayerAddress>(Memory::pattern("40 53 48 83 EC 20 33 DB 38 1D ? ? ? ? 74 1C").count(1).get(0).get<void>(0));
+	
+	Logger::DebugMessage("Getting get_chat_data pointer");
 	GameHooking::get_chat_data = static_cast<GetChatData>(Memory::pattern("4D 85 C9 0F 84 ? ? ? ? 48 8B C4 48 89 58 08 48 89 70 10 48 89 78 18 4C 89 48 20 55 41 54 41 55 41 56 41 57 48 8D A8").count(1).get(0).get<void>(0));
+
+	Logger::DebugMessage("Getting owned explosion bypass pointer");
+	m_ownedExplosionBypass = Memory::pattern("0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8").count(1).get(0).get<void>(0);
 
 	char* c_location = nullptr;
 	void* v_location = nullptr;
 
 	// Load GameState
-	Logger::DebugMessage("Load 'GameState'");
+	Logger::DebugMessage("Getting game state pointer");
 	c_location = Memory::pattern("83 3D ? ? ? ? ? 75 17 8B 43 20 25").count(1).get(0).get<char>(2);
 	c_location == nullptr ? Logger::Error("Failed to load GameState", true) : m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5);
 
 	// Load Vector3 Result Fix
-	Logger::DebugMessage("Load 'Vector3 Result Fix'");
+	Logger::DebugMessage("Getting vector3 result fix pointer");
 	v_location = Memory::pattern("83 79 18 00 48 8B D1 74 4A FF 4A 18").count(1).get(0).get<void>(0);
 	if (v_location != nullptr) scrNativeCallContext::SetVectorResults = (void(*)(scrNativeCallContext*))(v_location);
 
 	// Load Native Registration Table
-	Logger::DebugMessage("Load 'Native Registration Table'");
+	Logger::DebugMessage("Getting native registration table pointer");
 	c_location = Memory::pattern("76 32 48 8B 53 40 48 8D 0D").count(1).get(0).get<char>(9);
 	c_location == nullptr ? Logger::Error("Failed to load Native Registration Table", true) : m_registrationTable = reinterpret_cast<decltype(m_registrationTable)>(c_location + *(int32_t*)c_location + 4);
 
 	// Load Game World Pointer
-	Logger::DebugMessage("Load 'World Pointer'");
+	Logger::DebugMessage("Getting world pointer");
 	c_location = Memory::pattern("48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07").count(1).get(0).get<char>(0);
 	c_location == nullptr ? Logger::Error("Failed to load World Pointer", true) : m_worldPtr = reinterpret_cast<uint64_t>(c_location) + *reinterpret_cast<int*>(reinterpret_cast<uint64_t>(c_location) + 3) + 7;
 
 	// Get Global Pointer
-	Logger::DebugMessage("Load 'Global Pointer'");
+	Logger::DebugMessage("Getting global pointer");
 	c_location = Memory::pattern("4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11").count(1).get(0).get<char>(0);
 	__int64 patternAddr = NULL;
 	c_location == nullptr ? Logger::Error("Failed to load Global Pointer", true) : patternAddr = reinterpret_cast<decltype(patternAddr)>(c_location);
 	m_globalPtr = (__int64**)(patternAddr + *(int*)(patternAddr + 3) + 7);
 
 	// Get Event Hook -> Used by defuseEvent
-	Logger::DebugMessage("Load 'Event Hook'");
+	Logger::DebugMessage("Loading event hook");
 	if ((c_location = Memory::pattern("48 83 EC 28 E8 ? ? ? ? 48 8B 0D ? ? ? ? 4C 8D 0D ? ? ? ? 4C 8D 05 ? ? ? ? BA 03").count(1).get(0).get<char>(0)))
 	{
 		int i = 0, j = 0, matches = 0, found = 0;
@@ -123,23 +143,23 @@ void GameHooking::Init()
 	}
 
 	// Hook Game Functions
-	Logger::DebugMessage("Hook 'GET_EVENT_DATA'");
+	Logger::DebugMessage("Hook get_event_data");
 	auto status = MH_CreateHook(GameHooking::get_event_data, GetEventDataHooked, (void**)&GetEventDataOriginal);
 	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::get_event_data) != MH_OK) { Logger::Error("Failed to hook GET_EVENT_DATA", true);  std::exit(EXIT_FAILURE); }
 
-	Logger::DebugMessage("Hook 'GET_SCRIPT_HANDLER_IF_NETWORKED'");
+	Logger::DebugMessage("Hook get_script_handler_if_networked");
 	status = MH_CreateHook(GameHooking::get_script_handler_if_networked, GetScriptHandlerIfNetworkedHooked, (void**)&GetScriptHandlerIfNetworkedOriginal);
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_script_handler_if_networked) != MH_OK) { Logger::Error("Failed to hook GET_SCRIPT_HANDLER_IF_NETWORKED", true);  std::exit(EXIT_FAILURE); }
 
-	Logger::DebugMessage("Hook 'GET_LABEL_TEXT'");
+	Logger::DebugMessage("Hook get_label_text");
 	status = MH_CreateHook(GameHooking::get_label_text, GetLabelTextHooked, (void**)&GetLabelTextOriginal);
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_label_text) != MH_OK) { Logger::Error("Failed to hook GET_LABEL_TEXT", true);  std::exit(EXIT_FAILURE); }
 
-	Logger::DebugMessage("Hook 'GET_CHAT_DATA'");
+	Logger::DebugMessage("Hook get_chat_data");
 	status = MH_CreateHook(GameHooking::get_chat_data, GetChatDataHooked, (void**)&GetChatDataOriginal);
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_chat_data) != MH_OK) { Logger::Error("Failed to hook GET_CHAT_DATA", true);  std::exit(EXIT_FAILURE); }
 
-	Logger::DebugMessage("Hook 'IS_DLC_PRESENT'");
+	Logger::DebugMessage("Hook is_dlc_present");
 	status = MH_CreateHook(GameHooking::is_dlc_present, IsDLCPresentHooked, (void**)&IsDLCPresentOriginal);
 	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::is_dlc_present) != MH_OK) { Logger::Error("Failed to hook IS_DLC_PRESENT", true);  std::exit(EXIT_FAILURE); }
 }
@@ -328,4 +348,9 @@ void GameHooking::defuseEvent(GameEvents e, bool toggle)
 __int64** GameHooking::getGlobalPtr()
 {
 	return m_globalPtr;
+}
+
+void GameHooking::SetOwnedExplosionBypassState(bool toggle)
+{
+	*(unsigned short*)m_ownedExplosionBypass = toggle ? 0xE990 : 0x850F;
 }

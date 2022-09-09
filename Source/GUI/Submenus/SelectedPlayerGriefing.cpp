@@ -101,6 +101,17 @@ void GUI::Submenus::SelectedPlayerGriefing()
 		GameFunctions::RequestNetworkControlOfEntity(playerPed);
 		GameFunctions::StopAllPedAnimations(playerPed);
 	}
+	if (GUI::Option("Blame Kill Everyone", ""))
+	{
+		PlayersSessionForLoop
+		{
+			if (GameFunctions::PlayerID != i && CheatFeatures::SelectedPlayer != i)
+			{
+				FIRE::ADD_OWNED_EXPLOSION(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), false), 
+					29, 1000.f, true, false, 0.f);
+			}
+		}
+	}
 	if (GUI::Option("Spawn Enemy", ""))
 	{
 		int eclone[1000];
