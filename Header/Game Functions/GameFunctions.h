@@ -37,7 +37,7 @@ namespace Cheat
 		void ShowPlayerInformationBox(Player PlayerID);
 		float Get3DDistance(Vector3 a, Vector3 b);
 		void ApplyForceToEntity(Entity e, float x, float y, float z);
-		void SpawnVehicle(const char* ModelHash);
+		void SpawnVehicle(const char* ModelName);
 		void MaxDowngradeVehicle(int VehicleHandle);
 		void MaxUpgradeVehicle(int VehicleHandle);
 		void EnableDisableAntiCrashCamera();

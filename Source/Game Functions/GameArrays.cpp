@@ -2530,7 +2530,7 @@ const std::vector<WeatherTypesStruct> Cheat::GameArrays::WeatherTypes = {
 	{ "Blizzard",		"BLIZZARD" }
 };
 
-//This only contains the most expensive/'best' weapon components
+// This only contains the most expensive/'best' weapon components
 const std::vector<MaxUpgradeWeaponComponentsStruct> Cheat::GameArrays::MaxUpgradeWeaponComponents = {
 	{ 0xD8DF3C3C, "COMPONENT_KNUCKLE_VARMOD_VAGOS" },
 	{ 0xDFE37640, "COMPONENT_SWITCHBLADE_VARMOD_VAR1" },

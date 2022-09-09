@@ -9,5 +9,5 @@ void GUI::Submenus::WeaponAmmo()
 	GUI::StringVector("Particle", { "Disabled", "Cartoon" }, CheatFeatures::ParticleAmmoVectorPosition, "");
 	GUI::Break("Options", SELECTABLE_CENTER_TEXT);
 	GUI::Toggle("Delete Gun", CheatFeatures::DeleteGunBool, "Use SNS Pistol with this option");
-	GUI:Toggle("Nerf Bullets", CheatFeatures::NerfBulletsBool, "Significantly reduces bullet damage");
+	GUI::Toggle("Nerf Bullets", CheatFeatures::NerfBulletsBool, "Significantly reduces bullet damage");
 }

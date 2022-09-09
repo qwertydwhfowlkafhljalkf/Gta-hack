@@ -874,7 +874,7 @@ void Cheat::CheatFeatures::DeleteGun()
 			{
 				Cheat::GameFunctions::RequestNetworkControlOfEntity(AimedAtEntity);
 				ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&AimedAtEntity);
-				ENTITY::SET_ENTITY_AS_MISSION_ENTITY(AimedAtEntity, 1, 1);
+				ENTITY::SET_ENTITY_AS_MISSION_ENTITY(AimedAtEntity, true, true);
 				ENTITY::DELETE_ENTITY(&AimedAtEntity);
 			}
 		}
