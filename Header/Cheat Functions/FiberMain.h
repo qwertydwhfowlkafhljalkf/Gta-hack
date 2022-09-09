@@ -69,6 +69,6 @@
 
 namespace Cheat
 {
-	void FiberMain();
+	void FiberMain(LPVOID lpParameter);
 	extern HMODULE CheatModuleHandle;
 }

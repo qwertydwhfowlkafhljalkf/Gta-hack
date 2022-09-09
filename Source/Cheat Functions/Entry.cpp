@@ -53,7 +53,7 @@ DWORD WINAPI InitializationThread(LPVOID lpParam)
 	Logger::DebugMessage("Initialized DirectX hook & ImGui");
 
 	// Initalize RAGE hooks
-	GameHooking::Initialize();
+	GameHooking::Init();
 
 	// Exit thread
 	return EXIT_SUCCESS;

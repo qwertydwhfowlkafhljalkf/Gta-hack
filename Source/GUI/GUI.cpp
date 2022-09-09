@@ -799,7 +799,6 @@ void GUI::SaveTheme(std::string ThemeFileName)
 	GameFunctions::MinimapNotification("Theme Saved");
 }
 
-static FileRegister RegisterTextureFile = (FileRegister)(Memory::pattern("48 89 5C 24 ? 48 89 6C 24 ? 48 89 7C 24 ? 41 54 41 56 41 57 48 83 EC 50 48 8B EA 4C 8B FA 48 8B D9 4D 85 C9").count(1).get(0).get<decltype(RegisterTextureFile)>());
 void GUI::LoadTextureFile()
 {
 	Logger::Message("Loading Texture File");
@@ -837,7 +836,7 @@ void GUI::LoadTextureFile()
 	int textureID;
 	if (CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnTextureFilePath()))
 	{
-		RegisterTextureFile(&textureID, CheatFunctions::StringToChar(CheatFunctions::ReturnTextureFilePath()), true, "Textures.ytd", false);
+		GameHooking::texture_file_register(&textureID, CheatFunctions::StringToChar(CheatFunctions::ReturnTextureFilePath()), true, "Textures.ytd", false);
 		return;
 	}
 	else

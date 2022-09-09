@@ -1,7 +1,7 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 std::unordered_map<uint64_t, uint64_t> nativeHashMap;
 
-//https://github.com/Maestro-1337/GTA-V-1.58-Crossmap
+// https://github.com/Maestro-1337/GTA-V-1.58-Crossmap
 uint64_t HashMapDataArray[] = {
 0x4EDE34FBADD967A6, 0x4EDE34FBADD967A6,
 0xE81651AD79516E48, 0xE81651AD79516E48,

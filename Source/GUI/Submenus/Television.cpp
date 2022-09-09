@@ -10,7 +10,6 @@ void GUI::Submenus::Television()
 	{
 		if (GUI::Option(pl.first, ""))
 		{
-			//GRAPHICS::_IS_TV_PLAYLIST_ITEM_PLAYING(80996397);
 			GRAPHICS::SET_TV_CHANNEL(-1);
 			GRAPHICS::SET_TV_CHANNEL_PLAYLIST(0, pl.second.c_str(), true);
 			GRAPHICS::SET_TV_CHANNEL(0);

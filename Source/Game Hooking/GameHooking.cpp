@@ -5,369 +5,47 @@ using namespace Cheat;
 
 HANDLE MainFiber;
 IsDLCPresent														GameHooking::is_dlc_present;
+TextureFileRegister													GameHooking::texture_file_register;
 GetEventData														GameHooking::get_event_data;
 GetLabelText														GameHooking::get_label_text;
 GetScriptHandlerIfNetworked											GameHooking::get_script_handler_if_networked;
 GetScriptHandler													GameHooking::get_script_handler;
 GetPlayerAddress													GameHooking::get_player_address;
 GetChatData														    GameHooking::get_chat_data;
+
 static eGameState* 													m_gameState;
 static uint64_t														m_worldPtr;
 static GameHooking::NativeRegistrationNew**							m_registrationTable;
 static std::unordered_map<uint64_t, GameHooking::NativeHandler>		m_handlerCache;
 static __int64**													m_globalPtr;
-std::vector<LPVOID> HookedFunctions;
 ScriptThread* (*GetActiveThread)()									= nullptr;
 const int EventCountInteger											= 85;
 static char EventRestore[EventCountInteger]							= {};
 static std::vector<void*> EventPtr;
-uint64_t CMetaData::m_begin											= 0;
-uint64_t CMetaData::m_end											= 0;
-DWORD CMetaData::m_size												= 0;
 
+// Function and variable definitions hooks
+IsDLCPresent IsDLCPresentOriginal									= nullptr;
+GetScriptHandlerIfNetworked GetScriptHandlerIfNetworkedOriginal		= nullptr;
+GetChatData GetChatDataOriginal										= nullptr;
+GetLabelText GetLabelTextOriginal									= nullptr;
+GetEventData GetEventDataOriginal									= nullptr;
+bool IsDLCPresentHooked												(std::uint32_t DLCHash);
+bool GetEventDataHooked												(std::int32_t eventGroup, std::int32_t eventIndex, std::int64_t* args, std::uint32_t argCount);
+void* GetScriptHandlerIfNetworkedHooked								();
+__int64 GetChatDataHooked											(__int64 a1, __int64 a2, __int64 a3, const char* origText, BOOL isTeam);
+const char* GetLabelTextHooked										(void* this_, const char* label);
 
-IsDLCPresent IsDLCPresentOriginal = nullptr;
-bool IsDLCPresentHooked(std::uint32_t DLCHash)
+void GameHooking::Init()
 {
-	static uint64_t	Last = 0;
-	uint64_t Current = MISC::GET_FRAME_COUNT();
-	if (Last != Current)
-	{
-		Last = Current;
-		GameHooking::OnTickInit();
-	}
-	return IsDLCPresentOriginal(DLCHash);
-}
-
-GetScriptHandlerIfNetworked GetScriptHandlerIfNetworkedOriginal = nullptr;
-void* GetScriptHandlerIfNetworkedHooked()
-{
-	return GameHooking::get_script_handler();
-}
-
-GetLabelText GetLabelTextOriginal = nullptr;
-std::string GameFunctions::InGameHelpTextMessage;
-const char* GetLabelTextHooked(void* this_, const char* label)
-{
-	if (std::strcmp(label, "HUD_MPREENTER") == 0)	{ return "Joining a New GTA Online Session with GTAV Cheat"; }
-	if (std::strcmp(label, "HUD_JOINING") == 0)		{ return "Loading GTA Online with GTAV Cheat"; }
-	if (std::strcmp(label, "HUD_QUITTING") == 0)	{ return "Leaving GTA Online with GTAV Cheat"; }
-	if (std::strcmp(label, "PM_QUIT_MP") == 0)		{ return "Leave GTA Online with GTAV Cheat"; }
-	if (std::strcmp(label, "PM_ENTER_MP") == 0)		{ return "Join GTA Online with GTAV Cheat"; }
-	if (std::strcmp(label, "PM_EXIT_GAME") == 0)	{ return "Exit Game with GTAV Cheat"; }
-	if (std::strcmp(label, "PM_GO") == 0)			{ return "Go Online with GTAV Cheat"; }
-	if (std::strcmp(label, "PM_FRIEND_FM") == 0)	{ return "Join Friend with GTAV Cheat"; }
-	if (std::strcmp(label, "PM_FIND_SESS") == 0)	{ return "Find New Session with GTAV Cheat"; }
-	if (!GameFunctions::InGameKeyboardWindowTitle.empty())
-	{
-		if (std::strcmp(label, "FMMC_KEY_TIP8") == 0) { return CheatFunctions::StringToChar(GameFunctions::InGameKeyboardWindowTitle); }
-	}
-	if (!GameFunctions::InGameHelpTextMessage.empty())
-	{
-		if (std::strcmp(label, "LETTERS_HELP2") == 0) { return CheatFunctions::StringToChar(GameFunctions::InGameHelpTextMessage); }
-	}
-	return GetLabelTextOriginal(this_, label);
-}
-
-void* GetEventDataOriginal = nullptr;
-bool GetEventDataHooked(int eventGroup, int eventIndex, int* argStruct, int argStructSize)
-{
-	auto result = static_cast<decltype(&GetEventDataHooked)>(GetEventDataOriginal)(eventGroup, eventIndex, argStruct, argStructSize);
-	if (result)
-	{
-		bool BlockScriptEvent = false;
-		std::string ScriptEventIDType;
-
-		// Check whether the incoming event needs to be blocked
-		if (CheatFeatures::BlockAllScriptEvents)
-		{
-			BlockScriptEvent = true;
-		}
-		if (CheatFeatures::ProtectionScriptEvents_Kicks && argStruct[0] == TSE_KICK_TO_SP)
-		{
-			BlockScriptEvent = true;
-			ScriptEventIDType = "session kick";
-		}
-		if (CheatFeatures::ProtectionScriptEvents_CEOKick && argStruct[0] == TSE_CEO_KICK)
-		{
-			BlockScriptEvent = true;
-			ScriptEventIDType = "CEO kick";
-		}
-		if (CheatFeatures::ProtectionScriptEvents_CEOBan && argStruct[0] == TSE_CEO_BAN)
-		{
-			BlockScriptEvent = true;
-			ScriptEventIDType = "CEO ban";
-		}
-		if (CheatFeatures::ProtectionScriptEvents_PropertyTeleport && argStruct[0] == TSE_PROPERTY_TELEPORT)
-		{
-			BlockScriptEvent = true;
-			ScriptEventIDType = "property teleport";
-		}
-		if (CheatFeatures::ProtectionScriptEvents_CayoPericoTeleport && argStruct[0] == TSE_CAYO_PERICO_TELEPORT)
-		{
-			BlockScriptEvent = true;
-			ScriptEventIDType = "cayo perico teleport";
-		}
-		if (CheatFeatures::ProtectionScriptEvents_ForceIntoMission && argStruct[0] == TSE_FORCE_INTO_MISSION)
-		{
-			BlockScriptEvent = true;
-			ScriptEventIDType = "force into mission";
-		}
-
-		// Do the actual event block and show a notification
-		if (BlockScriptEvent)
-		{
-			std::string MessageString = "Event ID: " + std::to_string(argStruct[0]);
-			if (!ScriptEventIDType.empty())
-			{
-				MessageString.append(" ~n~Block reason: attempted " + ScriptEventIDType);
-			}
-			GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Script Events Protection", "", 0.8f, "");
-			return false;
-		}
-	}
-	return result;
-}
-
-GetChatData GetChatDataOriginal = nullptr;
-__int64 GetChatDataHooked(__int64 a1, __int64 a2, __int64 a3, const char* origText, BOOL isTeam)
-{
-	if (CheatFeatures::LogChatMessages)
-	{
-		CheatFunctions::WriteToFile(CheatFunctions::ReturnChatLogFilePath(), CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] Message: ") + (std::string)origText + "\n", true);
-		Logger::SendMessageToGameChatLogWindow("Message: " + (std::string)origText);
-	}
-	return GetChatDataOriginal(a1, a2, a3, origText, isTeam);
-}
-
-void ScriptFunction(LPVOID lpParameter)
-{
-	srand(GetTickCount64());
-	FiberMain();
-}
-
-DWORD WakeTime;
-void GameHooking::OnTickInit()
-{
-	static HANDLE scriptFiber;
-	if (MainFiber == nullptr) { MainFiber = ConvertThreadToFiber(nullptr); }
-	if (timeGetTime() < WakeTime) { return; }
-	if (scriptFiber) { SwitchToFiber(scriptFiber); } else  { scriptFiber = CreateFiber(NULL, ScriptFunction, nullptr); }
-}
-
-void GameHooking::PauseMainFiber(DWORD ms, bool ShowMessage)
-{
-	if (ShowMessage) { GUI::DrawTextInGame("One Moment Please", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 1.5f, 1.5f }, true, true); }
-	WakeTime = timeGetTime() + ms;
-	SwitchToFiber(MainFiber);
-}
-
-uint64_t CMetaData::begin() { return m_begin; }
-uint64_t CMetaData::end()	{ return m_end; }
-DWORD CMetaData::size()		{ return m_size; }
-void CMetaData::init()
-{
-	if (m_begin && m_size) { return; }
-	m_begin = (uint64_t)GetModuleHandleA(nullptr);
-	const IMAGE_DOS_HEADER* headerDos = (const IMAGE_DOS_HEADER*)m_begin;
-	const IMAGE_NT_HEADERS* headerNt = (const IMAGE_NT_HEADERS64*)((const BYTE*)headerDos + headerDos->e_lfanew);
-	m_size = headerNt->OptionalHeader.SizeOfCode;
-	m_end = m_begin + m_size;
-	return;
-}
-
-//CPatternResult
-CPatternResult::CPatternResult(void* pVoid) :
-	m_pVoid(pVoid)
-{}
-CPatternResult::CPatternResult(void* pVoid, void* pBegin, void* pEnd) :
-	m_pVoid(pVoid),
-	m_pBegin(pBegin),
-	m_pEnd(pEnd)
-{}
-CPatternResult::~CPatternResult() {}
-
-
-//CPattern Public
-CPattern::CPattern(char* szByte, char* szMask) :
-	m_szByte(szByte),
-	m_szMask(szMask),
-	m_bSet(false)
-{}
-CPattern::~CPattern() {}
-
-CPattern& CPattern::find(int i, uint64_t startAddress)
-{
-	match(i, startAddress, false);
-	if (m_result.size() <= i)
-		m_result.push_back(nullptr);
-	return *this;
-}
-
-CPattern& CPattern::virtual_find(int i, uint64_t startAddress)
-{
-	match(i, startAddress, true);
-	if (m_result.size() <= i)
-		m_result.push_back(nullptr);
-	return *this;
-}
-
-CPatternResult CPattern::get(int i)
-{
-	if (m_result.size() > i)
-		return m_result[i];
-	return nullptr;
-}
-
-//CPattern Private
-bool CPattern::match(int i, uint64_t startAddress, bool virt)
-{
-	if (m_bSet)
-		return false;
-	uint64_t	begin = 0;
-	uint64_t	end = 0;
-	if (!virt)
-	{
-		CMetaData::init();
-		begin = CMetaData::begin() + startAddress;
-		end = CMetaData::end();
-		if (begin >= end)
-			return false;
-	}
-	int		j = 0;
-	do
-	{
-		if (virt)
-			begin = virtual_find_pattern(startAddress, (BYTE*)m_szByte, m_szMask) + 1;
-		else
-			begin = find_pattern(begin, end, (BYTE*)m_szByte, m_szMask) + 1;
-		if (begin == NULL)
-			break;
-		j++;
-	} while (j < i);
-
-	m_bSet = true;
-	return true;
-}
-
-bool CPattern::byte_compare(const BYTE* pData, const BYTE* btMask, const char* szMask)
-{
-	for (; *szMask; ++szMask, ++pData, ++btMask)
-		if (*szMask == 'x' && *pData != *btMask)
-			break;
-	if ((*szMask) != 0)
-		return false;
-	return true;
-}
-
-
-uint64_t CPattern::find_pattern(uint64_t address, uint64_t end, BYTE *btMask, char *szMask)
-{
-	size_t len = strlen(szMask) + 1;
-	for (uint64_t i = 0; i < (end - address - len); i++)
-	{
-		BYTE*	ptr = (BYTE*)(address + i);
-		if (byte_compare(ptr, btMask, szMask))
-		{
-			m_result.push_back(CPatternResult((void*)(address + i)));
-			return address + i;
-		}
-	}
-	return NULL;
-}
-
-uint64_t CPattern::virtual_find_pattern(uint64_t address, BYTE *btMask, char *szMask)
-{
-	MEMORY_BASIC_INFORMATION mbi;
-	char*	pStart = nullptr;
-	char*	pEnd = nullptr;
-	char*	res = nullptr;
-	size_t	maskLen = strlen(szMask);
-
-	while (res == nullptr && sizeof(mbi) == VirtualQuery(pEnd, &mbi, sizeof(mbi)))
-	{
-		pStart = pEnd;
-		pEnd += mbi.RegionSize;
-		if (mbi.Protect != PAGE_READWRITE || mbi.State != MEM_COMMIT)
-			continue;
-
-		for (int i = 0; pStart < pEnd - maskLen && res == nullptr; ++pStart)
-		{
-			if (byte_compare((BYTE*)pStart, btMask, szMask))
-			{
-				m_result.push_back(CPatternResult((void*)pStart, mbi.BaseAddress, pEnd));
-				res = pStart;
-			}
-		}
-
-		mbi = {};
-	}
-	return (uint64_t)res;
-}
-
-
-template <typename T>
-void setPat(std::string	name, char*	pat, char* mask, T** out, bool rel, int offset = 0, int deref = 0, int skip = 0)
-{
-	T*	ptr = nullptr;
-
-	CPattern pattern(pat, mask);
-	pattern.find(1 + skip);
-	if (rel)
-		ptr = pattern.get(skip).get_rel<T>(offset);
-	else
-		ptr = pattern.get(skip).get<T>(offset);
-
-	while (true)
-	{
-		if (ptr == nullptr)
-		{
-			Logger::Error("Failed to find '" + name + "' pattern", false);
-			std::exit(EXIT_SUCCESS);
-		}
-
-		if (deref <= 0)
-		{
-			break;
-		}
-		ptr = *(T**)ptr;
-		--deref;
-	}
-	
-	*out = ptr;
-	return;
-}
-
-template <typename T>
-void setFn(std::string name, char* pat, char* mask, T* out, int skip = 0)
-{
-	char* ptr = nullptr;
-
-	CPattern pattern(pat, mask);
-	pattern.find(1 + skip);
-	ptr = pattern.get(skip).get<char>(0);
-
-	if (ptr == nullptr)
-	{
-		Logger::Error(CheatFunctions::StringToChar("Failed to find '" + name + "' pattern"), true);
-		std::exit(EXIT_SUCCESS);
-	}
-
-	*out = (T)ptr;
-	return;
-}
-
-void GameHooking::Initialize()
-{
-	GameHooking::get_label_text					 = static_cast<GetLabelText>(Memory::pattern("48 89 5C 24 ? 57 48 83 EC 20 48 8B DA 48 8B F9 48 85 D2 75 44 E8").count(1).get(0).get<void>(0));
+	// Load patterns
+	GameHooking::is_dlc_present = static_cast<IsDLCPresent>(Memory::pattern("48 89 5C 24 ? 57 48 83 EC 20 81 F9 ? ? ? ?").count(1).get(0).get<void>(0));
+	GameHooking::get_label_text = static_cast<GetLabelText>(Memory::pattern("48 89 5C 24 ? 57 48 83 EC 20 48 8B DA 48 8B F9 48 85 D2 75 44 E8").count(1).get(0).get<void>(0));
 	GameHooking::get_script_handler_if_networked = static_cast<GetScriptHandlerIfNetworked>(Memory::pattern("40 53 48 83 EC 20 E8 ? ? ? ? 48 8B D8 48 85 C0 74 12 48 8B 10 48 8B C8").count(1).get(0).get<void>(0));
-	GameHooking::get_script_handler				 = static_cast<GetScriptHandler>(Memory::pattern("48 83 EC 28 E8 ? ? ? ? 33 C9 48 85 C0 74 0C E8 ? ? ? ? 48 8B 88 ? ? ? ?").count(1).get(0).get<void>(0));
-
-	// Set Patterns
-	setFn<IsDLCPresent>("is_dlc_present", "\x48\x89\x5C\x24\x00\x57\x48\x83\xEC\x20\x81\xF9\x00\x00\x00\x00", "xxxx?xxxxxxx????", &GameHooking::is_dlc_present);
-	setFn<GetEventData>("get_event_data", "\x48\x89\x5C\x24\x00\x57\x48\x83\xEC\x20\x49\x8B\xF8\x4C\x8D\x05\x00\x00\x00\x00\x41\x8B\xD9\xE8\x00\x00\x00\x00\x48\x85\xC0\x74\x14\x4C\x8B\x10\x44\x8B\xC3\x48\x8B\xD7\x41\xC1\xE0\x03\x48\x8B\xC8\x41\xFF\x52\x30\x48\x8B\x5C\x24\x00", "xxxx?xxxxxxxxxxx????xxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxx?", &GameHooking::get_event_data);
-	setFn<GetPlayerAddress>("get_player_address", "\x40\x53\x48\x83\xEC\x20\x33\xDB\x38\x1D\x00\x00\x00\x00\x74\x1C", "xxxxxxxxxx????xx", &GameHooking::get_player_address);
-	setFn<GetChatData>("get_chat_data", "\x4D\x85\xC9\x0F\x84\x00\x00\x00\x00\x48\x8B\xC4\x48\x89\x58\x08\x48\x89\x70\x10\x48\x89\x78\x18\x4C\x89\x48\x20\x55\x41\x54\x41\x55\x41\x56\x41\x57\x48\x8D\xA8", "xxxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", &get_chat_data);
+	GameHooking::get_script_handler = static_cast<GetScriptHandler>(Memory::pattern("48 83 EC 28 E8 ? ? ? ? 33 C9 48 85 C0 74 0C E8 ? ? ? ? 48 8B 88 ? ? ? ?").count(1).get(0).get<void>(0));
+	GameHooking::get_event_data = static_cast<GetEventData>(Memory::pattern("48 85 C0 74 14 4C 8B 10").count(1).get(0).get<void>(-28));
+	GameHooking::texture_file_register = static_cast<TextureFileRegister>(Memory::pattern("48 89 5C 24 ? 48 89 6C 24 ? 48 89 7C 24 ? 41 54 41 56 41 57 48 83 EC 50 48 8B EA 4C 8B FA 48 8B D9 4D 85 C9").count(1).get(0).get<void>());
+	GameHooking::get_player_address = static_cast<GetPlayerAddress>(Memory::pattern("40 53 48 83 EC 20 33 DB 38 1D ? ? ? ? 74 1C").count(1).get(0).get<void>(0));
+	GameHooking::get_chat_data = static_cast<GetChatData>(Memory::pattern("4D 85 C9 0F 84 ? ? ? ? 48 8B C4 48 89 58 08 48 89 70 10 48 89 78 18 4C 89 48 20 55 41 54 41 55 41 56 41 57 48 8D A8").count(1).get(0).get<void>(0));
 
 	char* c_location = nullptr;
 	void* v_location = nullptr;
@@ -376,7 +54,7 @@ void GameHooking::Initialize()
 	Logger::DebugMessage("Load 'GameState'");
 	c_location = Memory::pattern("83 3D ? ? ? ? ? 75 17 8B 43 20 25").count(1).get(0).get<char>(2);
 	c_location == nullptr ? Logger::Error("Failed to load GameState", true) : m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5);
-	
+
 	// Load Vector3 Result Fix
 	Logger::DebugMessage("Load 'Vector3 Result Fix'");
 	v_location = Memory::pattern("83 79 18 00 48 8B D1 74 4A FF 4A 18").count(1).get(0).get<void>(0);
@@ -448,27 +126,148 @@ void GameHooking::Initialize()
 	Logger::DebugMessage("Hook 'GET_EVENT_DATA'");
 	auto status = MH_CreateHook(GameHooking::get_event_data, GetEventDataHooked, (void**)&GetEventDataOriginal);
 	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::get_event_data) != MH_OK) { Logger::Error("Failed to hook GET_EVENT_DATA", true);  std::exit(EXIT_FAILURE); }
-	HookedFunctions.push_back(GameHooking::get_event_data);
 
 	Logger::DebugMessage("Hook 'GET_SCRIPT_HANDLER_IF_NETWORKED'");
 	status = MH_CreateHook(GameHooking::get_script_handler_if_networked, GetScriptHandlerIfNetworkedHooked, (void**)&GetScriptHandlerIfNetworkedOriginal);
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_script_handler_if_networked) != MH_OK) { Logger::Error("Failed to hook GET_SCRIPT_HANDLER_IF_NETWORKED", true);  std::exit(EXIT_FAILURE); }
-	HookedFunctions.push_back(GameHooking::get_script_handler_if_networked);
 
 	Logger::DebugMessage("Hook 'GET_LABEL_TEXT'");
 	status = MH_CreateHook(GameHooking::get_label_text, GetLabelTextHooked, (void**)&GetLabelTextOriginal);
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_label_text) != MH_OK) { Logger::Error("Failed to hook GET_LABEL_TEXT", true);  std::exit(EXIT_FAILURE); }
-	HookedFunctions.push_back(GameHooking::get_label_text);
 
 	Logger::DebugMessage("Hook 'GET_CHAT_DATA'");
 	status = MH_CreateHook(GameHooking::get_chat_data, GetChatDataHooked, (void**)&GetChatDataOriginal);
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_chat_data) != MH_OK) { Logger::Error("Failed to hook GET_CHAT_DATA", true);  std::exit(EXIT_FAILURE); }
-	HookedFunctions.push_back(GameHooking::get_chat_data);
 
 	Logger::DebugMessage("Hook 'IS_DLC_PRESENT'");
 	status = MH_CreateHook(GameHooking::is_dlc_present, IsDLCPresentHooked, (void**)&IsDLCPresentOriginal);
 	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::is_dlc_present) != MH_OK) { Logger::Error("Failed to hook IS_DLC_PRESENT", true);  std::exit(EXIT_FAILURE); }
-	HookedFunctions.push_back(GameHooking::is_dlc_present);
+}
+
+bool IsDLCPresentHooked(std::uint32_t DLCHash)
+{
+	static uint64_t	Last = 0;
+	uint64_t Current = MISC::GET_FRAME_COUNT();
+	if (Last != Current)
+	{
+		Last = Current;
+		GameHooking::OnTickInit();
+	}
+	return IsDLCPresentOriginal(DLCHash);
+}
+
+void* GetScriptHandlerIfNetworkedHooked()
+{
+	return GameHooking::get_script_handler();
+}
+
+std::string GameFunctions::InGameHelpTextMessage;
+const char* GetLabelTextHooked(void* this_, const char* label)
+{
+	if (std::strcmp(label, "HUD_MPREENTER") == 0)	{ return "Joining a New GTA Online Session with GTAV Cheat"; }
+	if (std::strcmp(label, "HUD_JOINING") == 0)		{ return "Loading GTA Online with GTAV Cheat"; }
+	if (std::strcmp(label, "HUD_QUITTING") == 0)	{ return "Leaving GTA Online with GTAV Cheat"; }
+	if (std::strcmp(label, "PM_QUIT_MP") == 0)		{ return "Leave GTA Online with GTAV Cheat"; }
+	if (std::strcmp(label, "PM_ENTER_MP") == 0)		{ return "Join GTA Online with GTAV Cheat"; }
+	if (std::strcmp(label, "PM_EXIT_GAME") == 0)	{ return "Exit Game with GTAV Cheat"; }
+	if (std::strcmp(label, "PM_GO") == 0)			{ return "Go Online with GTAV Cheat"; }
+	if (std::strcmp(label, "PM_FRIEND_FM") == 0)	{ return "Join Friend with GTAV Cheat"; }
+	if (std::strcmp(label, "PM_FIND_SESS") == 0)	{ return "Find New Session with GTAV Cheat"; }
+	if (!GameFunctions::InGameKeyboardWindowTitle.empty())
+	{
+		if (std::strcmp(label, "FMMC_KEY_TIP8") == 0) { return CheatFunctions::StringToChar(GameFunctions::InGameKeyboardWindowTitle); }
+	}
+	if (!GameFunctions::InGameHelpTextMessage.empty())
+	{
+		if (std::strcmp(label, "LETTERS_HELP2") == 0) { return CheatFunctions::StringToChar(GameFunctions::InGameHelpTextMessage); }
+	}
+	return GetLabelTextOriginal(this_, label);
+}
+
+bool GetEventDataHooked(std::int32_t eventGroup, std::int32_t eventIndex, std::int64_t* args, std::uint32_t argCount)
+{
+	auto result = static_cast<decltype(&GetEventDataHooked)>(GetEventDataOriginal)(eventGroup, eventIndex, args, argCount);
+	if (result)
+	{
+		bool BlockScriptEvent = false;
+		std::string ScriptEventIDType;
+
+		// Check whether the incoming event needs to be blocked
+		if (CheatFeatures::BlockAllScriptEvents)
+		{
+			BlockScriptEvent = true;
+		}
+		if (CheatFeatures::ProtectionScriptEvents_Kicks && args[0] == TSE_KICK_TO_SP)
+		{
+			BlockScriptEvent = true;
+			ScriptEventIDType = "session kick";
+		}
+		if (CheatFeatures::ProtectionScriptEvents_CEOKick && args[0] == TSE_CEO_KICK)
+		{
+			BlockScriptEvent = true;
+			ScriptEventIDType = "CEO kick";
+		}
+		if (CheatFeatures::ProtectionScriptEvents_CEOBan && args[0] == TSE_CEO_BAN)
+		{
+			BlockScriptEvent = true;
+			ScriptEventIDType = "CEO ban";
+		}
+		if (CheatFeatures::ProtectionScriptEvents_PropertyTeleport && args[0] == TSE_PROPERTY_TELEPORT)
+		{
+			BlockScriptEvent = true;
+			ScriptEventIDType = "property teleport";
+		}
+		if (CheatFeatures::ProtectionScriptEvents_CayoPericoTeleport && args[0] == TSE_CAYO_PERICO_TELEPORT)
+		{
+			BlockScriptEvent = true;
+			ScriptEventIDType = "cayo perico teleport";
+		}
+		if (CheatFeatures::ProtectionScriptEvents_ForceIntoMission && args[0] == TSE_FORCE_INTO_MISSION)
+		{
+			BlockScriptEvent = true;
+			ScriptEventIDType = "force into mission";
+		}
+
+		// Do the actual event block and show a notification
+		if (BlockScriptEvent)
+		{
+			std::string MessageString = "Event ID: " + std::to_string(args[0]);
+			if (!ScriptEventIDType.empty())
+			{
+				MessageString.append(" ~n~Block reason: attempted " + ScriptEventIDType);
+			}
+			GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Script Events Protection", "", 0.8f, "");
+			return false;
+		}
+	}
+	return result;
+}
+
+__int64 GetChatDataHooked(__int64 a1, __int64 a2, __int64 a3, const char* origText, BOOL isTeam)
+{
+	if (CheatFeatures::LogChatMessages)
+	{
+		CheatFunctions::WriteToFile(CheatFunctions::ReturnChatLogFilePath(), CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] Message: ") + (std::string)origText + "\n", true);
+		Logger::SendMessageToGameChatLogWindow("Message: " + (std::string)origText);
+	}
+	return GetChatDataOriginal(a1, a2, a3, origText, isTeam);
+}
+
+
+DWORD WakeTime;
+void GameHooking::OnTickInit()
+{
+	static HANDLE scriptFiber;
+	if (MainFiber == nullptr) { MainFiber = ConvertThreadToFiber(nullptr); }
+	if (timeGetTime() < WakeTime) { return; }
+	if (scriptFiber) { SwitchToFiber(scriptFiber); } else  { scriptFiber = CreateFiber(NULL, FiberMain, nullptr); }
+}
+
+void GameHooking::PauseMainFiber(DWORD ms, bool ShowMessage)
+{
+	if (ShowMessage) { GUI::DrawTextInGame("One Moment Please", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 1.5f, 1.5f }, true, true); }
+	WakeTime = timeGetTime() + ms;
+	SwitchToFiber(MainFiber);
 }
 
 static GameHooking::NativeHandler _Handler(uint64_t origHash)

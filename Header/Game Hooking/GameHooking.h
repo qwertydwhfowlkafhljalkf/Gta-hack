@@ -1,11 +1,11 @@
 #pragma once
 
-typedef bool(__cdecl* IsDLCPresent)							(std::uint32_t dlcHash);
-typedef uint32_t*(__cdecl* FileRegister)					(int*, const char*, bool, const char*, bool);
-typedef BOOL(__cdecl* GetEventData)							(int eventGroup, int eventIndex, uint64_t* argStruct, int argStructSize);
+typedef bool(__cdecl* IsDLCPresent)							(Hash dlcHash);
+typedef uint32_t*(__cdecl* TextureFileRegister)				(int*, const char*, bool, const char*, bool);
+typedef bool(__cdecl* GetEventData)							(std::int32_t eventGroup, std::int32_t eventIndex, std::int64_t* args, std::uint32_t argCount);
 using GetScriptHandlerIfNetworked							= void* (*) ();
 using GetScriptHandler										= void* (*) ();
-using GetLabelText = const char* (*)						(void* this_, const char* label);
+typedef const char* (__cdecl* GetLabelText)					(void* this_, const char* label);
 typedef __int64(__cdecl* GetPlayerAddress)					(Player);
 typedef __int64(__cdecl* GetChatData)						(__int64 a1, __int64 a2, __int64 a3, const char* origText, BOOL a5);
 
@@ -14,7 +14,7 @@ class GameHooking
 {
 public:
 	static IsDLCPresent					    is_dlc_present;
-	static FileRegister						file_register;
+	static TextureFileRegister				texture_file_register;
 	static GetEventData						get_event_data;
 	static GetScriptHandlerIfNetworked		get_script_handler_if_networked;
 	static GetScriptHandler				    get_script_handler;
@@ -22,7 +22,7 @@ public:
 	static GetPlayerAddress					get_player_address;
 	static GetChatData					    get_chat_data;
 
-	static void Initialize();
+	static void Init();
 	static void PauseMainFiber(DWORD ms, bool ShowMessage = true);
 	static uint64_t getWorldPtr();
 	static void OnTickInit();
@@ -148,94 +148,6 @@ struct ScriptThread : scrThread
 	bool bool12;
 	const char gta_pad3[10];
 };
-
-class CPatternResult
-{
-public:
-	CPatternResult(void* pVoid);
-	CPatternResult(void* pVoid, void* pBegin, void* pEnd);
-	~CPatternResult();
-
-	template <typename rT>
-	rT*	get(int offset = 0)
-	{
-		rT*	ret = nullptr;
-		if (m_pVoid != nullptr)
-			ret = reinterpret_cast<rT*>(reinterpret_cast<char*>(m_pVoid) + offset);
-		return ret;
-	}
-
-	template <typename rT>
-	rT* get_rel(int offset = 0)
-	{
-		rT*		result = nullptr;
-		int32_t	rel;
-		char*	ptr = get<char>(offset);
-
-		if (ptr == nullptr)
-			goto LABEL_RETURN;
-
-		rel = *(int32_t*)ptr;
-		result = reinterpret_cast<rT*>(ptr + rel + sizeof(rel));
-
-	LABEL_RETURN:
-		return result;
-	}
-
-	template <typename rT>
-	rT*	section_begin()
-	{
-		return reinterpret_cast<rT*>(m_pBegin);
-	}
-
-	template <typename rT>
-	rT*	section_end()
-	{
-		return reinterpret_cast<rT*>(m_pEnd);
-	}
-
-protected:
-	void*	m_pVoid = nullptr;
-	void*	m_pBegin = nullptr;
-	void*	m_pEnd = nullptr;
-};
-
-class CMetaData
-{
-public:
-	static uint64_t	begin();
-	static uint64_t	end();
-	static DWORD	size();
-	static void		init();
-private:
-	static uint64_t	m_begin;
-	static uint64_t	m_end;
-	static DWORD	m_size;
-};
-
-typedef	std::vector<CPatternResult>	vec_result;
-class CPattern
-{
-public:
-	CPattern(char* szByte, char* szMask);
-	~CPattern();
-
-	CPattern&		find(int i = 0, uint64_t startAddress = 0);
-	CPattern&		virtual_find(int i = 0, uint64_t startAddress = 0);
-	CPatternResult	get(int i);
-
-protected:
-	char*			m_szByte;
-	char*			m_szMask;
-	bool			m_bSet;
-	vec_result		m_result;
-
-	bool		match(int i = 0, uint64_t startAddress = 0, bool virt = false);
-	bool		byte_compare(const BYTE* pData, const BYTE* btMask, const char* szMask);
-	uint64_t	find_pattern(uint64_t i64Address, uint64_t end, BYTE *btMask, char *szMask);
-	uint64_t	virtual_find_pattern(uint64_t address, BYTE *btMask, char *szMask);
-};
-
 
 class globalHandle
 {

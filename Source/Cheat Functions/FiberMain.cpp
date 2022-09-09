@@ -1,6 +1,6 @@
 ﻿#include "../Header/Cheat Functions/FiberMain.h"
 
-void Cheat::FiberMain()
+void Cheat::FiberMain(LPVOID lpParameter)
 {
 	for (;;)
 	{
