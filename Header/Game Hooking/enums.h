@@ -826,7 +826,7 @@ enum eHudComponent
 	HudComponentReplayTimer
 };
 
-enum eGameState 
+enum eGameState
 {
 	GameStatePlaying,
 	GameStateIntro,
@@ -862,7 +862,7 @@ enum AnimationFlags
 	ANIM_FLAG_CANCELABLE = 120,
 };
 
-enum SessionTypes
+enum eSessionTypes
 {
 	SessionTypeJoinPublic,
 	SessionTypeNewPublic,
@@ -875,7 +875,7 @@ enum SessionTypes
 	SessionTypeJoinCrew
 };
 
-enum ScriptEventTypes
+enum class eScriptEventTypes
 {
 	KICK_TO_SINGLE_PLAYER,
 	CEO_KICK,
@@ -883,4 +883,33 @@ enum ScriptEventTypes
 	PROPERTY_TELEPORT,
 	CAYO_PERICO_TELEPORT,
 	FORCE_INTO_MISSION
+};
+
+enum class eRemoteEvents
+{
+	KickToSP = 2071375245,
+	KickToSP2 = -1991423686,
+	CeoKick = -1425016400,
+	CeoBan = 1240068495,
+	CeoMoney = 547083265,
+	PropertyTeleport = -1390976345,
+	CayoPericoTeleport = 1361475530,
+	ForceIntoMission = -283041276,
+	ForceIntoMission2 = -1908874529,
+	Bounty = 1294995624,
+	ClearWantedLevel = 1449852136,
+	GameBanner = 145637109,
+	NetworkBail = 1674887089,
+	NetworkBail2 = 1037001637,
+	Crash = 526822748,
+	Crash2 = 1348481963,
+	Crash3 = -555356783,
+	Crash4 = -637352381,
+	Crash5 = -51486976,
+	PersonalVehicleDestroyed = -1838276770,
+	RemoteOffradar = -1973627888,
+	SendToCutscene = 2131601101,
+	SendToLocation = 1214823473,
+	SoundSpam = 1111927333,
+	Spectate = -2131157870
 };

@@ -211,52 +211,165 @@ bool GetEventDataHooked(std::int32_t eventGroup, std::int32_t eventIndex, std::i
 	{
 		bool BlockScriptEvent = false;
 		std::string ScriptEventIDType;
+		const auto EventHash = static_cast<eRemoteEvents>(args[0]);
 
 		// Check whether the incoming event needs to be blocked
 		if (CheatFeatures::BlockAllScriptEvents)
 		{
 			BlockScriptEvent = true;
 		}
-		if (CheatFeatures::ProtectionScriptEvents_Kicks && args[0] == TSE_KICK_TO_SP)
+		else
 		{
-			BlockScriptEvent = true;
-			ScriptEventIDType = "session kick";
-		}
-		if (CheatFeatures::ProtectionScriptEvents_CEOKick && args[0] == TSE_CEO_KICK)
-		{
-			BlockScriptEvent = true;
-			ScriptEventIDType = "CEO kick";
-		}
-		if (CheatFeatures::ProtectionScriptEvents_CEOBan && args[0] == TSE_CEO_BAN)
-		{
-			BlockScriptEvent = true;
-			ScriptEventIDType = "CEO ban";
-		}
-		if (CheatFeatures::ProtectionScriptEvents_PropertyTeleport && args[0] == TSE_PROPERTY_TELEPORT)
-		{
-			BlockScriptEvent = true;
-			ScriptEventIDType = "property teleport";
-		}
-		if (CheatFeatures::ProtectionScriptEvents_CayoPericoTeleport && args[0] == TSE_CAYO_PERICO_TELEPORT)
-		{
-			BlockScriptEvent = true;
-			ScriptEventIDType = "cayo perico teleport";
-		}
-		if (CheatFeatures::ProtectionScriptEvents_ForceIntoMission && args[0] == TSE_FORCE_INTO_MISSION)
-		{
-			BlockScriptEvent = true;
-			ScriptEventIDType = "force into mission";
+			switch (EventHash)
+			{
+			case eRemoteEvents::KickToSP:
+			case eRemoteEvents::KickToSP2:
+				if (CheatFeatures::ProtectionScriptEvents_Kicks)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = "session kick";
+				}
+				break;
+			case eRemoteEvents::CeoKick:
+				if (CheatFeatures::ProtectionScriptEvents_CEOKick)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = "CEO kick";
+				}
+				break;
+			case eRemoteEvents::CeoBan:
+				if (CheatFeatures::ProtectionScriptEvents_CEOBan)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = "CEO ban";
+				}
+				break;
+			case eRemoteEvents::CeoMoney:
+				if (CheatFeatures::ProtectionScriptEvents_CEOMoney)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = " giving CEO money";
+				}
+				break;
+			case eRemoteEvents::PropertyTeleport:
+				if (CheatFeatures::ProtectionScriptEvents_PropertyTeleport)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = "property teleport";
+				}
+				break;
+			case eRemoteEvents::CayoPericoTeleport:
+				if (CheatFeatures::ProtectionScriptEvents_CayoPericoTeleport)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = "cayo perico teleport";
+				}
+				break;
+			case eRemoteEvents::ForceIntoMission:
+			case eRemoteEvents::ForceIntoMission2:
+				if (CheatFeatures::ProtectionScriptEvents_ForceIntoMission)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = "force into mission";
+				}
+				break;
+			case eRemoteEvents::Bounty:
+				if (CheatFeatures::ProtectionScriptEvents_Bounty)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = "setting bounty";
+				}
+				break;
+			case eRemoteEvents::ClearWantedLevel:
+				if (CheatFeatures::ProtectionScriptEvents_ClearWantedlevel)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = " clearing wanted level";
+				}
+				break;
+			case eRemoteEvents::GameBanner:
+				if (CheatFeatures::ProtectionScriptEvents_GameBanner)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = " showing a banner";
+				}
+				break;
+			case eRemoteEvents::NetworkBail:
+			case eRemoteEvents::NetworkBail2:
+				if (CheatFeatures::ProtectionScriptEvents_NetworkBail)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = " network bail";
+				}
+				break;
+			case eRemoteEvents::Crash:
+			case eRemoteEvents::Crash2:
+			case eRemoteEvents::Crash3:
+			case eRemoteEvents::Crash4:
+			case eRemoteEvents::Crash5:
+				if (CheatFeatures::ProtectionScriptEvents_Crash)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = " game crash";
+				}
+				break;
+			case eRemoteEvents::PersonalVehicleDestroyed:
+				if (CheatFeatures::ProtectionScriptEvents_PersonalVehicleDestroyed)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = " showing personal vehicle destroyed msg";
+				}
+				break;
+			case eRemoteEvents::RemoteOffradar:
+				if (CheatFeatures::ProtectionScriptEvents_RemoteOffradar)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = " activating off the radar";
+				}
+				break;
+			case eRemoteEvents::SendToCutscene:
+				if (CheatFeatures::ProtectionScriptEvents_SendToCutscene)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = " sending you to a cutscene";
+				}
+				break;
+			case eRemoteEvents::SendToLocation:
+				if (CheatFeatures::ProtectionScriptEvents_SendToLocation)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = " sending you to a location";
+				}
+				break;
+			case eRemoteEvents::SoundSpam:
+				if (CheatFeatures::ProtectionScriptEvents_SoundSpam)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = " sound spam";
+				}
+				break;
+			case eRemoteEvents::Spectate:
+				if (CheatFeatures::ProtectionScriptEvents_Spectate)
+				{
+					BlockScriptEvent = true;
+					ScriptEventIDType = " spectating";
+				}
+				break;
+			}
 		}
 
 		// Do the actual event block and show a notification
 		if (BlockScriptEvent)
 		{
-			std::string MessageString = "Event ID: " + std::to_string(args[0]);
-			if (!ScriptEventIDType.empty())
+			if (!CheatFeatures::BlockAllScriptEvents)
 			{
-				MessageString.append(" ~n~Block reason: attempted " + ScriptEventIDType);
-			}
-			GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Script Events Protection", "", 0.8f, "");
+				std::string MessageString = "Event ID: " + std::to_string(args[0]);
+				if (!ScriptEventIDType.empty())
+				{
+					MessageString.append(" ~n~Block reason: attempted " + ScriptEventIDType);
+				}
+				GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Script Events Protection", "", 0.8f, "");
+			}			
 			return false;
 		}
 	}

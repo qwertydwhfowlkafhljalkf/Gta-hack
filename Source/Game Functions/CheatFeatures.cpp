@@ -19,9 +19,21 @@ bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
 bool Cheat::CheatFeatures::ProtectionScriptEvents_Kicks = false;
 bool Cheat::CheatFeatures::ProtectionScriptEvents_CEOKick = false;
 bool Cheat::CheatFeatures::ProtectionScriptEvents_CEOBan = false;
+bool Cheat::CheatFeatures::ProtectionScriptEvents_CEOMoney = false;
 bool Cheat::CheatFeatures::ProtectionScriptEvents_PropertyTeleport = false;
 bool Cheat::CheatFeatures::ProtectionScriptEvents_CayoPericoTeleport = false;
 bool Cheat::CheatFeatures::ProtectionScriptEvents_ForceIntoMission = false;
+bool Cheat::CheatFeatures::ProtectionScriptEvents_Bounty = false;
+bool Cheat::CheatFeatures::ProtectionScriptEvents_ClearWantedlevel = false;
+bool Cheat::CheatFeatures::ProtectionScriptEvents_GameBanner = false;
+bool Cheat::CheatFeatures::ProtectionScriptEvents_NetworkBail = false;
+bool Cheat::CheatFeatures::ProtectionScriptEvents_Crash = false;
+bool Cheat::CheatFeatures::ProtectionScriptEvents_PersonalVehicleDestroyed = false;
+bool Cheat::CheatFeatures::ProtectionScriptEvents_RemoteOffradar = false;
+bool Cheat::CheatFeatures::ProtectionScriptEvents_SendToCutscene = false;
+bool Cheat::CheatFeatures::ProtectionScriptEvents_SendToLocation = false;
+bool Cheat::CheatFeatures::ProtectionScriptEvents_SoundSpam = false;
+bool Cheat::CheatFeatures::ProtectionScriptEvents_Spectate = false;
 bool Cheat::CheatFeatures::HideOwnIPAddress = true;
 bool Cheat::CheatFeatures::HideOnScreenGameAndCheatInfo = false;
 bool Cheat::CheatFeatures::DisableTransactionErrorWarning = true;
@@ -1362,7 +1374,7 @@ void Cheat::CheatFeatures::SessionLockFriendsOnly()
 		{
 			if (GameFunctions::PlayerID != i && NETWORK::NETWORK_IS_PLAYER_ACTIVE(i) && !GameFunctions::IsPlayerFriend(i))
 			{
-				GameFunctions::TriggerScriptEvent(KICK_TO_SINGLE_PLAYER, i);
+				GameFunctions::TriggerScriptEvent(eScriptEventTypes::KICK_TO_SINGLE_PLAYER, i);
 			}
 		}
 	}

@@ -704,13 +704,13 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		Cheat::GameFunctions::ReturnPlayerIPAddresses(PlayerID, ExternalIP, InternalIP);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("External IP Addr.", NULL, NULL, 6);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(ExternalIP, NULL, NULL, NULL, 6);
-		//Cheat::GUI::AddPlayerInfoBoxTextEntry("Internal IP Addr.", NULL, NULL, 7);
-		//Cheat::GUI::AddPlayerInfoBoxTextEntry(InternalIP, NULL, NULL, NULL, 7);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Internal IP Addr.", NULL, NULL, 7);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(InternalIP, NULL, NULL, NULL, 7);
 
 		// Kill/Death Ratio
 		float KDRatio = globalHandle(1853131).At(PlayerID, 888).At(205).At(26).As<float>();
-		Cheat::GUI::AddPlayerInfoBoxTextEntry("K/D", NULL, NULL, 7);
-		Cheat::GUI::AddPlayerInfoBoxTextEntry(std::to_string(KDRatio), NULL, NULL, NULL, 7);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("K/D", NULL, NULL, 8);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(std::to_string(KDRatio), NULL, NULL, NULL, 8);
 	}
 }
 
@@ -1265,7 +1265,7 @@ int Cheat::GameFunctions::GetCharacterSkillStat(std::string Skill)
 	return SkillLevelPercentage;
 }
 
-void Cheat::GameFunctions::ChangeGTAOSessionType(SessionTypes SessionType)
+void Cheat::GameFunctions::ChangeGTAOSessionType(eSessionTypes SessionType)
 {
 	if (SessionType >= 0 && SessionType <= 12)
 	{
@@ -1277,41 +1277,41 @@ void Cheat::GameFunctions::ChangeGTAOSessionType(SessionTypes SessionType)
 	}
 }
 
-void Cheat::GameFunctions::TriggerScriptEvent(ScriptEventTypes EventType, Player TargetPlayer, int property_teleport_index)
+void Cheat::GameFunctions::TriggerScriptEvent(eScriptEventTypes EventType, Player TargetPlayer, int property_teleport_index)
 {
 	if (NETWORK::NETWORK_IS_SESSION_STARTED() && NETWORK::NETWORK_IS_PLAYER_ACTIVE(TargetPlayer))
 	{
-		if (EventType == ScriptEventTypes::KICK_TO_SINGLE_PLAYER)
+		if (EventType == eScriptEventTypes::KICK_TO_SINGLE_PLAYER)
 		{
-			uint64_t arguments_aray[4] = { (uint64_t)TSE_KICK_TO_SP, (uint64_t)TargetPlayer, 0, 0 };
+			uint64_t arguments_aray[4] = { (uint64_t)eRemoteEvents::KickToSP, (uint64_t)TargetPlayer, 0, 0 };
 			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
 		}
-		else if (EventType == ScriptEventTypes::CEO_KICK)
+		else if (EventType == eScriptEventTypes::CEO_KICK)
 		{
-			uint64_t arguments_aray[4] = { (uint64_t)TSE_CEO_KICK, (uint64_t)TargetPlayer, 1, 5 };
+			uint64_t arguments_aray[4] = { (uint64_t)eRemoteEvents::CeoKick, (uint64_t)TargetPlayer, 1, 5 };
 			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
 		}
-		else if (EventType == ScriptEventTypes::CEO_BAN)
+		else if (EventType == eScriptEventTypes::CEO_BAN)
 		{
-			uint64_t arguments_aray[4] = { (uint64_t)TSE_CEO_BAN, (uint64_t)TargetPlayer, 1, 5 };
+			uint64_t arguments_aray[4] = { (uint64_t)eRemoteEvents::CeoBan, (uint64_t)TargetPlayer, 1, 5 };
 			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
 		}
-		else if (EventType == ScriptEventTypes::PROPERTY_TELEPORT)
+		else if (EventType == eScriptEventTypes::PROPERTY_TELEPORT)
 		{
 			if (property_teleport_index != -1)
 			{
-				uint64_t teleport[9] = { TSE_PROPERTY_TELEPORT, TargetPlayer, 0, -1, 1, property_teleport_index, 0, 0, 0 };
+				uint64_t teleport[9] = { (uint64_t)eRemoteEvents::PropertyTeleport, TargetPlayer, 0, -1, 1, property_teleport_index, 0, 0, 0 };
 				SCRIPT::TRIGGER_SCRIPT_EVENT(1, teleport, 9, (1 << TargetPlayer));
 			}
 		}
-		else if (EventType == ScriptEventTypes::CAYO_PERICO_TELEPORT)
+		else if (EventType == eScriptEventTypes::CAYO_PERICO_TELEPORT)
 		{
-			uint64_t arguments_aray[2] = { (uint64_t)TSE_CAYO_PERICO_TELEPORT, (uint64_t)TargetPlayer };
+			uint64_t arguments_aray[2] = { (uint64_t)eRemoteEvents::CayoPericoTeleport, (uint64_t)TargetPlayer };
 			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
 		}
-		else if (EventType == ScriptEventTypes::FORCE_INTO_MISSION)
+		else if (EventType == eScriptEventTypes::FORCE_INTO_MISSION)
 		{
-			uint64_t arguments_aray[3] = { (uint64_t)TSE_FORCE_INTO_MISSION, (uint64_t)TargetPlayer, 0 };
+			uint64_t arguments_aray[3] = { (uint64_t)eRemoteEvents::ForceIntoMission, (uint64_t)TargetPlayer, 0 };
 			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
 		}
 	}

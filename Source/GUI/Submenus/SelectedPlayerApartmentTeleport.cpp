@@ -8,7 +8,7 @@ void GUI::Submenus::SelectedPlayerApartmentTeleport()
 	{
 		if (GUI::Option(i.PropertyName, ""))
 		{
-			GameFunctions::TriggerScriptEvent(PROPERTY_TELEPORT, CheatFeatures::SelectedPlayer, i.Index);
+			GameFunctions::TriggerScriptEvent(eScriptEventTypes::PROPERTY_TELEPORT, CheatFeatures::SelectedPlayer, i.Index);
 		}
 	}
 }

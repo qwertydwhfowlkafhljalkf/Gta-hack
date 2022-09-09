@@ -108,7 +108,6 @@ namespace Cheat
         extern bool CheatWindowVisible;
         extern bool GameChatWindowVisible;
         void Init();
-        void Uninit();
         void Message(std::string Message);
         void MessageCustomCategory(std::string CategoryName, std::string Message);
         void Error(char* Message, bool ShowMessageBox);

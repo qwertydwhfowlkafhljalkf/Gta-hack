@@ -62,7 +62,7 @@ void GUI::Submenus::Teleport()
 	GUI::Toggle("Teleport Transition", CheatFeatures::TeleportTransition, "");
 	if (GUI::Option("Teleport to Cayo Perico Island", ""))
 	{
-		GameFunctions::TriggerScriptEvent(CAYO_PERICO_TELEPORT, GameFunctions::PlayerID);
+		GameFunctions::TriggerScriptEvent(eScriptEventTypes::CAYO_PERICO_TELEPORT, GameFunctions::PlayerID);
 	}
 	GUI::MenuOption("Landmarks", Submenus::LandmarkTeleportLocations);
 	GUI::MenuOption("IPL's", Submenus::IPLTeleports);

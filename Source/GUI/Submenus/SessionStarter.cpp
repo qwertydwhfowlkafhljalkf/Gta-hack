@@ -9,7 +9,7 @@ void GUI::Submenus::SessionStarter()
 	GUI::Break("Join/Change", SELECTABLE_CENTER_TEXT);
 	if (GUI::StringVector(NETWORK::NETWORK_IS_SESSION_STARTED() ? "Change Session" : "Join Session", { "Join Public", "New Public", "Closed Crew", "Crew", "Closed Friend", "Solo", "Invite Only" }, ChangeSessionInteger, "", SELECTABLE_DISABLE_SAVE))
 	{
-		SessionTypes SetType;
+		eSessionTypes SetType;
 		if (ChangeSessionInteger == 0)
 		{
 			SetType = SessionTypeJoinPublic;

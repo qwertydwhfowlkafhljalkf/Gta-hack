@@ -32,7 +32,7 @@ void GUI::Submenus::AllPlayers()
 
 			if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && NETWORK::NETWORK_IS_PLAYER_ACTIVE(i))
 			{
-				GameFunctions::TriggerScriptEvent(PROPERTY_TELEPORT, i, 1);
+				GameFunctions::TriggerScriptEvent(eScriptEventTypes::PROPERTY_TELEPORT, i, 1);
 			}
 		}
 	}

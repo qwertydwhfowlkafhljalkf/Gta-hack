@@ -23,14 +23,6 @@ void Cheat::Logger::Init()
     LoggerInitialized = true;
 }
 
-void Cheat::Logger::Uninit()
-{
-    DebugMessage("Logger uninitialized");
-    MainLoggerObject.Clear();
-    GameChatLoggerObject.Clear();
-    LoggerInitialized = false;
-}
-
 void Cheat::Logger::Message(std::string Message)
 {
     if (LoggerInitialized)
