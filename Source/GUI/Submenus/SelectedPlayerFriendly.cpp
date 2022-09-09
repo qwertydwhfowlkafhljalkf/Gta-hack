@@ -8,7 +8,7 @@ void GUI::Submenus::SelectedPlayerFriendly()
 	if (GUI::Option("Copy Outfit", "")) { GameFunctions::CopySelectedPlayerOutfit(CheatFeatures::SelectedPlayer); }
 	if (GUI::Option("Set Waypoint", "Sets waypoint to Selected player location"))
 	{
-		Vector3 TargetCoords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
+		Vector3 TargetCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
 		UI::SET_NEW_WAYPOINT(TargetCoords.x, TargetCoords.y);
 	}
 	if (GUI::Option("Spawn Bodyguard", ""))
@@ -18,7 +18,7 @@ void GUI::Submenus::SelectedPlayerFriendly()
 		Ped SelectedPlayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
 		if (!ENTITY::DOES_ENTITY_EXIST(SelectedPlayer)) return;
 		Hash railgun = MISC::GET_HASH_KEY("WEAPON_RAILGUN");
-		Vector3 pos = GameFunctions::GetEntityCoords(SelectedPlayer);
+		Vector3 pos = ENTITY::GET_ENTITY_COORDS(SelectedPlayer, false);
 		Hash pedm = MISC::GET_HASH_KEY("u_m_m_jesus_01");
 		STREAMING::REQUEST_MODEL(pedm);
 		while (!STREAMING::HAS_MODEL_LOADED(pedm)) { GameHooking::PauseMainFiber(0); }

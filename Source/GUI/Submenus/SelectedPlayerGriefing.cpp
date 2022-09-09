@@ -23,19 +23,22 @@ void GUI::Submenus::SelectedPlayerGriefing()
 	}
 	if (GUI::Option("Burst Vehicle Tires", ""))
 	{
-		int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
-		if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0))
+		Ped PlayerPedHandle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
+		if (PED::IS_PED_IN_ANY_VEHICLE(PlayerPedHandle, false))
 		{
-			GameFunctions::BurstSelectedPlayerTires(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
-		}
-		else
-		{
-			GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
+			::Vehicle VehicleHandle = PED::GET_VEHICLE_PED_IS_USING(PlayerPedHandle);
+			GameFunctions::RequestNetworkControlOfEntity(VehicleHandle);
+			VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(VehicleHandle, true);
+			static int tireID = 0;
+			for (tireID = 0; tireID < 8; tireID++)
+			{
+				VEHICLE::SET_VEHICLE_TYRE_BURST(VehicleHandle, tireID, true, 1000.f);
+			}
 		}
 	}
 	if (GUI::Option("Airstrike", ""))
 	{
-		Vector3 Coords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
+		Vector3 Coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
 		MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35.f, Coords.x, Coords.y, Coords.z, 250, true, MISC::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), true, false, 500.f);
 	}
 	if (GUI::Option("Attach To", ""))
@@ -51,14 +54,12 @@ void GUI::Submenus::SelectedPlayerGriefing()
 	}
 	if (GUI::Option("Slingshot Vehicle", ""))
 	{
-		Ped Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
-		if (PED::IS_PED_IN_ANY_VEHICLE(Handle, false))
+		Ped PedHandle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
+		if (PED::IS_PED_IN_ANY_VEHICLE(PedHandle, false))
 		{
-			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(Handle, true));
-			if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(Handle, true)))
-			{
-				ENTITY::APPLY_FORCE_TO_ENTITY(PED::GET_VEHICLE_PED_IS_IN(Handle, true), 1, 0, 0, 20, 0, 0, 0, 1, false, true, true, true, true);
-			}
+			::Vehicle VehicleHandle = PED::GET_VEHICLE_PED_IS_IN(PedHandle, false);
+			GameFunctions::RequestNetworkControlOfEntity(VehicleHandle);
+			ENTITY::APPLY_FORCE_TO_ENTITY(VehicleHandle, 1, 0, 0, 20, 0, 0, 0, 1, false, true, true, true, true);
 		}
 		else
 		{
@@ -74,7 +75,7 @@ void GUI::Submenus::SelectedPlayerGriefing()
 			{
 				STREAMING::REQUEST_MODEL(model);
 				while (!STREAMING::HAS_MODEL_LOADED(model)) { GameHooking::PauseMainFiber(0, false); }
-				Vector3 ourCoords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
+				Vector3 ourCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
 				float forward = 10.f;
 				float heading = ENTITY::GET_ENTITY_HEADING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
 				float xVector = forward * sin(GameFunctions::DegreesToRadians(heading)) * -1.f;
@@ -88,7 +89,7 @@ void GUI::Submenus::SelectedPlayerGriefing()
 	}
 	if (GUI::Option("Cage Trap", ""))
 	{
-		Vector3 remotePos = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
+		Vector3 remotePos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
 		Object obj = OBJECT::CREATE_OBJECT(MISC::GET_HASH_KEY("prop_gold_cont_01"), remotePos.x, remotePos.y, remotePos.z - 1.f, true, false, false);
 	}
 	if (GUI::Option("Clone Ped", ""))
@@ -118,7 +119,7 @@ void GUI::Submenus::SelectedPlayerGriefing()
 		int egcount = 1;
 		Ped SelectedPlayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
 		Hash railgun = MISC::GET_HASH_KEY("WEAPON_RAILGUN");
-		Vector3 pos = GameFunctions::GetEntityCoords(SelectedPlayer);
+		Vector3 pos = ENTITY::GET_ENTITY_COORDS(SelectedPlayer, false);
 		Hash pedm = MISC::GET_HASH_KEY("u_m_m_jesus_01");
 		STREAMING::REQUEST_MODEL(pedm);
 		while (!STREAMING::HAS_MODEL_LOADED(pedm)) { GameHooking::PauseMainFiber(0); }

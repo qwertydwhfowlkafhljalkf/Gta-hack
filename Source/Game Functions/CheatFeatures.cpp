@@ -68,7 +68,7 @@ void Cheat::CheatFeatures::Loop()
 	// POST initialization notification
 	if (CheatFunctions::CheatInitEntirelyCompleted && !GUI::MenuGUIHasBeenOpened)
 	{
-		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to open cheat GUI";
+		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to open Menu GUI";
 		std::string WelcomeText = "Welcome " + (std::string)SOCIALCLUB::_SC_GET_NICKNAME() + ", have fun!";
 		GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(WelcomeText), "Textures", "AdvancedNotificationImage", false, 4, "GTAV Cheat", "", 0.3f, "");
 		UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
@@ -166,7 +166,7 @@ void Cheat::CheatFeatures::Loop()
 		Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
 		Vector3 dir = GameFunctions::RotationToDirection(&rot);
 		Vector3 camPosition = CAM::GET_GAMEPLAY_CAM_COORD();
-		Vector3 playerPosition = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
+		Vector3 playerPosition = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
 		float spawnDistance = GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &playerPosition);
 		spawnDistance += 0.25;
 		Vector3 spawnPosition = GameFunctions::AddTwoVectors(&camPosition, &GameFunctions::MultiplyVector(&dir, spawnDistance));
@@ -414,14 +414,14 @@ void Cheat::CheatFeatures::GravityGun()
 
 	Vector3 dir = Cheat::GameFunctions::RotationToDirection(&CAM::GET_GAMEPLAY_CAM_ROT(0));
 	Vector3 camPosition = CAM::GET_GAMEPLAY_CAM_COORD();
-	float spawnDistance = GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID));
+	float spawnDistance = GameFunctions::GetDistanceBetweenTwoVectors(&camPosition, &ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false));
 	spawnDistance += GravityGunEntityDistance;
 	Vector3 spawnPosition = GameFunctions::AddTwoVectors(&camPosition, &GameFunctions::MultiplyVector(&dir, spawnDistance));
 
 	Player tempPed = GameFunctions::PlayerID;
 	if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(GameFunctions::PlayerID, &EntityTarget) && PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_AIM))
 	{
-		Vector3 EntityTargetPos = GameFunctions::GetEntityCoords(EntityTarget);
+		Vector3 EntityTargetPos = ENTITY::GET_ENTITY_COORDS(EntityTarget, false);
 		PLAYER::DISABLE_PLAYER_FIRING(tempPed, true);
 		if (ENTITY::IS_ENTITY_A_PED(EntityTarget) && PED::IS_PED_IN_ANY_VEHICLE(EntityTarget, false))
 		{
@@ -679,7 +679,7 @@ void Cheat::CheatFeatures::FreeCam(bool toggle)
 		CAM::SET_CAM_ACTIVE(FreeCamHandle, 1);
 		CAM::SET_CAM_ROT(FreeCamHandle, rot.x, rot.y, rot.z, 0);
 
-		p_coord = GameFunctions::GetEntityCoords(Cheat::GameFunctions::PlayerPedID);
+		p_coord = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, false);
 
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(GameFunctions::PlayerPedID, p_coord.x, p_coord.y, p_coord.z, 0, 0, 0);
 		PLAYER::DISABLE_PLAYER_FIRING(GameFunctions::PlayerPedID, true);
@@ -808,36 +808,34 @@ void Cheat::CheatFeatures::NoClip()
 
 	Cheat::GameFunctions::GetCameraDirection(&x, &y, &z);
 
-	if (!PED::IS_PED_ON_FOOT(Cheat::GameFunctions::PlayerPedID))
+	if (!PED::IS_PED_ON_FOOT(GameFunctions::PlayerPedID) && PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false))
 	{
-		int currentCar = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false);
-		Vector3 Pos = GameFunctions::GetEntityCoords(currentCar);
+		Vehicle CurrentVehicle = PED::GET_VEHICLE_PED_IS_IN(Cheat::GameFunctions::PlayerPedID, false);
+		GameFunctions::RequestNetworkControlOfEntity(CurrentVehicle);
+		Vector3 Pos = ENTITY::GET_ENTITY_COORDS(CurrentVehicle, false);
 		Vector3 rotation = CAM::GET_GAMEPLAY_CAM_ROT(0);
 
-		ENTITY::SET_ENTITY_COLLISION(currentCar, true, true);
-		ENTITY::SET_ENTITY_ROTATION(currentCar, rotation.x, rotation.y, rotation.z, 2, 1);
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(currentCar, Pos.x, Pos.y, Pos.z, 0, 0, 0);
-		if (ENTITY::DOES_ENTITY_EXIST(currentCar) && ENTITY::IS_ENTITY_A_VEHICLE(currentCar))
+		ENTITY::SET_ENTITY_COLLISION(CurrentVehicle, true, true);
+		ENTITY::SET_ENTITY_ROTATION(CurrentVehicle, rotation.x, rotation.y, rotation.z, 2, 1);
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(CurrentVehicle, Pos.x, Pos.y, Pos.z, 0, 0, 0);
+		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_MOVE_UP_ONLY)) // W key
 		{
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_MOVE_UP_ONLY)) // W key
-			{
-				ENTITY::SET_ENTITY_COLLISION(currentCar, false, false);
-				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(currentCar, Pos.x + (x * d), Pos.y + (y * d), Pos.z + (z * d), 0, 0, 0);
-			}
+			ENTITY::SET_ENTITY_COLLISION(CurrentVehicle, false, false);
+			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(CurrentVehicle, Pos.x + (x * d), Pos.y + (y * d), Pos.z + (z * d), 0, 0, 0);
 		}
 	}
 	else
 	{
-		Vector3 Pos = GameFunctions::GetEntityCoords(Cheat::GameFunctions::PlayerPedID);
+		Vector3 Pos = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
 
 		Vector3 rotation = CAM::GET_GAMEPLAY_CAM_ROT(0);
-		ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, true, true);
-		ENTITY::SET_ENTITY_ROTATION(Cheat::GameFunctions::PlayerPedID, rotation.x, rotation.y, rotation.z, 2, 1);
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Cheat::GameFunctions::PlayerPedID, Pos.x, Pos.y, Pos.z, 0, 0, 0);
+		ENTITY::SET_ENTITY_COLLISION(GameFunctions::PlayerPedID, true, true);
+		ENTITY::SET_ENTITY_ROTATION(GameFunctions::PlayerPedID, rotation.x, rotation.y, rotation.z, 2, 1);
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(GameFunctions::PlayerPedID, Pos.x, Pos.y, Pos.z, 0, 0, 0);
 		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_MOVE_UP_ONLY)) // W key
 		{
-			ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, false, false);
-			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(Cheat::GameFunctions::PlayerPedID, Pos.x + (x * d), Pos.y + (y * d), Pos.z + (z * d), 0, 0, 0);
+			ENTITY::SET_ENTITY_COLLISION(GameFunctions::PlayerPedID, false, false);
+			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(GameFunctions::PlayerPedID, Pos.x + (x * d), Pos.y + (y * d), Pos.z + (z * d), 0, 0, 0);
 		}
 	}
 }
@@ -857,7 +855,7 @@ void Cheat::CheatFeatures::EntityInformationGun()
 	Entity AimedEntityHandle;
 	if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &AimedEntityHandle))
 	{
-		Vector3 AimedEntityCoords = GameFunctions::GetEntityCoords(AimedEntityHandle);
+		Vector3 AimedEntityCoords = ENTITY::GET_ENTITY_COORDS(AimedEntityHandle, false);;
 		std::string AimedEntityHealth = "Entity Health: " + std::to_string(ENTITY::GET_ENTITY_HEALTH(AimedEntityHandle));
 		std::string AimedEntityHash = "Entity Hash: " + std::to_string(ENTITY::GET_ENTITY_MODEL(AimedEntityHandle));
 		GUI::DrawTextInGame("~bold~Aimed Entity Information", { 255, 255, 255, 255, 0 }, { 0.500f, 0.380f }, { 0.35f, 0.35f }, false);
@@ -1053,7 +1051,7 @@ void Cheat::CheatFeatures::ShootEntities()
 			float Offset = Dimension2.y * 1.5; //1.6
 
 			Vector3 dir = ENTITY::GET_ENTITY_FORWARD_VECTOR(GameFunctions::PlayerPedID);
-			Vector3 pCoords = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
+			Vector3 pCoords = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
 			float Rotation = ENTITY::GET_ENTITY_ROTATION(GameFunctions::PlayerPedID, 0).z;
 			Vector3 gameplayCam = CAM::GET_FINAL_RENDERED_CAM_COORD();
 			Vector3 gameplayCamDirection = GameFunctions::RotationToDirection(&CAM::GET_GAMEPLAY_CAM_ROT(0));
@@ -1091,7 +1089,7 @@ void Cheat::CheatFeatures::PlayerESP()
 		{
 			if (GameFunctions::PlayerID != i) 
 			{
-				Vector3 entitylocation = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
+				Vector3 entitylocation = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), false);
 				Vector3 top1world = { entitylocation.x + 0.3f, NULL, entitylocation.y + 0.3f, NULL, entitylocation.z + .8f, NULL };
 				Vector3 top2world = { entitylocation.x - 0.3f, NULL, entitylocation.y + 0.3f, NULL, entitylocation.z + .8f, NULL };
 				Vector3 top3world = { entitylocation.x + 0.3f, NULL, entitylocation.y - 0.3f, NULL, entitylocation.z + .8f, NULL };
@@ -1116,8 +1114,8 @@ void Cheat::CheatFeatures::PlayerESP()
 				GRAPHICS::DRAW_LINE(top3world.x, top3world.y, top3world.z, bottom3world.x, bottom3world.y, bottom3world.z, 0, 0, 255, 255);
 				GRAPHICS::DRAW_LINE(top4world.x, top4world.y, top4world.z, bottom4world.x, bottom4world.y, bottom4world.z, 0, 0, 255, 255);
 
-				Vector3 locationOne = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
-				Vector3 locationTwo = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
+				Vector3 locationOne = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), false);
+				Vector3 locationTwo = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
 				GRAPHICS::DRAW_LINE(locationOne.x, locationOne.y, locationOne.z, locationTwo.x, locationTwo.y, locationTwo.z, 0, 0, 255, 255);
 			}
 		}
@@ -1141,7 +1139,7 @@ void Cheat::CheatFeatures::CopsTurnBlindEye()
 bool Cheat::CheatFeatures::ExplodeLoopSelectedPlayerBool = false;
 void Cheat::CheatFeatures::ExplodeLoopSelectedPlayer()
 {
-	Vector3 SelectedPlayerPedCoords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
+	Vector3 SelectedPlayerPedCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
 	FIRE::ADD_EXPLOSION(SelectedPlayerPedCoords.x, SelectedPlayerPedCoords.y, SelectedPlayerPedCoords.z, 0, 1000.f, true, false, 0.f, false);
 }
 
@@ -1150,7 +1148,7 @@ void Cheat::CheatFeatures::DriveOnWater()
 {
 	Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, false);
 	DWORD model = ENTITY::GET_ENTITY_MODEL(veh);
-	Vector3 pos = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
+	Vector3 pos = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
 	float height = 0.f;
 	WATER::SET_DEEP_OCEAN_SCALER(height);
 	if (!VEHICLE::IS_THIS_MODEL_A_PLANE(ENTITY::GET_ENTITY_MODEL(veh)) && WATER::GET_WATER_HEIGHT_NO_WAVES(pos.x, pos.y, pos.z, &height)) 
@@ -1163,7 +1161,7 @@ void Cheat::CheatFeatures::DriveOnWater()
 			GameFunctions::RequestNetworkControlOfEntity(container);
 			ENTITY::SET_ENTITY_COORDS(container, pos.x, pos.y, height - 1.5f, false, false, false, 1);
 			ENTITY::SET_ENTITY_ROTATION(container, 0, 0, pRot.z, 0, 1);
-			Vector3 containerCoords = GameFunctions::GetEntityCoords(container);
+			Vector3 containerCoords = ENTITY::GET_ENTITY_COORDS(container, false);
 			if (pos.z < containerCoords.z) 
 			{
 				if (!PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false))
@@ -1173,7 +1171,7 @@ void Cheat::CheatFeatures::DriveOnWater()
 				else 
 				{
 					GameFunctions::RequestNetworkControlOfEntity(veh);
-					Vector3 vehc = GameFunctions::GetEntityCoords(veh);
+					Vector3 vehc = ENTITY::GET_ENTITY_COORDS(veh, false);
 					ENTITY::SET_ENTITY_COORDS(veh, vehc.x, vehc.y, containerCoords.z + 2.0f, 0, 0, 0, 1);
 				}
 			}
@@ -1223,7 +1221,7 @@ void Cheat::CheatFeatures::SuperMan()
 bool Cheat::CheatFeatures::ShakeCamSelectedPlayerBool = false;
 void Cheat::CheatFeatures::ShakeCamSelectedPlayer()
 {
-	Vector3 targetCords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
+	Vector3 targetCords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
 	FIRE::ADD_EXPLOSION(targetCords.x, targetCords.y, targetCords.z, 0, 0.f, false, true, 1000.f, true);
 }
 

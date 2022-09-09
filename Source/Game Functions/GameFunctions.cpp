@@ -69,27 +69,12 @@ void Cheat::GameFunctions::TeleportToObjective()
 	blipFound ? Cheat::GameFunctions::TeleportToCoords(e, wayp, false, false) : Cheat::GameFunctions::MinimapNotification("~r~Objective not found");
 }
 
-void Cheat::GameFunctions::BurstSelectedPlayerTires(Ped selectedPed)
-{
-	if (PED::IS_PED_IN_ANY_VEHICLE(selectedPed, false))
-	{
-		RequestNetworkControlOfEntity(PED::GET_VEHICLE_PED_IS_USING(selectedPed));
-		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(PED::GET_VEHICLE_PED_IS_USING(selectedPed), true);
-		static int tireID = 0;
-		for (tireID = 0; tireID < 8; tireID++)
-		{
-			VEHICLE::SET_VEHICLE_TYRE_BURST(PED::GET_VEHICLE_PED_IS_USING(selectedPed), tireID, true, 1000.0);
-		}
-	}
-}
-
 void Cheat::GameFunctions::SetOffAlarmPlayerVehicle(Ped selectedPed)
 {
 	Entity selectedVehicle = PED::GET_VEHICLE_PED_IS_USING(selectedPed);
-	RequestNetworkControlOfEntity(PED::GET_VEHICLE_PED_IS_USING(selectedPed));
+	RequestNetworkControlOfEntity(selectedVehicle);
 	VEHICLE::SET_VEHICLE_ALARM(selectedVehicle, true);
 	VEHICLE::START_VEHICLE_ALARM(selectedVehicle);
-	Cheat::GameFunctions::MinimapNotification("~g~Set off alarm of vehicle!");
 }
 
 bool Cheat::GameFunctions::IsPlayerFriend(Player player)
@@ -209,11 +194,6 @@ void Cheat::GameFunctions::SubtitleNotification(char* Message, int ShowDuration)
 float Cheat::GameFunctions::DegreesToRadians(float degs)
 {
 	return degs * 3.141592653589793f / 180.f;
-}
-
-Vector3 Cheat::GameFunctions::GetEntityCoords(Entity entity) 
-{
-	return ENTITY::GET_ENTITY_COORDS(entity, false);
 }
 
 float Cheat::GameFunctions::GetDistanceBetweenTwoPoints(Vector3 A, Vector3 B) 
@@ -454,7 +434,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		// Draw Player Marker
 		if (CheatFeatures::PlayerListMarkerPosition == 0 || CheatFeatures::PlayerListMarkerPosition == 1 && GUI::currentMenu == GUI::Submenus::AllPlayers)
 		{
-			Vector3 coords = GetEntityCoords(SelectedPlayerPed);
+			Vector3 coords = ENTITY::GET_ENTITY_COORDS(SelectedPlayerPed, false);
 			GRAPHICS::DRAW_LIGHT_WITH_RANGE(coords.x, coords.y, coords.z + 2.f, 255, 255, 255, 5.f, 10.f);
 		}
 
@@ -607,7 +587,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 
 
 		// Coords
-		Vector3 SelectedPlayerPedCoords = GetEntityCoords(SelectedPlayerPed);
+		Vector3 SelectedPlayerPedCoords = ENTITY::GET_ENTITY_COORDS(SelectedPlayerPed, false);
 		std::ostringstream CoordX;
 		std::ostringstream CoordY;
 		std::ostringstream CoordZ;
@@ -637,7 +617,7 @@ void Cheat::GameFunctions::ShowPlayerInformationBox(Player PlayerID)
 		Street << UI::GET_STREET_NAME_FROM_HASH_KEY(streetName);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(Street.str(), NULL, 15);
 
-		float distance = Get3DDistance(SelectedPlayerPedCoords, GetEntityCoords(Cheat::GameFunctions::PlayerPedID));
+		float distance = Get3DDistance(SelectedPlayerPedCoords, ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, false));
 		std::ostringstream Distance;
 
 		if (PlayerID != GameFunctions::PlayerID)
@@ -754,7 +734,7 @@ void Cheat::GameFunctions::ApplyForceToEntity(Entity e, float x, float y, float 
 
 void Cheat::GameFunctions::RemoveObjectFromPed(Ped Ped, char* ObjectName)
 {
-	Vector3 PedCoords = GetEntityCoords(Ped);
+	Vector3 PedCoords = ENTITY::GET_ENTITY_COORDS(Ped, false);
 	Object Object = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(PedCoords.x, PedCoords.y, PedCoords.z, 4.0, MISC::GET_HASH_KEY(ObjectName), false, false, true);
 	if (ENTITY::DOES_ENTITY_EXIST(Object) && ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY(Object, Ped))
 	{
@@ -769,7 +749,7 @@ void Cheat::GameFunctions::AttachObjectToPed(Ped Ped, char* ObjectName)
 {
 	int attachobj[100];
 	int nuattach = 1;
-	Vector3 pos = GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped));
+	Vector3 pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped), false);
 	int hash = MISC::GET_HASH_KEY(ObjectName);
 	if (STREAMING::IS_MODEL_IN_CDIMAGE(hash))
 	{

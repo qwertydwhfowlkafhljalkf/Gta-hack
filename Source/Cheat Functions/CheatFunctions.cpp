@@ -274,7 +274,7 @@ void LoadConfigThreadFunction()
 	Cheat::GUI::PreviousMenu = nullptr;
 	Cheat::Controls::ChangeKeyInputState(true);
 	Cheat::GUI::HideGUIElements = false;
-	Cheat::CheatFunctions::LoadedSelectablesVector.empty();
+	Cheat::CheatFunctions::LoadedSelectablesVector.clear();
 	Cheat::CheatFunctions::ConfigLoaded = true;
 }
 
@@ -672,7 +672,7 @@ void Cheat::CheatFunctions::AddCustomTeleportLocation(std::string CustomTeleport
 	remove(StringToConstChar(ReturnCustomTeleportLocationsFilePath()));
 	if (JsonHandle.isMember(CustomTeleportLocationName)) { JsonHandle.removeMember(CustomTeleportLocationName); }
 
-	Vector3 LocalPlayerCoords = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
+	Vector3 LocalPlayerCoords = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
 	JsonHandle[CustomTeleportLocationName]["X"] = LocalPlayerCoords.x;
 	JsonHandle[CustomTeleportLocationName]["Y"] = LocalPlayerCoords.y;
 	JsonHandle[CustomTeleportLocationName]["Z"] = LocalPlayerCoords.z;

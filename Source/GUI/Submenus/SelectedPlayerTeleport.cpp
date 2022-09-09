@@ -8,7 +8,7 @@ void GUI::Submenus::SelectedPlayerTeleport()
 	{
 		int TimeoutTick = 0;
 		WEAPON::GIVE_WEAPON_TO_PED(GameFunctions::PlayerPedID, 0xFBAB5776, 0, false, true);
-		Vector3 TargetCoords = GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
+		Vector3 TargetCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false);
 		TargetCoords.z += 50.f;
 		GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, TargetCoords, false, true);
 		while (PED::GET_PED_PARACHUTE_STATE(GameFunctions::PlayerPedID) != 0)
@@ -24,7 +24,7 @@ void GUI::Submenus::SelectedPlayerTeleport()
 	}
 	if (GUI::Option("Teleport To", ""))
 	{
-		GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, GameFunctions::GetEntityCoords(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer)),
+		GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false),
 			false, false);
 	}
 	if (GUI::Option("Teleport Into Vehicle", "Teleport into Selected Player vehicle"))

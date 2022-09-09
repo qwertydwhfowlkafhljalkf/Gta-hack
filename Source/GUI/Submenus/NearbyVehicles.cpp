@@ -19,7 +19,7 @@ void GUI::Submenus::NearbyVehicles()
 			if (vehs[OffsetID] != PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, false))
 			{
 				GameFunctions::RequestNetworkControlOfEntity(vehs[OffsetID]);
-				Vector3 coords = GameFunctions::GetEntityCoords(vehs[OffsetID]);
+				Vector3 coords = ENTITY::GET_ENTITY_COORDS(vehs[OffsetID], false);
 				FIRE::ADD_EXPLOSION(coords.x, coords.y, coords.z, 0, 1000.f, true, false, 0.f, false);
 			}
 		}

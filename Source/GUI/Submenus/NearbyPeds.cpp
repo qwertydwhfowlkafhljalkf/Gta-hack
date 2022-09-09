@@ -20,7 +20,7 @@ void GUI::Submenus::NearbyPeds()
 			GameFunctions::RequestNetworkControlOfEntity(peds[OffsetID]);
 			if (ENTITY::DOES_ENTITY_EXIST(peds[OffsetID]) && GameFunctions::PlayerPedID != peds[OffsetID])
 			{
-				Vector3 pos = GameFunctions::GetEntityCoords(peds[OffsetID]);
+				Vector3 pos = ENTITY::GET_ENTITY_COORDS(peds[OffsetID], false);
 				FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 0, 1000.f, true, false, 0.f, false);
 			}
 		}

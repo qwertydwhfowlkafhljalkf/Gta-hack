@@ -13,7 +13,6 @@ namespace Cheat
 		void SubtitleNotification(char* Message, int ShowDuration = 4000);
 		void TeleportToBlipCoord(Blip TargetBlip);
 		void TeleportToObjective();
-		void BurstSelectedPlayerTires(Ped selectedPed);
 		void SetOffAlarmPlayerVehicle(Ped selectedPed);
 		bool IsPlayerFriend(Player player);
 		Vector3 MultiplyVector(Vector3 vector, float inc);
@@ -26,7 +25,6 @@ namespace Cheat
 		float GetDistanceBetweenTwoVectors(Vector3* pointA, Vector3* pointB);
 		void TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicle);
 		float GetDistanceBetweenTwoPoints(Vector3 A, Vector3 B);
-		Vector3 GetEntityCoords(Entity entity);
 		float DegreesToRadians(float degs);
 		void GetCameraDirection(float* dirX, float* dirY, float* dirZ);
 		void RequestNetworkControlOfEntity(Entity entity);

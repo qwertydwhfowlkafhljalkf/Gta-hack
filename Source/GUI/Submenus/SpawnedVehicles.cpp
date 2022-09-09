@@ -12,7 +12,7 @@ void GUI::Submenus::SpawnedVehicles()
 			GUI::Break(std::to_string(i), SELECTABLE_CENTER_TEXT);
 			if (GUI::Option("Teleport To", ""))
 			{
-				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, GameFunctions::GetEntityCoords(i), false, false);
+				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, ENTITY::GET_ENTITY_COORDS(i, false), false, false);
 			}
 			if (GUI::Option("Teleport Into Vehicle", ""))
 			{

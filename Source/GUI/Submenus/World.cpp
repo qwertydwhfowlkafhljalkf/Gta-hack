@@ -13,7 +13,7 @@ void GUI::Submenus::World()
 	GUI::Toggle("Blackout", CheatFeatures::WorldBlackoutBool, "Disable All Map Lights");
 	if (GUI::Option("Clear Area", "Clear area of vehicles, objects etc"))
 	{
-		Vector3 MyPos = GameFunctions::GetEntityCoords(GameFunctions::PlayerPedID);
+		Vector3 MyPos = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
 		MISC::CLEAR_AREA(MyPos.x, MyPos.y, MyPos.z, 250, true, false, false, false);
 		MISC::CLEAR_AREA_OF_COPS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
 		MISC::CLEAR_AREA_OF_OBJECTS(MyPos.x, MyPos.y, MyPos.z, 250, 0);
