@@ -19,6 +19,6 @@ void (*Submenus::FunctionPointers[])() = {
 	Submenus::SelectedPlayerFriendly, Submenus::SelectedPlayerGriefing, Submenus::Aimbot, Submenus::IPLTeleports,
 	Submenus::WeaponAmmo, Submenus::LandmarkTeleportLocations, Submenus::SafehousesTeleportLocations,
 	Submenus::HighAltitudeTeleportLocations, Submenus::UnderwaterTeleportLocations, Submenus::SessionStarter,
-	Submenus::ProtectionScriptEvents, Submenus::ProtectionNetworkEvents, Submenus::Disables
+	Submenus::ProtectionScriptEvents, Submenus::ProtectionNetworkEvents, Submenus::Disables, Submenus::Television
 };
 int Submenus::NumberOfSubmenus = sizeof(Submenus::FunctionPointers) / sizeof(Submenus::FunctionPointers[0]);

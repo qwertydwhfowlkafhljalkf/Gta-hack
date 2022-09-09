@@ -76,6 +76,7 @@ namespace Cheat
 			void HighAltitudeTeleportLocations();
 			void UnderwaterTeleportLocations();
 			void Disables();
+			void Television();
 		}
 	}
 }

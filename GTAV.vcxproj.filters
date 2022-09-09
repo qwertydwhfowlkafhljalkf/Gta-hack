@@ -298,6 +298,9 @@
     <ClCompile Include="Source\GUI\Submenus\Disables.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GUI\Submenus\Television.cpp">
+      <Filter>Source Files\GUI\Submenus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\resource.h">

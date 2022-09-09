@@ -184,6 +184,7 @@
     <ClCompile Include="Source\GUI\Submenus\Spawn.cpp" />
     <ClCompile Include="Source\GUI\Submenus\SpawnedVehicles.cpp" />
     <ClCompile Include="Source\GUI\Submenus\Teleport.cpp" />
+    <ClCompile Include="Source\GUI\Submenus\Television.cpp" />
     <ClCompile Include="Source\GUI\Submenus\Theme.cpp" />
     <ClCompile Include="Source\GUI\Submenus\ThemeFiles.cpp" />
     <ClCompile Include="Source\GUI\Submenus\Time.cpp" />

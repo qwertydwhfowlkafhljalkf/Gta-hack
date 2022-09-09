@@ -7,6 +7,7 @@ void GUI::Submenus::Miscellaneous()
 	GUI::Title("Miscellaneous");
 	GUI::MenuOption("Report Statistics", Submenus::ReportStatistics);
 	GUI::MenuOption("Disables", Submenus::Disables);
+	GUI::MenuOption("In-game Television", Submenus::Television);
 	GUI::MenuOption("Radio", Submenus::Radio);
 	GUI::MenuOption("Extra-sensory Perception", Submenus::ESP);
 	GUI::MenuOption("Head-up Display", Submenus::HUD);

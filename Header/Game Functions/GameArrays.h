@@ -80,5 +80,6 @@ namespace Cheat
 		extern const std::vector<const char*> IPLMorgue;
 		extern const std::vector<const char*> IPLCargoship;
 		extern const std::vector<const char*> IPLAircraftCarrier;
+		extern const std::map<std::string, std::string> TelevisionPlaylists;
 	}
 }

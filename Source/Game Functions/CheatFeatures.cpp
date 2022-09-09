@@ -300,6 +300,7 @@ void Cheat::CheatFeatures::Loop()
 	HideMinimapBool ? HideMinimap() : HideMinimapWasEnabled ? UI::DISPLAY_RADAR(true), HideMinimapWasEnabled = false : NULL;
 	WeaponInvisibilityBool ? WeaponInvisibility(true) : WeaponInvisibilityWasEnabled ? WeaponInvisibility(false), WeaponInvisibilityWasEnabled = false : NULL;
 	SessionLockFriendsOnlyBool ? SessionLockFriendsOnly() : NULL;
+	ShowTVBool ? ShowTV(true) : ShowTVWasEnabled ? ShowTV(false), ShowTVWasEnabled = false : NULL;
 }
 
 bool Cheat::CheatFeatures::GodmodeBool = false;
@@ -1365,4 +1366,15 @@ void Cheat::CheatFeatures::SessionLockFriendsOnly()
 			}
 		}
 	}
+}
+
+bool Cheat::CheatFeatures::ShowTVBool = false;
+bool Cheat::CheatFeatures::ShowTVWasEnabled = false;
+void Cheat::CheatFeatures::ShowTV(bool toggle)
+{
+	ShowTVWasEnabled = true;
+	GRAPHICS::SET_TV_AUDIO_FRONTEND(toggle);
+	GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(4);
+	GRAPHICS::SET_SCRIPT_GFX_DRAW_BEHIND_PAUSEMENU(toggle);
+	GRAPHICS::DRAW_TV_CHANNEL(0.800f, 0.200f, 0.2f, 0.2f, 0.0f, 255, 255, 255, 250);
 }

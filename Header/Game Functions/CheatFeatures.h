@@ -208,5 +208,8 @@ namespace Cheat
 		void WeaponInvisibility(bool toggle);
 		extern bool SessionLockFriendsOnlyBool;
 		void SessionLockFriendsOnly();
+		extern bool ShowTVBool;
+		extern bool ShowTVWasEnabled;
+		void ShowTV(bool toggle);
 	}
 }
