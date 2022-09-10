@@ -19,8 +19,8 @@ struct PlayerInfoBoxDataStruct
 	bool InInterior;
 	bool Cutscene;
 	int RockstarID;
-	std::string ExternalIPAddress;
-	std::string InternalIPAddress;
+	std::string IPAddress;
+	bool Invisible;
 	std::string Gender;
 	int WantedLevel;
 	float X;

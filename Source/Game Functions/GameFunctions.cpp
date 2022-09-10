@@ -844,34 +844,21 @@ int Cheat::GameFunctions::ReturnPlayerRockstarID(Player PlayerHandle)
 	return CheatFunctions::StringToInt(RockstarIDBuffer);
 }
 
-void Cheat::GameFunctions::ReturnPlayerIPAddresses(Player PlayerHandle, std::string& ExternalIP, std::string& InternalIP)
+std::string Cheat::GameFunctions::ReturnPlayerIPAddressAsString(Player PlayerHandle)
 {
-	char ExternalIPBuffer[256], InternalIPBuffer[256];
+	char IPBuffer[256];
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
-		if (PlayerHandle == GameFunctions::PlayerID && CheatFeatures::HideOwnIPAddress) 
-		{ 
-			sprintf_s(ExternalIPBuffer, "Hidden"); 
-			sprintf_s(InternalIPBuffer, "Hidden"); 
-		}
-		else
-		{
-			uintptr_t PlayerInfoPointer = *reinterpret_cast<std::uintptr_t*>(GameHooking::get_player_address(PlayerHandle) + OFFSET_PLAYER_INFO);
-
-			uint8_t* ExternalIPAddress = reinterpret_cast<std::uint8_t*>(PlayerInfoPointer + OFFSET_PLAYER_INFO_EXTERNAL_IP);
-			uint8_t* InternalIPAddress = reinterpret_cast<std::uint8_t*>(PlayerInfoPointer + OFFSET_PLAYER_INFO_INTERNAL_IP);
-
-			ExternalIPAddress ? sprintf_s(ExternalIPBuffer, "%i.%i.%i.%i", ExternalIPAddress[3], ExternalIPAddress[2], ExternalIPAddress[1], ExternalIPAddress[0]) : sprintf_s(ExternalIPBuffer, "Unknown");
-			InternalIPAddress ? sprintf_s(InternalIPBuffer, "%i.%i.%i.%i", InternalIPBuffer[3], InternalIPBuffer[2], InternalIPBuffer[1], InternalIPBuffer[0]) : sprintf_s(InternalIPBuffer, "Unknown");
-		}	
+		if (PlayerHandle == GameFunctions::PlayerID && CheatFeatures::HideOwnIPAddress) { return "Hidden"; }
+		auto InfoLong = *reinterpret_cast<std::uintptr_t*>(GameHooking::get_player_address(PlayerHandle) + OFFSET_PLAYER_INFO);
+		auto IPAddress = reinterpret_cast<std::uint8_t*>(InfoLong + OFFSET_PLAYER_INFO_EXTERNAL_IP);
+		IPAddress ? sprintf_s(IPBuffer, "%i.%i.%i.%i", IPAddress[3], IPAddress[2], IPAddress[1], IPAddress[0]) : sprintf_s(IPBuffer, "Unknown");
 	}
 	else
 	{
-		sprintf_s(ExternalIPBuffer, "Unavailable");
-		sprintf_s(InternalIPBuffer, "Unavailable");
+		sprintf_s(IPBuffer, "N/A");
 	}
-	ExternalIP = ExternalIPBuffer;
-	InternalIP = InternalIPBuffer;
+	return IPBuffer;
 }
 
 std::string Cheat::GameFunctions::ReturnCurrentGTAOCharacter(bool NumberOnly)

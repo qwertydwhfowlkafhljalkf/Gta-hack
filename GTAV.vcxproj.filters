@@ -280,7 +280,7 @@
     <ClCompile Include="ThirdParty\MinHook\hde\hde64.c">
       <Filter>ThirdParty\MinHook</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GUI\ImGui\DearImGui.cpp">
+    <ClCompile Include="Source\GUI\ImGui\ImGuiHook.cpp">
       <Filter>Source Files\GUI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Source\Cheat Functions\Controls.cpp">
@@ -300,6 +300,15 @@
     </ClCompile>
     <ClCompile Include="Source\GUI\Submenus\Television.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\ImGui\PlayerInfoBox.cpp">
+      <Filter>Source Files\GUI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\ImGui\ImGuiRender.cpp">
+      <Filter>Source Files\GUI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\ImGui\WhatsNewPopup.cpp">
+      <Filter>Source Files\GUI\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -405,7 +414,7 @@
     <ClInclude Include="ThirdParty\MinHook\hde\table64.h">
       <Filter>ThirdParty\MinHook</Filter>
     </ClInclude>
-    <ClInclude Include="Header\GUI\ImGui\DearImGui.h">
+    <ClInclude Include="Header\GUI\ImGui\ImGuiHook.h">
       <Filter>Header Files\GUI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Header\Cheat Functions\Controls.h">

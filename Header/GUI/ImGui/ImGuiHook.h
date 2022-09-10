@@ -7,6 +7,9 @@ namespace Cheat
 		namespace DearImGui
 		{
 			void Init();
+			void Render();
+			void PlayerInfoBox();
+			void WhatsNewPopup();
 		}
 	}
 }

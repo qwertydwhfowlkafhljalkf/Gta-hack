@@ -4,7 +4,6 @@
 #define OFFSET_PLAYER					0x08
 #define OFFSET_PLAYER_INFO				0x10C8
 #define OFFSET_PLAYER_INFO_EXTERNAL_IP	0x6C
-#define OFFSET_PLAYER_INFO_INTERNAL_IP	0x74
 #define OFFSET_PLAYER_INFO_FRAMEFLAGS	0x219
 
 // Globals (These change with each major patch, see <Project Root>/Resources/TSE Globals folder for information on function location within game scripts)

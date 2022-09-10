@@ -782,14 +782,8 @@ void Cheat::CheatFunctions::UpdatePlayerInfoBoxData(Player PlayerID)
 	PlayerInfoBoxDataObject.InInterior = GameFunctions::IsEntityInInterior(PlayerPed);
 	PlayerInfoBoxDataObject.Cutscene = NETWORK::IS_PLAYER_IN_CUTSCENE(PlayerID);
 	PlayerInfoBoxDataObject.RockstarID = Cheat::GameFunctions::ReturnPlayerRockstarID(PlayerID);
-
-	// IP Addresses
-	std::string ExternalIP, InternalIP;
-	Cheat::GameFunctions::ReturnPlayerIPAddresses(PlayerID, ExternalIP, InternalIP);
-
-	PlayerInfoBoxDataObject.ExternalIPAddress = ExternalIP;
-	PlayerInfoBoxDataObject.InternalIPAddress = InternalIP;
-
+	PlayerInfoBoxDataObject.IPAddress = GameFunctions::ReturnPlayerIPAddressAsString(PlayerID);
+	PlayerInfoBoxDataObject.Invisible = ENTITY::IS_ENTITY_VISIBLE(PlayerPed) ? false : true;
 	PlayerInfoBoxDataObject.Gender = NETWORK::NETWORK_IS_SESSION_STARTED() ? ENTITY::GET_ENTITY_MODEL(PlayerPed) == 0x705E61F2 ? "Male" : "Female" : "Unknown";
 	PlayerInfoBoxDataObject.WantedLevel = PLAYER::GET_PLAYER_WANTED_LEVEL(PlayerID);
 	PlayerInfoBoxDataObject.X = PlayerLocation.x;

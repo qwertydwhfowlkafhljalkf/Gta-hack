@@ -62,7 +62,7 @@ namespace Cheat
 		bool PlayerIsFreemodeScriptHost(Player Player);
 		void CopySelectedPlayerOutfit(Player SelectedPlayer);
 		int ReturnPlayerRockstarID(Player PlayerHandle);
-		void ReturnPlayerIPAddresses(Player PlayerHandle, std::string& ExternalIP, std::string& InternalIP);
+		std::string ReturnPlayerIPAddressAsString(Player PlayerHandle);
 		std::string ReturnCurrentGTAOCharacter(bool NumberOnly = false);
 		void PlayFrontendSoundDefault(char* SoundName);
 		void PlayScenarioNearbyPeds(char* Scenario);
