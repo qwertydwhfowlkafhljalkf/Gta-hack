@@ -34,7 +34,6 @@ bool Cheat::CheatFeatures::ProtectionScriptEvents_SendToLocation = false;
 bool Cheat::CheatFeatures::ProtectionScriptEvents_SoundSpam = false;
 bool Cheat::CheatFeatures::ProtectionScriptEvents_Spectate = false;
 bool Cheat::CheatFeatures::HideOwnIPAddress = true;
-bool Cheat::CheatFeatures::HideOnScreenGameAndCheatInfo = false;
 bool Cheat::CheatFeatures::DisableTransactionErrorWarning = true;
 bool Cheat::CheatFeatures::DisableCutscenes = false;
 bool Cheat::CheatFeatures::HideVehicleInfoAndPreview = false;

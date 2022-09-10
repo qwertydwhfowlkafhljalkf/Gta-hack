@@ -38,7 +38,6 @@ namespace Cheat
 		extern bool ProtectionScriptEvents_SoundSpam;
 		extern bool ProtectionScriptEvents_Spectate;
 		extern bool HideOwnIPAddress;
-		extern bool HideOnScreenGameAndCheatInfo;
 		extern bool DisableTransactionErrorWarning;
 		extern bool DisableCutscenes;
 		extern bool HideVehicleInfoAndPreview;

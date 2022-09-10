@@ -157,35 +157,6 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 		ImGui::PopStyleVar();
 	}
 	
-	// On-screen Game & Cheat Info
-	if (!CheatFeatures::HideOnScreenGameAndCheatInfo && CheatFunctions::CheatInitEntirelyCompleted)
-	{
-		// Cursor navigation
-		std::string CursurNavigation = "Cursor navigation is ";
-		std::string CursorNavigationStatus = CheatFeatures::CursorNavigationState ? "active (Press " + CheatFunctions::VirtualKeyCodeToString(Controls::CursorNavigationKey) + " to deactivate)" : "inactive (Press " + CheatFunctions::VirtualKeyCodeToString(Controls::CursorNavigationKey) + " to activate)";
-		std::string CursorText = CursurNavigation + CursorNavigationStatus;
-
-		// Menu GUI
-		std::string MenuGUI = "Menu GUI is ";
-		std::string MenuGUIStatus = GUI::menuLevel > 0 ? "visible (Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to hide)" : "hidden (Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to show)";
-		std::string MenuGUIText = MenuGUI + MenuGUIStatus;
-
-		// Log window
-		std::string LogWindow = "Log window is ";
-		std::string LogWindowStatus = Logger::CheatWindowVisible ? "open (Press ~ to close)" : "closed (Press ~ to open)";
-		std::string LogWindowText = LogWindow + LogWindowStatus;
-
-		ImGui::PushStyleColor(ImGuiCol_Border, IM_COL32(0, 0, 0, 0));
-		ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(24, 24, 24, 255));
-		ImGui::Begin("Game & Cheat Information", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse);
-		ImGui::Text(CursorText.c_str());
-		ImGui::Text(MenuGUIText.c_str());
-		ImGui::Text(LogWindowText.c_str());
-		ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - ImGui::GetWindowWidth() - 20.f, io.DisplaySize.y - ImGui::GetWindowHeight() - 50.f));
-		ImGui::End();
-		ImGui::PopStyleColor(2);
-	}
-
 	// Player Information Box
 	if (CheatFunctions::ShowPlayerInformationBoxNow && CheatFunctions::CheatInitEntirelyCompleted)
 	{
