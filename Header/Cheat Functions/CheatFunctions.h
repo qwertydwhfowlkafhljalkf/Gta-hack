@@ -1,5 +1,34 @@
 #pragma once
 
+struct PlayerInfoBoxDataStruct
+{
+	std::string PlayerName;
+	int Rank;
+	long long Money;
+	int Health;
+	int Armor;
+	std::string Status;
+	std::string Vehicle;
+	float KD;
+	std::string MovementSpeed;
+	std::string Weapon;
+	std::string Zone;
+	std::string Street;
+	std::string Distance;
+	bool ModdelModel;
+	bool InInterior;
+	bool Cutscene;
+	int RockstarID;
+	std::string ExternalIPAddress;
+	std::string InternalIPAddress;
+	std::string Gender;
+	int WantedLevel;
+	float X;
+	float Y;
+	float Z;
+	~PlayerInfoBoxDataStruct() {};
+};
+
 namespace Cheat
 {
 	namespace CheatFunctions
@@ -89,5 +118,8 @@ namespace Cheat
 		Json::Value ReadJsonFileAndReturnDataObject(std::string FilePath);
 		void AddCustomTeleportLocation(std::string CustomTeleportLocationName);
 		void DeleteCustomTeleportLocation(std::string CustomTeleportLocationName);
+		extern bool ShowPlayerInformationBoxNow;
+		void UpdatePlayerInfoBoxData(Player PlayerID);
+		extern PlayerInfoBoxDataStruct PlayerInfoBoxDataObject;
 	}
 }

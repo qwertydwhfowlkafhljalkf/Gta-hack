@@ -79,7 +79,6 @@ namespace Cheat
 		void SaveTheme(std::string ThemeFileName);
 
 		void Title(std::string TitleName);
-		void AddPlayerInfoBoxTextEntry(std::string text, int Row1 = NULL, int Row2 = NULL, int Row3 = NULL, int Row4 = NULL);
 		bool Break(std::string option, int BitFlags = NULL);
 		bool Option(std::string option, std::string InformationText, int BitFlags = NULL);
 		bool VehicleOption(DWORD VehicleHash);

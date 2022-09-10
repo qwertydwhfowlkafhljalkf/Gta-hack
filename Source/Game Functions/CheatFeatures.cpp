@@ -13,7 +13,6 @@ int Cheat::CheatFeatures::PedMovementVectorPosition = 0;
 int Cheat::CheatFeatures::OpenVehicleDoorPosition = 0;
 int Cheat::CheatFeatures::CloseVehicleDoorPosition = 0;
 int Cheat::CheatFeatures::FastSuperRunPosition = 0;
-int Cheat::CheatFeatures::PlayerListMarkerPosition = 0;
 int Cheat::CheatFeatures::PlayerOpacityInt = 250;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
 bool Cheat::CheatFeatures::ProtectionScriptEvents_Kicks = false;

@@ -658,48 +658,6 @@ void GUI::BackMenu()
 	}
 }
 
-void GUI::AddPlayerInfoBoxTextEntry(std::string text, int Row1, int Row2, int Row3, int Row4)
-{
-	if (GUI::guiX < 0.54f)
-	{		
-		if (Row1 != NULL)
-		{
-			DrawTextInGame(text, TextColorAndFont, { GUI::guiX + 0.110f, GUI::guiY + (Row1 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
-		}
-		else if (Row2 != NULL)
-		{
-			DrawTextInGame(text, TextColorAndFont, { GUI::guiX + 0.205f, GUI::guiY + (Row2 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
-		}
-		else if (Row3 != NULL)
-		{
-			DrawTextInGame(text, TextColorAndFont, { GUI::guiX + 0.295f, GUI::guiY + (Row3 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
-		}
-		else if (Row4 != NULL)
-		{
-			DrawTextInGame(text, TextColorAndFont, { GUI::guiX + 0.365f, GUI::guiY + (Row4 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
-		}
-	}
-	else
-	{
-		if (Row1 != NULL)
-		{
-			DrawTextInGame(text, TextColorAndFont, { GUI::guiX - 0.420f, GUI::guiY + (Row1 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
-		}
-		else if (Row2 != NULL)
-		{
-			DrawTextInGame(text, TextColorAndFont, { GUI::guiX - 0.340f, GUI::guiY + (Row2 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
-		}
-		else if (Row3 != NULL)
-		{
-			DrawTextInGame(text, TextColorAndFont, { GUI::guiX - 0.260f, GUI::guiY + (Row3 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
-		}
-		else if (Row4 != NULL)
-		{
-			DrawTextInGame(text, TextColorAndFont, { GUI::guiX - 0.165f, GUI::guiY + (Row4 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
-		}
-	}
-}
-
 void GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 {
 	if (!CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnThemeFilePath(ThemeFileName))) 

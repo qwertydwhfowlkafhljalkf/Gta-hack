@@ -32,7 +32,6 @@ namespace Cheat
 		bool DisplayKeyboardAndReturnInput(int MaxInput, std::string Title, const char* &Input);
 		bool DisplayKeyboardAndReturnInputInteger(int MaxInput, std::string Title, int &Input);
 		void StopAllPedAnimations(Ped TargetPed);
-		void ShowPlayerInformationBox(Player PlayerID);
 		float Get3DDistance(Vector3 a, Vector3 b);
 		void ApplyForceToEntity(Entity e, float x, float y, float z);
 		void SpawnVehicle(const char* ModelName);

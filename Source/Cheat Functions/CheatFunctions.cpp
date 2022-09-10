@@ -166,7 +166,8 @@ void Cheat::CheatFunctions::Loop()
 			(*Cheat::GUI::Submenus::FunctionPointers[FuncPointerIndex])();
 		}
 	}
-	if (GUI::currentMenu == GUI::Submenus::SelectedPlayer					||
+	if (GUI::currentMenu == GUI::Submenus::PlayerList						||
+		GUI::currentMenu == GUI::Submenus::SelectedPlayer					||
 		GUI::currentMenu == GUI::Submenus::SelectedPlayerFriendly			||
 		GUI::currentMenu == GUI::Submenus::SelectedPlayerRemote				||
 		GUI::currentMenu == GUI::Submenus::SelectedPlayerTeleport			||
@@ -175,17 +176,23 @@ void Cheat::CheatFunctions::Loop()
 		GUI::currentMenu == GUI::Submenus::SelectedPlayerApartmentTeleport	||
 		GUI::currentMenu == GUI::Submenus::SelectedPlayerRemote)
 	{
-		if (NETWORK::NETWORK_IS_PLAYER_ACTIVE(CheatFeatures::SelectedPlayer))
+		// Show the Player Info Box ImGui Window
+		ShowPlayerInformationBoxNow = true;
+		
+		// Besides updating the player info box data in the playerlist, only update it when in one of the player submenus
+		if (NETWORK::NETWORK_IS_PLAYER_ACTIVE(CheatFeatures::SelectedPlayer) && GUI::currentMenu != GUI::Submenus::PlayerList)
 		{
-			GameFunctions::ShowPlayerInformationBox(CheatFeatures::SelectedPlayer);
+			//GameFunctions::ShowPlayerInformationBox(CheatFeatures::SelectedPlayer);
+			CheatFunctions::UpdatePlayerInfoBoxData(CheatFeatures::SelectedPlayer);
 		}
-		else
+		else if (GUI::currentMenu != GUI::Submenus::PlayerList)
 		{
 			GUI::PreviousMenu = nullptr;
 			GUI::MoveMenu(GUI::Submenus::Home);
 			GUI::MoveMenu(GUI::Submenus::Session);
 		}
 	}
+	else { ShowPlayerInformationBoxNow = false; }
 	if (GUI::currentMenu == GUI::Submenus::ThemeFiles)
 	{
 		GUI::ThemeFilesVector.clear();
@@ -690,4 +697,106 @@ void Cheat::CheatFunctions::DeleteCustomTeleportLocation(std::string CustomTelep
 	std::fstream FileHandle(ReturnCustomTeleportLocationsFilePath(), std::ios_base::out);
 	FileHandle << JsonHandle;
 	FileHandle.close();
+}
+
+PlayerInfoBoxDataStruct Cheat::CheatFunctions::PlayerInfoBoxDataObject;
+bool Cheat::CheatFunctions::ShowPlayerInformationBoxNow = false; // Internally used to determine if we need to show the Player Info Box
+void Cheat::CheatFunctions::UpdatePlayerInfoBoxData(Player PlayerID)
+{
+	Ped PlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerID);
+	Vector3 PlayerLocation = ENTITY::GET_ENTITY_COORDS(PlayerPed, false);
+	bool InVehicle = PED::IS_PED_IN_ANY_VEHICLE(PlayerPed, false);
+	Vehicle PlayerVehicle = PED::GET_VEHICLE_PED_IS_IN(PlayerPed, false);
+	
+	PlayerInfoBoxDataObject.PlayerName		= PLAYER::GET_PLAYER_NAME(PlayerID);
+	PlayerInfoBoxDataObject.Rank			= globalHandle(1853131).At(PlayerID, 888).At(205).At(6).As<int>();
+	PlayerInfoBoxDataObject.Money			= globalHandle(1853128 + 1).At(PlayerID, 874).At(205).At(56).As<long long>();
+	PlayerInfoBoxDataObject.Health			= ENTITY::GET_ENTITY_HEALTH(PlayerPed) * 100 / ENTITY::GET_ENTITY_MAX_HEALTH(PlayerPed);
+	PlayerInfoBoxDataObject.Armor			= PED::GET_PED_ARMOUR(PlayerPed) * 100 / PLAYER::GET_PLAYER_MAX_ARMOUR(PlayerID);
+	PlayerInfoBoxDataObject.Status			= TASK::IS_PED_STILL(PlayerPed) ? "still" : TASK::IS_PED_WALKING(PlayerPed) ? "walking" :
+										      TASK::IS_PED_RUNNING(PlayerPed) ? "running" : TASK::IS_PED_SPRINTING(PlayerPed) ? "sprinting" :
+										      PED::IS_PED_CLIMBING(PlayerPed) ? "climbing" : PED::IS_PED_DIVING(PlayerPed) ? "diving" :
+										      PED::IS_PED_FALLING(PlayerPed) ? "falling" : PED::IS_PED_DEAD_OR_DYING(PlayerPed, true) ? "dying/dead" : "Unknown";
+	PlayerInfoBoxDataObject.Vehicle			= InVehicle ? UI::_GET_LABEL_TEXT(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY::GET_ENTITY_MODEL(PlayerVehicle)))
+										      : "Not in a vehicle";
+	PlayerInfoBoxDataObject.KD				= globalHandle(1853131).At(PlayerID, 888).At(205).At(26).As<float>(); 
+	// Movement Speed
+	if (InVehicle)
+	{
+		if (MISC::SHOULD_USE_METRIC_MEASUREMENTS())
+		{
+			PlayerInfoBoxDataObject.MovementSpeed = std::to_string(GameFunctions::MSToKMH(round(ENTITY::GET_ENTITY_SPEED(PlayerVehicle) * 100) / 100)) + (std::string)" KM/H";
+		}
+		else
+		{
+			PlayerInfoBoxDataObject.MovementSpeed = std::to_string(GameFunctions::MSToMPH(round(ENTITY::GET_ENTITY_SPEED(PlayerVehicle) * 100) / 100)) + (std::string)" MP/H";
+		}
+	}
+	else
+	{
+		PlayerInfoBoxDataObject.MovementSpeed = std::to_string(round(ENTITY::GET_ENTITY_SPEED(PlayerPed) * 100) / 100) + (std::string)" M/S";
+	}
+	
+	// Weapon
+	Hash WeaponHash;
+	if (WEAPON::GET_CURRENT_PED_WEAPON(PlayerPed, &WeaponHash, true))
+	{
+		for (auto const& i : GameArrays::WeaponsHashList)
+		{
+			if (WeaponHash == i.WeaponHash)
+			{
+				PlayerInfoBoxDataObject.Weapon = i.WeaponName;
+			}
+		}
+
+	}
+	else
+	{
+		PlayerInfoBoxDataObject.Weapon = "Unarmed";
+	}
+
+	PlayerInfoBoxDataObject.Zone = UI::_GET_LABEL_TEXT(ZONE::GET_NAME_OF_ZONE(PlayerLocation));
+
+	// Street
+	Hash StreetName, CrossingRoad;
+	PATHFIND::GET_STREET_NAME_AT_COORD(PlayerLocation, &StreetName, &CrossingRoad);
+	PlayerInfoBoxDataObject.Street = UI::GET_STREET_NAME_FROM_HASH_KEY(StreetName);
+
+	// Distance
+	if (PlayerID != GameFunctions::PlayerID)
+	{
+		float distance = GameFunctions::Get3DDistance(PlayerLocation, ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, false));
+		if (distance > 1000)
+		{
+			distance = round((distance / 1000) * 100) / 100;
+			PlayerInfoBoxDataObject.Distance = std::to_string(distance) + (std::string)" KM";
+		}
+		else
+		{
+			distance = round(distance * 1000) / 100;
+			PlayerInfoBoxDataObject.Distance = std::to_string(distance) + (std::string)" M";
+		}
+	}
+	else
+	{
+		PlayerInfoBoxDataObject.Distance = "N/A";
+	}
+
+	PlayerInfoBoxDataObject.ModdelModel = NETWORK::NETWORK_IS_SESSION_STARTED() && ENTITY::GET_ENTITY_MODEL(PlayerPed) != 0x705E61F2 && ENTITY::GET_ENTITY_MODEL(PlayerPed) != 0x9C9EFFD8;
+	PlayerInfoBoxDataObject.InInterior = GameFunctions::IsEntityInInterior(PlayerPed);
+	PlayerInfoBoxDataObject.Cutscene = NETWORK::IS_PLAYER_IN_CUTSCENE(PlayerID);
+	PlayerInfoBoxDataObject.RockstarID = Cheat::GameFunctions::ReturnPlayerRockstarID(PlayerID);
+
+	// IP Addresses
+	std::string ExternalIP, InternalIP;
+	Cheat::GameFunctions::ReturnPlayerIPAddresses(PlayerID, ExternalIP, InternalIP);
+
+	PlayerInfoBoxDataObject.ExternalIPAddress = ExternalIP;
+	PlayerInfoBoxDataObject.InternalIPAddress = InternalIP;
+
+	PlayerInfoBoxDataObject.Gender = NETWORK::NETWORK_IS_SESSION_STARTED() ? ENTITY::GET_ENTITY_MODEL(PlayerPed) == 0x705E61F2 ? "Male" : "Female" : "Unknown";
+	PlayerInfoBoxDataObject.WantedLevel = PLAYER::GET_PLAYER_WANTED_LEVEL(PlayerID);
+	PlayerInfoBoxDataObject.X = PlayerLocation.x;
+	PlayerInfoBoxDataObject.Y = PlayerLocation.y;
+	PlayerInfoBoxDataObject.Z = PlayerLocation.z;
 }
