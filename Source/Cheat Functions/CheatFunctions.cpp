@@ -5,7 +5,6 @@ bool Cheat::CheatFunctions::CheatInitEntirelyCompleted = false;									// Set w
 bool Cheat::CheatFunctions::CheatInitCompleted = false;											// Set when all initialization is completed (except for async tasks such as LoadConfig())
 bool Cheat::CheatFunctions::ConfigLoaded = false;												// Set when the LoadConfig thread is completed
 std::vector <std::string> Cheat::CheatFunctions::LoadedSelectablesVector;						// Used during the async LoadConfig process to determine which selectables have been loaded
-bool Cheat::CheatFunctions::SendThreadTerminateSignal = false;									// This MUST ONLY be set to True when the cheat is unloading
 
 void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 {
@@ -99,13 +98,10 @@ void Cheat::CheatFunctions::Loop()
 		// Create Menu Selectable Arrow Animation Thread
 		std::thread MenuSelectableAnimationThreadHandle([]()
 			{
-				while (!CheatFunctions::SendThreadTerminateSignal)
+				if (GUI::menuLevel > 0)
 				{
-					if (GUI::menuLevel > 0)
-					{
-						GUI::MenuOptionArrowAnimationState = !GUI::MenuOptionArrowAnimationState;
-						Sleep(GUI::MenuArrowAnimationDelay);
-					}
+					GUI::MenuOptionArrowAnimationState = !GUI::MenuOptionArrowAnimationState;
+					Sleep(GUI::MenuArrowAnimationDelay);
 				}
 			});
 		MenuSelectableAnimationThreadHandle.detach();

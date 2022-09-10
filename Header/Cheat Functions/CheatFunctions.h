@@ -33,7 +33,6 @@ namespace Cheat
 {
 	namespace CheatFunctions
 	{
-		extern bool SendThreadTerminateSignal;
 		extern std::string NewCheatVersionString;
 		extern bool CheatInitCompleted;
 		extern bool CheatInitEntirelyCompleted;

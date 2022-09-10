@@ -271,15 +271,22 @@ bool GUI::MenuOption(std::string option, void* NewSubmenu, int BitFlags)
 	return false;
 }
 
-bool GUI::MenuOptionPlayerList(std::string PlayerName, int BitFlags)
+bool GUI::MenuOptionPlayerList(Player Player)
 {
-	if (Option("      " + PlayerName, "", BitFlags))
+	std::string PlayerName = PLAYER::GET_PLAYER_NAME(Player);
+	bool IsLocalPlayer = GameFunctions::PlayerID == Player;
+	std::string PlayerNameString = IsLocalPlayer ? "~g~YOU~s~ (" + PlayerName + ")" : PlayerName;
+	const char* CurrentOnlinePlayerPictureName = "AdvancedNotificationImage";
+	if (!IsLocalPlayer)
+	{
+		CurrentOnlinePlayerPictureName = GameFunctions::ReturnOnlinePlayerPictureString(Player);
+	}
+
+	if (Option("      " + PlayerNameString, "", SELECTABLE_HIDE_INFO_BOX))
 	{
 		GUI::MoveMenu(Submenus::SelectedPlayer);
 		return true;
 	}
-
-	const char* CurrentOnlinePlayerPictureName = GameFunctions::ReturnOnlinePlayerPictureString(GameFunctions::ReturnPlayerIDFromPlayerName(PlayerName));
 
 	VECTOR2 Position;
 	if (GUI::currentOption <= GUI::maxVisOptions && GUI::optionCount <= GUI::maxVisOptions)
@@ -290,7 +297,7 @@ bool GUI::MenuOptionPlayerList(std::string PlayerName, int BitFlags)
 	{
 		Position = { GUI::guiX - (GUI::guiWidth * 45 / 100), GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.158f };
 	}
-	DrawSpriteInGame(CurrentOnlinePlayerPictureName, CurrentOnlinePlayerPictureName, Position.x, Position.y, 0.02f, 0.03f, 0.f, 255, 255, 255, OnlinePlayerPictureTransparency);
+	DrawSpriteInGame(IsLocalPlayer ? "Textures" : CurrentOnlinePlayerPictureName, CurrentOnlinePlayerPictureName, Position.x, Position.y, 0.02f, 0.03f, 0.f, 255, 255, 255, OnlinePlayerPictureTransparency);
 	return false;
 }
 

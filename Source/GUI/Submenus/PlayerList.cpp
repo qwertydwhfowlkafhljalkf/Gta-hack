@@ -13,7 +13,7 @@ void GUI::Submenus::PlayerList()
 			if (GameFunctions::IsPlayerFriend(i)) { PlayernameString.append("~b~[FRIEND]"); }
 			if (GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) { PlayernameString.append(" ~p~[INTERIOR]"); }
 			if (GameFunctions::PlayerID == i) { PlayernameString.append(" ~g~[SELF]"); }
-			GUI::MenuOptionPlayerList(PlayernameString, SELECTABLE_HIDE_INFO_BOX) ? CheatFeatures::SelectedPlayer = i : NULL;
+			GUI::MenuOptionPlayerList(i) ? CheatFeatures::SelectedPlayer = i : NULL;
 			if (GUI::currentOption == GUI::optionCount) 
 			{
 				CheatFunctions::UpdatePlayerInfoBoxData(i);

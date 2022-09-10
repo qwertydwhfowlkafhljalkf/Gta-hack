@@ -887,18 +887,6 @@ void Cheat::GameFunctions::PlayFrontendSoundDefault(char* SoundName)
 	AUDIO::PLAY_SOUND_FRONTEND(-1, SoundName, "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
 }
 
-Player Cheat::GameFunctions::ReturnPlayerIDFromPlayerName(std::string PlayerName)
-{
-	PlayersSessionForLoop
-	{
-		if (PLAYER::GET_PLAYER_NAME(i) == PlayerName)
-		{
-			return i;
-		}
-	}
-	return NULL;
-}
-
 void Cheat::GameFunctions::MaxUpgradeAllWeapons()
 {
 	for (auto const& i : GameArrays::MaxUpgradeWeaponComponents)

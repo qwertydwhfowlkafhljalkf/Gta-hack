@@ -66,7 +66,6 @@ namespace Cheat
 		std::string ReturnCurrentGTAOCharacter(bool NumberOnly = false);
 		void PlayFrontendSoundDefault(char* SoundName);
 		void PlayScenarioNearbyPeds(char* Scenario);
-		Player ReturnPlayerIDFromPlayerName(std::string PlayerName);
 		void MaxUpgradeAllWeapons();
 		void ShowTeleportLocationsMenu(std::vector<TeleportLocationStruct> category);
 		void FadeRGB(int& r, int& g, int& b);

@@ -83,7 +83,7 @@ namespace Cheat
 		bool Option(std::string option, std::string InformationText, int BitFlags = NULL);
 		bool VehicleOption(DWORD VehicleHash);
 		bool MenuOption(std::string option, void* NewSubmenu, int BitFlags = NULL);
-		bool MenuOptionPlayerList(std::string PlayerName, int BitFlags = NULL);
+		bool MenuOptionPlayerList(Player Player);
 		bool Toggle(std::string option, bool& TargetBool, std::string InformationText, int BitFlags = NULL);
 		bool Int(std::string option, int& _int, int min, int max, int step, std::string InformationText = "Select to change", int BitFlags = NULL);
 		bool Float(std::string option, float& _float, float min, float max, float steps, std::string InformationText = "", std::streamsize FloatPrecision = 3, int BitFlags = NULL);
