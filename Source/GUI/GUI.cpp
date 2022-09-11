@@ -15,7 +15,7 @@ float GUI::SelectableHeight		= 0.040f;
 bool GUI::ShowHeaderBackground	= true;
 bool GUI::ShowHeaderTexture		= true;
 bool GUI::DisableMenuGUIOpenCloseFade = false;
-bool GUI::HideGUIElements		= false; // Prevents all (but ImGui) GUI elements from being visible when True
+bool GUI::HideGUIElements		= false; // Prevents all GUI elements from being visible when True
 bool GUI::MenuGUIHasBeenOpened = false; // True when the Menu GUI has been opened at least once
 bool GUI::CurrentSelectableIsSavable = false;
 bool GUI::RestorePreviousSubmenu = true;
@@ -121,7 +121,7 @@ bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
 		GUI::previousOption = GUI::currentOption;
 		SelectableInformationText = InformationText;
 
-		if (Controls::SelectPressed || (GameFunctions::IsCursorAtXYPosition(RectPosition, { GUI::guiWidth, SelectableHeight }) && CheatFeatures::CursorNavigationState && PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, INPUT_CURSOR_ACCEPT)))
+		if (Controls::SelectPressed || (GameFunctions::IsCursorAtXYPosition(RectPosition, { GUI::guiWidth, SelectableHeight }) && CheatFeatures::CursorNavigationState && PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, INPUT_CURSOR_ACCEPT)))
 		{
 			if (BitFlags & SELECTABLE_DISABLED)
 			{
@@ -637,6 +637,48 @@ void GUI::BackMenu()
 	}
 }
 
+void GUI::AddPlayerInfoBoxTextEntry(std::string text, int Row1, int Row2, int Row3, int Row4)
+{
+	if (GUI::guiX < 0.55f)
+	{
+		if (Row1 != NULL)
+		{
+			DrawTextInGame(text, TextColorAndFont, { guiX + (GUI::guiWidth / 2) + 0.010f, GUI::guiY + (Row1 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
+		}
+		else if (Row2 != NULL)
+		{
+			DrawTextInGame(text, TextColorAndFont, { guiX + (GUI::guiWidth / 2) + 0.105f, GUI::guiY + (Row2 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
+		}
+		else if (Row3 != NULL)
+		{
+			DrawTextInGame(text, TextColorAndFont, { guiX + (GUI::guiWidth / 2) + 0.195f, GUI::guiY + (Row3 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
+		}
+		else if (Row4 != NULL)
+		{
+			DrawTextInGame(text, TextColorAndFont, { guiX + (GUI::guiWidth / 2) + 0.265f, GUI::guiY + (Row4 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
+		}
+	}
+	else
+	{
+		if (Row1 != NULL)
+		{
+			DrawTextInGame(text, TextColorAndFont, { guiX - (GUI::guiWidth / 2) - 0.010f, GUI::guiY + (Row1 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
+		}
+		else if (Row2 != NULL)
+		{
+			DrawTextInGame(text, TextColorAndFont, { guiX - (GUI::guiWidth / 2) - 0.105f, GUI::guiY + (Row2 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
+		}
+		else if (Row3 != NULL)
+		{
+			DrawTextInGame(text, TextColorAndFont, { guiX - (GUI::guiWidth / 2) - 0.195f, GUI::guiY + (Row3 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
+		}
+		else if (Row4 != NULL)
+		{
+			DrawTextInGame(text, TextColorAndFont, { guiX - (GUI::guiWidth / 2) - 0.265f, GUI::guiY + (Row4 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
+		}
+	}
+}
+
 void GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 {
 	if (!CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnThemeFilePath(ThemeFileName))) 
@@ -822,5 +864,261 @@ void GUI::DrawRectInGame(RGBA rgba, VECTOR2 position, VECTOR2_2 size)
 	if (!GUI::HideGUIElements)
 	{
 		GRAPHICS::DRAW_RECT(position.x, position.y, size.w, size.h, rgba.r, rgba.g, rgba.b, rgba.a, false);
+	}
+}
+
+void Cheat::GUI::ShowPlayerInformationBox(Player PlayerID)
+{
+	if (!Cheat::CheatFeatures::HidePlayerInformationBox)
+	{
+		//Definitions
+		Ped SelectedPlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PlayerID);
+		GameFunctions::RequestNetworkControlOfEntity(SelectedPlayerPed);
+
+		//Draw Title and Background
+		if (Cheat::GUI::guiX < 0.54f)
+		{
+			GUI::DrawRectInGame(GUI::PrimaryColor, { guiX + (GUI::guiWidth / 2) + 0.166f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
+			GUI::DrawTextInGame("Player Information", { GUI::TextColorAndFont }, { guiX + (GUI::guiWidth / 2) + 0.155f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
+			GUI::DrawRectInGame({ 0, 0, 0, 210 }, { guiX + (GUI::guiWidth / 2) + 0.166f, GUI::guiY - 0.156f }, { 0.32f, 0.030f });
+		}
+		else
+		{
+			GUI::DrawRectInGame(GUI::PrimaryColor, { guiX - (GUI::guiWidth / 2) - 0.166f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
+			GUI::DrawTextInGame("Player Information", { GUI::TextColorAndFont }, { guiX - (GUI::guiWidth / 2) - 0.155f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
+			GUI::DrawRectInGame({ 0, 0, 0, 210 }, { guiX - (GUI::guiWidth / 2) - 0.166f,GUI::guiY - 0.156f }, { 0.32f, 0.030f });
+		}
+
+		//Text Entry's
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Name", 1);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(PLAYER::GET_PLAYER_NAME(PlayerID), NULL, 1);
+
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Rank", 2);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Money", 3);
+		if (NETWORK::NETWORK_IS_SESSION_STARTED())
+		{
+			std::ostringstream PlayerRank;
+			PlayerRank << globalHandle(1590908 + 1).At(PlayerID, 874).At(205).At(5).As<int>();
+			Cheat::GUI::AddPlayerInfoBoxTextEntry(PlayerRank.str(), NULL, 2);
+
+			std::ostringstream PlayerMoney;
+			PlayerMoney << "$" << globalHandle(1590908).At(PlayerID, 874).At(205).At(56).As<__int64>();
+			Cheat::GUI::AddPlayerInfoBoxTextEntry(PlayerMoney.str(), NULL, 3);
+		}
+		else
+		{
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("Unavailable", NULL, 2);
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("Unavailable", NULL, 3);
+		}
+
+		//Health
+		std::ostringstream Health;
+		float health = ENTITY::GET_ENTITY_HEALTH(SelectedPlayerPed);
+		float HealthValue = health * 100 / ENTITY::GET_ENTITY_MAX_HEALTH(SelectedPlayerPed);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Health", 4);
+		if (HealthValue == 100)
+		{
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("Full", NULL, 4);
+		}
+		else
+		{
+			Health << HealthValue << "%";
+			Cheat::GUI::AddPlayerInfoBoxTextEntry(Health.str(), NULL, 4);
+		}
+
+		//Armor
+		std::ostringstream Armor;
+		int ArmorValue = PED::GET_PED_ARMOUR(SelectedPlayerPed) * 100 / PLAYER::GET_PLAYER_MAX_ARMOUR(PlayerID);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Armor", 5);
+		if (ArmorValue == 99 || ArmorValue == 100)
+		{
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("Full", NULL, 5);
+		}
+		else
+		{
+			Armor << ArmorValue;
+			Cheat::GUI::AddPlayerInfoBoxTextEntry(Armor.str(), NULL, 5);
+		}
+
+		//Status
+		std::ostringstream Status;
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Status", 6);
+		if (TASK::IS_PED_STILL(SelectedPlayerPed)) { Status << "Player is still"; }
+		else if (TASK::IS_PED_WALKING(SelectedPlayerPed)) { Status << "Player is walking"; }
+		else if (TASK::IS_PED_RUNNING(SelectedPlayerPed)) { Status << "Player is running"; }
+		else if (TASK::IS_PED_SPRINTING(SelectedPlayerPed)) { Status << "Player is sprinting"; }
+		else if (PED::IS_PED_CLIMBING(SelectedPlayerPed)) { Status << "Player is climbing"; }
+		else if (PED::IS_PED_DIVING(SelectedPlayerPed)) { Status << "Player is diving"; }
+		else if (PED::IS_PED_FALLING(SelectedPlayerPed)) { Status << "Player is falling"; }
+		else if (PED::IS_PED_DEAD_OR_DYING(SelectedPlayerPed, true)) { Status << "Player is dead"; }
+		else { Status << "~c~Unknown"; }
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(Status.str(), NULL, 6);
+
+
+		//Vehicle
+		bool InAnyVehicle = PED::IS_PED_IN_ANY_VEHICLE(SelectedPlayerPed, 0);
+		std::ostringstream Vehicle;
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Vehicle", 7);
+		if (InAnyVehicle)
+		{
+			Vehicle << UI::_GET_LABEL_TEXT(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY::GET_ENTITY_MODEL(PED::GET_VEHICLE_PED_IS_IN(SelectedPlayerPed, 0))));
+		}
+		else
+		{
+			Vehicle << "~c~Not in a vehicle";
+		}
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(Vehicle.str(), NULL, 7);
+
+
+		//Speed
+		std::ostringstream Speed;
+		if (InAnyVehicle)
+		{
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("Vehicle Speed", 8);
+			float VehicleSpeed = round(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(SelectedPlayerPed, false)) * 100) / 100;
+			if (MISC::SHOULD_USE_METRIC_MEASUREMENTS())
+			{
+				Speed << GameFunctions::MSToKMH(VehicleSpeed) << " KM/H";
+			}
+			else
+			{
+				Speed << GameFunctions::MSToMPH(VehicleSpeed) << " MP/H";
+			}
+			Cheat::GUI::AddPlayerInfoBoxTextEntry(Speed.str(), NULL, 8);
+		}
+		else
+		{
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("Movement Speed", 8);
+			Speed << round(ENTITY::GET_ENTITY_SPEED(SelectedPlayerPed) * 100) / 100 << " M/S";
+			Cheat::GUI::AddPlayerInfoBoxTextEntry(Speed.str(), NULL, 8);
+		}
+
+
+		//Wanted Level
+		std::ostringstream WantedLevel;
+		int PlayerWantedLevel = PLAYER::GET_PLAYER_WANTED_LEVEL(PlayerID);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Wanted Level", 9);
+		WantedLevel << PlayerWantedLevel << "/5";
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(WantedLevel.str(), NULL, 9);
+
+
+		Hash WeaponHash;
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Weapon", 10);
+		std::string WeaponName;
+		if (WEAPON::GET_CURRENT_PED_WEAPON(SelectedPlayerPed, &WeaponHash, true))
+		{
+			for (auto const& i : GameArrays::WeaponsHashList)
+			{
+				if (WeaponHash == i.WeaponHash)
+				{
+					WeaponName = i.WeaponName;
+				}
+			}
+
+		}
+		else
+		{
+			WeaponName = "Unarmed";
+		}
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(WeaponName, NULL, 10);
+
+
+		//Coords
+		Vector3 SelectedPlayerPedCoords = ENTITY::GET_ENTITY_COORDS(SelectedPlayerPed, false);
+		std::ostringstream CoordX;
+		std::ostringstream CoordY;
+		std::ostringstream CoordZ;
+
+		CoordX << SelectedPlayerPedCoords.x;
+		CoordY << SelectedPlayerPedCoords.y;
+		CoordZ << SelectedPlayerPedCoords.z;
+
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("X", 11);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Y", 12);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Z", 13);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(CoordX.str(), NULL, 11);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(CoordY.str(), NULL, 12);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(CoordZ.str(), NULL, 13);
+
+
+		std::ostringstream Zone;
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Zone", 14);
+		Zone << UI::_GET_LABEL_TEXT(ZONE::GET_NAME_OF_ZONE(SelectedPlayerPedCoords.x, SelectedPlayerPedCoords.y, SelectedPlayerPedCoords.z));
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(Zone.str(), NULL, 14);
+
+
+		Hash streetName, crossingRoad;
+		PATHFIND::GET_STREET_NAME_AT_COORD(SelectedPlayerPedCoords.x, SelectedPlayerPedCoords.y, SelectedPlayerPedCoords.z, &streetName, &crossingRoad);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Street", 15);
+		std::ostringstream Street;
+		Street << UI::GET_STREET_NAME_FROM_HASH_KEY(streetName);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(Street.str(), NULL, 15);
+
+		float distance = GameFunctions::Get3DDistance(SelectedPlayerPedCoords, ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, false));
+		std::ostringstream Distance;
+
+		if (PlayerID != GameFunctions::PlayerID)
+		{
+			if (distance > 1000)
+			{
+				distance = round((distance / 1000) * 100) / 100;
+				Distance << distance << " KM";
+			}
+			else
+			{
+				distance = round(distance * 1000) / 100;
+				Distance << distance << " M";
+			}
+		}
+		else
+		{
+			Distance << "N/A";
+		}
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Distance", NULL, NULL, 1);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(Distance.str(), NULL, NULL, NULL, 1);
+
+
+		//Modded Model
+		Hash SelectedPlayerPedModel = ENTITY::GET_ENTITY_MODEL(SelectedPlayerPed);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Modded Model", NULL, NULL, 2);
+		if (NETWORK::NETWORK_IS_SESSION_STARTED() && SelectedPlayerPedModel != MISC::GET_HASH_KEY("mp_m_freemode_01") && SelectedPlayerPedModel != MISC::GET_HASH_KEY("mp_f_freemode_01"))
+		{
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("Yes", NULL, NULL, NULL, 2);
+		}
+		else
+		{
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("No", NULL, NULL, NULL, 2);
+		}
+
+		//Is in interior
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("In Interior", NULL, NULL, 3);
+		if (Cheat::GameFunctions::IsEntityInInterior(SelectedPlayerPed))
+		{
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("Yes", NULL, NULL, NULL, 3);
+		}
+		else
+		{
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("No", NULL, NULL, NULL, 3);
+		}
+
+		//Cutscene
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Cutscene", NULL, NULL, 4);
+		if (NETWORK::IS_PLAYER_IN_CUTSCENE(PlayerID))
+		{
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("Yes", NULL, NULL, NULL, 4);
+		}
+		else
+		{
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("No", NULL, NULL, NULL, 4);
+		}
+
+		//Rockstar ID
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Rockstar ID", NULL, NULL, 5);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(std::to_string(Cheat::GameFunctions::ReturnPlayerRockstarID(PlayerID)), NULL, NULL, NULL, 5);
+
+		//IP Address
+		std::string PlayerIPString = Cheat::GameFunctions::ReturnPlayerIPAddressAsString(PlayerID);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("IP Address", NULL, NULL, 6);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry(PlayerIPString, NULL, NULL, NULL, 6);
 	}
 }

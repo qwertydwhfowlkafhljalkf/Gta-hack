@@ -1,5 +1,4 @@
 #include "../Header/Cheat Functions/FiberMain.h"
-#include "../../ThirdParty/kiero/kiero.h"
 
 using namespace Cheat;
 

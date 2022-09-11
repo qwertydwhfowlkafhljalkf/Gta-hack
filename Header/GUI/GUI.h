@@ -73,6 +73,7 @@ namespace Cheat
 		extern void DeleteLoadedTheme();
 		void MoveMenu(void* Submenu);
 		void BackMenu();
+		void AddPlayerInfoBoxTextEntry(std::string text, int Row1 = NULL, int Row2 = NULL, int Row3 = NULL, int Row4 = NULL);
 		void CloseMenuGUI();
 		void MenuGUIBottom();
 		void LoadTheme(std::string ThemeFileName, bool StartUp);
@@ -90,5 +91,6 @@ namespace Cheat
 		bool IntVector(std::string option, std::vector<int> Vector, int& position, int BitFlags = NULL);
 		bool FloatVector(std::string option, std::vector<float> Vector, int& position, int BitFlags = NULL);
 		bool StringVector(std::string option, std::vector<std::string> Vector, int& position, std::string InformationText, int BitFlags = NULL);
+		void ShowPlayerInformationBox(Player PlayerID);
 	}
 }

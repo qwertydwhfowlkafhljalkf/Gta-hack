@@ -79,9 +79,6 @@ void Cheat::CheatFeatures::Loop()
 		GUI::DrawTextInGame("~bold~A newer cheat version (" + CheatFunctions::NewCheatVersionString + ") is available on GitHub.", { 255, 255, 255, 255, FontChaletLondon }, { 0.003f, 0.001f }, { 0.25f, 0.25f }, false);
 	}
 
-	// Disable Cheat Code (available in SP only) - used by Logger window
-	PAD::DISABLE_CONTROL_ACTION(2, INPUT_ENTER_CHEAT_CODE, true);
-
 	// New session member notification feature
 	GameFunctions::CheckNewSessionMembersLoop();
 

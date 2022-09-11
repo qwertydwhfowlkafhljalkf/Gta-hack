@@ -16,7 +16,7 @@ void GUI::Submenus::PlayerList()
 			GUI::MenuOptionPlayerList(i) ? CheatFeatures::SelectedPlayer = i : NULL;
 			if (GUI::currentOption == GUI::optionCount) 
 			{
-				CheatFunctions::UpdatePlayerInfoBoxData(i);
+				GUI::ShowPlayerInformationBox(i);
 			}
 		}
 	}

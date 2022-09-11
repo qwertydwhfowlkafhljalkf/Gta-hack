@@ -1,6 +1,6 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
-bool Cheat::Controls::KeyInputDisabled			= false; // All cheat-provided game functions & Dear ImGui key control inputs are disabled when True
+bool Cheat::Controls::KeyInputDisabled			= false; // All cheat-provided control inputs are disabled when True
 bool Cheat::Controls::AllowGameplayWithCursorNavigationActive = false;
 bool Cheat::Controls::DisableCursorNavigationWhenMenuGUIIsClosed = false;
 bool Cheat::Controls::SelectPressed				= false; // Internal boolean used by logic - do not manually modify
@@ -27,14 +27,6 @@ void Cheat::Controls::Loop()
 			if (CheatFunctions::IsKeyCurrentlyPressed(CursorNavigationKey)) 
 			{ 
 				GameFunctions::EnableDisableCursorNavigation(); 
-				KeyPressDelayPreviousTick = GetTickCount64();
-			}
-
-			// Logger Window Open/Close
-			if (CheatFunctions::IsKeyCurrentlyPressed(VK_OEM_3) ||
-				PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_ENTER_CHEAT_CODE))
-			{
-				Logger::CheatWindowVisible = !Logger::CheatWindowVisible;
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}
 
@@ -137,11 +129,14 @@ void Cheat::Controls::Loop()
 	if (CheatFeatures::CursorNavigationState)
 	{
 		// Handle menu GUI navigation - only when the menu is actually open/visible
-		// ImGui has priority over mouse control
+		UI::_SET_MOUSE_CURSOR_ACTIVE_THIS_FRAME();
+		UI::_SET_MOUSE_CURSOR_SPRITE(CursorType::Normal);
+
 		if (GUI::menuLevel > 0)
 		{
 			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX, GUI::guiY - GUI::SelectableHeight - 0.181f }, { GUI::guiWidth, GUI::SelectableHeight + 0.045f }))
 			{
+				UI::_SET_MOUSE_CURSOR_SPRITE(CursorType::PreGrab);
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
 				{
 					GUI::guiX = GameFunctions::ReturnCursorYXCoords().x;
@@ -150,6 +145,7 @@ void Cheat::Controls::Loop()
 			}
 			if (GameFunctions::IsCursorAtXYPosition({ GUI::SelectableInfoBoxX, GUI::SelectableInfoBoxY }, { 0.25f, 0.080f }))
 			{
+				UI::_SET_MOUSE_CURSOR_SPRITE(CursorType::PreGrab);
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_ACCEPT))
 				{
 					GUI::SelectableInfoBoxX = GameFunctions::ReturnCursorYXCoords().x;
@@ -159,13 +155,14 @@ void Cheat::Controls::Loop()
 			// Menu GUI Close/Back Button
 			if (GameFunctions::IsCursorAtXYPosition({ GUI::guiX - 0.100f, GUI::guiY - 0.156f }, { 0.060f, 0.025f }))
 			{
+				UI::_SET_MOUSE_CURSOR_SPRITE(CursorType::PreGrab);
 				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, INPUT_CURSOR_ACCEPT))
 				{
 					GUI::BackMenu();
 				}
 			}
 			// Scroll Up
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_UP) && !ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_UP))
 			{
 				if (GUI::currentOption > 1)
 				{

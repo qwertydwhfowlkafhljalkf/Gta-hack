@@ -38,14 +38,6 @@
 // JsonCpp
 #include "../ThirdParty/JsonCpp/json.h"
 
-// kiero
-#include "kiero/kiero.h"
-
-// Dear ImGui
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_win32.h"
-#include "imgui/imgui_impl_dx11.h"
-
 // Project Header Files
 #include "../Header/Game Hooking/Memory.h"
 #include "../Header/Game Hooking/Types.h"
@@ -65,7 +57,6 @@
 #include "../Header/Cheat Functions/CheatFunctions.h"
 #include "../Header/Game Functions/GameFunctions.h"
 #include "../Header/Cheat Functions/Logger.h"
-#include "../Header/GUI/ImGui/ImGuiHook.h"
 
 namespace Cheat
 {

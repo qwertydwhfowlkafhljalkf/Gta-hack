@@ -241,30 +241,6 @@
     <ClCompile Include="Source\GUI\Submenus.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\ImGui\imgui.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ThirdParty\ImGui\imgui_demo.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ThirdParty\ImGui\imgui_draw.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ThirdParty\ImGui\imgui_impl_dx11.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ThirdParty\ImGui\imgui_impl_win32.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ThirdParty\ImGui\imgui_tables.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ThirdParty\ImGui\imgui_widgets.cpp">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ThirdParty\kiero\kiero.cpp">
-      <Filter>ThirdParty\kiero</Filter>
-    </ClCompile>
     <ClCompile Include="ThirdParty\MinHook\buffer.c">
       <Filter>ThirdParty\MinHook</Filter>
     </ClCompile>
@@ -279,9 +255,6 @@
     </ClCompile>
     <ClCompile Include="ThirdParty\MinHook\hde\hde64.c">
       <Filter>ThirdParty\MinHook</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\ImGui\ImGuiHook.cpp">
-      <Filter>Source Files\GUI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Source\Cheat Functions\Controls.cpp">
       <Filter>Source Files\Cheat Functions</Filter>
@@ -300,15 +273,6 @@
     </ClCompile>
     <ClCompile Include="Source\GUI\Submenus\Television.cpp">
       <Filter>Source Files\GUI\Submenus</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\ImGui\PlayerInfoBox.cpp">
-      <Filter>Source Files\GUI\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\ImGui\ImGuiRender.cpp">
-      <Filter>Source Files\GUI\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\ImGui\WhatsNewPopup.cpp">
-      <Filter>Source Files\GUI\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -366,33 +330,6 @@
     <ClInclude Include="Header\GUI\Submenus.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ThirdParty\ImGui\imconfig.h">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\ImGui\imgui.h">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\ImGui\imgui_impl_dx11.h">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\ImGui\imgui_impl_win32.h">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\ImGui\imgui_internal.h">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\ImGui\imstb_rectpack.h">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\ImGui\imstb_textedit.h">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h">
-      <Filter>ThirdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\kiero\kiero.h">
-      <Filter>ThirdParty\kiero</Filter>
-    </ClInclude>
     <ClInclude Include="ThirdParty\MinHook\buffer.h">
       <Filter>ThirdParty\MinHook</Filter>
     </ClInclude>
@@ -413,9 +350,6 @@
     </ClInclude>
     <ClInclude Include="ThirdParty\MinHook\hde\table64.h">
       <Filter>ThirdParty\MinHook</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\GUI\ImGui\ImGuiHook.h">
-      <Filter>Header Files\GUI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Header\Cheat Functions\Controls.h">
       <Filter>Header Files\Cheat Functions</Filter>
@@ -461,20 +395,8 @@
     <Filter Include="Source Files\Cheat Functions">
       <UniqueIdentifier>{f7bf8f26-8357-44d6-9d53-ae30952450c2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ThirdParty\ImGui">
-      <UniqueIdentifier>{0824fdc7-c689-4750-987b-ad3b80a497ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ThirdParty\kiero">
-      <UniqueIdentifier>{0ae9bf93-85a4-47a3-9ec5-21994609de2f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ThirdParty\MinHook">
       <UniqueIdentifier>{edfb048a-9322-40d1-af4b-27594b4cc41c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GUI\ImGui">
-      <UniqueIdentifier>{70e4513c-2b11-48f8-8075-2fb6b4f38288}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GUI\ImGui">
-      <UniqueIdentifier>{3c7b9ecd-8029-4e0b-a032-cec4f9d77da5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
