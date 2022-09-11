@@ -67,7 +67,7 @@ void GameHooking::Init()
 	Logger::DebugMessage("Getting OEB pointer");
 	m_ownedExplosionBypass = Memory::pattern("0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8").count(1).get(0).get<void>(0);
 
-	Logger::DebugMessage("Getting NRCOE pointer -> applied patch");
+	Logger::DebugMessage("Getting NRCOE pointer -> patched");
 	m_requestEntityControlSpectateBypass = Memory::pattern("48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB").count(1).get(0).get<USHORT>(0x13);
 	*m_requestEntityControlSpectateBypass = 0x9090; // Set to 0x6A75 after changing to undo the patch
 

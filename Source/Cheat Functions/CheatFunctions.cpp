@@ -114,7 +114,7 @@ void Cheat::CheatFunctions::Loop()
 
 		// Load 'multiplayer vehicles in Single Player' bypass
 		globalHandle(GLOBAL_SP_DESPAWN_BYPASS).As<BOOL>() = true;
-		Cheat::Logger::DebugMessage("Loaded single player vehicle spawn bypass");
+		Cheat::Logger::DebugMessage("Loaded SPVSB");
 
 		// Fetch default HUD colors
 		for (int i = 0; i <= GameArrays::HUDColors.size(); i++)
@@ -123,7 +123,7 @@ void Cheat::CheatFunctions::Loop()
 			UI::GET_HUD_COLOUR(i, &data.R, &data.G, &data.B, &data.A);
 			GameArrays::DefaultHUDColors.push_back(data);
 		}
-		Cheat::Logger::DebugMessage("Fetched default HUD colors");
+		Cheat::Logger::DebugMessage("Fetched DHC");
 
 		// Load saved HUD colors
 		if (FileOrDirectoryExists(ReturnHUDColorsFilePath()))
@@ -143,7 +143,7 @@ void Cheat::CheatFunctions::Loop()
 						UI::REPLACE_HUD_COLOUR_WITH_RGBA(SavedHUDColorsIndex, std::stoi(Red), std::stoi(Green), std::stoi(Blue), std::stoi(Alpha));
 					}
 					catch (...) {}
-					Cheat::Logger::DebugMessage("Loaded custom HUD color '" + HUDColorComponentName + "'");
+					Cheat::Logger::DebugMessage("Loaded CHC '" + HUDColorComponentName + "'");
 				}
 				SavedHUDColorsIndex++;
 			}

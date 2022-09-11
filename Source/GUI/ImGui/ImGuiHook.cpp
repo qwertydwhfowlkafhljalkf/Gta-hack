@@ -29,7 +29,11 @@ DWORD WINAPI RenderHookThread(HMODULE hmod);
 
 void GUI::DearImGui::Init()
 {
-	CreateThread(nullptr, NULL, (LPTHREAD_START_ROUTINE)RenderHookThread, CheatModuleHandle, NULL, nullptr);
+	if (FAILED(CreateThread(nullptr, NULL, (LPTHREAD_START_ROUTINE)RenderHookThread, CheatModuleHandle, NULL, nullptr)))
+	{
+		Logger::Error("Failed to create RK thread", true);
+		std::exit(EXIT_FAILURE);
+	}
 }
 
 LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -128,10 +132,11 @@ DWORD WINAPI RenderHookThread(HMODULE hmod)
 	{
 		kiero::bind(8, (void**)&oPresent, hkPresent);
 		kiero::bind(13, (void**)&oResizeBuffers, hkResizeBuffers);
+		Logger::DebugMessage("Initialized DX & IM");
 	}
 	else
 	{
-		Logger::Error("Kiero initialization failed", true);
+		Logger::Error("Kiero init failed", true);
 	}
 	return TRUE;
 }
