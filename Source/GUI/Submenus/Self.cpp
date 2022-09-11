@@ -13,11 +13,11 @@ void GUI::Submenus::Self()
 	GUI::MenuOption("Wardrobe", Submenus::Wardrobe);
 	GUI::MenuOption("Vision", Submenus::Vision);
 	GUI::Toggle("God mode", CheatFeatures::GodmodeBool, "Makes your character invincible");
-	if (GUI::Float("Health", SelfHealth, 1.f, ENTITY::GET_ENTITY_MAX_HEALTH(GameFunctions::PlayerPedID), 10.f, "", 2, SELECTABLE_RETURN_VALUE_CHANGE))
+	if (GUI::Float("Health", SelfHealth, 1.f, ENTITY::GET_ENTITY_MAX_HEALTH(GameFunctions::PlayerPedID), 10.f, "", 0, SELECTABLE_RETURN_VALUE_CHANGE))
 	{
 		ENTITY::SET_ENTITY_HEALTH(GameFunctions::PlayerPedID, SelfHealth, 0);
 	}
-	if (GUI::Float("Max Health", SelfMaxHealth, 25.f, 1000.f, 25.f, "", 2, SELECTABLE_RETURN_VALUE_CHANGE))
+	if (GUI::Float("Max Health", SelfMaxHealth, 25.f, 1000.f, 25.f, "", 0, SELECTABLE_RETURN_VALUE_CHANGE))
 	{
 		ENTITY::SET_ENTITY_MAX_HEALTH(GameFunctions::PlayerPedID, SelfMaxHealth);
 	}
