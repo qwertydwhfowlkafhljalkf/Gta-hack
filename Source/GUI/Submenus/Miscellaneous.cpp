@@ -21,7 +21,6 @@ void GUI::Submenus::Miscellaneous()
 	GUI::Toggle("Free Cam", CheatFeatures::FreeCamBool, "Use W and S to control. Shift to go faster", SELECTABLE_DISABLE_SAVE);
 	GUI::Toggle("Show Joining Players Notification", CheatFeatures::ShowJoiningPlayersNotification, "");
 	GUI::Toggle("Show FPS", CheatFeatures::ShowFPSBool, "");
-	GUI::Toggle("Close Game Immediately", CheatFeatures::CloseGameImmediatelyBool, "Closes the game immediately when ALT + F4 is pressed");
 	if (GUI::Option("Stop Spectating Player", ""))
 	{
 		CheatFeatures::SpectatePlayerBool = false;

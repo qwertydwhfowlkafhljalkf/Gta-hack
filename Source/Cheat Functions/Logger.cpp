@@ -2,13 +2,15 @@
 
 bool Cheat::Logger::LoggerInitialized = false;
 
+HANDLE Console;
 void Cheat::Logger::Init()
 {
-    AllocConsole();
-    freopen("CONIN$", "r", stdin);
-    freopen("CONOUT$", "w", stdout);
-    freopen("CONOUT$", "w", stderr);
-    SetConsoleTitleA("GTAV Cheat Log");
+    if (!AllocConsole() || !freopen("CONIN$", "r", stdin) || !freopen("CONOUT$", "w", stdout) ||
+        !freopen("CONOUT$", "w", stderr) || !SetConsoleTitleA("GTAV Cheat"))
+    {
+        Logger::Error("Failed to allocate console", true);
+    }
+    Console = GetStdHandle(STD_OUTPUT_HANDLE);
 
     std::string MessageString = "Build: " + (std::string)CHEAT_BUILD_NUMBER + " | Compile Date & Time: " + __DATE__ + " " + __TIME__ +
         Cheat::CheatFunctions::ReturnDateTimeFormatAsString(" | Load Date & Time: %b %e %Y %H:%M:%S")
@@ -24,13 +26,24 @@ void Cheat::Logger::Init()
     LoggerInitialized = true;
 }
 
+enum class LoggerMsgTypes {
+    LOGGER_INFO_MSG,
+    LOGGER_WARNING_MSG,
+    LOGER_ERROR_MSG,
+    LOGGER_FATAL_MSG,
+    LOGGER_DBG_MSG
+};
+
 void Cheat::Logger::Message(std::string Message)
 {
     if (LoggerInitialized)
     {
-        std::string MessageString = "[INFO] " + Message + "\n";
-        std::cout << MessageString;
-        CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] ") + MessageString, true);
+        std::cout << CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S]");
+        SetConsoleTextAttribute(Console, FOREGROUND_GREEN);
+        std::cout << " [INFO] ";
+        SetConsoleTextAttribute(Console, 7);
+        std::cout << Message << std::endl;
+        CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] [INFO] ") + Message, true);
     }
 }
 

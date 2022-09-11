@@ -53,7 +53,6 @@ bool Cheat::CheatFeatures::ControllableAnimations = false;
 bool Cheat::CheatFeatures::AllPlayersExclusionsSelf = true;
 bool Cheat::CheatFeatures::AllPlayersExclusionsFriends = false;
 bool Cheat::CheatFeatures::AllPlayersExclusionsHost = false;
-bool Cheat::CheatFeatures::CloseGameImmediatelyBool = true;
 bool Cheat::CheatFeatures::TeleportTransition = false;
 bool Cheat::CheatFeatures::NoTextureFileOverwrite = false;
 

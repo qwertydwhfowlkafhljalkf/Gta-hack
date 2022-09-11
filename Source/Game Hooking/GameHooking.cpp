@@ -135,7 +135,7 @@ void GameHooking::Init()
 	{
 		if (!WaitingGameLoadLogPrinted)
 		{
-			Logger::Message("Waiting for the game to have finished loading");
+			Logger::Message("Waiting for game");
 			WaitingGameLoadLogPrinted = true;
 		}
 		Sleep(100);

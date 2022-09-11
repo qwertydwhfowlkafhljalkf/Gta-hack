@@ -196,12 +196,6 @@ void Cheat::CheatFunctions::Loop()
 		}
 	}
 
-	// Cheat initializing message
-	if (!CheatFunctions::ConfigLoaded && CheatFunctions::CheatInitCompleted)
-	{
-		GUI::DrawTextInGame("GTAV Cheat is loading, one moment please", { 255, 255, 255, 255 }, { 0.900f, 0.900f }, { 0.400f, 0.400f }, true);
-	}
-
 	// GUI - must be called after (^) rendering a submenu
 	GUI::MenuGUIBottom();
 
@@ -302,7 +296,7 @@ void Cheat::CheatFunctions::LoadConfig()
 	std::string VehicleSpawnerCustomLicensePlateText = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_vehicle spawn settings", "Custom License Plate Text");
 	if (!VehicleSpawnerCustomLicensePlateText.empty()) { CheatFeatures::VehicleSpawnerCustomLicensePlateTextString = VehicleSpawnerCustomLicensePlateText; }
 
-	// Do not overwrite "Textures.ytd" at init feature - setting must be loaded immediatly (not async)
+	// Do not overwrite "Textures.ytd" at init feature - setting must be loaded immediately (not async)
 	CheatFeatures::NoTextureFileOverwrite = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "do not overwrite \"textures.ytd\" at init"));
 
 	std::thread LoadConfigThreadHandle(LoadConfigThreadFunction);

@@ -58,7 +58,6 @@ namespace Cheat
 		extern bool AllPlayersExclusionsSelf;
 		extern bool AllPlayersExclusionsFriends;
 		extern bool AllPlayersExclusionsHost;
-		extern bool CloseGameImmediatelyBool;
 		extern bool TeleportTransition;
 		extern bool NoTextureFileOverwrite;
 
