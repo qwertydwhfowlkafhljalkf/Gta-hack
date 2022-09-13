@@ -780,7 +780,7 @@ void GUI::SaveTheme(std::string ThemeFileName)
 
 void GUI::LoadTextureFile()
 {
-	Logger::Message("Loading Texture File");
+	Logger::LogMsg(LoggerMsgTypes::LOGGER_INFO_MSG, "Loading Texture File");
 	if (!CheatFeatures::NoTextureFileOverwrite)
 	{
 		remove(CheatFunctions::StringToChar(CheatFunctions::ReturnTextureFilePath()));
@@ -826,7 +826,7 @@ void GUI::LoadTextureFile()
 	//Error
 Error:
 	GameFunctions::MinimapNotification("~r~Failed to load Texture file");
-	Logger::DebugMessage("Failed to load Texture file; missing");
+	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Failed to load Texture file; missing");
 }
 
 void GUI::DrawTextInGame(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center, bool Outline)

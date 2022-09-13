@@ -39,6 +39,6 @@ void GUI::Submenus::World()
 			}
 		}
 		delete[] vehs;
-		GameFunctions::MinimapNotification("Area Cleared");
+		GameFunctions::MinimapNotification(CheatFunctions::StringToChar("Area Cleared"));
 	}
 }

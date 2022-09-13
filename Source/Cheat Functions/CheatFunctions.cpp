@@ -10,13 +10,11 @@ void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 {
 	if (!std::filesystem::create_directory(Path))
 	{
-		std::string String = __func__ + (std::string)"() Failed to create directory '" + Path + "' WinAPI Error Code: " + std::to_string(GetLastError());
-		Cheat::Logger::DebugMessage(String);
+		Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "CreateNewDirectory() - Failed to create directory, path '%s' - Win32 error: %i", Path, GetLastError());
 	}
 	else
 	{
-		std::string String = __func__ + (std::string)"() Created directory '" + Path + "'";
-		Cheat::Logger::DebugMessage(String);
+		Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "CreateNewDirectory() - Created directory '%s'", Path);
 	}
 }
 
@@ -114,7 +112,7 @@ void Cheat::CheatFunctions::Loop()
 
 		// Load 'multiplayer vehicles in Single Player' bypass
 		globalHandle(GLOBAL_SP_DESPAWN_BYPASS).As<BOOL>() = true;
-		Cheat::Logger::DebugMessage("Loaded SPVSB");
+		Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded SPVSB");
 
 		// Fetch default HUD colors
 		for (int i = 0; i <= GameArrays::HUDColors.size(); i++)
@@ -123,7 +121,7 @@ void Cheat::CheatFunctions::Loop()
 			UI::GET_HUD_COLOUR(i, &data.R, &data.G, &data.B, &data.A);
 			GameArrays::DefaultHUDColors.push_back(data);
 		}
-		Cheat::Logger::DebugMessage("Fetched DHC");
+		Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG,"Fetched DHC");
 
 		// Load saved HUD colors
 		if (FileOrDirectoryExists(ReturnHUDColorsFilePath()))
@@ -143,7 +141,7 @@ void Cheat::CheatFunctions::Loop()
 						UI::REPLACE_HUD_COLOUR_WITH_RGBA(SavedHUDColorsIndex, std::stoi(Red), std::stoi(Green), std::stoi(Blue), std::stoi(Alpha));
 					}
 					catch (...) {}
-					Cheat::Logger::DebugMessage("Loaded CHC '" + HUDColorComponentName + "'");
+					Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded CHC '%s'", HUDColorComponentName.c_str());
 				}
 				SavedHUDColorsIndex++;
 			}
@@ -151,7 +149,7 @@ void Cheat::CheatFunctions::Loop()
 
 		// Cheat init completed
 		CheatFunctions::CheatInitCompleted = true;
-		Logger::DebugMessage("Cheat init completed");
+		Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Cheat init completed");
 	});
 
 	// Submenu handlers - additional submenu logic is looped here
@@ -205,7 +203,7 @@ void Cheat::CheatFunctions::Loop()
 
 bool Cheat::CheatFunctions::IsGameWindowFocussed()
 {
-	if (FindWindowA("grcWindow", "Grand Theft Auto V") == GetForegroundWindow())
+	if (FindWindowA("grcWindow", NULL) == GetForegroundWindow())
 	{ 
 		return true;
 	}
@@ -246,7 +244,7 @@ void Cheat::CheatFunctions::SaveSelectable(std::string OptionName, std::string O
 		{
 			std::string LogMessage = "'" + OptionName + "' (" + GUI::CurrentSubmenu + " submenu) selectable state saved";
 			Cheat::GameFunctions::AdvancedMinimapNotification(StringToChar(LogMessage), "Textures", "AdvancedNotificationImage", false, 4, "Config", "", 0.5f, "");
-			Logger::DebugMessage(LogMessage);
+			Logger::LogMsg(LOGGER_DBG_MSG, "'%s' (%s submenu) selectable state saved", OptionName, GUI::CurrentSubmenu);
 			IniFileWriteString(OptionValue, ReturnConfigFilePath(), "submenu_" + GUI::CurrentSubmenu, OptionName);
 		}
 	}
@@ -259,7 +257,7 @@ std::string Cheat::CheatFunctions::GetSelectableValueFromConfig(std::string Opti
 
 void LoadConfigThreadFunction()
 {
-	Cheat::Controls::ChangeKeyInputState(false);
+	Cheat::Controls::KeyInputDisabled = true;
 	Cheat::GUI::HideGUIElements = true;
 	for (int FuncPointerIndex = 0; FuncPointerIndex < Cheat::GUI::Submenus::NumberOfSubmenus; ++FuncPointerIndex)
 	{
@@ -268,7 +266,7 @@ void LoadConfigThreadFunction()
 	}
 	Cheat::GUI::CloseMenuGUI();
 	Cheat::GUI::PreviousMenu = nullptr;
-	Cheat::Controls::ChangeKeyInputState(true);
+	Cheat::Controls::KeyInputDisabled = false;
 	Cheat::GUI::HideGUIElements = false;
 	Cheat::CheatFunctions::LoadedSelectablesVector.clear();
 	Cheat::CheatFunctions::ConfigLoaded = true;
@@ -276,7 +274,7 @@ void LoadConfigThreadFunction()
 
 void Cheat::CheatFunctions::LoadConfig()
 {
-	Cheat::Logger::Message("Loading Configuration");
+	Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_INFO_MSG, "Loading Configuration");
 
 	// Load hotkeys
 	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Menu GUI Key");
@@ -491,7 +489,7 @@ Json::Value Cheat::CheatFunctions::ReturnGithubAPIJsonDataCheat(std::string Buil
 			}
 			else
 			{
-				Cheat::Logger::DebugMessage(__func__ + (std::string)"() : failed to parse JSON data. Error message returned by JsonCPP: " + JsonError);
+				
 				return NULL;
 			}
 			InternetCloseHandle(hinternet);
@@ -533,7 +531,7 @@ std::string Cheat::CheatFunctions::GetLatestCheatBuildNumber()
 			}
 			else
 			{
-				Cheat::Logger::DebugMessage(__func__ + (std::string)"() : failed to parse JSON data. Error message returned by JsonCPP: " + JsonError);
+				Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "GetLatestCheatBuildNumber() : failed to parse JSON data. Error: %s", JsonError);
 				return "";
 			}
 			InternetCloseHandle(hinternet);
@@ -552,9 +550,9 @@ std::string Cheat::CheatFunctions::GetLatestCheatBuildNumber()
 
 void Cheat::CheatFunctions::CheckCheatUpdate()
 {
-	Cheat::Logger::Message("Checking for newer cheat version");
-	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(CHEAT_BUILD_NUMBER, ".");
-	std::string LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(GetLatestCheatBuildNumber(), "v.");
+	Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_INFO_MSG, "Checking for newer cheat version");
+	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(CHEAT_BUILD_NUMBER, (char*)".");
+	std::string LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(GetLatestCheatBuildNumber(), (char*)"v.");
 
 	if (!LatestOnlineVersionString.empty())
 	{
@@ -566,11 +564,11 @@ void Cheat::CheatFunctions::CheckCheatUpdate()
 			if (CurrentLocalVersion < LatestOnlineVersion)
 			{
 				NewCheatVersionString = "v" + LatestOnlineVersionString;
-				Logger::DebugMessage("A newer version of the cheat is available on GitHub");
+				Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "A newer version of the cheat is available on GitHub");
 			}
 			else
 			{
-				Logger::DebugMessage("No newer cheat version available");
+				Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "No newer cheat version available");
 			}
 		}
 	}

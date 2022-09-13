@@ -191,20 +191,6 @@ void Cheat::Controls::Loop()
 	}
 }
 
-void Cheat::Controls::ChangeKeyInputState(bool State)
-{
-	if (State)
-	{
-		Cheat::Logger::DebugMessage("Enabled Key Controls");
-		Controls::KeyInputDisabled = false;
-	}
-	else
-	{
-		Cheat::Logger::DebugMessage("Disabled Key Controls");
-		Controls::KeyInputDisabled = true;
-	}
-}
-
 void Cheat::Controls::DoMenuGUIFade(bool FadeIn)
 {
 	if (FadeIn)

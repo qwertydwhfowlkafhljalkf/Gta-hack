@@ -1,15 +1,20 @@
 #pragma once
 
+enum LoggerMsgTypes
+{
+    LOGGER_INFO_MSG,
+    LOGGER_WARNING_MSG,
+    LOGGER_ERROR_MSG,
+    LOGGER_FATAL_MSG,
+    LOGGER_DBG_MSG
+};
+
 namespace Cheat
 {
     namespace Logger
     {
         extern bool LoggerInitialized;
         void Init();
-        void Message(std::string Message);
-        void MessageCustomCategory(std::string CategoryName, std::string Message);
-        void Error(char* Message, bool ShowMessageBox);
-        void DebugMessage(std::string Message);
-        void SendMessageToGameChatLogWindow(std::string Message);
+        void LogMsg(LoggerMsgTypes Type, const char* Message, ...);
     }
 }

@@ -28,9 +28,7 @@ uint64_t * nativeCall()
 		}
 		__except (exceptionAddress = (GetExceptionInformation())->ExceptionRecord->ExceptionAddress, EXCEPTION_EXECUTE_HANDLER)
 		{
-			static char Message[256];
-			sprintf_s(Message, 256, "Failed to execute native 0x%016llx at address %p", g_hash, exceptionAddress);
-			Cheat::Logger::Error(Message, false);
+			Cheat::Logger::LogMsg(LOGGER_ERROR_MSG, "Failed to execute native 0x%016llx at address %p", g_hash, exceptionAddress);
 		}
 	}
 	return reinterpret_cast<uint64_t*>(g_context.GetResultPointer());

@@ -45,8 +45,8 @@ DWORD WINAPI InitializationThread(LPVOID lpParam)
 	Logger::Init();
 
 	// Initialize MinHook
-	if (MH_Initialize() != MH_OK) { Cheat::Logger::Error("Failed to initialize MinHook", true); std::exit(EXIT_FAILURE); }
-	Logger::DebugMessage("Initialized MH");
+	if (MH_Initialize() != MH_OK) { Logger::LogMsg(LOGGER_FATAL_MSG, "Initialize MinHook failed"); std::exit(EXIT_FAILURE); }
+	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG,"Initialized MH");
 
 	// Initalize RAGE hooks
 	GameHooking::Init();

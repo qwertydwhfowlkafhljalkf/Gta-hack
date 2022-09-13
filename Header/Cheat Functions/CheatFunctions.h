@@ -29,7 +29,7 @@ namespace Cheat
 					if (!ConfigFileValue.empty())
 					{
 						ReturnedVariable = CheatFunctions::StringToBool(CheatFunctions::GetSelectableValueFromConfig(OptionName));
-						Cheat::Logger::DebugMessage("Loaded savable selectable (Boolean) '" + OptionName + "'");
+						Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded savable selectable (Boolean) '%s'", OptionName.c_str());
 					}
 					LoadedSelectablesVector.push_back(OptionName);
 				}
@@ -39,7 +39,7 @@ namespace Cheat
 					if (!ConfigFileValue.empty())
 					{
 						ReturnedVariable = CheatFunctions::StringToInt(CheatFunctions::GetSelectableValueFromConfig(OptionName));
-						Cheat::Logger::DebugMessage("Loaded savable selectable (Integer) '" + OptionName + "'");
+						Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded savable selectable (Integer) '%s'", OptionName.c_str());
 					}
 					LoadedSelectablesVector.push_back(OptionName);
 				}
@@ -49,7 +49,7 @@ namespace Cheat
 					if (!ConfigFileValue.empty())
 					{
 						ReturnedVariable = std::stof(CheatFunctions::GetSelectableValueFromConfig(OptionName));
-						Cheat::Logger::DebugMessage("Loaded savable selectable (Float) '" + OptionName + "'");
+						Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded savable selectable (Float) '%s'", OptionName.c_str());
 					}
 					LoadedSelectablesVector.push_back(OptionName);
 				}

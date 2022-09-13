@@ -53,10 +53,10 @@
 #include "../Header/Game Hooking/Types.h"
 #include "../Header/Game Functions/GameArrays.h"
 #include "../Header/Game Hooking/Offsets.h"
+#include "../Header/Cheat Functions/Logger.h"
 #include "../Header/Game Functions/CheatFeatures.h"
 #include "../Header/Cheat Functions/CheatFunctions.h"
 #include "../Header/Game Functions/GameFunctions.h"
-#include "../Header/Cheat Functions/Logger.h"
 
 namespace Cheat
 {
