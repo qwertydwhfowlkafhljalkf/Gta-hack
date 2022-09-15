@@ -90,7 +90,7 @@ void Cheat::CheatFunctions::Loop()
 {
 	std::call_once(CheatInitialization, []()
 	{
-		// Check for newer cheat version
+		// Check for newer version
 		CheckCheatUpdate();
 
 		// Create Menu Selectable Arrow Animation Thread
@@ -483,14 +483,13 @@ Json::Value Cheat::CheatFunctions::ReturnGithubAPIJsonDataCheat(std::string Buil
 			{
 				if (JsonData["message"].asString() == "Not Found")
 				{
-					// Non existent version provided
-					return NULL;
+					// Invalid version number provided
+					return Json::nullValue;
 				}
 			}
 			else
 			{
-				
-				return NULL;
+				return Json::nullValue;
 			}
 			InternetCloseHandle(hinternet);
 		}
@@ -550,7 +549,7 @@ std::string Cheat::CheatFunctions::GetLatestCheatBuildNumber()
 
 void Cheat::CheatFunctions::CheckCheatUpdate()
 {
-	Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_INFO_MSG, "Checking for newer cheat version");
+	Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_INFO_MSG, "Checking for newer version");
 	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(CHEAT_BUILD_NUMBER, (char*)".");
 	std::string LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(GetLatestCheatBuildNumber(), (char*)"v.");
 

@@ -662,19 +662,19 @@ void GUI::AddPlayerInfoBoxTextEntry(std::string text, int Row1, int Row2, int Ro
 	{
 		if (Row1 != NULL)
 		{
-			DrawTextInGame(text, TextColorAndFont, { guiX - (GUI::guiWidth / 2) - 0.010f, GUI::guiY + (Row1 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
+			DrawTextInGame(text, TextColorAndFont, { guiX - (GUI::guiWidth / 2) - 0.325f, GUI::guiY + (Row1 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
 		}
 		else if (Row2 != NULL)
 		{
-			DrawTextInGame(text, TextColorAndFont, { guiX - (GUI::guiWidth / 2) - 0.105f, GUI::guiY + (Row2 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
+			DrawTextInGame(text, TextColorAndFont, { guiX - (GUI::guiWidth / 2) - 0.255f, GUI::guiY + (Row2 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
 		}
 		else if (Row3 != NULL)
 		{
-			DrawTextInGame(text, TextColorAndFont, { guiX - (GUI::guiWidth / 2) - 0.195f, GUI::guiY + (Row3 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
+			DrawTextInGame(text, TextColorAndFont, { guiX - (GUI::guiWidth / 2) - 0.175f, GUI::guiY + (Row3 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
 		}
 		else if (Row4 != NULL)
 		{
-			DrawTextInGame(text, TextColorAndFont, { guiX - (GUI::guiWidth / 2) - 0.265f, GUI::guiY + (Row4 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
+			DrawTextInGame(text, TextColorAndFont, { guiX - (GUI::guiWidth / 2) - 0.070f, GUI::guiY + (Row4 * 0.020f) - 0.158f }, { 0.30f, 0.30f }, false);
 		}
 	}
 }
@@ -907,8 +907,8 @@ void Cheat::GUI::ShowPlayerInformationBox(Player PlayerID)
 		}
 		else
 		{
-			Cheat::GUI::AddPlayerInfoBoxTextEntry("Unavailable", NULL, 2);
-			Cheat::GUI::AddPlayerInfoBoxTextEntry("Unavailable", NULL, 3);
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("N/A", NULL, 2);
+			Cheat::GUI::AddPlayerInfoBoxTextEntry("N/A", NULL, 3);
 		}
 
 		//Health

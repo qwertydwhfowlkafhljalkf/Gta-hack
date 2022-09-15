@@ -28,7 +28,7 @@ uint64_t * nativeCall()
 		}
 		__except (exceptionAddress = (GetExceptionInformation())->ExceptionRecord->ExceptionAddress, EXCEPTION_EXECUTE_HANDLER)
 		{
-			Cheat::Logger::LogMsg(LOGGER_ERROR_MSG, "Failed to execute native 0x%016llx at address %p", g_hash, exceptionAddress);
+			Cheat::Logger::LogMsg(LOGGER_WARNING_MSG, "Executing game native 0x%016llx (at address %p) failed", g_hash, exceptionAddress);
 		}
 	}
 	return reinterpret_cast<uint64_t*>(g_context.GetResultPointer());

@@ -12,13 +12,10 @@ void Cheat::Logger::Init()
         Logger::LogMsg(LOGGER_FATAL_MSG, "Failed to allocate console - %i", GetLastError());
     }
 
-    std::string MessageString = "Version: " + (std::string)CHEAT_BUILD_NUMBER + " | Compile Date & Time: " + __DATE__ + " " + __TIME__ +
+    std::string MessageString = "\nVersion: " + (std::string)CHEAT_BUILD_NUMBER + " | Compile Date & Time: " + __DATE__ + " " + __TIME__ +
         Cheat::CheatFunctions::ReturnDateTimeFormatAsString(" | Load Date & Time: %b %e %Y %H:%M:%S")
         + "\nGitHub Repository: HatchesPls/GrandTheftAutoV-Cheat\n";
     std::cout << "Version: " << CHEAT_BUILD_NUMBER << std::endl;
-
-    // Write spacing to logfile
-    CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), "\n", true);
 
     // Write text
     CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), MessageString, true);

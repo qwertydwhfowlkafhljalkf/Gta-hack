@@ -15,9 +15,4 @@ void GUI::Submenus::Home()
 	GUI::MenuOption("Recovery", Submenus::RecoverySubmenuWarning);
 	GUI::MenuOption("Miscellaneous", Submenus::Miscellaneous);
 	GUI::MenuOption("Settings", Submenus::Settings);
-	if (GUI::Option("FATAL", ""))
-	{
-		int test = 53;
-		Logger::LogMsg(LOGGER_FATAL_MSG, "CRASH!!! %i", test);
-	}
 }
