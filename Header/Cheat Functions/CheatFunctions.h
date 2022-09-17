@@ -59,7 +59,6 @@ namespace Cheat
 		std::string GetWindowsUserDocumentsFolderPath();
 		void SaveSelectable(std::string OptionName, std::string OptionValue, bool IsSavable);
 		std::string GetSelectableValueFromConfig(std::string OptionName);
-		bool FileOrDirectoryExists(std::string Path);
 		void CreateNewDirectory(std::string Path);
 		void Loop();
 		bool IsGameWindowFocussed();
@@ -67,7 +66,6 @@ namespace Cheat
 		std::string ReturnTextureFilePath();
 		int WaitForAndReturnPressedKey();
 		char* StringToChar(std::string String);
-		const char* StringToConstChar(std::string String);
 		std::string VirtualKeyCodeToString(UCHAR virtualKey);
 		int ReturnNumberOfDigitsInValue(double Number);
 		void IniFileWriteString(std::string string, std::string FilePath, std::string Section, std::string Key);
@@ -85,8 +83,8 @@ namespace Cheat
 		int StringToInt(std::string String);
 		std::string TextWrap(std::string String, int Location);
 		void CopyStringToClipboard(const std::string& String);
-		Json::Value ReadJsonFileAndReturnDataObject(std::string FilePath);
-		void AddCustomTeleportLocation(std::string CustomTeleportLocationName);
-		void DeleteCustomTeleportLocation(std::string CustomTeleportLocationName);
+		bool GetJsonFromFile(std::string Path, Json::Value& Object);
+		bool AddCustomTeleportLocation(std::string CustomTeleportLocationName);
+		bool DeleteCustomTeleportLocation(std::string CustomTeleportLocationName);
 	}
 }

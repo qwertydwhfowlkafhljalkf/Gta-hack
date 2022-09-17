@@ -36,7 +36,7 @@ void Cheat::Logger::LogMsg(LoggerMsgTypes Type, const char* Message, ...)
             va_list args;
             va_start(args, Message);
             char buf[1024];
-            vsprintf(buf, Message, args);
+            vsnprintf_s(buf, sizeof(buf), Message, args);
             va_end(args);
             std::cout << Time << dye::green(LogMsgTypeStrings[0]) << buf << std::endl;
             CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), Time + LogMsgTypeStrings[0] + Message, true);
@@ -46,7 +46,7 @@ void Cheat::Logger::LogMsg(LoggerMsgTypes Type, const char* Message, ...)
             va_list args;
             va_start(args, Message);
             char buf[1024];
-            vsprintf(buf, Message, args);
+            vsnprintf_s(buf, sizeof(buf), Message, args);
             va_end(args);
             std::cout << Time << dye::yellow(LogMsgTypeStrings[1]) << buf << std::endl;
             CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), Time + LogMsgTypeStrings[1] + Message, true);
@@ -56,7 +56,7 @@ void Cheat::Logger::LogMsg(LoggerMsgTypes Type, const char* Message, ...)
             va_list args;
             va_start(args, Message);
             char buf[1024];
-            vsprintf(buf, Message, args);
+            vsnprintf_s(buf, sizeof(buf), Message, args);
             va_end(args);
             std::cout << Time << dye::red(LogMsgTypeStrings[2]) << buf << std::endl;
             CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), Time + LogMsgTypeStrings[2] + Message, true);
@@ -66,11 +66,11 @@ void Cheat::Logger::LogMsg(LoggerMsgTypes Type, const char* Message, ...)
             va_list args;
             va_start(args, Message);
             char buf[1024];
-            vsprintf(buf, Message, args);
+            vsnprintf_s(buf, sizeof(buf), Message, args);
             va_end(args);
             std::cout << Time << dye::red(LogMsgTypeStrings[3]) << buf << std::endl;
             CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), Time + LogMsgTypeStrings[3] + Message, true);
-            if (MessageBoxA(NULL, buf, "GTAV Cheat", MB_ICONSTOP | MB_OK | MB_SETFOREGROUND | MB_APPLMODAL) == IDOK);
+            if (MessageBoxA(NULL, buf, "GTAV Cheat", MB_ICONSTOP | MB_OK | MB_SETFOREGROUND | MB_APPLMODAL) == IDOK)
             {
                 std::exit(EXIT_FAILURE);
             }
@@ -80,7 +80,7 @@ void Cheat::Logger::LogMsg(LoggerMsgTypes Type, const char* Message, ...)
             va_list args;
             va_start(args, Message);
             char buf[1024];
-            vsprintf(buf, Message, args);
+            vsnprintf_s(buf, sizeof(buf), Message, args);
             va_end(args);
             std::cout << Time << dye::grey(LogMsgTypeStrings[4] + buf) << std::endl;
             CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), Time + LogMsgTypeStrings[4] + Message, true);

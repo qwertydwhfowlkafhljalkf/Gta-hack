@@ -681,7 +681,7 @@ void GUI::AddPlayerInfoBoxTextEntry(std::string text, int Row1, int Row2, int Ro
 
 void GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 {
-	if (!CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnThemeFilePath(ThemeFileName))) 
+	if (!std::filesystem::exists(CheatFunctions::ReturnThemeFilePath(ThemeFileName)))
 	{ 
 		GameFunctions::MinimapNotification("Requested Theme does not exist. Auto load entry removed from config file."); 
 		CheatFunctions::IniFileRemoveKey(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Active Theme");
@@ -813,7 +813,7 @@ void GUI::LoadTextureFile()
 	}
 
 	int textureID;
-	if (CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnTextureFilePath()))
+	if (std::filesystem::exists(CheatFunctions::ReturnTextureFilePath()))
 	{
 		GameHooking::texture_file_register(&textureID, CheatFunctions::StringToChar(CheatFunctions::ReturnTextureFilePath()), true, "Textures.ytd", false);
 		return;

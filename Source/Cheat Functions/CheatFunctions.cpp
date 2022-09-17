@@ -76,15 +76,6 @@ std::string Cheat::CheatFunctions::ReturnTextureFilePath()
 	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Textures.ytd";
 }
 
-bool Cheat::CheatFunctions::FileOrDirectoryExists(std::string Path)
-{
-	if (std::filesystem::exists(Path))
-	{
-		return true;
-	}
-	return false;
-}
-
 static std::once_flag CheatInitialization;
 void Cheat::CheatFunctions::Loop()
 {
@@ -124,7 +115,7 @@ void Cheat::CheatFunctions::Loop()
 		Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG,"Fetched DHC");
 
 		// Load saved HUD colors
-		if (FileOrDirectoryExists(ReturnHUDColorsFilePath()))
+		if (std::filesystem::exists(ReturnHUDColorsFilePath()))
 		{
 			int SavedHUDColorsIndex = 0;
 			for (auto const& HUDColorComponentName : GameArrays::HUDColors)
@@ -184,7 +175,7 @@ void Cheat::CheatFunctions::Loop()
 	{
 		GUI::ThemeFilesVector.clear();
 		std::string ThemeFolderPath = CheatFunctions::GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Themes";
-		if (!Cheat::CheatFunctions::FileOrDirectoryExists(ThemeFolderPath)) { CheatFunctions::CreateNewDirectory(ThemeFolderPath); }
+		if (!std::filesystem::exists(ThemeFolderPath)) { CheatFunctions::CreateNewDirectory(ThemeFolderPath); }
 		for (const auto& file : std::filesystem::directory_iterator(ThemeFolderPath))
 		{
 			if (file.path().extension() == ".ini")
@@ -244,7 +235,7 @@ void Cheat::CheatFunctions::SaveSelectable(std::string OptionName, std::string O
 		{
 			std::string LogMessage = "'" + OptionName + "' (" + GUI::CurrentSubmenu + " submenu) selectable state saved";
 			Cheat::GameFunctions::AdvancedMinimapNotification(StringToChar(LogMessage), "Textures", "AdvancedNotificationImage", false, 4, "Config", "", 0.5f, "");
-			Logger::LogMsg(LOGGER_DBG_MSG, "'%s' (%s submenu) selectable state saved", OptionName, GUI::CurrentSubmenu);
+			Logger::LogMsg(LOGGER_DBG_MSG, "'%s' (%s submenu) selectable state saved", OptionName.c_str(), GUI::CurrentSubmenu.c_str());
 			IniFileWriteString(OptionValue, ReturnConfigFilePath(), "submenu_" + GUI::CurrentSubmenu, OptionName);
 		}
 	}
@@ -316,12 +307,6 @@ bool Cheat::CheatFunctions::IsSelectableRegisteredAsLoaded(std::string OptionNam
 char* Cheat::CheatFunctions::StringToChar(std::string String)
 {
 	return _strdup(String.c_str());
-}
-
-const char* Cheat::CheatFunctions::StringToConstChar(std::string String)
-{
-	auto Temp = String.c_str();
-	return Temp;
 }
 
 std::string Cheat::CheatFunctions::VirtualKeyCodeToString(UCHAR virtualKey)
@@ -635,52 +620,86 @@ void Cheat::CheatFunctions::CopyStringToClipboard(const std::string& String)
 	HGLOBAL Global = GlobalAlloc(GMEM_MOVEABLE, String.size() + 1);
 	if (!Global) { CloseClipboard(); return; }
 	LPVOID GlobalPtrn = GlobalLock(Global);
-	memcpy(GlobalPtrn, String.c_str(), String.size() + 1);
+	if (GlobalPtrn > 0)
+	{
+		memcpy(GlobalPtrn, String.c_str(), String.size() + 1);
+	}
 	GlobalUnlock(Global);
 	SetClipboardData(CF_TEXT, Global);
 	CloseClipboard();
 	GlobalFree(Global);
 }
 
-Json::Value Cheat::CheatFunctions::ReadJsonFileAndReturnDataObject(std::string FilePath)
+bool Cheat::CheatFunctions::GetJsonFromFile(std::string Path, Json::Value& Object)
 {
-	Json::Value JsonHandle;
-	std::fstream FileHandle(FilePath, std::ifstream::in);
-	if (FileOrDirectoryExists(FilePath))
+	Json::Value JsonObject;
+	std::fstream FileHandle(Path, std::ifstream::in);
+	if (std::filesystem::exists(Path))
 	{
 		try
 		{
-			FileHandle >> JsonHandle;
+			FileHandle >> JsonObject;
 		}
-		catch (...) { }
+		catch (...)
+		{
+			FileHandle.close();
+			return false;
+		}
+	}
+	Object = JsonObject;
+	FileHandle.close();
+	return true;
+}
+
+bool Cheat::CheatFunctions::AddCustomTeleportLocation(std::string CustomTeleportLocationName)
+{
+	// Create the JsonCPP Value variable
+	Json::Value JsonData;
+
+	// Only procceed if getting the JSON data succeeds and 'CustomTeleportLocationName' is in the JSON data
+	if (GetJsonFromFile(ReturnCustomTeleportLocationsFilePath(), JsonData))
+	{
+		// Remove the member if it already exists
+		if (JsonData.isMember(CustomTeleportLocationName))
+		{
+			JsonData.removeMember(CustomTeleportLocationName);
+		}
+
+		// Get local player coordinates
+		Vector3 LocalPlayerCoords = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
+		JsonData[CustomTeleportLocationName]["X"] = LocalPlayerCoords.x;
+		JsonData[CustomTeleportLocationName]["Y"] = LocalPlayerCoords.y;
+		JsonData[CustomTeleportLocationName]["Z"] = LocalPlayerCoords.z;
+
+		// Rewrite the JSON file
+		std::fstream FileHandle(ReturnCustomTeleportLocationsFilePath(), std::ios_base::out);
+		FileHandle << JsonData;
+		FileHandle.close();
+		return true;
 	}
 
-	FileHandle.close();
-	return JsonHandle;
+	// Return false in case of any preceding failure(s)
+	return false;
 }
 
-void Cheat::CheatFunctions::AddCustomTeleportLocation(std::string CustomTeleportLocationName)
+bool Cheat::CheatFunctions::DeleteCustomTeleportLocation(std::string CustomTeleportLocationName)
 {
-	Json::Value JsonHandle = ReadJsonFileAndReturnDataObject(ReturnCustomTeleportLocationsFilePath());
-	remove(StringToConstChar(ReturnCustomTeleportLocationsFilePath()));
-	if (JsonHandle.isMember(CustomTeleportLocationName)) { JsonHandle.removeMember(CustomTeleportLocationName); }
+	// Create the JsonCPP Value variable
+	Json::Value JsonData;
 
-	Vector3 LocalPlayerCoords = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);
-	JsonHandle[CustomTeleportLocationName]["X"] = LocalPlayerCoords.x;
-	JsonHandle[CustomTeleportLocationName]["Y"] = LocalPlayerCoords.y;
-	JsonHandle[CustomTeleportLocationName]["Z"] = LocalPlayerCoords.z;
+	// Only procceed if getting the JSON data succeeds and 'CustomTeleportLocationName' is in the JSON data
+	if (GetJsonFromFile(ReturnCustomTeleportLocationsFilePath(), JsonData) && JsonData.isMember(CustomTeleportLocationName))
+	{
+		// Remove the specified member from the JSON data
+		JsonData.removeMember(CustomTeleportLocationName);
 
-	std::fstream FileHandle(ReturnCustomTeleportLocationsFilePath(), std::ios_base::out);
-	FileHandle << JsonHandle;
-	FileHandle.close();
-}
+		// Rewrite the JSON file
+		std::fstream FileHandle(ReturnCustomTeleportLocationsFilePath(), std::ios_base::out);
+		FileHandle << JsonData;
+		FileHandle.close();
+		return true;
+	}
 
-void Cheat::CheatFunctions::DeleteCustomTeleportLocation(std::string CustomTeleportLocationName)
-{
-	Json::Value JsonHandle = ReadJsonFileAndReturnDataObject(ReturnCustomTeleportLocationsFilePath());
-	remove(StringToConstChar(ReturnCustomTeleportLocationsFilePath()));
-	if (JsonHandle.isMember(CustomTeleportLocationName)) { JsonHandle.removeMember(CustomTeleportLocationName); }
-	std::fstream FileHandle(ReturnCustomTeleportLocationsFilePath(), std::ios_base::out);
-	FileHandle << JsonHandle;
-	FileHandle.close();
+	// Return false in case of any preceding failure(s)
+	return false;
 }

@@ -10,7 +10,7 @@ void GUI::Submenus::ThemeFiles()
 		{
 			if (GUI::Option(i, ""))
 			{
-				if (CheatFunctions::FileOrDirectoryExists(CheatFunctions::ReturnThemeFilePath(i)))
+				if (std::filesystem::exists(CheatFunctions::ReturnThemeFilePath(i)))
 				{
 					GUI::LoadTheme(CheatFunctions::StringToChar(i), false);
 				}

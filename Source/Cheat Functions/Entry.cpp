@@ -6,16 +6,16 @@ DWORD WINAPI InitializationThread(LPVOID lpParam)
 {
 	// Create directories
 	std::string GtavDirectoryPath = CheatFunctions::GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat";
-	if (!CheatFunctions::FileOrDirectoryExists(GtavDirectoryPath)) { CheatFunctions::CreateNewDirectory(GtavDirectoryPath); }
+	if (!std::filesystem::exists(GtavDirectoryPath)) { CheatFunctions::CreateNewDirectory(GtavDirectoryPath); }
 	std::string LogsDirectoryPath = CheatFunctions::GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Logs";
-	if (!CheatFunctions::FileOrDirectoryExists(LogsDirectoryPath)) { CheatFunctions::CreateNewDirectory(LogsDirectoryPath); }
+	if (!std::filesystem::exists(LogsDirectoryPath)) { CheatFunctions::CreateNewDirectory(LogsDirectoryPath); }
 	std::string ThemesDirectoryPath = Cheat::CheatFunctions::GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Themes";
-	if (!CheatFunctions::FileOrDirectoryExists(ThemesDirectoryPath)) { CheatFunctions::CreateNewDirectory(ThemesDirectoryPath); }
+	if (!std::filesystem::exists(ThemesDirectoryPath)) { CheatFunctions::CreateNewDirectory(ThemesDirectoryPath); }
 
 	// Data migration for existing config and data prior to v2.2.1.0
 	std::string OldDataPath = CheatFunctions::ReturnCheatModuleDirectoryPath() + "\\gtav";
 	std::string NewDataPath = CheatFunctions::GetWindowsUserDocumentsFolderPath() + "\\GTAV Cheat";
-	if (CheatFunctions::FileOrDirectoryExists(OldDataPath))
+	if (std::filesystem::exists(OldDataPath))
 	{
 		// Move Logs directory
 		std::string OldLogsDirectory = OldDataPath + "\\Logs";
