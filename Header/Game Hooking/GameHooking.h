@@ -26,8 +26,8 @@ public:
 	static void PauseMainFiber(DWORD ms, bool ShowMessage = true);
 	static uint64_t getWorldPtr();
 	static void SetOwnedExplosionBypassState(bool toggle);
-	static void OnTickInit();
 	static __int64** getGlobalPtr();
+	static std::vector<LPVOID> GetMH_Hooked();
 	static void defuseEvent(GameEvents e, bool toggle);
 	typedef void(__cdecl * NativeHandler)(scrNativeCallContext * context);
 	struct NativeRegistrationNew

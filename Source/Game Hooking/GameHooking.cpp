@@ -23,6 +23,7 @@ ScriptThread* (*GetActiveThread)()									= nullptr;
 const int EventCountInteger											= 85;
 static char EventRestore[EventCountInteger]							= {};
 static std::vector<void*> EventPtr;
+std::vector<LPVOID>													MH_Hooked;
 
 // Function and variable definitions hooks
 IsDLCPresent IsDLCPresentOriginal									= nullptr;
@@ -149,24 +150,31 @@ void GameHooking::Init()
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Hook GED");
 	auto status = MH_CreateHook(GameHooking::get_event_data, GetEventDataHooked, (void**)&GetEventDataOriginal);
 	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::get_event_data) != MH_OK) { Logger::LogMsg(LOGGER_FATAL_MSG, "Failed to hook GET_EVENT_DATA");  std::exit(EXIT_FAILURE); }
+	MH_Hooked.push_back(GameHooking::get_event_data);
 
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Hook GSHIN");
 	status = MH_CreateHook(GameHooking::get_script_handler_if_networked, GetScriptHandlerIfNetworkedHooked, (void**)&GetScriptHandlerIfNetworkedOriginal);
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_script_handler_if_networked) != MH_OK) { Logger::LogMsg(LOGGER_FATAL_MSG, "Failed to hook GET_SCRIPT_HANDLER_IF_NETWORKED");  std::exit(EXIT_FAILURE); }
+	MH_Hooked.push_back(GameHooking::get_script_handler_if_networked);
 
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Hook GLT");
 	status = MH_CreateHook(GameHooking::get_label_text, GetLabelTextHooked, (void**)&GetLabelTextOriginal);
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_label_text) != MH_OK) { Logger::LogMsg(LOGGER_FATAL_MSG, "Failed to hook GET_LABEL_TEXT");  std::exit(EXIT_FAILURE); }
+	MH_Hooked.push_back(GameHooking::get_label_text);
 
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Hook GCD");
 	status = MH_CreateHook(GameHooking::get_chat_data, GetChatDataHooked, (void**)&GetChatDataOriginal);
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_chat_data) != MH_OK) { Logger::LogMsg(LOGGER_FATAL_MSG, "Failed to hook GET_CHAT_DATA");  std::exit(EXIT_FAILURE); }
+	MH_Hooked.push_back(GameHooking::get_chat_data);
 
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Hook IDP");
 	status = MH_CreateHook(GameHooking::is_dlc_present, IsDLCPresentHooked, (void**)&IsDLCPresentOriginal);
 	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::is_dlc_present) != MH_OK) { Logger::LogMsg(LOGGER_FATAL_MSG, "Failed to hook IS_DLC_PRESENT");  std::exit(EXIT_FAILURE); }
+	MH_Hooked.push_back(GameHooking::is_dlc_present);
 }
 
+DWORD WakeTime;
+static HANDLE scriptFiber;
 bool IsDLCPresentHooked(std::uint32_t DLCHash)
 {
 	static uint64_t	Last = 0;
@@ -174,7 +182,22 @@ bool IsDLCPresentHooked(std::uint32_t DLCHash)
 	if (Last != Current)
 	{
 		Last = Current;
-		GameHooking::OnTickInit();
+		if (MainFiber == nullptr)
+		{ 
+			MainFiber = ConvertThreadToFiber(nullptr); 
+		}
+		
+		if (timeGetTime() > WakeTime) 
+		{  
+			if (scriptFiber != nullptr)
+			{ 
+				SwitchToFiber(scriptFiber); 
+			}
+			else
+			{
+				scriptFiber = CreateFiber(NULL, FiberMain, nullptr); 
+			}
+		}
 	}
 	return IsDLCPresentOriginal(DLCHash);
 }
@@ -389,16 +412,6 @@ __int64 GetChatDataHooked(__int64 a1, __int64 a2, __int64 a3, const char* origTe
 	return GetChatDataOriginal(a1, a2, a3, origText, isTeam);
 }
 
-
-DWORD WakeTime;
-void GameHooking::OnTickInit()
-{
-	static HANDLE scriptFiber;
-	if (MainFiber == nullptr) { MainFiber = ConvertThreadToFiber(nullptr); }
-	if (timeGetTime() < WakeTime) { return; }
-	if (scriptFiber) { SwitchToFiber(scriptFiber); } else  { scriptFiber = CreateFiber(NULL, FiberMain, nullptr); }
-}
-
 void GameHooking::PauseMainFiber(DWORD ms, bool ShowMessage)
 {
 	if (ShowMessage) { GUI::DrawTextInGame("One Moment Please", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 1.5f, 1.5f }, true, true); }
@@ -464,6 +477,11 @@ void GameHooking::defuseEvent(GameEvents e, bool toggle)
 __int64** GameHooking::getGlobalPtr()
 {
 	return m_globalPtr;
+}
+
+std::vector<LPVOID> GameHooking::GetMH_Hooked()
+{
+	return MH_Hooked;
 }
 
 void GameHooking::SetOwnedExplosionBypassState(bool toggle)

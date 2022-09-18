@@ -5,6 +5,7 @@ bool Cheat::CheatFunctions::CheatInitEntirelyCompleted = false;									// Set w
 bool Cheat::CheatFunctions::CheatInitCompleted = false;											// Set when all initialization is completed (except for async tasks such as LoadConfig())
 bool Cheat::CheatFunctions::ConfigLoaded = false;												// Set when the LoadConfig thread is completed
 std::vector <std::string> Cheat::CheatFunctions::LoadedSelectablesVector;						// Used during the async LoadConfig process to determine which selectables have been loaded
+bool Cheat::CheatFunctions::StopThreads = false;
 
 void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 {
@@ -86,13 +87,16 @@ void Cheat::CheatFunctions::Loop()
 
 		// Create Menu Selectable Arrow Animation Thread
 		std::thread MenuSelectableAnimationThreadHandle([]()
+		{
+			while (!StopThreads)
 			{
 				if (GUI::menuLevel > 0)
 				{
 					GUI::MenuOptionArrowAnimationState = !GUI::MenuOptionArrowAnimationState;
 					Sleep(GUI::MenuArrowAnimationDelay);
 				}
-			});
+			}
+		});
 		MenuSelectableAnimationThreadHandle.detach();
 
 		// Load configuration file
@@ -103,7 +107,7 @@ void Cheat::CheatFunctions::Loop()
 
 		// Load 'multiplayer vehicles in Single Player' bypass
 		globalHandle(GLOBAL_SP_DESPAWN_BYPASS).As<BOOL>() = true;
-		Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded SPVSB");
+		Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded SPVSB");
 
 		// Fetch default HUD colors
 		for (int i = 0; i <= GameArrays::HUDColors.size(); i++)
@@ -702,4 +706,30 @@ bool Cheat::CheatFunctions::DeleteCustomTeleportLocation(std::string CustomTelep
 
 	// Return false in case of any preceding failure(s)
 	return false;
+}
+
+DWORD WINAPI UnloadThread(LPVOID lpParam)
+{
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
+	FreeConsole();
+
+	Cheat::CheatFunctions::StopThreads = true;
+
+	// Disable & remove MinHook hooks
+	for (int i = 0; i < GameHooking::GetMH_Hooked().size(); i++)
+	{
+		MH_DisableHook(GameHooking::GetMH_Hooked()[i]);
+		MH_RemoveHook(GameHooking::GetMH_Hooked()[i]);
+	}
+
+	// Uninit MinHook
+	MH_Uninitialize();
+
+	// Unload DLL from game process
+	FreeLibraryAndExitThread(Cheat::CheatModuleHandle, EXIT_SUCCESS);
+}
+
+void Cheat::CheatFunctions::UnloadCheat()
+{
+	CreateThread(NULL, NULL, UnloadThread, NULL, NULL, NULL);
 }

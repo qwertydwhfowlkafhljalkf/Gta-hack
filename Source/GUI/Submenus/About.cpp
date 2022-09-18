@@ -14,4 +14,8 @@ void GUI::Submenus::About()
 	{
 		system("start https://github.com/HatchesPls/GrandTheftAutoV-Cheat");
 	}
+	if (GUI::Option("Unload Cheat", ""))
+	{
+		CheatFunctions::UnloadCheat();
+	}
 }
