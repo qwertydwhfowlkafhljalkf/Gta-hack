@@ -124,7 +124,7 @@ void GUI::Submenus::Theme()
 	GUI::Float("Y-Axis", GUI::guiY, 0.0f, 0.0f, 0.01f, "", 3, SELECTABLE_DISABLE_SAVE);
 	GUI::Float("Width", GUI::guiWidth, 0.20f, 0.30f, 0.01f, "");
 	GUI::Float("Selectable Height", GUI::SelectableHeight, 0.035f, 0.045f, 0.001f, "This also slightly stretches the header element as a result of the rescale");
-	if (GUI::Option("Reset Position", ""))
+	if (GUI::Option("Reset Position & Width", ""))
 	{
 		GUI::guiX = GUI::guiX_Default;
 		GUI::guiY = GUI::guiY_Default;
