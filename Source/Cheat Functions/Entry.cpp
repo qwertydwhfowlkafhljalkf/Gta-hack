@@ -65,13 +65,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpvRese
 		DisableThreadLibraryCalls(CheatModuleHandle);
 		CreateThread(NULL, NULL, InitializationThread, CheatModuleHandle, NULL, NULL);
 		break;
-	case DLL_PROCESS_DETACH:
-		// Only do cleanup when the game process is not exiting
-		if (lpvReserved == NULL)
-		{
-			Cheat::Logger::LogMsg(LOGGER_DBG_MSG, "DLL_PROCESS_DETACH");
-		}
-		break;
 	}
 	return TRUE;
 }

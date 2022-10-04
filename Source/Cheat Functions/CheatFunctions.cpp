@@ -433,8 +433,8 @@ bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool RepeatInput)
 
 void Cheat::CheatFunctions::WriteToFile(std::string FilePath, std::string text, bool Append)
 {
-	std::ios_base::openmode Modes = std::ofstream::out;
-	std::ios_base::openmode ModesAppend = Modes + std::ofstream::app;
+	auto Modes = std::ofstream::out;
+	auto ModesAppend = Modes + std::ofstream::app;
 	std::ofstream FileHandle;
 	FileHandle.open(FilePath, Append ? ModesAppend : Modes);
 	FileHandle << text;

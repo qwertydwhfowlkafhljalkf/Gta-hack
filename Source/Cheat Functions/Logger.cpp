@@ -23,53 +23,44 @@ void Cheat::Logger::Init()
     LoggerInitialized = true;
 }
 
-// NOTE: this function is NOT thread-safe at the moment - TODO
+// Note: this function is NOT thread-safe at the moment - TODO
 const std::vector<std::string> LogMsgTypeStrings = { " [INFO] ", " [WARN] ", " [ERR] ", " [FATAL] ", " [DBG] " };
 void Cheat::Logger::LogMsg(LoggerMsgTypes Type, const char* Message, ...)
 {
     if (LoggerInitialized)
     {
-        std::string Time = CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S]");
+        // Get message with additional arguments
+        va_list args;
+        va_start(args, Message);
+        char buf[1024];
+        vsnprintf_s(buf, sizeof(buf), Message, args);
+        va_end(args);
+
+        // Get current time formatted
+        std::string CurrentTime = CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S]").c_str();
+
+        // Display & log message based on type
+        std::string FormattedMsg;
+
         if (Type == LoggerMsgTypes::LOGGER_INFO_MSG)
         {
-            //std::osyncstream(std::cout) << Time << dye::green(LogMsgTypeStrings[0]) << Message << std::endl;
-            va_list args;
-            va_start(args, Message);
-            char buf[1024];
-            vsnprintf_s(buf, sizeof(buf), Message, args);
-            va_end(args);
-            std::cout << Time << dye::green(LogMsgTypeStrings[0]) << buf << std::endl;
-            CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), Time + LogMsgTypeStrings[0] + Message, true);
+            FormattedMsg = CurrentTime + LogMsgTypeStrings[0] + buf + "\n";
+            std::cout << CurrentTime << dye::green(LogMsgTypeStrings[0]) << buf << std::endl;
         }
         else if (Type == LoggerMsgTypes::LOGGER_WARNING_MSG)
         {
-            va_list args;
-            va_start(args, Message);
-            char buf[1024];
-            vsnprintf_s(buf, sizeof(buf), Message, args);
-            va_end(args);
-            std::cout << Time << dye::yellow(LogMsgTypeStrings[1]) << buf << std::endl;
-            CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), Time + LogMsgTypeStrings[1] + Message, true);
+            FormattedMsg = CurrentTime + LogMsgTypeStrings[1] + buf + "\n";
+            std::cout << CurrentTime << dye::yellow(LogMsgTypeStrings[1]) << buf << std::endl;
         }
         else if (Type == LoggerMsgTypes::LOGGER_ERROR_MSG)
         {
-            va_list args;
-            va_start(args, Message);
-            char buf[1024];
-            vsnprintf_s(buf, sizeof(buf), Message, args);
-            va_end(args);
-            std::cout << Time << dye::red(LogMsgTypeStrings[2]) << buf << std::endl;
-            CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), Time + LogMsgTypeStrings[2] + Message, true);
+            FormattedMsg = CurrentTime + LogMsgTypeStrings[2] + buf + "\n";
+            std::cout << CurrentTime << dye::red(LogMsgTypeStrings[2]) << buf << std::endl;
         }
         else if (Type == LoggerMsgTypes::LOGGER_FATAL_MSG)
         {
-            va_list args;
-            va_start(args, Message);
-            char buf[1024];
-            vsnprintf_s(buf, sizeof(buf), Message, args);
-            va_end(args);
-            std::cout << Time << dye::red(LogMsgTypeStrings[3]) << buf << std::endl;
-            CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), Time + LogMsgTypeStrings[3] + Message, true);
+            FormattedMsg = CurrentTime + LogMsgTypeStrings[3] + buf + "\n";
+            std::cout << CurrentTime << dye::red(LogMsgTypeStrings[3]) << buf << std::endl;
             if (MessageBoxA(NULL, buf, "GTAV Cheat", MB_ICONSTOP | MB_OK | MB_SETFOREGROUND | MB_APPLMODAL) == IDOK)
             {
                 std::exit(EXIT_FAILURE);
@@ -77,13 +68,9 @@ void Cheat::Logger::LogMsg(LoggerMsgTypes Type, const char* Message, ...)
         }
         else if (Type == LoggerMsgTypes::LOGGER_DBG_MSG)
         {
-            va_list args;
-            va_start(args, Message);
-            char buf[1024];
-            vsnprintf_s(buf, sizeof(buf), Message, args);
-            va_end(args);
-            std::cout << Time << dye::grey(LogMsgTypeStrings[4] + buf) << std::endl;
-            CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), Time + LogMsgTypeStrings[4] + Message, true);
+            FormattedMsg = CurrentTime + LogMsgTypeStrings[4] + buf + "\n";
+            std::cout << CurrentTime << dye::grey(LogMsgTypeStrings[4]) << buf << std::endl;
         }
+        CheatFunctions::WriteToFile(CheatFunctions::ReturnMainLogFilePath(), FormattedMsg, true);
     }
 }
