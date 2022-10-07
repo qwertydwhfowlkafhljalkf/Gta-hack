@@ -47,11 +47,6 @@ const std::string Cheat::CheatFunctions::ReturnConfigFilePath()
 	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Config.ini";
 }
 
-const std::string Cheat::CheatFunctions::ReturnMainLogFilePath()
-{
-	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Logs\\Main.log";
-}
-
 const std::string Cheat::CheatFunctions::ReturnChatLogFilePath()
 {
 	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Logs\\Chats.log";

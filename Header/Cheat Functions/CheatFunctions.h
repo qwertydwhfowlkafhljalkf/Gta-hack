@@ -11,7 +11,6 @@ namespace Cheat
 		extern bool ConfigLoaded;
 		extern std::vector <std::string> LoadedSelectablesVector;
 		const std::string ReturnConfigFilePath();
-		const std::string ReturnMainLogFilePath();
 		const std::string ReturnChatLogFilePath();
 		const std::string ReturnHUDColorsFilePath();
 		const std::string ReturnCustomTeleportLocationsFilePath();
