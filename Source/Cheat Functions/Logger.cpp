@@ -69,7 +69,7 @@ void Cheat::Logger::LogMsg(LoggerMsgTypes Type, const char* Message, ...)
         else if (Type == LoggerMsgTypes::LOGGER_DBG_MSG)
         {
             FormattedMsg = CurrentTime + LogMsgTypeStrings[4] + buf + "\n";
-            std::cout << CurrentTime << dye::grey(LogMsgTypeStrings[4]) << buf << std::endl;
+            std::cout << CurrentTime << dye::grey(LogMsgTypeStrings[4]) << dye::grey(buf) << std::endl;
         }
         CheatFunctions::WriteToFile(CheatLogFilePath, FormattedMsg, true);
     }

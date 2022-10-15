@@ -7,7 +7,7 @@
 #pragma warning(disable : 6262)
 
 // Cheat version 
-#define CHEAT_BUILD_NUMBER "2.2.1.1"
+#define CHEAT_BUILD_NUMBER "2.2.1.2"
 
 #include <windows.h>
 #include <string>
