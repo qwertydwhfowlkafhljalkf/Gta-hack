@@ -816,6 +816,7 @@ void GUI::LoadTextureFile()
 	if (std::filesystem::exists(CheatFunctions::ReturnTextureFilePath()))
 	{
 		GameHooking::texture_file_register(&textureID, CheatFunctions::StringToChar(CheatFunctions::ReturnTextureFilePath()), true, "Textures.ytd", false);
+		GRAPHICS::REQUEST_STREAMED_TEXTURE_DICT("Textures", false); // Ensure the custom textures are loaded by RAGE because we need them soon
 		return;
 	}
 	else
