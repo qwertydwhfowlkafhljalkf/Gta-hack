@@ -2,7 +2,6 @@
 
 # Grand Theft Auto V Cheat
 [![C++](https://img.shields.io/badge/Language-C%2B%2B-16ba42?style=flat-square)](https://en.wikipedia.org/wiki/C%2B%2B)
-![Donate](https://img.shields.io/badge/Bitcoin-3BwCVtcJaNgUovcYQkDYFjrdy5YydTnjwc-red?style=flat-square)
 ![Issues](https://img.shields.io/github/issues/HatchesPls/GrandTheftAutoV-Cheat?style=flat-square)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
