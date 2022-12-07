@@ -881,29 +881,30 @@ void Cheat::GUI::ShowPlayerInformationBox(Player PlayerID)
 		{
 			GUI::DrawRectInGame(GUI::PrimaryColor, { guiX + (GUI::guiWidth / 2) + 0.166f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
 			GUI::DrawTextInGame("Player Information", { GUI::TextColorAndFont }, { guiX + (GUI::guiWidth / 2) + 0.155f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
-			GUI::DrawRectInGame({ 0, 0, 0, 210 }, { guiX + (GUI::guiWidth / 2) + 0.166f, GUI::guiY - 0.156f }, { 0.32f, 0.030f });
+			GUI::DrawRectInGame({ 0, 0, 0, GUI::PrimaryColor.a }, { guiX + (GUI::guiWidth / 2) + 0.166f, GUI::guiY - 0.156f }, { 0.32f, 0.030f });
 		}
 		else
 		{
 			GUI::DrawRectInGame(GUI::PrimaryColor, { guiX - (GUI::guiWidth / 2) - 0.166f, GUI::guiY + 0.014f }, { 0.32f, 0.31f }); //Main Background Rect
 			GUI::DrawTextInGame("Player Information", { GUI::TextColorAndFont }, { guiX - (GUI::guiWidth / 2) - 0.155f, GUI::guiY - 0.170f }, { 0.50f, 0.37f }, true);
-			GUI::DrawRectInGame({ 0, 0, 0, 210 }, { guiX - (GUI::guiWidth / 2) - 0.166f,GUI::guiY - 0.156f }, { 0.32f, 0.030f });
+			GUI::DrawRectInGame({ 0, 0, 0, GUI::PrimaryColor.a }, { guiX - (GUI::guiWidth / 2) - 0.166f,GUI::guiY - 0.156f }, { 0.32f, 0.030f });
 		}
 
 		//Text Entry's
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Name", 1);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry(PLAYER::GET_PLAYER_NAME(PlayerID), NULL, 1);
 
+		// Statistics
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Rank", 2);
-		Cheat::GUI::AddPlayerInfoBoxTextEntry("Money", 3);
+		Cheat::GUI::AddPlayerInfoBoxTextEntry("Money (bank & cash)", 3);
 		if (NETWORK::NETWORK_IS_SESSION_STARTED())
 		{
 			std::ostringstream PlayerRank;
-			PlayerRank << globalHandle(1590908 + 1).At(PlayerID, 874).At(205).At(5).As<int>();
+			PlayerRank << globalHandle(GLOBAL_PLAYERSTAT_RANK[0]).At(PlayerID, GLOBAL_PLAYERSTAT_RANK[1]).At(GLOBAL_PLAYERSTAT_RANK[2]).At(GLOBAL_PLAYERSTAT_RANK[3]).As<int>();
 			Cheat::GUI::AddPlayerInfoBoxTextEntry(PlayerRank.str(), NULL, 2);
 
 			std::ostringstream PlayerMoney;
-			PlayerMoney << "$" << globalHandle(1590908).At(PlayerID, 874).At(205).At(56).As<__int64>();
+			PlayerMoney << "$" << globalHandle(GLOBAL_PLAYERSTAT_TOTALMONEY[0]).At(PlayerID, GLOBAL_PLAYERSTAT_TOTALMONEY[1]).At(GLOBAL_PLAYERSTAT_TOTALMONEY[2]).At(GLOBAL_PLAYERSTAT_TOTALMONEY[3]).As<__int64>();
 			Cheat::GUI::AddPlayerInfoBoxTextEntry(PlayerMoney.str(), NULL, 3);
 		}
 		else
