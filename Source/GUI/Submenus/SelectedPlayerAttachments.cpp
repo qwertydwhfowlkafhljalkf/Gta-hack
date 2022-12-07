@@ -17,7 +17,6 @@ const std::vector<SelectedPlayerAttachmentsStruct> Models = {
 void GUI::Submenus::SelectedPlayerAttachments()
 {
 	GUI::Title("Attachments");
-
 	for (auto& i : Models)
 	{
 		if (GUI::Option(i.ModelName, ""))

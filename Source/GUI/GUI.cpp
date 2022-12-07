@@ -161,7 +161,7 @@ bool GUI::VehicleOption(DWORD VehicleHash)
 			}
 
 			float x = guiX < 0.75f ? guiX + (GUI::guiWidth / 2) + 0.080f : guiX - (GUI::guiWidth / 2) - 0.080f;
-			DrawSpriteInGame(VehiclePreviewDictName, VehiclePreviewName, x, guiY - 0.098f, 0.16f, 0.16f, 0.f, 255, 255, 255, 255);
+			DrawSpriteInGame(VehiclePreviewDictName, VehiclePreviewName, x, guiY - 0.098f, 0.16f, 0.16f, 0.f, 255, 255, 255, GUI::PrimaryColor.a);
 		}
 	}
 	return false;
