@@ -17,7 +17,7 @@ void GUI::Submenus::VehicleCustomizerColor()
 		}
 		else
 		{
-			GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
+			GameFunctions::MinimapNotification((char*)"~r~Player is not in a vehicle");
 		}
 	}
 	GUI::Int("Secondary Color: Red", VehicleSecondaryColorRed, 0, 255, 1, "", SELECTABLE_RETURN_VALUE_CHANGE);
@@ -32,7 +32,7 @@ void GUI::Submenus::VehicleCustomizerColor()
 		}
 		else
 		{
-			GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
+			GameFunctions::MinimapNotification((char*)"~r~Player is not in a vehicle");
 		}
 	}
 }

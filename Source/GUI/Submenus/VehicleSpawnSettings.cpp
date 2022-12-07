@@ -20,7 +20,7 @@ void GUI::Submenus::VehicleSpawnSettings()
 			{
 				if (strlen(Input) < 1)
 				{ 
-					GameFunctions::MinimapNotification("~r~Text must be at least one character long");
+					GameFunctions::MinimapNotification((char*)"~r~Text must be at least one character long");
 				}
 				else
 				{

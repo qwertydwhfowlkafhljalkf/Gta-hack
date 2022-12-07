@@ -34,7 +34,7 @@ void GUI::Submenus::Teleport()
 		}
 		catch (...)
 		{
-			GameFunctions::MinimapNotification("~r~Invalid float coordinate format inputted");
+			GameFunctions::MinimapNotification((char*)"~r~Invalid float coordinate format inputted");
 		}
 	}
 	if (GUI::Option("Teleport Into Last Used Vehicle", ""))
@@ -54,7 +54,7 @@ void GUI::Submenus::Teleport()
 		if (GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Custom Teleport Location Name", NewThemeFileName))
 		{
 			CheatFunctions::AddCustomTeleportLocation(NewThemeFileName);
-			GameFunctions::MinimapNotification("Custom Location Saved");
+			GameFunctions::MinimapNotification((char*)"Custom Location Saved");
 		}
 	}
 	GUI::MenuOption("View Locations", Submenus::CustomTeleportLocations);

@@ -18,7 +18,7 @@ void GUI::Submenus::SelectedPlayerGriefing()
 		}
 		else
 		{
-			GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
+			GameFunctions::MinimapNotification((char*)"~r~Player is not in a vehicle");
 		}
 	}
 	if (GUI::Option("Burst Vehicle Tires", ""))
@@ -63,7 +63,7 @@ void GUI::Submenus::SelectedPlayerGriefing()
 		}
 		else
 		{
-			GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
+			GameFunctions::MinimapNotification((char*)"~r~Player is not in a vehicle");
 		}
 	}
 	if (GUI::Option("Ram With Vehicle", ""))

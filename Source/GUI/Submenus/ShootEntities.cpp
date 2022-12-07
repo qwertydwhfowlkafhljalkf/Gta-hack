@@ -17,7 +17,7 @@ void GUI::Submenus::ShootEntities()
 			}		
 			else
 			{
-				GameFunctions::MinimapNotification("~r~That is not a valid entity name");
+				GameFunctions::MinimapNotification((char*)"~r~That is not a valid entity name");
 			}
 		}
 	}

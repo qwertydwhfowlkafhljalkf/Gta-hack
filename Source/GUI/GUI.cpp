@@ -125,7 +125,7 @@ bool GUI::Option(std::string option, std::string InformationText, int BitFlags)
 		{
 			if (BitFlags & SELECTABLE_DISABLED)
 			{
-				GameFunctions::AdvancedMinimapNotification("This selectable is disabled", "Textures", "AdvancedNotificationImage", false, 4, "GTAV Cheat", "", 0.5f, "");
+				GameFunctions::AdvancedMinimapNotification((char*)"This selectable is disabled", (char*)"Textures", (char*)"AdvancedNotificationImage", false, 4, (char*)"GTAV Cheat", (char*)"", 0.5f, (char*)"");
 				return false;
 			}
 			return true;
@@ -140,7 +140,7 @@ bool GUI::VehicleOption(DWORD VehicleHash)
 	{
 		std::string ModelName = VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(VehicleHash);
 		std::string OptionText = UI::_GET_LABEL_TEXT(ModelName.c_str());
-		if (Option(OptionText == "NULL" ? ModelName : OptionText, "Model Name: " + ModelName))
+		if (Option(OptionText == "NULL" ? ModelName : OptionText, "Model Name: " + ModelName + "\nSeats: " + std::to_string(VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(VehicleHash))))
 		{
 			return true;
 		}
@@ -683,7 +683,7 @@ void GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 {
 	if (!std::filesystem::exists(CheatFunctions::ReturnThemeFilePath(ThemeFileName)))
 	{ 
-		GameFunctions::MinimapNotification("Requested Theme does not exist. Auto load entry removed from config file."); 
+		GameFunctions::MinimapNotification((char*)"Requested Theme does not exist. Auto load entry removed from config file.");
 		CheatFunctions::IniFileRemoveKey(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Active Theme");
 		return;
 	}
@@ -724,14 +724,14 @@ void GUI::LoadTheme(std::string ThemeFileName, bool StartUp)
 	// Check Theme File Version
 	if (CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Theme", "theme_file_version") != "2.3")
 	{
-		GameFunctions::SubtitleNotification("The loaded Theme is outdated. Please resave it", 5000);
+		GameFunctions::SubtitleNotification((char*)"The loaded Theme is outdated. Please resave it", 5000);
 	}
 
 	// Save New Active Theme Name To Config File
 	if (!StartUp) 
 	{
 		CheatFunctions::IniFileWriteString(GUI::CurrentTheme, CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Active Theme");
-		GameFunctions::MinimapNotification("Theme Loaded"); 
+		GameFunctions::MinimapNotification((char*)"Theme Loaded");
 	}
 }
 
@@ -741,7 +741,7 @@ void GUI::DeleteLoadedTheme()
 	CheatFunctions::IniFileRemoveKey(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Active Theme");
 	GUI::CurrentTheme.clear();
 	GUI::currentOption = 1;
-	GameFunctions::MinimapNotification("Theme Removed");
+	GameFunctions::MinimapNotification((char*)"Theme Removed");
 }
 
 void GUI::SaveTheme(std::string ThemeFileName)
@@ -775,7 +775,7 @@ void GUI::SaveTheme(std::string ThemeFileName)
 
 	CheatFunctions::IniFileWriteString(std::to_string(GUI::TextColorAndFont.f), CheatFunctions::ReturnThemeFilePath(ThemeFileName), "Font", "text_font");
 
-	GameFunctions::MinimapNotification("Theme Saved");
+	GameFunctions::MinimapNotification((char*)"Theme Saved");
 }
 
 void GUI::LoadTextureFile()
@@ -826,7 +826,7 @@ void GUI::LoadTextureFile()
 
 	//Error
 Error:
-	GameFunctions::MinimapNotification("~r~Failed to load Texture file");
+	GameFunctions::MinimapNotification((char*)"~r~Failed to load Texture file");
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Failed to load Texture file; missing");
 }
 

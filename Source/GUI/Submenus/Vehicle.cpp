@@ -10,7 +10,7 @@ void GUI::Submenus::Vehicle()
 	{
 		if (!GameFunctions::DeleteVehicle(PED::GET_VEHICLE_PED_IS_USING(GameFunctions::PlayerPedID)))
 		{
-			GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
+			GameFunctions::MinimapNotification((char*)"~r~Player is not in a vehicle");
 		}
 	}
 	if (GUI::Option("Flip Up", "Flip vehicle up")) { VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, false), 0.f); }
@@ -25,22 +25,22 @@ void GUI::Submenus::Vehicle()
 				if (MISC::SHOULD_USE_METRIC_MEASUREMENTS())
 				{
 					ENTITY::SET_ENTITY_MAX_SPEED(VehicleHandle, GameFunctions::KMHToMS(MaxSpeedInput));
-					GameFunctions::MinimapNotification("Max Speed Set (KM/H)");
+					GameFunctions::MinimapNotification((char*)"Max Speed Set (KM/H)");
 				}
 				else
 				{
 					ENTITY::SET_ENTITY_MAX_SPEED(VehicleHandle, GameFunctions::MPHToMS(MaxSpeedInput));
-					GameFunctions::MinimapNotification("Max Speed Set (MP/H)");
+					GameFunctions::MinimapNotification((char*)"Max Speed Set (MP/H)");
 				}
 			}
 			else
 			{
-				GameFunctions::MinimapNotification("Canceled setting Max Vehicle Speed");
+				GameFunctions::MinimapNotification((char*)"Canceled setting Max Vehicle Speed");
 			}		
 		}
 		else
 		{
-			GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
+			GameFunctions::MinimapNotification((char*)"~r~Player is not in a vehicle");
 		}
 	}
 	GUI::Toggle("Invincibility", CheatFeatures::VehicleGodmodeBool, "Makes current vehicle invincible");

@@ -17,7 +17,7 @@ void GUI::Submenus::VehicleMultipliers()
 		}
 		else
 		{
-			GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
+			GameFunctions::MinimapNotification((char*)"~r~Player is not in a vehicle");
 		}
 	}
 }

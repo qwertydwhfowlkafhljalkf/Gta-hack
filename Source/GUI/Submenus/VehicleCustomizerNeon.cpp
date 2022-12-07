@@ -31,7 +31,7 @@ void GUI::Submenus::VehicleCustomizerNeon()
 		}
 		else
 		{
-			GameFunctions::MinimapNotification("~r~Player is not in a vehicle");
+			GameFunctions::MinimapNotification((char*)"~r~Player is not in a vehicle");
 		}
 	}
 	GUI::Break("Neon Presets", SELECTABLE_CENTER_TEXT);

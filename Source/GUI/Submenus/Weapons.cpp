@@ -10,7 +10,7 @@ void GUI::Submenus::Weapons()
 	}
 	if (GUI::Option("Clear All Weapons", "Weapons are not permanently removed"))
 	{
-		if (CheatFeatures::AutoGiveAllWeaponsBool) { GameFunctions::MinimapNotification("Disable 'Auto Give All Weapons' to use this"); }
+		if (CheatFeatures::AutoGiveAllWeaponsBool) { GameFunctions::MinimapNotification((char*)"Disable 'Auto Give All Weapons' to use this"); }
 		else { WEAPON::REMOVE_ALL_PED_WEAPONS(GameFunctions::PlayerPedID, true); }
 	}
 	GUI::Break("Upgrades", SELECTABLE_CENTER_TEXT);

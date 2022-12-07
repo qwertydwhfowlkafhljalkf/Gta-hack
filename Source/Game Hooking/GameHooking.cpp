@@ -77,7 +77,7 @@ void GameHooking::Init()
 	// Load GameState
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Getting GS pointer");
 	c_location = Memory::pattern("83 3D ? ? ? ? ? 75 17 8B 43 20 25").count(1).get(0).get<char>(2);
-	c_location == nullptr ? Logger::LogMsg(LOGGER_ERROR_MSG, "Failed to load GameState") : m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5);
+	if (c_location == nullptr) { Logger::LogMsg(LOGGER_ERROR_MSG, "Failed to load GameState"); } else { m_gameState = reinterpret_cast<decltype(m_gameState)>(c_location + *(int32_t*)c_location + 5); }
 
 	// Load Vector3 Result Fix
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Getting VRF pointer");
@@ -87,18 +87,18 @@ void GameHooking::Init()
 	// Load Native Registration Table
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Getting NRT pointer");
 	c_location = Memory::pattern("76 32 48 8B 53 40 48 8D 0D").count(1).get(0).get<char>(9);
-	c_location == nullptr ? Logger::LogMsg(LOGGER_ERROR_MSG, "Failed to load Native Registration Table") : m_registrationTable = reinterpret_cast<decltype(m_registrationTable)>(c_location + *(int32_t*)c_location + 4);
+	if (c_location == nullptr) { Logger::LogMsg(LOGGER_ERROR_MSG, "Failed to load Native Registration Table"); } else { m_registrationTable = reinterpret_cast<decltype(m_registrationTable)>(c_location + *(int32_t*)c_location + 4); }
 
 	// Load Game World Pointer
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Getting WLD pointer");
 	c_location = Memory::pattern("48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07").count(1).get(0).get<char>(0);
-	c_location == nullptr ? Logger::LogMsg(LOGGER_ERROR_MSG, "Failed to load World Pointer") : m_worldPtr = reinterpret_cast<uint64_t>(c_location) + *reinterpret_cast<int*>(reinterpret_cast<uint64_t>(c_location) + 3) + 7;
+	if (c_location == nullptr) { Logger::LogMsg(LOGGER_ERROR_MSG, "Failed to load World Pointer"); } else { m_worldPtr = reinterpret_cast<uint64_t>(c_location) + *reinterpret_cast<int*>(reinterpret_cast<uint64_t>(c_location) + 3) + 7; }
 
 	// Get Global Pointer
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Getting GLB pointer");
 	c_location = Memory::pattern("4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11").count(1).get(0).get<char>(0);
 	__int64 patternAddr = NULL;
-	c_location == nullptr ? Logger::LogMsg(LOGGER_ERROR_MSG, "Failed to load Global Pointer") : patternAddr = reinterpret_cast<decltype(patternAddr)>(c_location);
+	if (c_location == nullptr) { Logger::LogMsg(LOGGER_ERROR_MSG, "Failed to load Global Pointer"); } else { patternAddr = reinterpret_cast<decltype(patternAddr)>(c_location);	}
 	m_globalPtr = (__int64**)(patternAddr + *(int*)(patternAddr + 3) + 7);
 
 	// Get Event Hook -> Used by defuseEvent
@@ -106,7 +106,7 @@ void GameHooking::Init()
 	if ((c_location = Memory::pattern("48 83 EC 28 E8 ? ? ? ? 48 8B 0D ? ? ? ? 4C 8D 0D ? ? ? ? 4C 8D 05 ? ? ? ? BA 03").count(1).get(0).get<char>(0)))
 	{
 		int i = 0, j = 0, matches = 0, found = 0;
-		char* pattern = "\x4C\x8D\x05";
+		char* pattern = (char*)"\x4C\x8D\x05";
 		while (found != EventCountInteger)
 		{
 			if (c_location[i] == pattern[j])
@@ -394,7 +394,7 @@ bool GetEventDataHooked(std::int32_t eventGroup, std::int32_t eventIndex, std::i
 				{
 					MessageString.append(" ~n~Block reason: attempted " + ScriptEventIDType);
 				}
-				GameFunctions::AdvancedMinimapNotification(MessageString.data(), "Textures", "AdvancedNotificationImage", false, 4, "Script Events Protection", "", 0.8f, "");
+				GameFunctions::AdvancedMinimapNotification(MessageString.data(), (char*)"Textures", (char*)"AdvancedNotificationImage", false, 4, (char*)"Script Events Protection", (char*)"", 0.8f, (char*)"");
 			}			
 			return false;
 		}

@@ -36,7 +36,7 @@ void Cheat::Controls::Loop()
 				GUI::MenuGUIHasBeenOpened = true;
 				if (GUI::menuLevel == 0)
 				{
-					GameFunctions::PlayFrontendSoundDefault("YES");
+					GameFunctions::PlayFrontendSoundDefault((char*)"YES");
 					if (GUI::PreviousMenu != nullptr && GUI::RestorePreviousSubmenu)
 					{
 						GUI::MoveMenu(GUI::PreviousMenu);
@@ -54,7 +54,7 @@ void Cheat::Controls::Loop()
 				}
 				else
 				{
-					Cheat::GameFunctions::PlayFrontendSoundDefault("NO");
+					Cheat::GameFunctions::PlayFrontendSoundDefault((char*)"NO");
 					if (!GUI::DisableMenuGUIOpenCloseFade)
 					{
 						DoMenuGUIFade(false);
@@ -71,7 +71,7 @@ void Cheat::Controls::Loop()
 				if (GUI::menuLevel > 0)
 				{
 					GUI::BackMenu();
-					Cheat::GameFunctions::PlayFrontendSoundDefault("BACK");
+					Cheat::GameFunctions::PlayFrontendSoundDefault((char*)"BACK");
 				}
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}
@@ -80,7 +80,7 @@ void Cheat::Controls::Loop()
 				GUI::currentOption > 1 ? GUI::currentOption-- : GUI::currentOption = GUI::optionCount;
 				if (GUI::menuLevel > 0)
 				{
-					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
+					Cheat::GameFunctions::PlayFrontendSoundDefault((char*)"NAV_UP_DOWN");
 				}
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}
@@ -89,7 +89,7 @@ void Cheat::Controls::Loop()
 				GUI::currentOption < GUI::optionCount ? GUI::currentOption++ : GUI::currentOption = 1;
 				if (GUI::menuLevel > 0)
 				{
-					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
+					Cheat::GameFunctions::PlayFrontendSoundDefault((char*)"NAV_UP_DOWN");
 				}
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}
@@ -98,7 +98,7 @@ void Cheat::Controls::Loop()
 				LeftPressed = true;
 				if (GUI::menuLevel > 0)
 				{
-					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
+					Cheat::GameFunctions::PlayFrontendSoundDefault((char*)"NAV_UP_DOWN");
 				}
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}
@@ -107,7 +107,7 @@ void Cheat::Controls::Loop()
 				RightPressed = true;
 				if (GUI::menuLevel > 0)
 				{
-					Cheat::GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
+					Cheat::GameFunctions::PlayFrontendSoundDefault((char*)"NAV_UP_DOWN");
 				}
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}
@@ -116,7 +116,7 @@ void Cheat::Controls::Loop()
 				SelectPressed = true;
 				if (GUI::menuLevel > 0)
 				{
-					Cheat::GameFunctions::PlayFrontendSoundDefault("SELECT");
+					Cheat::GameFunctions::PlayFrontendSoundDefault((char*)"SELECT");
 				}
 				KeyPressDelayPreviousTick = GetTickCount64();
 			}
@@ -172,7 +172,7 @@ void Cheat::Controls::Loop()
 				{
 					GUI::currentOption = GUI::TotalOptionsCount;
 				}
-				GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
+				GameFunctions::PlayFrontendSoundDefault((char*)"NAV_UP_DOWN");
 			}
 			// Scroll Down
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_CURSOR_SCROLL_DOWN))
@@ -185,7 +185,7 @@ void Cheat::Controls::Loop()
 				{
 					GUI::currentOption = 1;
 				}
-				GameFunctions::PlayFrontendSoundDefault("NAV_UP_DOWN");
+				GameFunctions::PlayFrontendSoundDefault((char*)"NAV_UP_DOWN");
 			}
 		}
 	}

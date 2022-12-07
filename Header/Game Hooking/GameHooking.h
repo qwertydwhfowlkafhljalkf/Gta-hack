@@ -1,4 +1,7 @@
 #pragma once
+#include "types.h"
+#include "NativeInvoker.h"
+#include "enums.h"
 
 typedef bool(__cdecl* IsDLCPresent)							(Hash dlcHash);
 typedef uint32_t*(__cdecl* TextureFileRegister)				(int*, const char*, bool, const char*, bool);

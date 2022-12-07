@@ -27,7 +27,7 @@ void GUI::Submenus::CustomTeleportLocations()
 					if (GUI::Option("Copy Coordinates To Clipboard", ""))
 					{
 						CheatFunctions::CopyStringToClipboard("X: " + std::to_string(Target.x) + " Y: " + std::to_string(Target.y) + " Z: " + std::to_string(Target.z));
-						GameFunctions::MinimapNotification("Custom Location coordinates copied to clipboard");
+						GameFunctions::MinimapNotification((char*)"Custom Location coordinates copied to clipboard");
 					}
 					if (GUI::Option("Delete", ""))
 					{

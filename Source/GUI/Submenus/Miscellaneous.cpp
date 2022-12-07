@@ -43,10 +43,10 @@ void GUI::Submenus::Miscellaneous()
 				PED::SET_PED_INTO_VEHICLE(GameFunctions::PlayerPedID, VehicleHandle, 0);
 				TASK::TASK_VEHICLE_DRIVE_TO_COORD(Driver, VehicleHandle, WayPointVector.x, WayPointVector.y, WayPointVector.z, 40, 1, ENTITY::GET_ENTITY_MODEL(VehicleHandle), 7, 6, -1);
 				VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(VehicleHandle, "CRUSADER");
-				GameFunctions::MinimapNotification("NPC Driver Spawned");
+				GameFunctions::MinimapNotification((char*)"NPC Driver Spawned");
 			}
 		}
-		else { GameFunctions::MinimapNotification("Please set a waypoint first to use this feature"); }
+		else { GameFunctions::MinimapNotification((char*)"Please set a waypoint first to use this feature"); }
 	}
 	if (GUI::Option("Get Empty Session", "Get Empty (Public) Session")) { Sleep(10000); }
 	if (GUI::Option("Exit to Single Player", "")) { if (NETWORK::NETWORK_IS_SESSION_STARTED()) { NETWORK::_SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE(); } }

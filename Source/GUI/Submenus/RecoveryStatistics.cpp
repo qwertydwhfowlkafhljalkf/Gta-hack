@@ -19,7 +19,7 @@ void GUI::Submenus::RecoveryStatistics()
 		{
 			GameFunctions::SetCharacterSkillStat(i, 100);
 		}
-		GameFunctions::MinimapNotification("Maxed out all skill stats for your current character");
+		GameFunctions::MinimapNotification((char*)"Maxed out all skill stats for your current character");
 	}
 	if (GUI::Int("Stamina", Stamina, 0, 100, 1, "", SELECTABLE_RETURN_VALUE_CHANGE))
 	{

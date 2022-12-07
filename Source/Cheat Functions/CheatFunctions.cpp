@@ -216,7 +216,7 @@ int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 			{
 				if (i == VK_ESCAPE)
 				{
-					Cheat::GameFunctions::MinimapNotification("Canceled Key Selection");
+					Cheat::GameFunctions::MinimapNotification((char*)"Canceled Key Selection");
 					return 0;
 				}
 				return i;
@@ -233,7 +233,7 @@ void Cheat::CheatFunctions::SaveSelectable(std::string OptionName, std::string O
 		if (IsSavable)
 		{
 			std::string LogMessage = "'" + OptionName + "' (" + GUI::CurrentSubmenu + " submenu) selectable state saved";
-			Cheat::GameFunctions::AdvancedMinimapNotification(StringToChar(LogMessage), "Textures", "AdvancedNotificationImage", false, 4, "Config", "", 0.5f, "");
+			Cheat::GameFunctions::AdvancedMinimapNotification(StringToChar(LogMessage), (char*)"Textures", (char*)"AdvancedNotificationImage", false, 4, (char*)"Config", (char*)"", 0.5f, (char*)"");
 			Logger::LogMsg(LOGGER_DBG_MSG, "'%s' (%s submenu) selectable state saved", OptionName.c_str(), GUI::CurrentSubmenu.c_str());
 			IniFileWriteString(OptionValue, ReturnConfigFilePath(), "submenu_" + GUI::CurrentSubmenu, OptionName);
 		}

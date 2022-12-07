@@ -17,14 +17,14 @@ void Cheat::GameFunctions::RepairAndCleanVehicle(Vehicle vehicle)
 	VEHICLE::SET_VEHICLE_ENGINE_HEALTH(vehicle, 1000.f);
 	VEHICLE::SET_VEHICLE_FIXED(vehicle);
 	VEHICLE::SET_VEHICLE_ENGINE_ON(vehicle, true, true, false);
-	Cheat::GameFunctions::AdvancedMinimapNotification("Vehicle Repaired & Cleaned", "Textures", "AdvancedNotificationImage", false, 4, "Los Santos Customs", "", 1.0, "");
+	Cheat::GameFunctions::AdvancedMinimapNotification((char*)"Vehicle Repaired & Cleaned", (char*)"Textures", (char*)"AdvancedNotificationImage", false, 4, (char*)"Los Santos Customs", (char*)"", 1.0, (char*)"");
 }
 
 void Cheat::GameFunctions::TeleportToBlipCoord(Blip TargetBlip)
 {
 	if (TargetBlip == SpriteWaypoint && !UI::IS_WAYPOINT_ACTIVE())
 	{
-		Cheat::GameFunctions::MinimapNotification("~r~No Waypoint has been set"); 
+		Cheat::GameFunctions::MinimapNotification((char*)"~r~No Waypoint has been set");
 		return;
 	}
 
@@ -34,7 +34,7 @@ void Cheat::GameFunctions::TeleportToBlipCoord(Blip TargetBlip)
 		GameFunctions::TeleportToCoords(Cheat::GameFunctions::PlayerPedID, UI::GET_BLIP_INFO_ID_COORD(BlipHandle), true, false);
 		return;
 	}
-	GameFunctions::MinimapNotification("~r~Target Blip does not exist");
+	GameFunctions::MinimapNotification((char*)"~r~Target Blip does not exist");
 }
 
 void Cheat::GameFunctions::TeleportToObjective()
@@ -66,7 +66,7 @@ void Cheat::GameFunctions::TeleportToObjective()
 			blipFound = true;
 		}
 	}
-	blipFound ? Cheat::GameFunctions::TeleportToCoords(e, wayp, false, false) : Cheat::GameFunctions::MinimapNotification("~r~Objective not found");
+	blipFound ? Cheat::GameFunctions::TeleportToCoords(e, wayp, false, false) : Cheat::GameFunctions::MinimapNotification((char*)"~r~Objective not found");
 }
 
 void Cheat::GameFunctions::SetOffAlarmPlayerVehicle(Ped selectedPed)
@@ -118,11 +118,11 @@ void Cheat::GameFunctions::SetRankRockstarGift(int Rank)
 	if (Rank > 0 && Rank <= 8000)
 	{ 
 		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(ReturnCurrentGTAOCharacter() + "_CHAR_SET_RP_GIFT_ADMIN")), ReturnReputationPointsAmount(Rank), true);
-		MinimapNotification("Join a new GTAO session for the new Rank to be applied");
+		MinimapNotification((char*)"Join a new GTAO session for the new Rank to be applied");
 	}
 	else
 	{
-		MinimapNotification("Invalid Rank Inputted");
+		MinimapNotification((char*)"Invalid Rank Inputted");
 	}
 }
 
@@ -248,7 +248,7 @@ void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoC
 				{
 					coords = ClosestRoadCoord;
 				}
-				GameFunctions::SubtitleNotification("~r~Ground not found, teleported to nearby road", 4000);
+				GameFunctions::SubtitleNotification((char*)"~r~Ground not found, teleported to nearby road", 4000);
 			}
 			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
 		}
@@ -572,7 +572,7 @@ void Cheat::GameFunctions::SpawnVehicle(const char* ModelName)
 
 			if (CheatFeatures::VehicleSpawnerLicensePlateVectorPosition != 0)
 			{
-				char* LicensePlateString = "";
+				char* LicensePlateString = (char*)"";
 				if (CheatFeatures::VehicleSpawnerLicensePlateVectorPosition == 2)
 				{
 					LicensePlateString = CheatFunctions::StringToChar(CheatFeatures::VehicleSpawnerCustomLicensePlateTextString);
@@ -588,14 +588,14 @@ void Cheat::GameFunctions::SpawnVehicle(const char* ModelName)
 			NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK::VEH_TO_NET(NewVehicleHandle), true);
 			DECORATOR::DECOR_SET_INT(NewVehicleHandle, "MPBitset", 0);
 			ENTITY::_SET_ENTITY_CLEANUP_BY_ENGINE(NewVehicleHandle, true);
-			Cheat::GameFunctions::MinimapNotification("Vehicle Spawned");
+			Cheat::GameFunctions::MinimapNotification((char*)"Vehicle Spawned");
 			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(VehicleHash);
 			GameArrays::SpawnedVehicles.push_back(NewVehicleHandle);
 		}
 	}
 	else
 	{
-		Cheat::GameFunctions::MinimapNotification("~r~That is not a valid Vehicle model");
+		Cheat::GameFunctions::MinimapNotification((char*)"~r~That is not a valid Vehicle model");
 	}
 }
 

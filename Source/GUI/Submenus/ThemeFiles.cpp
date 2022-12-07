@@ -16,7 +16,7 @@ void GUI::Submenus::ThemeFiles()
 				}
 				else
 				{
-					GameFunctions::MinimapNotification("~r~Unable to locate theme file");
+					GameFunctions::MinimapNotification((char*)"~r~Unable to locate theme file");
 				}
 			}
 		}

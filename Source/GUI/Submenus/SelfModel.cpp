@@ -13,7 +13,7 @@ void GUI::Submenus::SelfModel()
 			DWORD model = MISC::GET_HASH_KEY(KeyboardInput);
 			if (!STREAMING::IS_MODEL_IN_CDIMAGE(model))
 			{
-				GameFunctions::MinimapNotification("~r~That is not a valid ped model");
+				GameFunctions::MinimapNotification((char*)"~r~That is not a valid ped model");
 			}
 			else
 			{

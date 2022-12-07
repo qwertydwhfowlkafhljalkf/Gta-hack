@@ -16,7 +16,7 @@ void GUI::Submenus::AllPlayers()
 
 			if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && NETWORK::NETWORK_IS_PLAYER_ACTIVE(i))
 			{
-				GameFunctions::SubtitleNotification("Giving all weapons to all players in session, one moment", 2000);
+				GameFunctions::SubtitleNotification((char*)"Giving all weapons to all players in session, one moment", 2000);
 				GameFunctions::GiveAllWeaponsToPlayer(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i));
 			}
 		}
@@ -94,7 +94,7 @@ void GUI::Submenus::AllPlayers()
 
 			if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && NETWORK::NETWORK_IS_PLAYER_ACTIVE(i))
 			{
-				GameFunctions::AttachObjectToPed(i, "prop_beach_fire");
+				GameFunctions::AttachObjectToPed(i, (char*)"prop_beach_fire");
 			}
 		}
 	}

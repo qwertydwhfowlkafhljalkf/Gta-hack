@@ -55,11 +55,11 @@ void GUI::Submenus::Theme()
 		else { Canceled = true; }
 		if (!Canceled)
 		{
-			GameFunctions::MinimapNotification("Updated Primary Color");
+			GameFunctions::MinimapNotification((char*)"Updated Primary Color");
 		}
 		else
 		{
-			GameFunctions::MinimapNotification("Canceled Updating Primary Color");
+			GameFunctions::MinimapNotification((char*)"Canceled Updating Primary Color");
 		}
 	}
 	if (GUI::Option("Text", "Save is disabled while RGB Disco is enabled", CheatFeatures::RGBDiscoBool ? SELECTABLE_DISABLED : SELECTABLE_DUMMY))
@@ -83,11 +83,11 @@ void GUI::Submenus::Theme()
 		else { Canceled = true; }
 		if (!Canceled)
 		{
-			GameFunctions::MinimapNotification("Updated Text Color");
+			GameFunctions::MinimapNotification((char*)"Updated Text Color");
 		}
 		else
 		{
-			GameFunctions::MinimapNotification("Canceled Updating Text Color");
+			GameFunctions::MinimapNotification((char*)"Canceled Updating Text Color");
 		}
 	}
 	GUI::Break("Font", SELECTABLE_CENTER_TEXT);

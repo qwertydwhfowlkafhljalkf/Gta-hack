@@ -459,7 +459,7 @@ void GUI::Submenus::Recovery()
 
 
 
-		GameFunctions::MinimapNotification("'Unlocked All' completed");
+		GameFunctions::MinimapNotification((char*)"'Unlocked All' completed");
 	}
 	if (GUI::Option("Unlock Tattoo's", "Unlock most tattoo's"))
 	{
@@ -634,7 +634,7 @@ void GUI::Submenus::Recovery()
 		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_AWD_FMTATTOOALLBODYPARTS")), 1, 1);
 		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CHAR_WANTED_LEVEL_TIME5STAR")), 2147483647, 1);
 		STATS::STAT_SET_FLOAT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_LONGEST_WHEELIE_DIST")), 1000, 1);
-		GameFunctions::MinimapNotification("GTA Online Awards & Trophies unlocked");
+		GameFunctions::MinimapNotification((char*)"GTA Online Awards & Trophies unlocked");
 	}
 	if (GUI::Option("Allow Character Gender Change", ""))
 	{
@@ -711,12 +711,12 @@ void GUI::Submenus::Recovery()
 	if (GUI::Option("Set Max Nightclub Popularity", "Set NightClub Popularity to 100%"))
 	{
 		STATS::STAT_SET_INT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_CLUB_POPULARITY")), 9999, false);
-		GameFunctions::MinimapNotification("Maxed out Nightclub Popularity");
+		GameFunctions::MinimapNotification((char*)"Maxed out Nightclub Popularity");
 	}
 	if (GUI::Option("Redesign Character Prompt", ""))
 	{
 		STATS::STAT_SET_BOOL(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_FM_CHANGECHAR_ASKED")), false, true);
-		GameFunctions::MinimapNotification("Leave GTAO and rejoin to receive the notification");
+		GameFunctions::MinimapNotification((char*)"Leave GTAO and rejoin to receive the notification");
 	}
 	if (GUI::Option("Clear Badsport", "Clears Badsport status"))
 	{
@@ -725,12 +725,12 @@ void GUI::Submenus::Recovery()
 		STATS::STAT_SET_INT(MISC::GET_HASH_KEY("MP0_BAD_SPORT_BITSET"), false, true);
 		STATS::STAT_SET_INT(MISC::GET_HASH_KEY("MP1_BAD_SPORT_BITSET"), false, true);
 		STATS::STAT_SET_DATE(MISC::GET_HASH_KEY("MPPLY_BECAME_BADSPORT_DT"), &date[0], 7, true);
-		GameFunctions::MinimapNotification("Cleared Badsport Status");
+		GameFunctions::MinimapNotification((char*)"Cleared Badsport Status");
 	}
 	if (GUI::Option("Clear Mental State", "Clear current mental state"))
 	{
 		STATS::STAT_SET_FLOAT(MISC::GET_HASH_KEY(CheatFunctions::StringToChar(GameFunctions::ReturnCurrentGTAOCharacter() + "_PLAYER_MENTAL_STATE")), 0.0f, true);
-		GameFunctions::MinimapNotification("Mental State Reset");
+		GameFunctions::MinimapNotification((char*)"Mental State Reset");
 	}
 	GUI::Break("ATM", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Move Wallet To Bank", ""))

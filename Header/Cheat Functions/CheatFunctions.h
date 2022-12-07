@@ -15,7 +15,11 @@ namespace Cheat
 		const std::string ReturnHUDColorsFilePath();
 		const std::string ReturnCustomTeleportLocationsFilePath();
 		const std::string ReturnThemeFilePath(std::string ThemeName);
+		int StringToInt(std::string String);
+		bool StringToBool(std::string String);
 		void LoadConfig();
+		void SaveSelectable(std::string OptionName, std::string OptionValue, bool IsSavable);
+		std::string GetSelectableValueFromConfig(std::string OptionName);
 		bool IsSelectableRegisteredAsLoaded(std::string OptionName);
 		template<typename T> void LoadConfigOption(std::string OptionName, T& ReturnedVariable)
 		{
@@ -57,8 +61,6 @@ namespace Cheat
 		}
 		std::string ReturnCheatModuleDirectoryPath();
 		std::string GetWindowsUserDocumentsFolderPath();
-		void SaveSelectable(std::string OptionName, std::string OptionValue, bool IsSavable);
-		std::string GetSelectableValueFromConfig(std::string OptionName);
 		void CreateNewDirectory(std::string Path);
 		void Loop();
 		bool IsGameWindowFocussed();
@@ -73,14 +75,12 @@ namespace Cheat
 		void IniFileRemoveKey(std::string FilePath, std::string Section, std::string Key);
 		void WriteBoolToIni(bool b00l, std::string file, std::string app, std::string key);
 		std::string ReturnDateTimeFormatAsString(const char* DateTimeFormat);
-		bool StringToBool(std::string String);
 		bool IsKeyCurrentlyPressed(int vKey, bool RepeatInput = false);
 		void WriteToFile(std::string FilePath, std::string text, bool Append);
 		Json::Value ReturnGithubAPIJsonDataCheat(std::string Build);
 		std::string GetLatestCheatBuildNumber();
 		void CheckCheatUpdate();
 		std::string RemoveCharactersFromStringAndReturn(std::string String, char* CharactersToRemove);
-		int StringToInt(std::string String);
 		std::string TextWrap(std::string String, int Location);
 		void CopyStringToClipboard(const std::string& String);
 		bool GetJsonFromFile(std::string Path, Json::Value& Object);

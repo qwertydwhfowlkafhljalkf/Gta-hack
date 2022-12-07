@@ -67,7 +67,7 @@ void Cheat::CheatFeatures::Loop()
 	{
 		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to open Menu GUI";
 		std::string WelcomeText = "Welcome " + (std::string)SOCIALCLUB::_SC_GET_NICKNAME() + ", have fun!";
-		GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(WelcomeText), "Textures", "AdvancedNotificationImage", false, 4, "GTAV Cheat", "", 0.3f, "");
+		GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(WelcomeText), (char*)"Textures", (char*)"AdvancedNotificationImage", false, 4, (char*)"GTAV Cheat", (char*)"", 0.3f, (char*)"");
 		UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
 	}
 	GameFunctions::InGameKeyboardWindowTitle.clear();
@@ -240,73 +240,73 @@ void Cheat::CheatFeatures::Loop()
 		}
 	}
 
-	GodmodeBool ? Godmode(true) : GodmodeWasEnabled ? Godmode(false), GodmodeWasEnabled = false : NULL;
-	NeverWantedBool ? NeverWanted() : NULL;
-	NoWeaponReloadBool ? NoWeaponReload() : NULL;
-	InfiniteAmmoBool ? InfiniteAmmo(true) : InfiniteAmmoWasEnabled ? InfiniteAmmo(false), InfiniteAmmoWasEnabled = false : NULL;
-	SlowMotionBool ? SlowMotion(true) : SlowMotionWasEnabled ? SlowMotion(false), SlowMotionWasEnabled = false : NULL;
-	WorldBlackoutBool ? WorldBlackout(true) : WorldBlackoutWasEnabled ? WorldBlackout(false), WorldBlackoutWasEnabled = false : NULL;
-	GravityGunBool ? GravityGun() : NULL;
-	DisableHUDBool ? DisableHUD() : NULL;
-	NoGravityBool ? NoGravity(true) : NoGravityWasEnabled ? NoGravity(false), NoGravityWasEnabled = false : NULL;
-	WorldSnowLocalBool ? WorldSnowLocal(true) : WorldSnowLocalWasEnabled ? WorldSnowLocal(false), WorldSnowLocalWasEnabled = false : NULL;
-	AutoTeleportToWaypointBool ? AutoTeleportToWaypoint() : NULL;
-	OneHitKillBool ? OneHitKill() : OneHitKillWasEnabled ? PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 1.f), PLAYER::SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 1.f, false), OneHitKillWasEnabled  = false: NULL;
+	if (GodmodeBool) { Godmode(true); } else if (GodmodeWasEnabled) { Godmode(false);  GodmodeWasEnabled = false; }
+	NeverWantedBool ? NeverWanted() : void();
+	NoWeaponReloadBool ? NoWeaponReload() : void();
+	if (InfiniteAmmoBool) { InfiniteAmmo(true); } else if (InfiniteAmmoWasEnabled) { InfiniteAmmo(false);  InfiniteAmmoWasEnabled = false; }
+	if (SlowMotionBool) { SlowMotion(true); } else if (SlowMotionWasEnabled) { SlowMotion(false);  SlowMotionWasEnabled = false; }
+	if (WorldBlackoutBool) { WorldBlackout(true); } else if (WorldBlackoutWasEnabled) { WorldBlackout(false); WorldBlackoutWasEnabled = false; }
+	GravityGunBool ? GravityGun() : void();
+	DisableHUDBool ? DisableHUD() : void();
+	if (NoGravityBool) { NoGravity(true); } else if (NoGravityWasEnabled) { NoGravity(false);  NoGravityWasEnabled = false; }
+	if (WorldSnowLocalBool) { WorldSnowLocal(true); } else if (WorldSnowLocalWasEnabled) { WorldSnowLocal(false);  WorldSnowLocalWasEnabled = false; }
+	AutoTeleportToWaypointBool ? AutoTeleportToWaypoint() : void();
+	if (OneHitKillBool) { OneHitKill(); } else if (OneHitKillWasEnabled) { PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 1.f); PLAYER::SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 1.f, false); OneHitKillWasEnabled = false; }
 	PauseTimeBool ? PauseTime(true) : PauseTime(false);
-	ExplosiveMeleeBool ? ExplosiveMelee() : NULL;
-	OrbitalCannonCooldownBypassBool ? OrbitalCannonCooldownBypass() : NULL;
+	ExplosiveMeleeBool ? ExplosiveMelee() : void();
+	OrbitalCannonCooldownBypassBool ? OrbitalCannonCooldownBypass() : void();
 	ProtectionVoteKickBool ? ProtectionVoteKick(true) : ProtectionVoteKick(false);
 	ProtectionFreezeBool ? ProtectionFreeze(true) : ProtectionFreeze(false);
 	ProtectionWorldEventsBool ? ProtectionWorldEvents(true) : ProtectionWorldEvents(false);
 	ProtectionVehicleBool ? ProtectionVehicle(true) : ProtectionVehicle(false);
 	ProtectionAlterWantedLevelBool ? ProtectionAlterWantedLevel(true) : ProtectionAlterWantedLevel(false);
 	ProtectionGiveRemoveWeaponsBool ? ProtectionGiveRemoveWeapons(true) : ProtectionGiveRemoveWeapons(false);
-	SuperJumpBool ? SuperJump() : NULL;
-	ShowFPSBool ? ShowFPS() : NULL;
-	JumpAroundModeBool ? JumpAroundMode() : NULL;
-	VehicleHornBoostBool ? VehicleHornBoost() : NULL;
+	SuperJumpBool ? SuperJump() : void();
+	ShowFPSBool ? ShowFPS() : void();
+	JumpAroundModeBool ? JumpAroundMode() : void();
+	VehicleHornBoostBool ? VehicleHornBoost() : void();
 	VehicleGodmodeBool ? VehicleGodmode(true) : VehicleGodmode(false);
 	VehicleInvisibleBool ? VehicleInvisible(true) : VehicleInvisible(false);
 	PlayerInvisibleLocalBool ? PlayerInvisibleLocal(true) : PlayerInvisibleLocal(false);
 	PlayerInvisibleNetworkBool ? PlayerInvisibleNetwork(true) : PlayerInvisibleNetwork(false);
 	MobileRadioBool ? MobileRadio(true) : MobileRadio(false);
-	WeaponRapidFireBool ? WeaponRapidFire() : NULL;
+	WeaponRapidFireBool ? WeaponRapidFire() : void();
 	PlayerIgnoredBool ? PlayerIgnored(true) : PlayerIgnored(false);
-	NoClipBool ? NoClip() : NoClipWasEnabled ? ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, true, true), NoClipWasEnabled = false : NULL;
-	RainbowVehicleBool ? RainbowVehicle() : NULL;
-	DeleteGunBool ? DeleteGun() : NULL;
-	NerfBulletsBool ? NerfBullets() : NerfBulletsWasEnabled ? PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 1.f), NerfBulletsWasEnabled = false : NULL;
-	SpectatePlayerBool ? SpectatePlayer(true) : SpectatePlayerWasEnabled ? SpectatePlayer(false), SpectatePlayerWasEnabled = false : NULL;
+	if (NoClipBool) { NoClip(); } else if (NoClipWasEnabled) { ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, true, true); NoClipWasEnabled = false; }
+	RainbowVehicleBool ? RainbowVehicle() : void();
+	DeleteGunBool ? DeleteGun() : void();
+	if (NerfBulletsBool) { NerfBullets(); } else if (NerfBulletsWasEnabled) { PLAYER::SET_PLAYER_WEAPON_DAMAGE_MODIFIER(GameFunctions::PlayerID, 1.f); NerfBulletsWasEnabled = false; }
+	if (SpectatePlayerBool) { SpectatePlayer(true); } else if (SpectatePlayerWasEnabled) { SpectatePlayer(false);  SpectatePlayerWasEnabled = false; }
 	NoRagdollAndSeatbeltBool ? NoRagdollAndSeatbelt(true) : NoRagdollAndSeatbelt(false);
-	FreezeSelectedPlayerBool ? FreezeSelectedPlayer() : NULL;
-	FreezeAllPlayersBool ? FreezeAllPlayers() : NULL;
-	TriggerBotBool ? TriggerBot() : NULL;
-	SuperBrakesBool ? SuperBrakes() : NULL;
+	FreezeSelectedPlayerBool ? FreezeSelectedPlayer() : void();
+	FreezeAllPlayersBool ? FreezeAllPlayers() : void();
+	TriggerBotBool ? TriggerBot() : void();
+	SuperBrakesBool ? SuperBrakes() : void();
 	TinyPlayerBool ? TinyPlayer(true) : TinyPlayer(false);
-	UnlimitedRocketBoostBool ? UnlimitedRocketBoost() : NULL;
-	ShootEntitiesBool ? ShootEntities() : NULL;
-	PlayerESPBool ? PlayerESP() : NULL;
-	OffRadarBool ? OffRadar() : NULL;
-	ExplodeLoopSelectedPlayerBool ? ExplodeLoopSelectedPlayer() : NULL;
-	DriveOnWaterBool ? DriveOnWater() : NULL;
-	SuperManBool ? SuperMan() : NULL;
-	ShakeCamSelectedPlayerBool ? ShakeCamSelectedPlayer() : NULL;
-	RainbowGunBool ? RainbowGun() : NULL;
-	DisableMobilePhoneBool ? DisableMobilePhone() : NULL;
-	NoIdleKickBool ? NoIdleKick() : NULL;
-	CopsTurnBlindEyeBool ? CopsTurnBlindEye() : NULL;
-	VehicleWeaponsBool ? VehicleWeapons() : NULL;
-	AutoGiveAllWeaponsBool ? AutoGiveAllWeapons() : NULL;
-	AutoGiveAllWeaponUpgradesBool ? AutoGiveAllWeaponUpgrades() : NULL;
+	UnlimitedRocketBoostBool ? UnlimitedRocketBoost() : void();
+	ShootEntitiesBool ? ShootEntities() : void();
+	PlayerESPBool ? PlayerESP() : void();
+	OffRadarBool ? OffRadar() : void();
+	ExplodeLoopSelectedPlayerBool ? ExplodeLoopSelectedPlayer() : void();
+	DriveOnWaterBool ? DriveOnWater() : void();
+	SuperManBool ? SuperMan() : void();
+	ShakeCamSelectedPlayerBool ? ShakeCamSelectedPlayer() : void();
+	RainbowGunBool ? RainbowGun() : void();
+	DisableMobilePhoneBool ? DisableMobilePhone() : void();
+	NoIdleKickBool ? NoIdleKick() : void();
+	CopsTurnBlindEyeBool ? CopsTurnBlindEye() : void();
+	VehicleWeaponsBool ? VehicleWeapons() : void();
+	AutoGiveAllWeaponsBool ? AutoGiveAllWeapons() : void();
+	AutoGiveAllWeaponUpgradesBool ? AutoGiveAllWeaponUpgrades() : void();
 	FreeCamBool ? FreeCam(true) : FreeCam(false);
-	EntityInformationGunBool ? EntityInformationGun() : NULL;
-	CrossHairBool ? CrossHair() : NULL;
-	RGBDiscoBool ? RGBDisco() : !RGBDiscoFirstCall ? RGBDiscoFirstCall = true : NULL;
-	FreezeStationBool ? FreezeStation() : FreezeStationWasEnabled ? AUDIO::UNFREEZE_RADIO_STATION(AUDIO::GET_PLAYER_RADIO_STATION_NAME()), FreezeStationWasEnabled = false : NULL;
-	HideMinimapBool ? HideMinimap() : HideMinimapWasEnabled ? UI::DISPLAY_RADAR(true), HideMinimapWasEnabled = false : NULL;
-	WeaponInvisibilityBool ? WeaponInvisibility(true) : WeaponInvisibilityWasEnabled ? WeaponInvisibility(false), WeaponInvisibilityWasEnabled = false : NULL;
-	SessionLockFriendsOnlyBool ? SessionLockFriendsOnly() : NULL;
-	ShowTVBool ? ShowTV(true) : ShowTVWasEnabled ? ShowTV(false), ShowTVWasEnabled = false : NULL;
+	EntityInformationGunBool ? EntityInformationGun() : void();
+	CrossHairBool ? CrossHair() : void();
+	if (RGBDiscoBool) { RGBDisco(); } else if (!RGBDiscoFirstCall) { RGBDiscoFirstCall = true;  }
+	if (FreezeStationBool) { FreezeStation(); } else if (FreezeStationWasEnabled) { AUDIO::UNFREEZE_RADIO_STATION(AUDIO::GET_PLAYER_RADIO_STATION_NAME()); FreezeStationWasEnabled = false; }
+	if (HideMinimapBool) { HideMinimap(); } else if (HideMinimapWasEnabled) { UI::DISPLAY_RADAR(true);   HideMinimapWasEnabled = false; }
+	if (WeaponInvisibilityBool) { WeaponInvisibility(true); } else if (WeaponInvisibilityWasEnabled) { WeaponInvisibility(false); WeaponInvisibilityWasEnabled = false; }
+	SessionLockFriendsOnlyBool ? SessionLockFriendsOnly() : void();
+	if (ShowTVBool) { ShowTV(true); } else if (ShowTVWasEnabled) { ShowTV(false); ShowTVWasEnabled = false; }
 }
 
 bool Cheat::CheatFeatures::GodmodeBool = false;
@@ -1019,7 +1019,7 @@ void Cheat::CheatFeatures::UnlimitedRocketBoost()
 		if (VEHICLE::_IS_VEHICLE_ROCKET_BOOST_ACTIVE(veh)) 
 		{
 			VEHICLE::_SET_VEHICLE_ROCKET_BOOST_ACTIVE(veh, true);
-			GameFunctions::SubtitleNotification("PRESS SPACEBAR TO STOP BOOST", 100);
+			GameFunctions::SubtitleNotification((char*)"PRESS SPACEBAR TO STOP BOOST", 100);
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_DIVE)) // Spacebar
 			{
 				VEHICLE::_SET_VEHICLE_ROCKET_BOOST_ACTIVE(veh, false);
@@ -1199,7 +1199,7 @@ void Cheat::CheatFeatures::DriveOnWater()
 bool Cheat::CheatFeatures::SuperManBool = false;
 void Cheat::CheatFeatures::SuperMan()
 {
-	if(!Cheat::CheatFeatures::NoRagdollAndSeatbeltBool) { CheatFeatures::NoRagdollAndSeatbeltBool = true; GameFunctions::MinimapNotification("No Ragdoll & Seatbelt feature enabled for this feature"); }
+	if(!Cheat::CheatFeatures::NoRagdollAndSeatbeltBool) { CheatFeatures::NoRagdollAndSeatbeltBool = true; GameFunctions::MinimapNotification((char*)"No Ragdoll & Seatbelt feature enabled for this feature"); }
 	WEAPON::GIVE_WEAPON_TO_PED(GameFunctions::PlayerPedID, MISC::GET_HASH_KEY("GADGET_PARACHUTE"), 1, false, true);
 	ENTITY::SET_ENTITY_INVINCIBLE(GameFunctions::PlayerPedID, true);
 	PED::SET_PED_TO_RAGDOLL_WITH_FALL(GameFunctions::PlayerPedID, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0);
