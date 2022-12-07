@@ -102,7 +102,7 @@ void Cheat::CheatFeatures::Loop()
 	{
 		if (ImpactAmmoVectorPosition == 1)
 		{
-			Memory::set_value<int>({ OFFSET_PLAYER, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, FrameFlagFireAmmo);
+			Memory::set_value<int>({ OFFSET_LOCAL_PED, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, FrameFlagFireAmmo);
 		}
 		else if (ImpactAmmoVectorPosition == 2)
 		{
@@ -128,7 +128,7 @@ void Cheat::CheatFeatures::Loop()
 		}
 		else if (ImpactAmmoVectorPosition == 4)
 		{
-			Memory::set_value<int>({ OFFSET_PLAYER, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, FrameFlagExplosiveAmmo);
+			Memory::set_value<int>({ OFFSET_LOCAL_PED, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, FrameFlagExplosiveAmmo);
 		}
 		else if (ImpactAmmoVectorPosition == 5)
 		{
@@ -530,7 +530,7 @@ void Cheat::CheatFeatures::PauseTime(bool toggle)
 bool Cheat::CheatFeatures::ExplosiveMeleeBool = false;
 void Cheat::CheatFeatures::ExplosiveMelee()
 {
-	Memory::set_value<int>({ OFFSET_PLAYER, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, FrameFlagExplosiveMelee);
+	Memory::set_value<int>({ OFFSET_LOCAL_PED, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, FrameFlagExplosiveMelee);
 }
 
 bool Cheat::CheatFeatures::OrbitalCannonCooldownBypassBool = false;
@@ -599,7 +599,7 @@ void Cheat::CheatFeatures::ProtectionGiveRemoveWeapons(bool toggle)
 bool Cheat::CheatFeatures::SuperJumpBool = false;
 void Cheat::CheatFeatures::SuperJump()
 {
-	MISC::SET_SUPER_JUMP_THIS_FRAME(Cheat::GameFunctions::PlayerID);
+	Memory::set_value<int>({ OFFSET_LOCAL_PED, OFFSET_PLAYER_INFO, OFFSET_PLAYER_INFO_FRAMEFLAGS }, FrameFlagSuperJump);
 }
 
 bool Cheat::CheatFeatures::ShowFPSBool = false;
