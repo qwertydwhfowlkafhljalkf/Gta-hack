@@ -1082,7 +1082,7 @@ void Cheat::GUI::ShowPlayerInformationBox(Player PlayerID)
 		//Modded Model
 		Hash SelectedPlayerPedModel = ENTITY::GET_ENTITY_MODEL(SelectedPlayerPed);
 		Cheat::GUI::AddPlayerInfoBoxTextEntry("Modded Model", NULL, NULL, 2);
-		if (NETWORK::NETWORK_IS_SESSION_STARTED() && SelectedPlayerPedModel != MISC::GET_HASH_KEY("mp_m_freemode_01") && SelectedPlayerPedModel != MISC::GET_HASH_KEY("mp_f_freemode_01"))
+		if (NETWORK::NETWORK_IS_SESSION_STARTED() && SelectedPlayerPedModel != 0x705E61F2 && SelectedPlayerPedModel != 0x9C9EFFD8)
 		{
 			Cheat::GUI::AddPlayerInfoBoxTextEntry("Yes", NULL, NULL, NULL, 2);
 		}

@@ -65,7 +65,9 @@ void GUI::Submenus::AllPlayers()
 			if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && NETWORK::NETWORK_IS_PLAYER_ACTIVE(i))
 			{
 				Vector3 Coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), false);
-				MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35.f, Coords.x, Coords.y, Coords.z, 250, true, MISC::GET_HASH_KEY("VEHICLE_WEAPON_SPACE_ROCKET"), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), true, false, 500.f);
+
+				// VEHICLE_WEAPON_SPACE_ROCKET
+				MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Coords.x, Coords.y, Coords.z + 35.f, Coords.x, Coords.y, Coords.z, 250, true, 0xF8A3939F, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), true, false, 500.f);
 			}
 		}
 	}
@@ -80,7 +82,8 @@ void GUI::Submenus::AllPlayers()
 			if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && NETWORK::NETWORK_IS_PLAYER_ACTIVE(i))
 			{
 				Vector3 remotePos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i), false);
-				OBJECT::CREATE_OBJECT(MISC::GET_HASH_KEY("prop_gold_cont_01"), remotePos.x, remotePos.y, remotePos.z - 1.f, true, false, false);
+				// prop_gold_cont_01
+				OBJECT::CREATE_OBJECT(0x392D62AA, remotePos.x, remotePos.y, remotePos.z - 1.f, true, false, false);
 			}
 		}
 	}
@@ -94,7 +97,7 @@ void GUI::Submenus::AllPlayers()
 
 			if (!ExcludeHost && !ExcludeFriend && !ExcludeSelf && NETWORK::NETWORK_IS_PLAYER_ACTIVE(i))
 			{
-				GameFunctions::AttachObjectToPed(i, (char*)"prop_beach_fire");
+				GameFunctions::AttachObjectToPed(i, 0xC079B265); // prop_beach_fire
 			}
 		}
 	}

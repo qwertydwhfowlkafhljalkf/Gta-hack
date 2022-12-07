@@ -619,7 +619,7 @@ void Cheat::CheatFunctions::CopyStringToClipboard(const std::string& String)
 	HGLOBAL Global = GlobalAlloc(GMEM_MOVEABLE, String.size() + 1);
 	if (!Global) { CloseClipboard(); return; }
 	LPVOID GlobalPtrn = GlobalLock(Global);
-	if (GlobalPtrn > 0)
+	if (GlobalPtrn != NULL)
 	{
 		memcpy(GlobalPtrn, String.c_str(), String.size() + 1);
 	}

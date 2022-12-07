@@ -1,31 +1,36 @@
 #include "../Header/Cheat Functions/FiberMain.h"
 
 using namespace Cheat;
+const std::vector<SelectedPlayerAttachmentsStruct> Models = {
+	{ "Plate", 0xE2A6080F },			// p_oil_slick_01
+	{ "EMP", 0x3794ACC9 },				// hei_prop_heist_emp
+	{ "Beach Fire", 0xC079B265 },		// prop_beach_fire
+	{ "Orange Ball", 0x08DA1C0E },		// prop_juicestand
+	{ "Weed", 0x1AFA6A0A },				// prop_weed_01
+	{ "Safe", 0x40F52369 },				// p_v_43_safe_s
+	{ "UFO", 0xB467C540 },				// p_spinning_anus_s
+	{ "Toilet", 0x6F9939C7 },			// prop_ld_toilet_01
+	{ "Christmas Tree", 0x0E3BA450 },	// prop_xmas_tree_int
+	{ "Windmill", 0x745F3383 },			// prop_windmill_01
+	{ "Radar", 0x8973A868 }				// prop_air_bigradar
+};
 void GUI::Submenus::SelectedPlayerAttachments()
 {
 	GUI::Title("Attachments");
-	if (GUI::Option("Plate", "")) { GameFunctions::AttachObjectToPed(CheatFeatures::SelectedPlayer, (char*)"p_oil_slick_01"); }
-	if (GUI::Option("EMP", "")) { GameFunctions::AttachObjectToPed(CheatFeatures::SelectedPlayer, (char*)"hei_prop_heist_emp"); }
-	if (GUI::Option("Beach Fire", "")) { GameFunctions::AttachObjectToPed(CheatFeatures::SelectedPlayer, (char*)"prop_beach_fire"); }
-	if (GUI::Option("Orange Ball", "")) { GameFunctions::AttachObjectToPed(CheatFeatures::SelectedPlayer, (char*)"prop_juicestand"); }
-	if (GUI::Option("Weed", "")) { GameFunctions::AttachObjectToPed(CheatFeatures::SelectedPlayer, (char*)"prop_weed_01"); }
-	if (GUI::Option("Safe", "")) { GameFunctions::AttachObjectToPed(CheatFeatures::SelectedPlayer, (char*)"p_v_43_safe_s"); }
-	if (GUI::Option("UFO", "")) { GameFunctions::AttachObjectToPed(CheatFeatures::SelectedPlayer, (char*)"p_spinning_anus_s"); }
-	if (GUI::Option("Toilet", "")) { GameFunctions::AttachObjectToPed(CheatFeatures::SelectedPlayer, (char*)"prop_ld_toilet_01"); }
-	if (GUI::Option("Christmas Tree", "")) { GameFunctions::AttachObjectToPed(CheatFeatures::SelectedPlayer, (char*)"prop_xmas_tree_int"); }
-	if (GUI::Option("Windmill", "")) { GameFunctions::AttachObjectToPed(CheatFeatures::SelectedPlayer, (char*)"prop_windmill_01"); }
-	if (GUI::Option("Radar", "")) { GameFunctions::AttachObjectToPed(CheatFeatures::SelectedPlayer, (char*)"prop_air_bigradar"); }
-	if (GUI::Option("Remove All Objects", "Only removes above attached objects"))
+
+	for (auto& i : Models)
 	{
-		const std::vector<std::string> ObjectsToRemoveArray = {
-			"p_oil_slick_01",  "hei_prop_heist_emp", "prop_beach_fire",  "prop_juicestand",
-			"prop_weed_01",  "p_v_43_safe_s",  "p_spinning_anus_s",  "prop_ld_toilet_01",
-			"prop_xmas_tree_int",  "prop_windmill_01",  "prop_air_bigradar"
-		};
-		for (auto const& i : ObjectsToRemoveArray)
+		if (GUI::Option(i.ModelName, ""))
 		{
-			GameFunctions::RemoveObjectFromPed(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), CheatFunctions::StringToChar(i));
+			GameFunctions::AttachObjectToPed(CheatFeatures::SelectedPlayer, i.ModelHash);
 		}
-		GameFunctions::MinimapNotification((char*)"Object(s) Removed");
+	}
+	GUI:Break("");
+	if (GUI::Option("Detach All", ""))
+	{
+		for (auto& i : Models)
+		{
+			GameFunctions::RemoveObjectFromPed(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), i.ModelHash);
+		}
 	}
 }

@@ -2,9 +2,7 @@
 
 #pragma warning(disable : 4244)			//			'argument' : conversion from 'type1' to 'type2', possible loss of data
 #pragma warning(disable : 26812)		//			The enum type type-name is unscoped. Prefer 'enum class' over 'enum' (Enum.3)
-#pragma warning(disable : 26495)		//			Variable '%variable%' is uninitialized. Always initialize a member variable.
 #pragma warning(disable : 4091)	
-#pragma warning(disable : 6262)
 
 // Cheat version 
 #define CHEAT_BUILD_NUMBER "2.2.1.3"

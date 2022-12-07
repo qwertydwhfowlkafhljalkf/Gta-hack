@@ -461,10 +461,10 @@ void Cheat::GameFunctions::ApplyForceToEntity(Entity e, float x, float y, float 
 	ENTITY::APPLY_FORCE_TO_ENTITY(e, 1, x, y, z, 0, 0, 0, 0, 1, 1, 1, 0, 1);
 }
 
-void Cheat::GameFunctions::RemoveObjectFromPed(Ped Ped, char* ObjectName)
+void Cheat::GameFunctions::RemoveObjectFromPed(Ped Ped, Hash ModelHash)
 {
 	Vector3 PedCoords = ENTITY::GET_ENTITY_COORDS(Ped, false);
-	Object Object = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(PedCoords.x, PedCoords.y, PedCoords.z, 4.0, MISC::GET_HASH_KEY(ObjectName), false, false, true);
+	Object Object = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(PedCoords.x, PedCoords.y, PedCoords.z, 4.0, ModelHash, false, false, true);
 	if (ENTITY::DOES_ENTITY_EXIST(Object) && ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY(Object, Ped))
 	{
 		Cheat::GameFunctions::RequestNetworkControlOfEntity(Object);
@@ -474,22 +474,21 @@ void Cheat::GameFunctions::RemoveObjectFromPed(Ped Ped, char* ObjectName)
 	}
 }
 
-void Cheat::GameFunctions::AttachObjectToPed(Ped Ped, char* ObjectName)
+void Cheat::GameFunctions::AttachObjectToPed(Ped Ped, Hash ObjectHash)
 {
 	int attachobj[100];
 	int nuattach = 1;
 	Vector3 pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped), false);
-	int hash = MISC::GET_HASH_KEY(ObjectName);
-	if (STREAMING::IS_MODEL_IN_CDIMAGE(hash))
+	if (STREAMING::IS_MODEL_IN_CDIMAGE(ObjectHash))
 	{
-		if (STREAMING::IS_MODEL_VALID(hash))
+		if (STREAMING::IS_MODEL_VALID(ObjectHash))
 		{
-			STREAMING::REQUEST_MODEL(hash);
-			while (!STREAMING::HAS_MODEL_LOADED(hash)) GameHooking::PauseMainFiber(0);
+			STREAMING::REQUEST_MODEL(ObjectHash);
+			while (!STREAMING::HAS_MODEL_LOADED(ObjectHash)) GameHooking::PauseMainFiber(0);
 
-			if (STREAMING::HAS_MODEL_LOADED(hash))
+			if (STREAMING::HAS_MODEL_LOADED(ObjectHash))
 			{
-				attachobj[nuattach] = OBJECT::CREATE_OBJECT(hash, pos.x, pos.y, pos.z, 1, 1, 1);
+				attachobj[nuattach] = OBJECT::CREATE_OBJECT(ObjectHash, pos.x, pos.y, pos.z, 1, 1, 1);
 				if (ENTITY::DOES_ENTITY_EXIST(attachobj[nuattach]))
 				{
 					ENTITY::ATTACH_ENTITY_TO_ENTITY(attachobj[nuattach], PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Ped), 31086, 0, 0, 0, 0, 0, 0, true, false, false, false, 2, true);

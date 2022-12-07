@@ -52,6 +52,12 @@ struct DefaultHUDColorsStruct
 	int A;
 };
 
+struct SelectedPlayerAttachmentsStruct
+{
+	std::string ModelName;
+	Hash ModelHash;
+};
+
 namespace Cheat
 {
 	namespace GameArrays

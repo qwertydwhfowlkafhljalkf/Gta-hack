@@ -43,8 +43,8 @@ namespace Cheat
 		void ClearNearbyPedAnimations();
 		void DoNearbyPedsAnimation(char* AnimationName, char* AnimationID);
 		void PlayPedAnimation(Ped TargetPed, char* AnimationName, char* AnimationID, bool Controllable);
-		void AttachObjectToPed(Ped Ped, char* ObjectName);
-		void RemoveObjectFromPed(Ped Ped, char* ObjectName);
+		void AttachObjectToPed(Ped Ped, Hash ObjectHash);
+		void RemoveObjectFromPed(Ped Ped, Hash ModelHash);
 		void MinimapNotification(char* Message);
 		void AdvancedMinimapNotification(char* Message, char* PicName1, char* PicName2, bool Flash, int IconType, char* Sender, char* Subject, float Duration, char* ClanTag);
 		void AddBlipToVehicle(Vehicle Vehicle);
