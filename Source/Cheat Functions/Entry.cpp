@@ -7,8 +7,7 @@ DWORD WINAPI InitializationThread(LPVOID lpParam)
 	// Create directories
 	std::string GtavDirectoryPath = CheatFunctions::GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat";
 	if (!std::filesystem::exists(GtavDirectoryPath)) { CheatFunctions::CreateNewDirectory(GtavDirectoryPath); }
-	std::string LogsDirectoryPath = CheatFunctions::GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Logs";
-	if (!std::filesystem::exists(LogsDirectoryPath)) { CheatFunctions::CreateNewDirectory(LogsDirectoryPath); }
+	if (!std::filesystem::exists(Logger::LogDirectory)) { CheatFunctions::CreateNewDirectory(Logger::LogDirectory); }
 	std::string ThemesDirectoryPath = Cheat::CheatFunctions::GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Themes";
 	if (!std::filesystem::exists(ThemesDirectoryPath)) { CheatFunctions::CreateNewDirectory(ThemesDirectoryPath); }
 

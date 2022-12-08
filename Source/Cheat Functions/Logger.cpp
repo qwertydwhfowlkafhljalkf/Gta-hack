@@ -2,7 +2,8 @@
 #include "../../ThirdParty/color-console/color.hpp"
 
 bool Cheat::Logger::LoggerInitialized = false;
-std::string Cheat::Logger::CheatLogFilePath = Cheat::CheatFunctions::GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Logs\\" + Cheat::CheatFunctions::ReturnDateTimeFormatAsString("Main_%d_%m_%Y-%H_%M_%S.log");
+std::string Cheat::Logger::LogDirectory = Cheat::CheatFunctions::GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Logs";
+std::string Cheat::Logger::CheatLogFilePath = LogDirectory + Cheat::CheatFunctions::ReturnDateTimeFormatAsString("\\Main_%d_%m_%Y-%H_%M_%S.log");
 
 void Cheat::Logger::Init()
 {
@@ -21,6 +22,24 @@ void Cheat::Logger::Init()
     CheatFunctions::WriteToFile(CheatLogFilePath, MessageString, true);
 
     LoggerInitialized = true;
+
+    // Cleanup main log files
+    for (const auto& file : std::filesystem::directory_iterator(LogDirectory))
+    {
+        struct stat result;
+        if (stat(file.path().string().c_str(), &result) == 0)
+        {
+            auto CurrentEpoch = duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+            auto FileEpoch = result.st_mtime; // Using st_mtime (last modified) instead of st_ctime (creation date) as the later changes when the file is recreated during a copy action
+
+            // Delete files older than 24 hours
+            if (CurrentEpoch - FileEpoch > 86400)
+            {
+                std::remove(file.path().string().c_str());
+                Logger::LogMsg(LOGGER_DBG_MSG, "[LOGGER] Deleted outdated file: %s", file.path().filename().string().c_str());
+            }
+        }
+    } 
 }
 
 // Note: this function is NOT thread-safe at the moment - TODO
