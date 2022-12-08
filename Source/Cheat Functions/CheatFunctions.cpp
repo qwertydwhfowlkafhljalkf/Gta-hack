@@ -5,7 +5,7 @@ bool Cheat::CheatFunctions::CheatInitEntirelyCompleted = false;									// Set w
 bool Cheat::CheatFunctions::CheatInitCompleted = false;											// Set when all initialization is completed (except for async tasks such as LoadConfig())
 bool Cheat::CheatFunctions::ConfigLoaded = false;												// Set when the LoadConfig thread is completed
 std::vector <std::string> Cheat::CheatFunctions::LoadedSelectablesVector;						// Used during the async LoadConfig process to determine which selectables have been loaded
-bool Cheat::CheatFunctions::StopThreads = false;
+bool Cheat::CheatFunctions::StopThreads = false;												// Used to stop all cheat threads during the unloading process
 
 void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 {
@@ -291,11 +291,11 @@ void Cheat::CheatFunctions::LoadConfig()
 	LoadConfigThreadHandle.detach();
 }
 
-bool Cheat::CheatFunctions::IsSelectableRegisteredAsLoaded(std::string OptionName)
+bool Cheat::CheatFunctions::IsSelectableRegisteredAsLoaded(std::string SelectableName)
 {
 	for (auto const& i : LoadedSelectablesVector)
 	{
-		if (i == OptionName)
+		if (i == SelectableName)
 		{
 			return true;
 		}
@@ -727,4 +727,46 @@ DWORD WINAPI UnloadThread(LPVOID lpParam)
 void Cheat::CheatFunctions::UnloadCheat()
 {
 	CreateThread(NULL, NULL, UnloadThread, NULL, NULL, NULL);
+}
+
+void Cheat::CheatFunctions::LoadSelectableSaveStateBool(std::string SelectableName, bool& ReturnedBool)
+{
+	if (!CheatFunctions::IsSelectableRegisteredAsLoaded(SelectableName))
+	{
+		std::string ConfigFileValue = GetSelectableValueFromConfig(SelectableName);
+		if (!ConfigFileValue.empty())
+		{
+			ReturnedBool = CheatFunctions::StringToBool(ConfigFileValue);
+			Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded savable selectable (Boolean) '%s'", SelectableName.c_str());
+			LoadedSelectablesVector.push_back(SelectableName);
+		}
+	}
+}
+
+void Cheat::CheatFunctions::LoadSelectableSaveStateInt(std::string SelectableName, int& ReturnedInt)
+{
+	if (!CheatFunctions::IsSelectableRegisteredAsLoaded(SelectableName))
+	{
+		std::string ConfigFileValue = GetSelectableValueFromConfig(SelectableName);
+		if (!ConfigFileValue.empty())
+		{
+			ReturnedInt = CheatFunctions::StringToInt(ConfigFileValue);
+			Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded savable selectable (Integer) '%s'", SelectableName.c_str());
+			LoadedSelectablesVector.push_back(SelectableName);
+		}	
+	}
+}
+
+void Cheat::CheatFunctions::LoadSelectableSaveStateFloat(std::string SelectableName, float& ReturnedFloat)
+{
+	if (!CheatFunctions::IsSelectableRegisteredAsLoaded(SelectableName))
+	{
+		std::string ConfigFileValue = GetSelectableValueFromConfig(SelectableName);
+		if (!ConfigFileValue.empty())
+		{
+			ReturnedFloat = std::stof(ConfigFileValue);
+			Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded savable selectable (Float) '%s'", SelectableName.c_str());
+			LoadedSelectablesVector.push_back(SelectableName);
+		}
+	}
 }

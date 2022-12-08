@@ -6,48 +6,48 @@ const float GUI::guiY_Default				= 0.30f;
 const float GUI::guiWidth_Default			= 0.25f;
 const float GUI::SelectableInfoBoxX_Default	= 0.50f;
 const float GUI::SelectableInfoBoxY_Default	= 0.040f;
-float GUI::guiX					= 0.15f;
-float GUI::guiY					= 0.30f;
-float GUI::guiWidth				= 0.25f;
-float GUI::SelectableInfoBoxX	= 0.50f;
-float GUI::SelectableInfoBoxY	= 0.850f;
-float GUI::SelectableHeight		= 0.040f;
-bool GUI::ShowHeaderBackground	= true;
-bool GUI::ShowHeaderTexture		= true;
-bool GUI::DisableMenuGUIOpenCloseFade = false;
-bool GUI::HideGUIElements		= false; // Prevents all GUI elements from being visible when True
-bool GUI::MenuGUIHasBeenOpened = false; // True when the Menu GUI has been opened at least once
-bool GUI::CurrentSelectableIsSavable = false;
-bool GUI::RestorePreviousSubmenu = true;
+float GUI::guiX								= 0.15f;
+float GUI::guiY								= 0.30f;
+float GUI::guiWidth							= 0.25f;
+float GUI::SelectableInfoBoxX				= 0.50f;
+float GUI::SelectableInfoBoxY				= 0.850f;
+float GUI::SelectableHeight					= 0.040f;
+bool GUI::ShowHeaderBackground				= true;
+bool GUI::ShowHeaderTexture					= true;
+bool GUI::DisableMenuGUIOpenCloseFade		= false;
+bool GUI::HideGUIElements					= false;		// Prevents all GUI elements from being visible
+bool GUI::MenuGUIHasBeenOpened				= false;		// Set when the Menu GUI has been opened at least once
+bool GUI::CurrentSelectableIsSavable		= false;
+bool GUI::RestorePreviousSubmenu			= true;
 std::string SelectableInformationText;
 std::string GUI::CurrentTheme;
 std::string GUI::CurrentSubmenu;
-int GUI::maxVisOptions			= 11;
-int GUI::currentOption			= 0;
-int GUI::currentOptionVisible   = 0; // This has GUI::Break excluded
-int GUI::previousOption			= 0;
-int GUI::optionCount			= 0;
-int GUI::optionCountVisible		= 0; // This has GUI::Break excluded
-int GUI::TotalOptionsCount		= 0;
-int GUI::menuLevel				= 0;
-void* GUI::PreviousMenu			= nullptr;
-void* GUI::currentMenu			= nullptr;
-int GUI::PreviousMenuLevel		= 0;
-int GUI::optionsArray			[1000];
-void* GUI::menusArray			[1000];
+int GUI::maxVisOptions						= 11;
+int GUI::currentOption						= 0;
+int GUI::currentOptionVisible				= 0; // This has GUI::Break excluded
+int GUI::previousOption						= 0;
+int GUI::optionCount						= 0;
+int GUI::optionCountVisible					= 0; // This has GUI::Break excluded
+int GUI::TotalOptionsCount					= 0;
+int GUI::menuLevel							= 0;
+void* GUI::PreviousMenu						= nullptr;
+void* GUI::currentMenu						= nullptr;
+int GUI::PreviousMenuLevel					= 0;
+int GUI::optionsArray						[1000];
+void* GUI::menusArray						[1000];
 std::vector <std::string> GUI::ThemeFilesVector;
                  
-RGBA GUI::PrimaryColor					{ 0, 0, 255, 255 };
-RGBAF GUI::TextColorAndFont				{ 255, 255, 255, 255, FontChaletLondon };
-int GUI::SelectableTransparency			= 150;
-int GUI::HeaderBackgroundTransparency	= 200;
-int GUI::TitleAndEndTransparency		= 210;
-int GUI::ToggleSelectableTransparency	= 255;
-int GUI::HeaderTextureTransparency		= 255;
-int GUI::EndSmallLogoTransparency		= 255;
-int GUI::OnlinePlayerPictureTransparency = 255;
+RGBA GUI::PrimaryColor						{ 0, 0, 255, 255 };
+RGBAF GUI::TextColorAndFont					{ 255, 255, 255, 255, FontChaletLondon };
+int GUI::SelectableTransparency				= 150;
+int GUI::HeaderBackgroundTransparency		= 200;
+int GUI::TitleAndEndTransparency			= 210;
+int GUI::ToggleSelectableTransparency		= 255;
+int GUI::HeaderTextureTransparency			= 255;
+int GUI::EndSmallLogoTransparency			= 255;
+int GUI::OnlinePlayerPictureTransparency	= 255;
 
-int GUI::MenuArrowAnimationDelay		= 1000;
+int GUI::MenuArrowAnimationDelay			= 1000;
 
 std::string CursorBackCloseString;
 void GUI::Title(std::string TitleName)
@@ -275,7 +275,7 @@ bool GUI::MenuOptionPlayerList(Player Player)
 
 bool GUI::Toggle(std::string option, bool & TargetBool, std::string InformationText, int BitFlags)
 {
-	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, TargetBool); }
+	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) && !CheatFunctions::ConfigLoaded) { CheatFunctions::LoadSelectableSaveStateBool(option, TargetBool); }
 
 	if (Option(option, InformationText, BitFlags))
 	{
@@ -304,7 +304,7 @@ bool GUI::Toggle(std::string option, bool & TargetBool, std::string InformationT
 
 bool GUI::Int(std::string option, int & _int, int min, int max, int step, std::string InformationText, int BitFlags)
 {
-	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, _int); }
+	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) && !CheatFunctions::ConfigLoaded) { CheatFunctions::LoadSelectableSaveStateInt(option, _int); }
 
 	if (Option(option, InformationText, BitFlags))
 	{
@@ -390,7 +390,7 @@ bool GUI::Int(std::string option, int & _int, int min, int max, int step, std::s
 
 bool GUI::Float(std::string option, float& _float, float min, float max, float steps, std::string InformationText, std::streamsize FloatPrecision, int BitFlags)
 {
-	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, _float); }
+	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) && !CheatFunctions::ConfigLoaded) { CheatFunctions::LoadSelectableSaveStateFloat(option, _float); }
 
 	if (Option(option, InformationText, BitFlags))
 	{
@@ -435,7 +435,7 @@ bool GUI::Float(std::string option, float& _float, float min, float max, float s
 
 bool GUI::IntVector(std::string option, std::vector<int> Vector, int& position, int BitFlags)
 {
-	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, position); }
+	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) && !CheatFunctions::ConfigLoaded) { CheatFunctions::LoadSelectableSaveStateInt(option, position); }
 
 	if (Option(option, "", BitFlags))
 	{
@@ -472,7 +472,7 @@ bool GUI::IntVector(std::string option, std::vector<int> Vector, int& position, 
 
 bool GUI::FloatVector(std::string option, std::vector<float> Vector, int& position, int BitFlags)
 {
-	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, position); }
+	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) && !CheatFunctions::ConfigLoaded) { CheatFunctions::LoadSelectableSaveStateInt(option, position); }
 
 	if (Option(option, "", BitFlags))
 	{
@@ -509,7 +509,7 @@ bool GUI::FloatVector(std::string option, std::vector<float> Vector, int& positi
 
 bool GUI::StringVector(std::string option, std::vector<std::string> Vector, int& position, std::string InformationText, int BitFlags)
 {
-	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED)) { CheatFunctions::LoadConfigOption(option, position); }
+	if (!(BitFlags & SELECTABLE_DISABLE_SAVE) && !(BitFlags & SELECTABLE_DISABLED) && !CheatFunctions::ConfigLoaded) { CheatFunctions::LoadSelectableSaveStateInt(option, position); }
 
 	if (Option(option, InformationText, BitFlags))
 	{

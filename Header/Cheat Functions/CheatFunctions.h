@@ -20,45 +20,10 @@ namespace Cheat
 		void LoadConfig();
 		void SaveSelectable(std::string OptionName, std::string OptionValue, bool IsSavable);
 		std::string GetSelectableValueFromConfig(std::string OptionName);
-		bool IsSelectableRegisteredAsLoaded(std::string OptionName);
-		template<typename T> void LoadConfigOption(std::string OptionName, T& ReturnedVariable)
-		{
-			if (!ConfigLoaded && !CheatFunctions::IsSelectableRegisteredAsLoaded(OptionName))
-			{
-				std::string TypeName = typeid(ReturnedVariable).name();
-
-				if (TypeName == "bool")
-				{
-					std::string ConfigFileValue = GetSelectableValueFromConfig(OptionName);
-					if (!ConfigFileValue.empty())
-					{
-						ReturnedVariable = CheatFunctions::StringToBool(CheatFunctions::GetSelectableValueFromConfig(OptionName));
-						Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded savable selectable (Boolean) '%s'", OptionName.c_str());
-					}
-					LoadedSelectablesVector.push_back(OptionName);
-				}
-				else if (TypeName == "int")
-				{
-					std::string ConfigFileValue = GetSelectableValueFromConfig(OptionName);
-					if (!ConfigFileValue.empty())
-					{
-						ReturnedVariable = CheatFunctions::StringToInt(CheatFunctions::GetSelectableValueFromConfig(OptionName));
-						Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded savable selectable (Integer) '%s'", OptionName.c_str());
-					}
-					LoadedSelectablesVector.push_back(OptionName);
-				}
-				else if (TypeName == "float")
-				{
-					std::string ConfigFileValue = GetSelectableValueFromConfig(OptionName);
-					if (!ConfigFileValue.empty())
-					{
-						ReturnedVariable = std::stof(CheatFunctions::GetSelectableValueFromConfig(OptionName));
-						Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded savable selectable (Float) '%s'", OptionName.c_str());
-					}
-					LoadedSelectablesVector.push_back(OptionName);
-				}
-			}
-		}
+		bool IsSelectableRegisteredAsLoaded(std::string SelectableName);
+		void LoadSelectableSaveStateBool(std::string SelectableName, bool& ReturnedBool);
+		void LoadSelectableSaveStateInt(std::string SelectableName, int& ReturnedInt);
+		void LoadSelectableSaveStateFloat(std::string SelectableName, float& ReturnedFloat);
 		std::string ReturnCheatModuleDirectoryPath();
 		std::string GetWindowsUserDocumentsFolderPath();
 		void CreateNewDirectory(std::string Path);

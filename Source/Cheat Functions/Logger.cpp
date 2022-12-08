@@ -39,7 +39,7 @@ void Cheat::Logger::Init()
                 Logger::LogMsg(LOGGER_DBG_MSG, "[LOGGER] Deleted outdated file: %s", file.path().filename().string().c_str());
             }
         }
-    } 
+    }
 }
 
 // Note: this function is NOT thread-safe at the moment - TODO
