@@ -7,7 +7,7 @@
 
 Regularly maintained free open-source internal cheat software for Grand Theft Auto V (PC).
 
-![](/Resources/preview_image.png)
+![](/resources/preview_image.png)
 
 ## Using the cheat
 1. Download the latest compiled version (GTAV.dll) from the [Releases page](https://github.com/HatchesPls/GrandTheftAutoV-Cheat/releases)
