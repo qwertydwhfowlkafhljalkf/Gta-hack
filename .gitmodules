@@ -10,3 +10,6 @@
 [submodule "vendor/mINI"]
 	path = vendor/mINI
 	url = https://github.com/pulzed/mINI
+[submodule "resources"]
+	path = resources
+	url = https://github.com/HatchesPls/GrandTheftAutoV-Cheat-Resources
