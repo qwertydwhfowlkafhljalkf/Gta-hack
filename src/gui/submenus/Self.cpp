@@ -1,4 +1,4 @@
-#include "../../src/Cheat/FiberMain.h"
+#include "../../src/cheat/FiberMain.h"
 
 using namespace Cheat;
 float SelfHealth = 200.f;

@@ -1,4 +1,4 @@
-#include "../../src/Cheat/FiberMain.h"
+#include "../../src/cheat/FiberMain.h"
 #include <color.hpp>
 
 bool Cheat::Logger::LoggerInitialized = false;

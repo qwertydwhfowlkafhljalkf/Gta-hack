@@ -1,5 +1,5 @@
 #pragma once
-#include "../../src/Hooking/GameHooking.h"
+#include "../../src/hooking/GameHooking.h"
 
 // Generated Fri, 15 Jul 2022 20:21:49 GMT
 // https://alloc8or.re/gta5/nativedb/

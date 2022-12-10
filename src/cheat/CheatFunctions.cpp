@@ -1,4 +1,4 @@
-#include "../../src/Cheat/FiberMain.h"
+#include "../../src/cheat/FiberMain.h"
 
 std::string Cheat::CheatFunctions::NewCheatVersionString;
 bool Cheat::CheatFunctions::CheatInitEntirelyCompleted = false;									// Set when both CheatInitCompleted and ConfigLoaded are set

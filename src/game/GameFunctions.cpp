@@ -1,4 +1,4 @@
-#include "../../src/Cheat/FiberMain.h"
+#include "../../src/cheat/FiberMain.h"
 Player Cheat::GameFunctions::PlayerID;
 Ped Cheat::GameFunctions::PlayerPedID;
 

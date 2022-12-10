@@ -34,27 +34,27 @@
 #include <ini.h>
 
 // JsonCpp
-#include <json.h>
+#include <json/json.h>
 
 // Project Header Files
-#include "../../src/Hooking/Memory.h"
-#include "../../src/Hooking/Types.h"
-#include "../../src/Hooking/Enums.h"
-#include "../../src/Hooking/CrossMapping.h"
-#include "../../src/Hooking/NativeInvoker.h"
-#include "../../src/Hooking/NativeCaller.h"
-#include "../../src/Hooking/Natives.h"
-#include "../../src/Hooking/GameHooking.h"
-#include "../../src/GUI/GUI.h"
-#include "../../src/Cheat/Controls.h"
-#include "../../src/Cheat/CheatFunctions.h"
-#include "../../src/GUI/Submenus.h"
-#include "../../src/Game/GameArrays.h"
-#include "../../src/Hooking/Offsets.h"
-#include "../../src/Cheat/Logger.h"
-#include "../../src/Game/CheatFeatures.h"
-#include "../../src/Cheat/CheatFunctions.h"
-#include "../../src/Game/GameFunctions.h"
+#include "../../src/hooking/Memory.h"
+#include "../../src/hooking/Types.h"
+#include "../../src/hooking/Enums.h"
+#include "../../src/hooking/CrossMapping.h"
+#include "../../src/hooking/NativeInvoker.h"
+#include "../../src/hooking/NativeCaller.h"
+#include "../../src/hooking/Natives.h"
+#include "../../src/hooking/GameHooking.h"
+#include "../../src/gui/GUI.h"
+#include "../../src/cheat/Controls.h"
+#include "../../src/cheat/CheatFunctions.h"
+#include "../../src/gui/Submenus.h"
+#include "../../src/game/GameArrays.h"
+#include "../../src/hooking/Offsets.h"
+#include "../../src/cheat/Logger.h"
+#include "../../src/game/CheatFeatures.h"
+#include "../../src/cheat/CheatFunctions.h"
+#include "../../src/game/GameFunctions.h"
 
 namespace Cheat
 {
