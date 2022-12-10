@@ -1,4 +1,4 @@
-#include "../../src/cheat/FiberMain.h"
+#include "../../src/cheat/fibermain.h"
 
 bool Cheat::Controls::KeyInputDisabled			= false; // All cheat-provided control inputs are disabled when True
 bool Cheat::Controls::AllowGameplayWithCursorNavigationActive = false;

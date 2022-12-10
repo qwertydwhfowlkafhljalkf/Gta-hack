@@ -1,4 +1,4 @@
-#include "../../src/cheat/FiberMain.h"
+#include "../../src/cheat/fibermain.h"
 
 using namespace Cheat;
 int VehicleNeonLightRed, VehicleNeonLightGreen, VehicleNeonLightBlue;

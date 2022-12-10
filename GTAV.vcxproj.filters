@@ -31,7 +31,7 @@
     <ClCompile Include="src\cheat\Logger.cpp">
       <Filter>Source\cheat</Filter>
     </ClCompile>
-    <ClCompile Include="src\cheat\FiberMain.cpp">
+    <ClCompile Include="src\cheat\fibermain.cpp">
       <Filter>Source\cheat</Filter>
     </ClCompile>
     <ClCompile Include="src\cheat\Entry.cpp">
@@ -321,7 +321,7 @@
     <ClInclude Include="src\cheat\Logger.h">
       <Filter>Header\cheat</Filter>
     </ClInclude>
-    <ClInclude Include="src\cheat\FiberMain.h">
+    <ClInclude Include="src\cheat\fibermain.h">
       <Filter>Header\cheat</Filter>
     </ClInclude>
     <ClInclude Include="src\cheat\Controls.h">

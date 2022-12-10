@@ -1,4 +1,4 @@
-#include "../../src/cheat/FiberMain.h"
+#include "../../src/cheat/fibermain.h"
 
 // https://wiki.rage.mp/index.php?title=Weapons
 const std::vector<WeaponHashesStruct> Cheat::GameArrays::WeaponsHashList = {

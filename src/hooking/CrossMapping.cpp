@@ -1,4 +1,4 @@
-#include "../../src/cheat/FiberMain.h"
+#include "../../src/cheat/fibermain.h"
 std::unordered_map<uint64_t, uint64_t> nativeHashMap;
 
 // https://github.com/Maestro-1337/GTA-V-1.58-Crossmap

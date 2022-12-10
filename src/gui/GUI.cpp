@@ -1,4 +1,4 @@
-#include "../../src/cheat/FiberMain.h"
+#include "../../src/cheat/fibermain.h"
 using namespace Cheat;
 
 const float GUI::guiX_Default				= 0.15f;
