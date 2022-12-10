@@ -274,6 +274,45 @@
     <ClCompile Include="vendor\minhook\src\hde\hde64.c">
       <Filter>vendor\MinHook</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\menu_components\title.cpp">
+      <Filter>Source\gui\menu_components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\menu_components\option.cpp">
+      <Filter>Source\gui\menu_components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\menu_components\vehicle_option.cpp">
+      <Filter>Source\gui\menu_components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\menu_components\break.cpp">
+      <Filter>Source\gui\menu_components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\menu_components\menu_option.cpp">
+      <Filter>Source\gui\menu_components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\menu_components\menu_option_playerlist.cpp">
+      <Filter>Source\gui\menu_components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\menu_components\toggle.cpp">
+      <Filter>Source\gui\menu_components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\menu_components\int.cpp">
+      <Filter>Source\gui\menu_components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\menu_components\float.cpp">
+      <Filter>Source\gui\menu_components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\menu_components\intvector.cpp">
+      <Filter>Source\gui\menu_components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\menu_components\floatvector.cpp">
+      <Filter>Source\gui\menu_components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\menu_components\stringvector.cpp">
+      <Filter>Source\gui\menu_components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\menu_components\bottom.cpp">
+      <Filter>Source\gui\menu_components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\resource.h">
