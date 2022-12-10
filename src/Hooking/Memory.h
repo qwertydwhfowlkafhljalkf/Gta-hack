@@ -1,5 +1,6 @@
 #pragma once
 #include "GameHooking.h"
+#pragma warning( disable : 26495)
 // Boost C++ Libraries Code
 
 template <uint64_t FnvPrime, uint64_t OffsetBasis>

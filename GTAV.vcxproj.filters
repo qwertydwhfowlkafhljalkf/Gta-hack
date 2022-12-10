@@ -4,38 +4,38 @@
     <ClCompile Include="src\GUI\GUI.cpp">
       <Filter>Source\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hooking\CrossMapping.cpp">
-      <Filter>Source\Game Hooking</Filter>
+    <ClCompile Include="src\hooking\CrossMapping.cpp">
+      <Filter>Source\hooking</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hooking\GameHooking.cpp">
-      <Filter>Source\Game Hooking</Filter>
+    <ClCompile Include="src\hooking\GameHooking.cpp">
+      <Filter>Source\hooking</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hooking\Memory.cpp">
-      <Filter>Source\Game Hooking</Filter>
+    <ClCompile Include="src\hooking\Memory.cpp">
+      <Filter>Source\hooking</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hooking\NativeInvoker.cpp">
-      <Filter>Source\Game Hooking</Filter>
+    <ClCompile Include="src\hooking\NativeInvoker.cpp">
+      <Filter>Source\hooking</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CheatFeatures.cpp">
-      <Filter>Source\Game Functions</Filter>
+    <ClCompile Include="src\game\CheatFeatures.cpp">
+      <Filter>Source\game</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\GameArrays.cpp">
-      <Filter>Source\Game Functions</Filter>
+    <ClCompile Include="src\game\GameArrays.cpp">
+      <Filter>Source\game</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\GameFunctions.cpp">
-      <Filter>Source\Game Functions</Filter>
+    <ClCompile Include="src\game\GameFunctions.cpp">
+      <Filter>Source\game</Filter>
     </ClCompile>
-    <ClCompile Include="src\Cheat\CheatFunctions.cpp">
-      <Filter>Source\Cheat Functions</Filter>
+    <ClCompile Include="src\cheat\CheatFunctions.cpp">
+      <Filter>Source\cheat</Filter>
     </ClCompile>
-    <ClCompile Include="src\Cheat\Logger.cpp">
-      <Filter>Source\Cheat Functions</Filter>
+    <ClCompile Include="src\cheat\Logger.cpp">
+      <Filter>Source\cheat</Filter>
     </ClCompile>
-    <ClCompile Include="src\Cheat\FiberMain.cpp">
-      <Filter>Source\Cheat Functions</Filter>
+    <ClCompile Include="src\cheat\FiberMain.cpp">
+      <Filter>Source\cheat</Filter>
     </ClCompile>
-    <ClCompile Include="src\Cheat\Entry.cpp">
-      <Filter>Source\Cheat Functions</Filter>
+    <ClCompile Include="src\cheat\Entry.cpp">
+      <Filter>Source\cheat</Filter>
     </ClCompile>
     <ClCompile Include="src\GUI\Submenus\Self.cpp">
       <Filter>Source\GUI\Submenus</Filter>
@@ -232,8 +232,8 @@
     <ClCompile Include="src\GUI\Submenus.cpp">
       <Filter>Source\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Cheat\Controls.cpp">
-      <Filter>Source\Cheat Functions</Filter>
+    <ClCompile Include="src\cheat\Controls.cpp">
+      <Filter>Source\cheat</Filter>
     </ClCompile>
     <ClCompile Include="src\GUI\Submenus\SessionStarter.cpp">
       <Filter>Source\GUI\Submenus</Filter>
@@ -279,59 +279,59 @@
     <ClInclude Include="src\resource.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hooking\CrossMapping.h">
-      <Filter>Header\Game Hooking</Filter>
+    <ClInclude Include="src\hooking\CrossMapping.h">
+      <Filter>Header\hooking</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hooking\Enums.h">
-      <Filter>Header\Game Hooking</Filter>
+    <ClInclude Include="src\hooking\Enums.h">
+      <Filter>Header\hooking</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hooking\GameHooking.h">
-      <Filter>Header\Game Hooking</Filter>
+    <ClInclude Include="src\hooking\GameHooking.h">
+      <Filter>Header\hooking</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hooking\Memory.h">
-      <Filter>Header\Game Hooking</Filter>
+    <ClInclude Include="src\hooking\Memory.h">
+      <Filter>Header\hooking</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hooking\NativeCaller.h">
-      <Filter>Header\Game Hooking</Filter>
+    <ClInclude Include="src\hooking\NativeCaller.h">
+      <Filter>Header\hooking</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hooking\NativeInvoker.h">
-      <Filter>Header\Game Hooking</Filter>
+    <ClInclude Include="src\hooking\NativeInvoker.h">
+      <Filter>Header\hooking</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hooking\Natives.h">
-      <Filter>Header\Game Hooking</Filter>
+    <ClInclude Include="src\hooking\Natives.h">
+      <Filter>Header\hooking</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hooking\Offsets.h">
-      <Filter>Header\Game Hooking</Filter>
+    <ClInclude Include="src\hooking\Offsets.h">
+      <Filter>Header\hooking</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hooking\Types.h">
-      <Filter>Header\Game Hooking</Filter>
+    <ClInclude Include="src\hooking\Types.h">
+      <Filter>Header\hooking</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\GameArrays.h">
-      <Filter>Header\Game Functions</Filter>
+    <ClInclude Include="src\game\GameArrays.h">
+      <Filter>Header\game</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\GUI.h">
       <Filter>Header\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CheatFeatures.h">
-      <Filter>Header\Game Functions</Filter>
+    <ClInclude Include="src\game\CheatFeatures.h">
+      <Filter>Header\game</Filter>
     </ClInclude>
-    <ClInclude Include="src\Cheat\CheatFunctions.h">
-      <Filter>Header\Cheat Functions</Filter>
+    <ClInclude Include="src\cheat\CheatFunctions.h">
+      <Filter>Header\cheat</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\GameFunctions.h">
-      <Filter>Header\Game Functions</Filter>
+    <ClInclude Include="src\game\GameFunctions.h">
+      <Filter>Header\game</Filter>
     </ClInclude>
-    <ClInclude Include="src\Cheat\Logger.h">
-      <Filter>Header\Cheat Functions</Filter>
+    <ClInclude Include="src\cheat\Logger.h">
+      <Filter>Header\cheat</Filter>
     </ClInclude>
-    <ClInclude Include="src\Cheat\FiberMain.h">
-      <Filter>Header\Cheat Functions</Filter>
+    <ClInclude Include="src\cheat\FiberMain.h">
+      <Filter>Header\cheat</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\Submenus.h">
       <Filter>Header\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Cheat\Controls.h">
-      <Filter>Header\Cheat Functions</Filter>
+    <ClInclude Include="src\cheat\Controls.h">
+      <Filter>Header\cheat</Filter>
     </ClInclude>
     <ClInclude Include="vendor\minhook\src\buffer.h">
       <Filter>vendor\MinHook</Filter>
@@ -359,17 +359,8 @@
     <Filter Include="Header">
       <UniqueIdentifier>{71d4327f-1117-4e50-ba45-90d2264c2234}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header\Game Functions">
-      <UniqueIdentifier>{038ff4a2-4baf-489d-bfae-19618392c6f8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header\GUI">
       <UniqueIdentifier>{be0aa322-2c35-476f-b55d-8fdd6dc74f26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header\Cheat Functions">
-      <UniqueIdentifier>{b3aed617-ec49-41e1-bcbd-c8209c8c4525}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header\Game Hooking">
-      <UniqueIdentifier>{8b60f633-ad6c-4473-884e-1eb717078592}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{55f18c92-5ce2-4e86-8240-174ddd6ccdce}</UniqueIdentifier>
@@ -380,15 +371,6 @@
     <Filter Include="Source\GUI\Submenus">
       <UniqueIdentifier>{dc010fde-a7b6-452a-b2b6-d2add43e2ad6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Game Hooking">
-      <UniqueIdentifier>{4d038309-95bb-47b8-8d3a-f21a846ed6ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Game Functions">
-      <UniqueIdentifier>{42e37770-c2e3-4238-9169-1581fc135c4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Cheat Functions">
-      <UniqueIdentifier>{f7bf8f26-8357-44d6-9d53-ae30952450c2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{00a174fd-3530-433d-ad59-06ff96b440cb}</UniqueIdentifier>
     </Filter>
@@ -397,6 +379,24 @@
     </Filter>
     <Filter Include="vendor\MinHook">
       <UniqueIdentifier>{edfb048a-9322-40d1-af4b-27594b4cc41c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\hooking">
+      <UniqueIdentifier>{8b60f633-ad6c-4473-884e-1eb717078592}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\game">
+      <UniqueIdentifier>{038ff4a2-4baf-489d-bfae-19618392c6f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\cheat">
+      <UniqueIdentifier>{b3aed617-ec49-41e1-bcbd-c8209c8c4525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\cheat">
+      <UniqueIdentifier>{f7bf8f26-8357-44d6-9d53-ae30952450c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\game">
+      <UniqueIdentifier>{42e37770-c2e3-4238-9169-1581fc135c4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\hooking">
+      <UniqueIdentifier>{4d038309-95bb-47b8-8d3a-f21a846ed6ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

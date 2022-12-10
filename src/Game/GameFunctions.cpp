@@ -966,35 +966,35 @@ void Cheat::GameFunctions::TriggerScriptEvent(eScriptEventTypes EventType, Playe
 	{
 		if (EventType == eScriptEventTypes::KICK_TO_SINGLE_PLAYER)
 		{
-			uint64_t arguments_aray[4] = { (uint64_t)eRemoteEvents::KickToSP, (uint64_t)TargetPlayer, 0, 0 };
+			uint64_t arguments_aray[4] = { (uint64_t)eRemoteEvents::KickToSP, static_cast<uint64_t>(TargetPlayer), 0, 0 };
 			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
 		}
 		else if (EventType == eScriptEventTypes::CEO_KICK)
 		{
-			uint64_t arguments_aray[4] = { (uint64_t)eRemoteEvents::CeoKick, (uint64_t)TargetPlayer, 1, 5 };
+			uint64_t arguments_aray[4] = { (uint64_t)eRemoteEvents::CeoKick, static_cast<uint64_t>(TargetPlayer), 1, 5 };
 			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
 		}
 		else if (EventType == eScriptEventTypes::CEO_BAN)
 		{
-			uint64_t arguments_aray[4] = { (uint64_t)eRemoteEvents::CeoBan, (uint64_t)TargetPlayer, 1, 5 };
+			uint64_t arguments_aray[4] = { (uint64_t)eRemoteEvents::CeoBan, static_cast<uint64_t>(TargetPlayer), 1, 5 };
 			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
 		}
 		else if (EventType == eScriptEventTypes::PROPERTY_TELEPORT)
 		{
 			if (property_teleport_index != -1)
 			{
-				uint64_t teleport[9] = { (uint64_t)eRemoteEvents::PropertyTeleport, TargetPlayer, 0, -1, 1, property_teleport_index, 0, 0, 0 };
+				uint64_t teleport[9] = { (uint64_t)eRemoteEvents::PropertyTeleport, static_cast<uint64_t>(TargetPlayer), 0, static_cast<uint64_t>(-1), 1, static_cast<uint64_t>(property_teleport_index), 0, 0, 0 };
 				SCRIPT::TRIGGER_SCRIPT_EVENT(1, teleport, 9, (1 << TargetPlayer));
 			}
 		}
 		else if (EventType == eScriptEventTypes::CAYO_PERICO_TELEPORT)
 		{
-			uint64_t arguments_aray[2] = { (uint64_t)eRemoteEvents::CayoPericoTeleport, (uint64_t)TargetPlayer };
+			uint64_t arguments_aray[2] = { (uint64_t)eRemoteEvents::CayoPericoTeleport, static_cast<uint64_t>(TargetPlayer) };
 			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
 		}
 		else if (EventType == eScriptEventTypes::FORCE_INTO_MISSION)
 		{
-			uint64_t arguments_aray[3] = { (uint64_t)eRemoteEvents::ForceIntoMission, (uint64_t)TargetPlayer, 0 };
+			uint64_t arguments_aray[3] = { (uint64_t)eRemoteEvents::ForceIntoMission, static_cast<uint64_t>(TargetPlayer), 0 };
 			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
 		}
 	}

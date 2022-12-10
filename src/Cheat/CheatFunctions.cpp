@@ -402,7 +402,7 @@ bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool RepeatInput)
 	{
 		if (!RepeatInput)
 		{
-			if (GetAsyncKeyState(vKey) & 0x0001)
+			if (GetAsyncKeyState(vKey) & 0x01)
 			{
 				return true;
 			}

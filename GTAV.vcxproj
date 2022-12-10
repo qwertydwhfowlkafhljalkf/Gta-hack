@@ -83,22 +83,22 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Cheat\CheatFunctions.h" />
-    <ClInclude Include="src\Cheat\Controls.h" />
-    <ClInclude Include="src\Cheat\FiberMain.h" />
-    <ClInclude Include="src\Cheat\Logger.h" />
-    <ClInclude Include="src\Game\CheatFeatures.h" />
-    <ClInclude Include="src\Game\GameArrays.h" />
-    <ClInclude Include="src\Game\GameFunctions.h" />
-    <ClInclude Include="src\Hooking\CrossMapping.h" />
-    <ClInclude Include="src\Hooking\Enums.h" />
-    <ClInclude Include="src\Hooking\GameHooking.h" />
-    <ClInclude Include="src\Hooking\Memory.h" />
-    <ClInclude Include="src\Hooking\NativeCaller.h" />
-    <ClInclude Include="src\Hooking\NativeInvoker.h" />
-    <ClInclude Include="src\Hooking\Natives.h" />
-    <ClInclude Include="src\Hooking\Offsets.h" />
-    <ClInclude Include="src\Hooking\Types.h" />
+    <ClInclude Include="src\cheat\CheatFunctions.h" />
+    <ClInclude Include="src\cheat\Controls.h" />
+    <ClInclude Include="src\cheat\FiberMain.h" />
+    <ClInclude Include="src\cheat\Logger.h" />
+    <ClInclude Include="src\game\CheatFeatures.h" />
+    <ClInclude Include="src\game\GameArrays.h" />
+    <ClInclude Include="src\game\GameFunctions.h" />
+    <ClInclude Include="src\hooking\CrossMapping.h" />
+    <ClInclude Include="src\hooking\Enums.h" />
+    <ClInclude Include="src\hooking\GameHooking.h" />
+    <ClInclude Include="src\hooking\Memory.h" />
+    <ClInclude Include="src\hooking\NativeCaller.h" />
+    <ClInclude Include="src\hooking\NativeInvoker.h" />
+    <ClInclude Include="src\hooking\Natives.h" />
+    <ClInclude Include="src\hooking\Offsets.h" />
+    <ClInclude Include="src\hooking\Types.h" />
     <ClInclude Include="src\GUI\GUI.h" />
     <ClInclude Include="src\GUI\Submenus.h" />
     <ClInclude Include="src\resource.h" />
@@ -111,18 +111,18 @@
     <ClInclude Include="vendor\minhook\src\trampoline.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Cheat\CheatFunctions.cpp" />
-    <ClCompile Include="src\Cheat\Controls.cpp" />
-    <ClCompile Include="src\Cheat\Entry.cpp" />
-    <ClCompile Include="src\Cheat\FiberMain.cpp" />
-    <ClCompile Include="src\Cheat\Logger.cpp" />
-    <ClCompile Include="src\Game\CheatFeatures.cpp" />
-    <ClCompile Include="src\Game\GameArrays.cpp" />
-    <ClCompile Include="src\Game\GameFunctions.cpp" />
-    <ClCompile Include="src\Hooking\CrossMapping.cpp" />
-    <ClCompile Include="src\Hooking\GameHooking.cpp" />
-    <ClCompile Include="src\Hooking\Memory.cpp" />
-    <ClCompile Include="src\Hooking\NativeInvoker.cpp" />
+    <ClCompile Include="src\cheat\CheatFunctions.cpp" />
+    <ClCompile Include="src\cheat\Controls.cpp" />
+    <ClCompile Include="src\cheat\Entry.cpp" />
+    <ClCompile Include="src\cheat\FiberMain.cpp" />
+    <ClCompile Include="src\cheat\Logger.cpp" />
+    <ClCompile Include="src\game\CheatFeatures.cpp" />
+    <ClCompile Include="src\game\GameArrays.cpp" />
+    <ClCompile Include="src\game\GameFunctions.cpp" />
+    <ClCompile Include="src\hooking\CrossMapping.cpp" />
+    <ClCompile Include="src\hooking\GameHooking.cpp" />
+    <ClCompile Include="src\hooking\Memory.cpp" />
+    <ClCompile Include="src\hooking\NativeInvoker.cpp" />
     <ClCompile Include="src\GUI\GUI.cpp" />
     <ClCompile Include="src\GUI\Submenus.cpp" />
     <ClCompile Include="src\GUI\Submenus\About.cpp" />
