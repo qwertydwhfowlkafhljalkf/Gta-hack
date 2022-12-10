@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\GUI\GUI.cpp">
-      <Filter>Source\GUI</Filter>
+    <ClCompile Include="src\gui\GUI.cpp">
+      <Filter>Source\gui</Filter>
     </ClCompile>
     <ClCompile Include="src\hooking\CrossMapping.cpp">
       <Filter>Source\hooking</Filter>
@@ -37,218 +37,218 @@
     <ClCompile Include="src\cheat\Entry.cpp">
       <Filter>Source\cheat</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Self.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Self.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Home.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Home.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\AllPlayersExclusions.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\AllPlayersExclusions.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\AllPlayers.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\AllPlayers.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Session.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Session.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\SessionChat.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\SessionChat.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\RecoverySubmenuWarning.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\RecoverySubmenuWarning.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\RecoveryStatistics.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\RecoveryStatistics.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Recovery.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Recovery.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\ReportStatistics.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\ReportStatistics.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\SelfModel.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\SelfModel.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\SpawnedVehicles.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\SpawnedVehicles.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\VehicleSpawn.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\VehicleSpawn.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Spawn.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Spawn.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\ObjectSpawn.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\ObjectSpawn.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\PlayerList.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\PlayerList.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\PedSpawn.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\PedSpawn.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\ThemeFiles.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\ThemeFiles.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Theme.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Theme.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\About.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\About.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Settings.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Settings.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\World.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\World.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\NearbyPeds.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\NearbyPeds.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\NearbyVehicles.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\NearbyVehicles.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Time.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Time.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Vehicle.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Vehicle.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\VehicleCustomizer.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\VehicleCustomizer.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\VehicleCustomizerColor.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\VehicleCustomizerColor.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\VehicleCustomizerNeon.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\VehicleCustomizerNeon.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\VehicleMultipliers.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\VehicleMultipliers.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Miscellaneous.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Miscellaneous.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Globals.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Globals.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Vision.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Vision.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\HideElements.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\HideElements.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Protection.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Protection.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Wardrobe.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Wardrobe.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\IPLLoader.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\IPLLoader.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Weapons.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Weapons.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Weapon.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Weapon.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\ShootEntities.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\ShootEntities.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\VehicleWeapons.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\VehicleWeapons.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\VehicleSpawnSettings.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\VehicleSpawnSettings.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Teleport.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Teleport.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\HUD.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\HUD.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\CustomTeleportLocations.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\CustomTeleportLocations.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Weather.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Weather.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\ESP.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\ESP.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Radio.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Radio.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\WeaponVisuals.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\WeaponVisuals.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Animations.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Animations.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\SelectedPlayerTeleport.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\SelectedPlayerTeleport.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\SelectedPlayer.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\SelectedPlayer.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\SelectedPlayerRemote.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\SelectedPlayerRemote.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\SelectedPlayerApartmentTeleport.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\SelectedPlayerApartmentTeleport.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\SelectedPlayerAttachments.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\SelectedPlayerAttachments.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\SelectedPlayerFriendly.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\SelectedPlayerFriendly.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\SelectedPlayerGriefing.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\SelectedPlayerGriefing.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Aimbot.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Aimbot.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\IPLTeleports.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\IPLTeleports.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\WeaponAmmo.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\WeaponAmmo.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\LandmarkTeleportLocations.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\LandmarkTeleportLocations.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\SafehousesTeleportLocations.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\SafehousesTeleportLocations.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\HighAltitudeTeleportLocations.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\HighAltitudeTeleportLocations.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\UnderwaterTeleportLocations.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\UnderwaterTeleportLocations.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus.cpp">
-      <Filter>Source\GUI</Filter>
+    <ClCompile Include="src\gui\Submenus.cpp">
+      <Filter>Source\gui</Filter>
     </ClCompile>
     <ClCompile Include="src\cheat\Controls.cpp">
       <Filter>Source\cheat</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\SessionStarter.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\SessionStarter.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\ProtectionScriptEvents.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\ProtectionScriptEvents.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\ProtectionNetworkEvents.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\ProtectionNetworkEvents.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Disables.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Disables.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Submenus\Television.cpp">
-      <Filter>Source\GUI\Submenus</Filter>
+    <ClCompile Include="src\gui\Submenus\Television.cpp">
+      <Filter>Source\gui\Submenus</Filter>
     </ClCompile>
     <ClCompile Include="vendor\jsoncpp\src\lib_json\json_reader.cpp">
       <Filter>vendor\JsonCpp</Filter>
@@ -309,9 +309,6 @@
     <ClInclude Include="src\game\GameArrays.h">
       <Filter>Header\game</Filter>
     </ClInclude>
-    <ClInclude Include="src\GUI\GUI.h">
-      <Filter>Header\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\CheatFeatures.h">
       <Filter>Header\game</Filter>
     </ClInclude>
@@ -326,9 +323,6 @@
     </ClInclude>
     <ClInclude Include="src\cheat\FiberMain.h">
       <Filter>Header\cheat</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Submenus.h">
-      <Filter>Header\GUI</Filter>
     </ClInclude>
     <ClInclude Include="src\cheat\Controls.h">
       <Filter>Header\cheat</Filter>
@@ -354,22 +348,19 @@
     <ClInclude Include="vendor\minhook\src\hde\table64.h">
       <Filter>vendor\MinHook</Filter>
     </ClInclude>
+    <ClInclude Include="src\gui\Submenus.h">
+      <Filter>Source\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\GUI.h">
+      <Filter>Source\gui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
       <UniqueIdentifier>{71d4327f-1117-4e50-ba45-90d2264c2234}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header\GUI">
-      <UniqueIdentifier>{be0aa322-2c35-476f-b55d-8fdd6dc74f26}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{55f18c92-5ce2-4e86-8240-174ddd6ccdce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\GUI">
-      <UniqueIdentifier>{65f6b538-1687-484b-be62-9110b59f13e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\GUI\Submenus">
-      <UniqueIdentifier>{dc010fde-a7b6-452a-b2b6-d2add43e2ad6}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{00a174fd-3530-433d-ad59-06ff96b440cb}</UniqueIdentifier>
@@ -397,6 +388,15 @@
     </Filter>
     <Filter Include="Source\hooking">
       <UniqueIdentifier>{4d038309-95bb-47b8-8d3a-f21a846ed6ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\gui">
+      <UniqueIdentifier>{65f6b538-1687-484b-be62-9110b59f13e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\gui\Submenus">
+      <UniqueIdentifier>{dc010fde-a7b6-452a-b2b6-d2add43e2ad6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\gui\menu_components">
+      <UniqueIdentifier>{8011cdcd-6644-46a9-850f-d68d1fd3eb86}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
