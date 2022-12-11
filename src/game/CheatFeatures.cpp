@@ -54,6 +54,7 @@ bool Cheat::CheatFeatures::AllPlayersExclusionsFriends = false;
 bool Cheat::CheatFeatures::AllPlayersExclusionsHost = false;
 bool Cheat::CheatFeatures::TeleportTransition = false;
 bool Cheat::CheatFeatures::NoTextureFileOverwrite = false;
+bool Cheat::CheatFeatures::SafeMode = true;
 
 void Cheat::CheatFeatures::Loop()
 {

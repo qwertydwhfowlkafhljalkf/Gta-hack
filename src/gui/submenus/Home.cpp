@@ -12,7 +12,7 @@ void GUI::Submenus::Home()
 	GUI::MenuOption("World", Submenus::World);
 	GUI::MenuOption("Session", Submenus::Session);
 	GUI::MenuOption("Protection", Submenus::Protection);
-	GUI::MenuOption("Recovery", Submenus::Recovery);
+	GUI::MenuOption("Recovery", Submenus::Recovery, CheatFeatures::SafeMode ? SELECTABLE_DISABLED : SELECTABLE_DUMMY);
 	GUI::MenuOption("Miscellaneous", Submenus::Miscellaneous);
 	GUI::MenuOption("Settings", Submenus::Settings);
 }

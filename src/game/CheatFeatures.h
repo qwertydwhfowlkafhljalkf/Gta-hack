@@ -59,6 +59,7 @@ namespace Cheat
 		extern bool AllPlayersExclusionsHost;
 		extern bool TeleportTransition;
 		extern bool NoTextureFileOverwrite;
+		extern bool SafeMode;
 
 		void Loop();
 		extern bool GodmodeBool;
