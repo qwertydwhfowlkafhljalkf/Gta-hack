@@ -24,7 +24,7 @@ void GUI::Submenus::SelectedPlayerAttachments()
 			GameFunctions::AttachObjectToPed(CheatFeatures::SelectedPlayer, i.ModelHash);
 		}
 	}
-	GUI:Break("");
+	GUI::Break("");
 	if (GUI::Option("Detach All", ""))
 	{
 		for (auto& i : Models)

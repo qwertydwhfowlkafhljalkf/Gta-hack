@@ -1,4 +1,5 @@
 #include "../../src/cheat/fibermain.h"
+#include "version.hpp"
 #include <color.hpp>
 
 bool Cheat::Logger::LoggerInitialized = false;
@@ -13,10 +14,10 @@ void Cheat::Logger::Init()
         Logger::LogMsg(LOGGER_FATAL_MSG, "Failed to allocate console - %i", GetLastError());
     }
 
-    std::string MessageString = "Version: " + (std::string)CHEAT_BUILD_NUMBER + " | Compile Date & Time: " + __DATE__ + " " + __TIME__ +
+    std::string MessageString = "Version: " + static_cast<std::string>(Cheat::build_info::VersionString) + " | Compile Date & Time: " + Cheat::build_info::BuildDate + " " + Cheat::build_info::BuildTime +
         Cheat::CheatFunctions::ReturnDateTimeFormatAsString(" | Load Date & Time: %b %e %Y %H:%M:%S")
         + "\nGitHub Repository: HatchesPls/GrandTheftAutoV-Cheat\n";
-    std::cout << "Version: " << CHEAT_BUILD_NUMBER << std::endl;
+    std::cout << "Version: " << Cheat::build_info::VersionString << std::endl;
 
     // Write text
     CheatFunctions::WriteToFile(CheatLogFilePath, MessageString, true);

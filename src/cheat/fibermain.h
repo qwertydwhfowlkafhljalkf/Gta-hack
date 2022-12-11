@@ -4,9 +4,6 @@
 #pragma warning(disable : 26812)		//			The enum type type-name is unscoped. Prefer 'enum class' over 'enum' (Enum.3)
 #pragma warning(disable : 4091)	
 
-// Cheat version 
-#define CHEAT_BUILD_NUMBER "2.2.1.3"
-
 #include <windows.h>
 #include <string>
 #include <vector>
@@ -39,8 +36,8 @@
 // Project Header Files
 #include "../../src/hooking/Memory.h"
 #include "../../src/hooking/Types.h"
-#include "../../src/hooking/Enums.h"
-#include "../../src/hooking/CrossMapping.h"
+#include "../../src/game/Enums.h"
+#include "../../src/hooking/crossmap.hpp"
 #include "../../src/hooking/NativeInvoker.h"
 #include "../../src/hooking/NativeCaller.h"
 #include "../../src/hooking/Natives.h"
@@ -48,10 +45,10 @@
 #include "../../src/gui/GUI.h"
 #include "../../src/cheat/Controls.h"
 #include "../../src/cheat/CheatFunctions.h"
-#include "../../src/gui/Submenus.h"
+#include "../../src/gui/submenus/Submenus.h"
 #include "../../src/game/GameArrays.h"
 #include "../../src/hooking/Offsets.h"
-#include "../../src/cheat/Logger.h"
+#include "../../src/cheat/Logger.hpp"
 #include "../../src/game/CheatFeatures.h"
 #include "../../src/cheat/CheatFunctions.h"
 #include "../../src/game/GameFunctions.h"

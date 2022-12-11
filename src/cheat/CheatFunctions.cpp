@@ -1,4 +1,5 @@
 #include "../../src/cheat/fibermain.h"
+#include "version.hpp"
 
 std::string Cheat::CheatFunctions::NewCheatVersionString;
 bool Cheat::CheatFunctions::CheatInitEntirelyCompleted = false;									// Set when both CheatInitCompleted and ConfigLoaded are set
@@ -534,7 +535,7 @@ std::string Cheat::CheatFunctions::GetLatestCheatBuildNumber()
 void Cheat::CheatFunctions::CheckCheatUpdate()
 {
 	Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_INFO_MSG, "Checking for newer version");
-	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(CHEAT_BUILD_NUMBER, (char*)".");
+	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(Cheat::build_info::VersionString, (char*)".");
 	std::string LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(GetLatestCheatBuildNumber(), (char*)"v.");
 
 	if (!LatestOnlineVersionString.empty())
