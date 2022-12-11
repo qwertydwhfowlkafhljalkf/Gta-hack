@@ -52,9 +52,6 @@
     <ClCompile Include="src\gui\submenus\Session.cpp">
       <Filter>Source\gui\submenus</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\submenus\SessionChat.cpp">
-      <Filter>Source\gui\submenus</Filter>
-    </ClCompile>
     <ClCompile Include="src\gui\submenus\RecoverySubmenuWarning.cpp">
       <Filter>Source\gui\submenus</Filter>
     </ClCompile>

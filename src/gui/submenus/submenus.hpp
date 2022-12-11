@@ -15,7 +15,6 @@ namespace Cheat
 			void AllPlayers();
 			void Session();
 			void SessionStarter();
-			void SessionChat();
 			void RecoverySubmenuWarning();
 			void RecoveryStatistics();
 			void Recovery();

@@ -11,7 +11,6 @@ namespace Cheat
 		const std::string paths::LogDir = DataDir + "\\Logs";
 		const std::string paths::ThemesDir = DataDir + "\\Themes";
 		const std::string paths::ConfigFile = DataDir + "\\Config.ini";
-		const std::string paths::ChatLogFile = LogDir + "\\Chats.log";
 		const std::string paths::CusTelLocFile = DataDir + "\\CustomTeleportLocations.json";
 		const std::string paths::HUDColorsFile = DataDir + "\\HUDColors.ini";
 		const std::string paths::TextureFile = DataDir + "\\Textures.ytd";

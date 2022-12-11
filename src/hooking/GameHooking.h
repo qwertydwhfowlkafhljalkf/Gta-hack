@@ -10,7 +10,6 @@ using GetScriptHandlerIfNetworked							= void* (*) ();
 using GetScriptHandler										= void* (*) ();
 typedef const char* (__cdecl* GetLabelText)					(void* this_, const char* label);
 typedef __int64(__cdecl* GetPlayerAddress)					(Player);
-typedef __int64(__cdecl* GetChatData)						(__int64 a1, __int64 a2, __int64 a3, const char* origText, BOOL a5);
 
 
 class GameHooking
@@ -23,7 +22,6 @@ public:
 	static GetScriptHandler				    get_script_handler;
 	static GetLabelText						get_label_text;
 	static GetPlayerAddress					get_player_address;
-	static GetChatData					    get_chat_data;
 
 	static void Init();
 	static void PauseMainFiber(DWORD ms, bool ShowMessage = true);

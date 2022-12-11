@@ -920,10 +920,14 @@ bool Cheat::GameFunctions::ShowFullScreenMessage(std::string Message)
 {
 	for (;;)
 	{
+		UI::SET_WARNING_MESSAGE("t20", 3, "adder", false, -1, 0, 0, false, 0);
+
+		/*
 		GUI::DrawRectInGame({ 0, 0, 0, 210 }, { 0.50f, 0.45f }, { 0.30f, 0.15f });
 		Cheat::GUI::DrawTextInGame("~bold~CAUTION", { 225, 0, 0, 255, FontChaletLondon }, { 0.450f, 0.370f }, { 0.55f, 0.55f }, false, true);
 		Cheat::GUI::DrawTextInGame(Message, { 255, 255, 255, 255, FontChaletLondon }, { 0.500f, 0.420f}, { 0.40f, 0.40f }, true);
 		Cheat::GUI::DrawTextInGame("Press ENTER to continue or BACKSPACE to go back", { 255, 255, 255, 255, FontChaletLondon }, { 0.355f, 0.495f }, { 0.30f, 0.30f }, false, true);
+		*/
 		if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, INPUT_FRONTEND_ACCEPT))
 		{
 			return true;
@@ -932,6 +936,7 @@ bool Cheat::GameFunctions::ShowFullScreenMessage(std::string Message)
 		{
 			return false;
 		}
+		
 		GameHooking::PauseMainFiber(0, false);
 	}
 }

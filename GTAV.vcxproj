@@ -182,7 +182,6 @@
     <ClCompile Include="src\gui\submenus\SelectedPlayerGriefing.cpp" />
     <ClCompile Include="src\gui\submenus\Self.cpp" />
     <ClCompile Include="src\gui\submenus\SelfModel.cpp" />
-    <ClCompile Include="src\gui\submenus\SessionChat.cpp" />
     <ClCompile Include="src\gui\submenus\SessionStarter.cpp" />
     <ClCompile Include="src\gui\submenus\Settings.cpp" />
     <ClCompile Include="src\gui\submenus\ShootEntities.cpp" />

@@ -11,7 +11,6 @@ GetLabelText														GameHooking::get_label_text;
 GetScriptHandlerIfNetworked											GameHooking::get_script_handler_if_networked;
 GetScriptHandler													GameHooking::get_script_handler;
 GetPlayerAddress													GameHooking::get_player_address;
-GetChatData														    GameHooking::get_chat_data;
 
 static eGameState* 													m_gameState;
 static uint64_t														m_worldPtr;
@@ -29,13 +28,11 @@ std::vector<LPVOID>													MH_Hooked;
 // Function and variable definitions hooks
 IsDLCPresent IsDLCPresentOriginal									= nullptr;
 GetScriptHandlerIfNetworked GetScriptHandlerIfNetworkedOriginal		= nullptr;
-GetChatData GetChatDataOriginal										= nullptr;
 GetLabelText GetLabelTextOriginal									= nullptr;
 GetEventData GetEventDataOriginal									= nullptr;
 bool IsDLCPresentHooked												(std::uint32_t DLCHash);
 bool GetEventDataHooked												(std::int32_t eventGroup, std::int32_t eventIndex, std::int64_t* args, std::uint32_t argCount);
 void* GetScriptHandlerIfNetworkedHooked								();
-__int64 GetChatDataHooked											(__int64 a1, __int64 a2, __int64 a3, const char* origText, BOOL isTeam);
 const char* GetLabelTextHooked										(void* this_, const char* label);
 
 void GameHooking::Init()
@@ -61,9 +58,6 @@ void GameHooking::Init()
 	
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Getting GPA pointer");
 	GameHooking::get_player_address = static_cast<GetPlayerAddress>(Memory::pattern("40 53 48 83 EC 20 33 DB 38 1D ? ? ? ? 74 1C").count(1).get(0).get<void>(0));
-	
-	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Getting GCD pointer");
-	GameHooking::get_chat_data = static_cast<GetChatData>(Memory::pattern("4D 85 C9 0F 84 ? ? ? ? 48 8B C4 48 89 58 08 48 89 70 10 48 89 78 18 4C 89 48 20 55 41 54 41 55 41 56 41 57 48 8D A8").count(1).get(0).get<void>(0));
 
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Getting OEB pointer");
 	m_ownedExplosionBypass = Memory::pattern("0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8").count(1).get(0).get<void>(0);
@@ -162,11 +156,6 @@ void GameHooking::Init()
 	status = MH_CreateHook(GameHooking::get_label_text, GetLabelTextHooked, (void**)&GetLabelTextOriginal);
 	if (status != MH_OK || MH_EnableHook(GameHooking::get_label_text) != MH_OK) { Logger::LogMsg(LOGGER_FATAL_MSG, "Failed to hook GET_LABEL_TEXT");  std::exit(EXIT_FAILURE); }
 	MH_Hooked.push_back(GameHooking::get_label_text);
-
-	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Hook GCD");
-	status = MH_CreateHook(GameHooking::get_chat_data, GetChatDataHooked, (void**)&GetChatDataOriginal);
-	if (status != MH_OK || MH_EnableHook(GameHooking::get_chat_data) != MH_OK) { Logger::LogMsg(LOGGER_FATAL_MSG, "Failed to hook GET_CHAT_DATA");  std::exit(EXIT_FAILURE); }
-	MH_Hooked.push_back(GameHooking::get_chat_data);
 
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Hook IDP");
 	status = MH_CreateHook(GameHooking::is_dlc_present, IsDLCPresentHooked, (void**)&IsDLCPresentOriginal);
@@ -401,16 +390,6 @@ bool GetEventDataHooked(std::int32_t eventGroup, std::int32_t eventIndex, std::i
 		}
 	}
 	return result;
-}
-
-__int64 GetChatDataHooked(__int64 a1, __int64 a2, __int64 a3, const char* origText, BOOL isTeam)
-{
-	if (CheatFeatures::LogChatMessages)
-	{
-		CheatFunctions::WriteToFile(file_system::paths::ChatLogFile, CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] Msg: ") + (std::string)origText + "\n", true);
-		Logger::LogMsg(LOGGER_INFO_MSG, "[Game Chat] Msg: %s", origText);
-	}
-	return GetChatDataOriginal(a1, a2, a3, origText, isTeam);
 }
 
 void GameHooking::PauseMainFiber(DWORD ms, bool ShowMessage)

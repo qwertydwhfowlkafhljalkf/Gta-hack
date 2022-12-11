@@ -1,5 +1,4 @@
 #include "version.hpp"
-#include <vector>
 
 namespace Cheat
 {

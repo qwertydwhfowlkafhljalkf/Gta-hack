@@ -43,7 +43,6 @@ namespace Cheat
 		extern bool HideVehiclePreview;
 		extern bool CursorNavigationState;
 		extern bool ShowJoiningPlayersNotification;
-		extern bool LogChatMessages;
 		extern bool VehicleSpawnerSpawnInsideVehicle;
 		extern bool VehicleSpawnerDeleteOldVehicle;
 		extern bool VehicleSpawnerSpawnWithBlip;
