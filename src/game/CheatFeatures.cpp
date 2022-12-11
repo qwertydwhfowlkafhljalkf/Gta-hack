@@ -73,9 +73,9 @@ void Cheat::CheatFeatures::Loop()
 	GameFunctions::InGameKeyboardWindowTitle.clear();
 
 	// New cheat update notification
-	if (!CheatFunctions::NewCheatVersionString.empty() && CheatFunctions::CheatInitEntirelyCompleted)
+	if (CheatFunctions::NewerCheatVersionAvailable && CheatFunctions::CheatInitEntirelyCompleted)
 	{
-		GUI::DrawTextInGame("~bold~A newer cheat version (" + CheatFunctions::NewCheatVersionString + ") is available on GitHub.", { 255, 255, 255, 255, FontChaletLondon }, { 0.003f, 0.001f }, { 0.25f, 0.25f }, false);
+		GUI::DrawTextInGame("~bold~A newer cheat version is available on GitHub", { 255, 255, 255, 255, FontChaletLondon }, { 0.003f, 0.001f }, { 0.25f, 0.25f }, false);
 	}
 
 	// New session member notification feature

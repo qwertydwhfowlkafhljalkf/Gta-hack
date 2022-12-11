@@ -102,7 +102,7 @@
     <ClInclude Include="src\hooking\Offsets.h" />
     <ClInclude Include="src\hooking\Types.h" />
     <ClInclude Include="src\gui\GUI.h" />
-    <ClInclude Include="src\gui\submenus\Submenus.h" />
+    <ClInclude Include="src\gui\submenus\submenus.hpp" />
     <ClInclude Include="src\resource.h" />
     <ClInclude Include="vendor\minhook\src\buffer.h" />
     <ClInclude Include="vendor\minhook\src\hde\hde32.h" />
@@ -123,7 +123,6 @@
     <ClCompile Include="src\game\CheatFeatures.cpp" />
     <ClCompile Include="src\game\GameArrays.cpp" />
     <ClCompile Include="src\game\GameFunctions.cpp" />
-    <ClCompile Include="src\gui\menu_components\bottom.cpp" />
     <ClCompile Include="src\gui\menu_components\break.cpp" />
     <ClCompile Include="src\gui\menu_components\float.cpp" />
     <ClCompile Include="src\gui\menu_components\floatvector.cpp" />

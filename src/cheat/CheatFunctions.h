@@ -9,7 +9,7 @@ namespace Cheat
 	namespace CheatFunctions
 	{
 		extern bool StopThreads;
-		extern std::string NewCheatVersionString;
+		extern bool NewerCheatVersionAvailable;
 		extern bool CheatInitCompleted;
 		extern bool CheatInitEntirelyCompleted;
 		extern bool ConfigLoaded;
@@ -24,7 +24,6 @@ namespace Cheat
 		void LoadSelectableSaveStateInt(std::string SelectableName, int& ReturnedInt);
 		void LoadSelectableSaveStateFloat(std::string SelectableName, float& ReturnedFloat);
 		std::string ReturnCheatModuleDirectoryPath();
-		void Loop();
 		bool IsGameWindowFocussed();
 		bool StringIsInteger(std::string String);
 		int WaitForAndReturnPressedKey();
@@ -38,10 +37,8 @@ namespace Cheat
 		std::string ReturnDateTimeFormatAsString(const char* DateTimeFormat);
 		bool IsKeyCurrentlyPressed(int vKey, bool RepeatInput = false);
 		void WriteToFile(std::string FilePath, std::string text, bool Append);
-		Json::Value ReturnGithubAPIJsonDataCheat(std::string Build);
-		std::string GetLatestCheatBuildNumber();
-		void CheckCheatUpdate();
-		std::string RemoveCharactersFromStringAndReturn(std::string String, char* CharactersToRemove);
+		int GetLatestCheatBuildNumber();
+		void RemoveChars(std::string &String, const char* CharactersToRemove);
 		std::string TextWrap(std::string String, int Location);
 		void CopyStringToClipboard(const std::string& String);
 		bool GetJsonFromFile(std::string Path, Json::Value& Object);

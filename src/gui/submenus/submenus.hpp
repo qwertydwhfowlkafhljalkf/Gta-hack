@@ -7,6 +7,7 @@ namespace Cheat
 		namespace Submenus
 		{
 			void (*FunctionPointers[])();
+			void Loop();
 			extern int NumberOfSubmenus;
 			void Home();
 			void Self();

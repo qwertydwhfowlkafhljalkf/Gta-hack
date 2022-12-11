@@ -20,6 +20,7 @@ namespace Cheat
 {
 	namespace GUI
 	{
+		void Loop();
 		void LoadTextureFile();
 		void DrawTextInGame(std::string text, RGBAF rgbaf, VECTOR2 position, VECTOR2_2 size, bool center, bool Outline = false);
 		void DrawRectInGame(RGBA rgba, VECTOR2 position, VECTOR2_2 size);
@@ -75,7 +76,6 @@ namespace Cheat
 		void BackMenu();
 		void AddPlayerInfoBoxTextEntry(std::string text, int Row1 = NULL, int Row2 = NULL, int Row3 = NULL, int Row4 = NULL);
 		void CloseMenuGUI();
-		void MenuGUIBottom();
 		void LoadTheme(std::string ThemeFileName, bool StartUp);
 		void SaveTheme(std::string ThemeFileName);
 

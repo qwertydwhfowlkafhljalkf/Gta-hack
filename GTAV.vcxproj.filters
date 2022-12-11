@@ -307,9 +307,6 @@
     <ClCompile Include="src\gui\menu_components\stringvector.cpp">
       <Filter>Source\gui\menu_components</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\menu_components\bottom.cpp">
-      <Filter>Source\gui\menu_components</Filter>
-    </ClCompile>
     <ClCompile Include="src\gui\submenus\Submenus.cpp">
       <Filter>Source\gui\submenus</Filter>
     </ClCompile>
@@ -387,7 +384,7 @@
     <ClInclude Include="src\gui\GUI.h">
       <Filter>Source\gui</Filter>
     </ClInclude>
-    <ClInclude Include="src\gui\submenus\Submenus.h">
+    <ClInclude Include="src\gui\submenus\submenus.hpp">
       <Filter>Source\gui\submenus</Filter>
     </ClInclude>
     <ClInclude Include="src\game\Enums.h">

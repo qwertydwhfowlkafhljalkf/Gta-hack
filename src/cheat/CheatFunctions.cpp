@@ -2,7 +2,7 @@
 #include "version.hpp"
 #include "file_system.hpp"
 
-std::string Cheat::CheatFunctions::NewCheatVersionString;
+bool Cheat::CheatFunctions::NewerCheatVersionAvailable = false;
 bool Cheat::CheatFunctions::CheatInitEntirelyCompleted = false;									// Set when both CheatInitCompleted and ConfigLoaded are set
 bool Cheat::CheatFunctions::CheatInitCompleted = false;											// Set when all initialization is completed (except for async tasks such as LoadConfig())
 bool Cheat::CheatFunctions::ConfigLoaded = false;												// Set when the LoadConfig thread is completed
@@ -25,123 +25,6 @@ std::string Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath()
 	char CheatModuleFilePath[MAX_PATH];
 	GetModuleFileNameA(CheatModuleHandle, CheatModuleFilePath, MAX_PATH);
 	return std::filesystem::path(CheatModuleFilePath).parent_path().string();
-}
-
-static std::once_flag CheatInitialization;
-void Cheat::CheatFunctions::Loop()
-{
-	std::call_once(CheatInitialization, []()
-	{
-		// Check for newer version
-		CheckCheatUpdate();
-
-		// Create Menu Selectable Arrow Animation Thread
-		std::thread MenuSelectableAnimationThreadHandle([]()
-		{
-			while (!StopThreads)
-			{
-				if (GUI::menuLevel > 0)
-				{
-					GUI::MenuOptionArrowAnimationState = !GUI::MenuOptionArrowAnimationState;
-					Sleep(GUI::MenuArrowAnimationDelay);
-				}
-			}
-		});
-		MenuSelectableAnimationThreadHandle.detach();
-
-		// Load configuration file
-		LoadConfig();
-
-		// Load texture file
-		GUI::LoadTextureFile();
-
-		// Load 'multiplayer vehicles in Single Player' bypass
-		globalHandle(GLOBAL_SP_DESPAWN_BYPASS).As<BOOL>() = true;
-		Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded SPVSB");
-
-		// Fetch default HUD colors
-		for (int i = 0; i <= GameArrays::HUDColors.size(); i++)
-		{
-			DefaultHUDColorsStruct data{};
-			UI::GET_HUD_COLOUR(i, &data.R, &data.G, &data.B, &data.A);
-			GameArrays::DefaultHUDColors.push_back(data);
-		}
-		Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG,"Fetched DHC");
-
-		// Load saved HUD colors
-		if (std::filesystem::exists(file_system::paths::HUDColorsFile))
-		{
-			int SavedHUDColorsIndex = 0;
-			for (auto const& HUDColorComponentName : GameArrays::HUDColors)
-			{
-				std::string Red = IniFileReturnKeyValueAsString(file_system::paths::HUDColorsFile, HUDColorComponentName, "r");
-				std::string Green = IniFileReturnKeyValueAsString(file_system::paths::HUDColorsFile, HUDColorComponentName, "g");
-				std::string Blue = IniFileReturnKeyValueAsString(file_system::paths::HUDColorsFile, HUDColorComponentName, "b");
-				std::string Alpha = IniFileReturnKeyValueAsString(file_system::paths::HUDColorsFile, HUDColorComponentName, "a");
-
-				if (!Red.empty() && !Green.empty() && !Blue.empty() && !Alpha.empty())
-				{
-					try
-					{
-						UI::REPLACE_HUD_COLOUR_WITH_RGBA(SavedHUDColorsIndex, std::stoi(Red), std::stoi(Green), std::stoi(Blue), std::stoi(Alpha));
-					}
-					catch (...) {}
-					Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded CHC '%s'", HUDColorComponentName.c_str());
-				}
-				SavedHUDColorsIndex++;
-			}
-		}
-
-		// Cheat init completed
-		CheatFunctions::CheatInitCompleted = true;
-		Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Cheat init completed");
-	});
-
-	// Submenu handlers - additional submenu logic is looped here
-	for (int FuncPointerIndex = 0; FuncPointerIndex < Cheat::GUI::Submenus::NumberOfSubmenus; ++FuncPointerIndex)
-	{
-		if (GUI::currentMenu == (*Cheat::GUI::Submenus::FunctionPointers[FuncPointerIndex]))
-		{
-			(*Cheat::GUI::Submenus::FunctionPointers[FuncPointerIndex])();
-		}
-	}
-	if (GUI::currentMenu == GUI::Submenus::SelectedPlayer ||
-		GUI::currentMenu == GUI::Submenus::SelectedPlayerFriendly ||
-		GUI::currentMenu == GUI::Submenus::SelectedPlayerRemote ||
-		GUI::currentMenu == GUI::Submenus::SelectedPlayerTeleport ||
-		GUI::currentMenu == GUI::Submenus::SelectedPlayerAttachments ||
-		GUI::currentMenu == GUI::Submenus::SelectedPlayerGriefing ||
-		GUI::currentMenu == GUI::Submenus::SelectedPlayerApartmentTeleport ||
-		GUI::currentMenu == GUI::Submenus::SelectedPlayerRemote)
-	{
-		if (NETWORK::NETWORK_IS_PLAYER_ACTIVE(CheatFeatures::SelectedPlayer))
-		{
-			GUI::ShowPlayerInformationBox(CheatFeatures::SelectedPlayer);
-		}
-		else
-		{
-			GUI::PreviousMenu = nullptr;
-			GUI::MoveMenu(GUI::Submenus::Home);
-			GUI::MoveMenu(GUI::Submenus::Session);
-		}
-	}
-	if (GUI::currentMenu == GUI::Submenus::ThemeFiles)
-	{
-		GUI::ThemeFilesVector.clear();
-		for (const auto& file : std::filesystem::directory_iterator(file_system::paths::ThemesDir))
-		{
-			if (file.path().extension() == ".ini")
-			{
-				GUI::ThemeFilesVector.push_back(file.path().stem().string());
-			}
-		}
-	}
-
-	// GUI - must be called after (^) rendering a submenu
-	GUI::MenuGUIBottom();
-
-	// Set CheatInitEntirelyCompleted when all init is completed
-	CheatInitEntirelyCompleted = CheatInitCompleted && ConfigLoaded;
 }
 
 bool Cheat::CheatFunctions::IsGameWindowFocussed()
@@ -389,61 +272,15 @@ void Cheat::CheatFunctions::WriteToFile(std::string FilePath, std::string text, 
 	FileHandle.close();
 }
 
-Json::Value Cheat::CheatFunctions::ReturnGithubAPIJsonDataCheat(std::string Build)
+int Cheat::CheatFunctions::GetLatestCheatBuildNumber()
 {
-	if (Build.empty()) { return NULL; }
-	CA2W wstringver(Build.c_str());
-	Json::Value JsonData;
-	std::wstring URL = L"https://api.github.com/repos/HatchesPls/GrandTheftAutoV-Cheat/releases/tags/" + (std::wstring)wstringver;
-	HINTERNET hopen = InternetOpen(L"GTAVCheat", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
-	if (hopen)
-	{
-		DWORD flags = INTERNET_FLAG_DONT_CACHE;
-		HINTERNET hinternet = InternetOpenUrl(hopen, URL.c_str(), NULL, 0, flags, 0);
-		if (hinternet)
-		{
-			char tmp[2048 + 1];
-			DWORD received = 0;
-			std::string buffer;
-			while (InternetReadFile(hinternet, tmp, 2048, &received) && received > 0)
-			{
-				if (!received) break;
-				tmp[received] = '\0';
-				buffer += (std::string)tmp;
-			}
-
-			Json::CharReaderBuilder CharBuilder;
-			JSONCPP_STRING JsonError;
-			const std::unique_ptr<Json::CharReader> reader(CharBuilder.newCharReader());
-
-			if (reader->parse(buffer.c_str(), buffer.c_str() + buffer.length(), &JsonData, &JsonError))
-			{
-				if (JsonData["message"].asString() == "Not Found")
-				{
-					// Invalid version number provided
-					return Json::nullValue;
-				}
-			}
-			else
-			{
-				return Json::nullValue;
-			}
-			InternetCloseHandle(hinternet);
-		}
-		InternetCloseHandle(hopen);
-	}
-	return JsonData;
-}
-
-std::string Cheat::CheatFunctions::GetLatestCheatBuildNumber()
-{
-	std::string Version;
+	std::string VersionString;
+	int VersionInt = NULL;
 	std::wstring URL = L"https://api.github.com/repos/HatchesPls/GrandTheftAutoV-Cheat/releases/latest";
-	HINTERNET hopen = InternetOpen(L"GTAVCheat", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
+	HINTERNET hopen = InternetOpen(L"GTAVCheat", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, NULL);
 	if (hopen)
 	{
-		DWORD flags = INTERNET_FLAG_DONT_CACHE;
-		HINTERNET hinternet = InternetOpenUrl(hopen, URL.c_str(), NULL, 0, flags, 0);
+		HINTERNET hinternet = InternetOpenUrl(hopen, URL.c_str(), NULL, 0, INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_SECURE, NULL);
 		if (hinternet)
 		{
 			char tmp[2048 + 1];
@@ -463,62 +300,33 @@ std::string Cheat::CheatFunctions::GetLatestCheatBuildNumber()
 
 			if (reader->parse(buffer.c_str(), buffer.c_str() + buffer.length(), &JsonData, &JsonError))
 			{
-				Version = JsonData["name"].asString();
+				VersionString = JsonData["name"].asString();
+				RemoveChars(VersionString, "v.");
+				try
+				{
+					VersionInt = std::stoi(VersionString);
+				}
+				catch (...) { }
 			}
 			else
 			{
 				Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "GetLatestCheatBuildNumber() : failed to parse JSON data. Error: %s", JsonError);
-				return "";
+				return NULL;
 			}
 			InternetCloseHandle(hinternet);
 		}
 		InternetCloseHandle(hopen);
 	}
-	if (!Version.empty())
-	{
-		return Version;
-	}	
-	else
-	{
-		return "";
-	}
+	return VersionInt;
 }
 
-void Cheat::CheatFunctions::CheckCheatUpdate()
+// Removes specified characters from the supplied string by reference
+void Cheat::CheatFunctions::RemoveChars(std::string &String, const char* CharactersToRemove)
 {
-	Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_INFO_MSG, "Checking for newer version");
-	std::string CurrentLocalVersionString = RemoveCharactersFromStringAndReturn(Cheat::build_info::VersionString, (char*)".");
-	std::string LatestOnlineVersionString = RemoveCharactersFromStringAndReturn(GetLatestCheatBuildNumber(), (char*)"v.");
-
-	if (!LatestOnlineVersionString.empty())
-	{
-		if (StringIsInteger(CurrentLocalVersionString) && StringIsInteger(LatestOnlineVersionString))
-		{
-			int CurrentLocalVersion = StringToInt(CurrentLocalVersionString);
-			int LatestOnlineVersion = StringToInt(LatestOnlineVersionString);
-
-			if (CurrentLocalVersion < LatestOnlineVersion)
-			{
-				NewCheatVersionString = "v" + LatestOnlineVersionString;
-				Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "A newer version of the cheat is available on GitHub");
-			}
-			else
-			{
-				Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "No newer cheat version available");
-			}
-		}
-	}
-}
-
-//https://stackoverflow.com/questions/5891610/how-to-remove-certain-characters-from-a-string-in-c
-std::string Cheat::CheatFunctions::RemoveCharactersFromStringAndReturn(std::string String, char* CharactersToRemove)
-{
-	std::string Temp = String;
 	for (unsigned int i = 0; i < strlen(CharactersToRemove); ++i)
 	{
-		Temp.erase(remove(Temp.begin(), Temp.end(), CharactersToRemove[i]), Temp.end());
+		String.erase(remove(String.begin(), String.end(), CharactersToRemove[i]), String.end());
 	}
-	return Temp;
 }
 
 //https://www.geeksforgeeks.org/write-your-own-atoi/

@@ -45,7 +45,7 @@
 #include "../../src/gui/GUI.h"
 #include "../../src/cheat/Controls.h"
 #include "../../src/cheat/CheatFunctions.h"
-#include "../../src/gui/submenus/Submenus.h"
+#include "../../src/gui/submenus/submenus.hpp"
 #include "../../src/game/GameArrays.h"
 #include "../../src/hooking/Offsets.h"
 #include "../../src/cheat/Logger.hpp"
