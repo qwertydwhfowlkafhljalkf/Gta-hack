@@ -278,7 +278,6 @@ void Cheat::CheatFeatures::Loop()
 	PlayerInvisibleNetworkBool ? PlayerInvisibleNetwork(true) : PlayerInvisibleNetwork(false);
 	MobileRadioBool ? MobileRadio(true) : MobileRadio(false);
 	WeaponRapidFireBool ? WeaponRapidFire() : void();
-	PlayerIgnoredBool ? PlayerIgnored(true) : PlayerIgnored(false);
 	if (NoClipBool) { NoClip(); } else if (NoClipWasEnabled) { ENTITY::SET_ENTITY_COLLISION(Cheat::GameFunctions::PlayerPedID, true, true); NoClipWasEnabled = false; }
 	RainbowVehicleBool ? RainbowVehicle() : void();
 	DeleteGunBool ? DeleteGun() : void();
@@ -801,12 +800,6 @@ void Cheat::CheatFeatures::WeaponRapidFire()
 			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(StartCoords.x, StartCoords.y, StartCoords.z, EndCoords.x, EndCoords.y, EndCoords.z, 50, true, weaponhash, Cheat::GameFunctions::PlayerPedID, true, false, 0xbf800000);
 		}
 	}
-}
-
-bool Cheat::CheatFeatures::PlayerIgnoredBool = false;
-void Cheat::CheatFeatures::PlayerIgnored(bool toggle)
-{
-	PLAYER::SET_EVERYONE_IGNORE_PLAYER(GameFunctions::PlayerPedID, toggle);
 }
 
 bool Cheat::CheatFeatures::NoClipBool = false;

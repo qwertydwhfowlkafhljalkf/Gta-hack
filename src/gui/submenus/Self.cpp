@@ -13,16 +13,16 @@ void GUI::Submenus::Self()
 	GUI::MenuOption("Wardrobe", Submenus::Wardrobe);
 	GUI::MenuOption("Vision", Submenus::Vision);
 	GUI::Toggle("God mode", CheatFeatures::GodmodeBool, "Makes your character invincible");
-	if (GUI::Float("Health", SelfHealth, 1.f, ENTITY::GET_ENTITY_MAX_HEALTH(GameFunctions::PlayerPedID), 10.f, "", 0, SELECTABLE_RETURN_VALUE_CHANGE))
+	if (GUI::Float("Health", SelfHealth, 1.f, ENTITY::GET_ENTITY_MAX_HEALTH(GameFunctions::PlayerPedID), 10.f, "", 0, SELECTABLE_RETURN_VALUE_CHANGE | SELECTABLE_DISABLE_SAVE))
 	{
 		ENTITY::SET_ENTITY_HEALTH(GameFunctions::PlayerPedID, SelfHealth, 0);
 	}
-	if (GUI::Float("Max Health", SelfMaxHealth, 25.f, 1000.f, 25.f, "", 0, SELECTABLE_RETURN_VALUE_CHANGE))
+	if (GUI::Float("Max Health", SelfMaxHealth, 25.f, 1000.f, 25.f, "", 0, SELECTABLE_RETURN_VALUE_CHANGE | SELECTABLE_DISABLE_SAVE))
 	{
 		ENTITY::SET_ENTITY_MAX_HEALTH(GameFunctions::PlayerPedID, SelfMaxHealth);
 	}
-	GUI::Toggle("Invisible (local)", CheatFeatures::PlayerInvisibleLocalBool, "Makes your character invisible ~bold~locally~s~");
-	GUI::Toggle("Invisible (others)", CheatFeatures::PlayerInvisibleNetworkBool, "Makes your character invisible ~bold~for other players~s~");
+	GUI::Toggle("Invisible (local)", CheatFeatures::PlayerInvisibleLocalBool, "Makes your character invisible ~bold~locally");
+	GUI::Toggle("Invisible (others)", CheatFeatures::PlayerInvisibleNetworkBool, "Makes your character invisible ~bold~for other players");
 	if (GUI::Int("Opacity", CheatFeatures::PlayerOpacityInt, 50, 250, 50, "Changes local player opacity", SELECTABLE_RETURN_VALUE_CHANGE)) { ENTITY::SET_ENTITY_ALPHA(GameFunctions::PlayerPedID, (CheatFeatures::PlayerOpacityInt), false); }
 	GUI::Toggle("No Ragdoll", CheatFeatures::NoRagdollAndSeatbeltBool, "Disables ragdoll on your character");
 	GUI::Toggle("Super Jump", CheatFeatures::SuperJumpBool, "Makes your character jump higher");
@@ -33,7 +33,6 @@ void GUI::Submenus::Self()
 			PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(GameFunctions::PlayerID, 1.f);
 		}
 	}
-	GUI::Toggle("Ignored By Everyone", CheatFeatures::PlayerIgnoredBool, "NPC's will (mostly) ignore you");
 	GUI::Toggle("Never Wanted", CheatFeatures::NeverWantedBool, "Never get a wanted level");
 	if (GUI::Int("Wanted Level", PlayerWantedLevelInteger, 0, 5, 1, "Set Wanted Level", SELECTABLE_DISABLE_SAVE | SELECTABLE_RETURN_VALUE_CHANGE)) { CheatFeatures::NeverWantedBool = false; PLAYER::SET_PLAYER_WANTED_LEVEL(GameFunctions::PlayerID, PlayerWantedLevelInteger, false); PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(GameFunctions::PlayerID, false); }
 	GUI::Toggle("Explosive Melee", CheatFeatures::ExplosiveMeleeBool, "Objects you hit with melee explode");

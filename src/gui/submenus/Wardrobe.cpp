@@ -26,16 +26,16 @@ void GUI::Submenus::Wardrobe()
 		DrawableTextureIDInt = 0;
 		PED::SET_PED_COMPONENT_VARIATION(GameFunctions::PlayerPedID, ComponentIDInt, DrawableIDInt, DrawableTextureIDInt, PaletteIDInt);
 	}
-	GUI::StringVector("Component", { "Head", "Beards/Mask", "Hair", "Upper Body", "Lower Body", "Hands/Arms", "Shoes/Feet", "Accessories", "Miscellaneous Clothing", "Gear and equipment", "Overlays", "Miscellaneous" }, ComponentIDInt, "");	
-	if (GUI::Int("Drawable", DrawableIDInt, 0, PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(GameFunctions::PlayerPedID, ComponentIDInt) - 1, 1, "", SELECTABLE_RETURN_VALUE_CHANGE))
+	GUI::StringVector("Component", { "Head", "Beards/Mask", "Hair", "Upper Body", "Lower Body", "Hands/Arms", "Shoes/Feet", "Accessories", "Miscellaneous Clothing", "Gear and equipment", "Overlays", "Miscellaneous" }, ComponentIDInt, "", SELECTABLE_DISABLE_SAVE);
+	if (GUI::Int("Drawable", DrawableIDInt, 0, PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(GameFunctions::PlayerPedID, ComponentIDInt) - 1, 1, "", SELECTABLE_RETURN_VALUE_CHANGE | SELECTABLE_DISABLE_SAVE))
 	{
 		PED::SET_PED_COMPONENT_VARIATION(GameFunctions::PlayerPedID, ComponentIDInt, DrawableIDInt, DrawableTextureIDInt, PaletteIDInt);
 	}
-	if (GUI::Int("Drawable Variation", DrawableTextureIDInt, 0, PED::GET_NUMBER_OF_PED_TEXTURE_VARIATIONS(GameFunctions::PlayerPedID, ComponentIDInt, DrawableIDInt) - 1, 1, "", SELECTABLE_RETURN_VALUE_CHANGE))
+	if (GUI::Int("Drawable Variation", DrawableTextureIDInt, 0, PED::GET_NUMBER_OF_PED_TEXTURE_VARIATIONS(GameFunctions::PlayerPedID, ComponentIDInt, DrawableIDInt) - 1, 1, "", SELECTABLE_RETURN_VALUE_CHANGE | SELECTABLE_DISABLE_SAVE))
 	{
 		PED::SET_PED_COMPONENT_VARIATION(GameFunctions::PlayerPedID, ComponentIDInt, DrawableIDInt, DrawableTextureIDInt, PaletteIDInt);
 	}
-	if (GUI::Int("Palette", PaletteIDInt, 0, 3, 1, "Optional", SELECTABLE_RETURN_VALUE_CHANGE))
+	if (GUI::Int("Palette", PaletteIDInt, 0, 3, 1, "Optional", SELECTABLE_RETURN_VALUE_CHANGE | SELECTABLE_DISABLE_SAVE))
 	{
 		PED::SET_PED_COMPONENT_VARIATION(GameFunctions::PlayerPedID, ComponentIDInt, DrawableIDInt, DrawableTextureIDInt, PaletteIDInt);
 	}
@@ -54,8 +54,8 @@ void GUI::Submenus::Wardrobe()
 		PropDrawableTextureIDInt = 0;
 		PED::SET_PED_PROP_INDEX(GameFunctions::PlayerPedID, PropComponentIDInt, PropDrawableIDInt, PropDrawableTextureIDInt, true);
 	}
-	GUI::StringVector("Prop", { "Hat", "Glasses", "Ear", "Watch", "Bracelet" }, PropComponentIDInt, "");
-	if (GUI::Int("Drawable", PropDrawableIDInt, 0, PED::GET_NUMBER_OF_PED_PROP_DRAWABLE_VARIATIONS(GameFunctions::PlayerPedID, PropComponentIDInt) - 1, 1, "", SELECTABLE_RETURN_VALUE_CHANGE))
+	GUI::StringVector("Prop", { "Hat", "Glasses", "Ear", "Watch", "Bracelet" }, PropComponentIDInt, "", SELECTABLE_DISABLE_SAVE);
+	if (GUI::Int("Drawable", PropDrawableIDInt, 0, PED::GET_NUMBER_OF_PED_PROP_DRAWABLE_VARIATIONS(GameFunctions::PlayerPedID, PropComponentIDInt) - 1, 1, "", SELECTABLE_RETURN_VALUE_CHANGE | SELECTABLE_DISABLE_SAVE))
 	{
 		int ComponentIDTemp;
 		if (PropComponentIDInt == 3)
@@ -72,7 +72,7 @@ void GUI::Submenus::Wardrobe()
 		}
 		PED::SET_PED_PROP_INDEX(GameFunctions::PlayerPedID, ComponentIDTemp, PropDrawableIDInt, PropDrawableTextureIDInt, true);
 	}
-	if (GUI::Int("Drawable Variation", PropDrawableTextureIDInt, 0, PED::GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS(GameFunctions::PlayerPedID, PropComponentIDInt, PropDrawableIDInt) - 1, 1, "", SELECTABLE_RETURN_VALUE_CHANGE))
+	if (GUI::Int("Drawable Variation", PropDrawableTextureIDInt, 0, PED::GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS(GameFunctions::PlayerPedID, PropComponentIDInt, PropDrawableIDInt) - 1, 1, "", SELECTABLE_RETURN_VALUE_CHANGE | SELECTABLE_DISABLE_SAVE))
 	{
 		int ComponentIDTemp;
 		if (PropComponentIDInt == 3)
@@ -94,7 +94,7 @@ void GUI::Submenus::Wardrobe()
 		PED::CLEAR_ALL_PED_PROPS(GameFunctions::PlayerPedID);
 	}
 	GUI::Break("Hair", SELECTABLE_CENTER_TEXT);
-	if (GUI::Int("Color", HairColor, 0, PED::_GET_NUM_HAIR_COLORS(), 1, "", SELECTABLE_DISABLE_SAVE | SELECTABLE_RETURN_VALUE_CHANGE))
+	if (GUI::Int("Color", HairColor, 0, PED::_GET_NUM_HAIR_COLORS(), 1, "Only works in GTA:O", SELECTABLE_DISABLE_SAVE | SELECTABLE_RETURN_VALUE_CHANGE))
 	{
 		PED::_SET_PED_HAIR_COLOR(GameFunctions::PlayerPedID, HairColor, 0);
 	}

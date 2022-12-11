@@ -138,8 +138,6 @@ namespace Cheat
 		void FreezeStation();
 		extern bool WeaponRapidFireBool;
 		void WeaponRapidFire();
-		extern bool PlayerIgnoredBool;
-		void PlayerIgnored(bool toggle);
 		extern bool NoClipBool;
 		extern bool NoClipWasEnabled;
 		void NoClip();
