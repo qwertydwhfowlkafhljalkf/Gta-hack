@@ -316,13 +316,13 @@
     <ClCompile Include="src\cheat\version.cpp">
       <Filter>Source\cheat</Filter>
     </ClCompile>
+    <ClCompile Include="src\cheat\file_system.cpp">
+      <Filter>Source\cheat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\resource.h">
       <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hooking\crossmap.hpp">
-      <Filter>Header\hooking</Filter>
     </ClInclude>
     <ClInclude Include="src\hooking\GameHooking.h">
       <Filter>Header\hooking</Filter>
@@ -397,6 +397,12 @@
       <Filter>Source\cheat</Filter>
     </ClInclude>
     <ClInclude Include="src\cheat\Logger.hpp">
+      <Filter>Source\cheat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hooking\crossmap.hpp">
+      <Filter>Source\hooking</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cheat\file_system.hpp">
       <Filter>Source\cheat</Filter>
     </ClInclude>
   </ItemGroup>

@@ -86,6 +86,7 @@
     <ClInclude Include="src\cheat\CheatFunctions.h" />
     <ClInclude Include="src\cheat\Controls.h" />
     <ClInclude Include="src\cheat\fibermain.h" />
+    <ClInclude Include="src\cheat\file_system.hpp" />
     <ClInclude Include="src\cheat\Logger.hpp" />
     <ClInclude Include="src\cheat\version.hpp" />
     <ClInclude Include="src\game\CheatFeatures.h" />
@@ -116,6 +117,7 @@
     <ClCompile Include="src\cheat\Controls.cpp" />
     <ClCompile Include="src\cheat\Entry.cpp" />
     <ClCompile Include="src\cheat\fibermain.cpp" />
+    <ClCompile Include="src\cheat\file_system.cpp" />
     <ClCompile Include="src\cheat\Logger.cpp" />
     <ClCompile Include="src\cheat\version.cpp" />
     <ClCompile Include="src\game\CheatFeatures.cpp" />

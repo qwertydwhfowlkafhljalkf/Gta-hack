@@ -1,4 +1,5 @@
 #include "../../src/cheat/fibermain.h"
+#include "../../src/cheat/file_system.hpp"
 
 using namespace Cheat;
 void GUI::Submenus::VehicleSpawnSettings()
@@ -25,7 +26,7 @@ void GUI::Submenus::VehicleSpawnSettings()
 				else
 				{
 					CheatFeatures::VehicleSpawnerCustomLicensePlateTextString = Input;
-					CheatFunctions::IniFileWriteString(CheatFeatures::VehicleSpawnerCustomLicensePlateTextString, CheatFunctions::ReturnConfigFilePath(), "SETTINGS", "Vehicle Spawner Custom License Plate Text");
+					CheatFunctions::IniFileWriteString(CheatFeatures::VehicleSpawnerCustomLicensePlateTextString, file_system::paths::ConfigFile, "SETTINGS", "Vehicle Spawner Custom License Plate Text");
 				}			
 			}
 		}

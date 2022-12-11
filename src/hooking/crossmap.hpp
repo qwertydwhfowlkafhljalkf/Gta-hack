@@ -1,15 +1,8 @@
 #pragma once
 
 typedef std::unordered_map<uint64_t, uint64_t> nMap;
-static std::vector<uint64_t> nativeFailedVec;
 
-struct CrossMappingEntry
-{
-	uint64_t first;
-	uint64_t second;
-};
-
-class CrossMapping
+class crossmap
 {
 public:
 	static void initNativeMap();

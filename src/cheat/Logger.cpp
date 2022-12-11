@@ -1,12 +1,14 @@
 #include "../../src/cheat/fibermain.h"
 #include "version.hpp"
+#include "file_system.hpp"
 #include <color.hpp>
 
-bool Cheat::Logger::LoggerInitialized = false;
-std::string Cheat::Logger::LogDirectory = Cheat::CheatFunctions::GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Logs";
-std::string Cheat::Logger::CheatLogFilePath = LogDirectory + Cheat::CheatFunctions::ReturnDateTimeFormatAsString("\\Main_%d_%m_%Y-%H_%M_%S.log");
+using namespace Cheat;
 
-void Cheat::Logger::Init()
+bool Logger::LoggerInitialized = false;
+std::string Logger::CheatLogFilePath = file_system::paths::LogDir + CheatFunctions::ReturnDateTimeFormatAsString("\\Main_%d_%m_%Y-%H_%M_%S.log");
+
+void Logger::Init()
 {
     if (!AllocConsole() || !freopen("CONIN$", "r", stdin) || !freopen("CONOUT$", "w", stdout) ||
         !freopen("CONOUT$", "w", stderr) || !SetConsoleTitleA("GTAV Cheat") || SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), ENABLE_EXTENDED_FLAGS))
@@ -14,10 +16,10 @@ void Cheat::Logger::Init()
         Logger::LogMsg(LOGGER_FATAL_MSG, "Failed to allocate console - %i", GetLastError());
     }
 
-    std::string MessageString = "Version: " + static_cast<std::string>(Cheat::build_info::VersionString) + " | Compile Date & Time: " + Cheat::build_info::BuildDate + " " + Cheat::build_info::BuildTime +
-        Cheat::CheatFunctions::ReturnDateTimeFormatAsString(" | Load Date & Time: %b %e %Y %H:%M:%S")
+    std::string MessageString = "Version: " + static_cast<std::string>(build_info::VersionString) + " | Compile Date & Time: " + build_info::BuildDate + " " + build_info::BuildTime +
+        CheatFunctions::ReturnDateTimeFormatAsString(" | Load Date & Time: %b %e %Y %H:%M:%S")
         + "\nGitHub Repository: HatchesPls/GrandTheftAutoV-Cheat\n";
-    std::cout << "Version: " << Cheat::build_info::VersionString << std::endl;
+    std::cout << "Version: " << build_info::VersionString << std::endl;
 
     // Write text
     CheatFunctions::WriteToFile(CheatLogFilePath, MessageString, true);
@@ -25,7 +27,7 @@ void Cheat::Logger::Init()
     LoggerInitialized = true;
 
     // Cleanup main log files
-    for (const auto& file : std::filesystem::directory_iterator(LogDirectory))
+    for (const auto& file : std::filesystem::directory_iterator(file_system::paths::LogDir))
     {
         struct stat result;
         if (stat(file.path().string().c_str(), &result) == 0)
@@ -45,7 +47,7 @@ void Cheat::Logger::Init()
 
 // Note: this function is NOT thread-safe at the moment - TODO
 const std::vector<std::string> LogMsgTypeStrings = { " [INFO] ", " [WARN] ", " [ERR] ", " [FATAL] ", " [DBG] " };
-void Cheat::Logger::LogMsg(LoggerMsgTypes Type, const char* Message, ...)
+void Logger::LogMsg(LoggerMsgTypes Type, const char* Message, ...)
 {
     if (LoggerInitialized)
     {

@@ -1,16 +1,17 @@
 #include "../../src/cheat/fibermain.h"
+#include "../../src/cheat/file_system.hpp"
 
 using namespace Cheat;
 int CustomLocationsAmount;
 void GUI::Submenus::CustomTeleportLocations()
 {
 	GUI::Title("Custom Locations");
-	if (std::filesystem::exists(CheatFunctions::ReturnCustomTeleportLocationsFilePath()))
+	if (std::filesystem::exists(file_system::paths::CusTelLocFile))
 	{
 		Json::Value JsonData;
 		try 
 		{
-			if (CheatFunctions::GetJsonFromFile(CheatFunctions::ReturnCustomTeleportLocationsFilePath(), JsonData))
+			if (CheatFunctions::GetJsonFromFile(file_system::paths::CusTelLocFile, JsonData))
 			{
 				for (auto it = JsonData.begin(); it != JsonData.end(); ++it)
 				{

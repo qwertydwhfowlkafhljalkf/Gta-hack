@@ -1,4 +1,5 @@
 #include "../../src/cheat/fibermain.h"
+#include "../../src/cheat/file_system.hpp"
 
 using namespace Cheat;
 
@@ -129,7 +130,7 @@ void GameHooking::Init()
 
 	// Initialize Natives
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Initialized GN");
-	CrossMapping::initNativeMap();
+	crossmap::initNativeMap();
 
 	bool WaitingGameLoadLogPrinted = false;
 	while (*m_gameState != GameStatePlaying)
@@ -406,7 +407,7 @@ __int64 GetChatDataHooked(__int64 a1, __int64 a2, __int64 a3, const char* origTe
 {
 	if (CheatFeatures::LogChatMessages)
 	{
-		CheatFunctions::WriteToFile(CheatFunctions::ReturnChatLogFilePath(), CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] Msg: ") + (std::string)origText + "\n", true);
+		CheatFunctions::WriteToFile(file_system::paths::ChatLogFile, CheatFunctions::ReturnDateTimeFormatAsString("[%H:%M:%S] Msg: ") + (std::string)origText + "\n", true);
 		Logger::LogMsg(LOGGER_INFO_MSG, "[Game Chat] Msg: %s", origText);
 	}
 	return GetChatDataOriginal(a1, a2, a3, origText, isTeam);
@@ -421,7 +422,7 @@ void GameHooking::PauseMainFiber(DWORD ms, bool ShowMessage)
 
 static GameHooking::NativeHandler _Handler(uint64_t origHash)
 {
-	uint64_t newHash = CrossMapping::MapNative(origHash);
+	uint64_t newHash = crossmap::MapNative(origHash);
 	if (newHash == 0)
 	{
 		return nullptr;

@@ -6202,7 +6202,7 @@ uint64_t HashMapDataArray[] = {
 0xC9853A2BE3DED1A6, 0x9B1F0A416059FB72,
 };
 
-void CrossMapping::initNativeMap()
+void crossmap::initNativeMap()
 {
 	static int init = 0;
 	struct twoQwords
@@ -6229,7 +6229,7 @@ void CrossMapping::initNativeMap()
 
 
 static nMap nativeCache;
-bool CrossMapping::searchMap(nMap map, uint64_t inNative, uint64_t *outNative)
+bool crossmap::searchMap(nMap map, uint64_t inNative, uint64_t *outNative)
 {
 	bool found = false;
 	for (nMap::const_iterator it = map.begin(); it != map.end(); ++it)
@@ -6243,7 +6243,7 @@ bool CrossMapping::searchMap(nMap map, uint64_t inNative, uint64_t *outNative)
 	return found;
 }
 
-uint64_t CrossMapping::MapNative(uint64_t inNative)
+uint64_t crossmap::MapNative(uint64_t inNative)
 {
 	uint64_t currentNative, outNative;
 	bool found = false;

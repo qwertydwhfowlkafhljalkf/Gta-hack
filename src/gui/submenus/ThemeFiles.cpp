@@ -1,4 +1,5 @@
 #include "../../src/cheat/fibermain.h"
+#include "../../src/cheat/file_system.hpp"
 
 using namespace Cheat;
 void GUI::Submenus::ThemeFiles()
@@ -10,7 +11,7 @@ void GUI::Submenus::ThemeFiles()
 		{
 			if (GUI::Option(i, ""))
 			{
-				if (std::filesystem::exists(CheatFunctions::ReturnThemeFilePath(i)))
+				if (std::filesystem::exists(file_system::paths::ThemesDir + "\\" + i + ".ini"))
 				{
 					GUI::LoadTheme(CheatFunctions::StringToChar(i), false);
 				}

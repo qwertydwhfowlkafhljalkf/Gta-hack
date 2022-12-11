@@ -1,4 +1,5 @@
 #include "../../src/cheat/fibermain.h"
+#include "../../src/cheat/file_system.hpp"
 
 using namespace Cheat;
 int HUDColorRed, HUDColorGreen, HUDColorBlue;
@@ -20,10 +21,10 @@ void GUI::Submenus::HUD()
 		UI::REPLACE_HUD_COLOUR_WITH_RGBA(SelectedComponent, HUDColorRed, HUDColorGreen, HUDColorBlue, HUDColorAlpha);
 
 		// Write to ini file
-		CheatFunctions::IniFileWriteString(std::to_string(HUDColorRed), CheatFunctions::ReturnHUDColorsFilePath(), GameArrays::HUDColors[SelectedComponent], "r");
-		CheatFunctions::IniFileWriteString(std::to_string(HUDColorGreen), CheatFunctions::ReturnHUDColorsFilePath(), GameArrays::HUDColors[SelectedComponent], "g");
-		CheatFunctions::IniFileWriteString(std::to_string(HUDColorBlue), CheatFunctions::ReturnHUDColorsFilePath(), GameArrays::HUDColors[SelectedComponent], "b");
-		CheatFunctions::IniFileWriteString(std::to_string(HUDColorAlpha), CheatFunctions::ReturnHUDColorsFilePath(), GameArrays::HUDColors[SelectedComponent], "a");
+		CheatFunctions::IniFileWriteString(std::to_string(HUDColorRed), file_system::paths::HUDColorsFile, GameArrays::HUDColors[SelectedComponent], "r");
+		CheatFunctions::IniFileWriteString(std::to_string(HUDColorGreen), file_system::paths::HUDColorsFile, GameArrays::HUDColors[SelectedComponent], "g");
+		CheatFunctions::IniFileWriteString(std::to_string(HUDColorBlue), file_system::paths::HUDColorsFile, GameArrays::HUDColors[SelectedComponent], "b");
+		CheatFunctions::IniFileWriteString(std::to_string(HUDColorAlpha), file_system::paths::HUDColorsFile, GameArrays::HUDColors[SelectedComponent], "a");
 	}
 	if (GUI::StringVector("Reset Color", { "Selected", "All" }, ResetColorStringVector, "", SELECTABLE_DISABLE_SAVE))
 	{
@@ -46,7 +47,7 @@ void GUI::Submenus::HUD()
 			{
 				if (index == SelectedComponent)
 				{
-					mINI::INIFile File(CheatFunctions::ReturnHUDColorsFilePath());
+					mINI::INIFile File(file_system::paths::HUDColorsFile);
 					mINI::INIStructure IniStruct;
 					File.read(IniStruct);
 					IniStruct.remove(HUDColorComponentName);
@@ -58,7 +59,7 @@ void GUI::Submenus::HUD()
 		else
 		{
 			// No need to remove specific ini sections, just delete the whole file
-			remove(CheatFunctions::ReturnHUDColorsFilePath().c_str());
+			remove(file_system::paths::HUDColorsFile.c_str());
 		}
 	}
 }

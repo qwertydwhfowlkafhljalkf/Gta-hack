@@ -1,5 +1,6 @@
 #include "../../src/cheat/fibermain.h"
 #include "version.hpp"
+#include "file_system.hpp"
 
 std::string Cheat::CheatFunctions::NewCheatVersionString;
 bool Cheat::CheatFunctions::CheatInitEntirelyCompleted = false;									// Set when both CheatInitCompleted and ConfigLoaded are set
@@ -7,18 +8,6 @@ bool Cheat::CheatFunctions::CheatInitCompleted = false;											// Set when al
 bool Cheat::CheatFunctions::ConfigLoaded = false;												// Set when the LoadConfig thread is completed
 std::vector <std::string> Cheat::CheatFunctions::LoadedSelectablesVector;						// Used during the async LoadConfig process to determine which selectables have been loaded
 bool Cheat::CheatFunctions::StopThreads = false;												// Used to stop all cheat threads during the unloading process
-
-void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
-{
-	if (!std::filesystem::create_directory(Path))
-	{
-		Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "CreateNewDirectory() - Failed to create directory, path '%s' - Win32 error: %i", Path, GetLastError());
-	}
-	else
-	{
-		Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "CreateNewDirectory() - Created directory '%s'", Path);
-	}
-}
 
 // See https://en.cppreference.com/w/cpp/io/manip/put_time
 std::string Cheat::CheatFunctions::ReturnDateTimeFormatAsString(const char* DateTimeFormat)
@@ -36,41 +25,6 @@ std::string Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath()
 	char CheatModuleFilePath[MAX_PATH];
 	GetModuleFileNameA(CheatModuleHandle, CheatModuleFilePath, MAX_PATH);
 	return std::filesystem::path(CheatModuleFilePath).parent_path().string();
-}
-
-std::string Cheat::CheatFunctions::GetWindowsUserDocumentsFolderPath()
-{
-	return std::getenv("userprofile") + (std::string)"\\Documents";
-}
-
-const std::string Cheat::CheatFunctions::ReturnConfigFilePath()
-{
-	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Config.ini";
-}
-
-const std::string Cheat::CheatFunctions::ReturnChatLogFilePath()
-{
-	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Logs\\Chats.log";
-}
-
-const std::string Cheat::CheatFunctions::ReturnCustomTeleportLocationsFilePath()
-{
-	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\CustomTeleportLocations.json";
-}
-
-const std::string Cheat::CheatFunctions::ReturnHUDColorsFilePath()
-{
-	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\HUDColors.ini";
-}
-
-const std::string Cheat::CheatFunctions::ReturnThemeFilePath(std::string ThemeName)
-{
-	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Themes\\" + ThemeName + ".ini";
-}
-
-std::string Cheat::CheatFunctions::ReturnTextureFilePath()
-{
-	return GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Textures.ytd";
 }
 
 static std::once_flag CheatInitialization;
@@ -115,15 +69,15 @@ void Cheat::CheatFunctions::Loop()
 		Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG,"Fetched DHC");
 
 		// Load saved HUD colors
-		if (std::filesystem::exists(ReturnHUDColorsFilePath()))
+		if (std::filesystem::exists(file_system::paths::HUDColorsFile))
 		{
 			int SavedHUDColorsIndex = 0;
 			for (auto const& HUDColorComponentName : GameArrays::HUDColors)
 			{
-				std::string Red = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "r");
-				std::string Green = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "g");
-				std::string Blue = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "b");
-				std::string Alpha = IniFileReturnKeyValueAsString(ReturnHUDColorsFilePath(), HUDColorComponentName, "a");
+				std::string Red = IniFileReturnKeyValueAsString(file_system::paths::HUDColorsFile, HUDColorComponentName, "r");
+				std::string Green = IniFileReturnKeyValueAsString(file_system::paths::HUDColorsFile, HUDColorComponentName, "g");
+				std::string Blue = IniFileReturnKeyValueAsString(file_system::paths::HUDColorsFile, HUDColorComponentName, "b");
+				std::string Alpha = IniFileReturnKeyValueAsString(file_system::paths::HUDColorsFile, HUDColorComponentName, "a");
 
 				if (!Red.empty() && !Green.empty() && !Blue.empty() && !Alpha.empty())
 				{
@@ -174,9 +128,7 @@ void Cheat::CheatFunctions::Loop()
 	if (GUI::currentMenu == GUI::Submenus::ThemeFiles)
 	{
 		GUI::ThemeFilesVector.clear();
-		std::string ThemeFolderPath = CheatFunctions::GetWindowsUserDocumentsFolderPath() + (std::string)"\\GTAV Cheat\\Themes";
-		if (!std::filesystem::exists(ThemeFolderPath)) { CheatFunctions::CreateNewDirectory(ThemeFolderPath); }
-		for (const auto& file : std::filesystem::directory_iterator(ThemeFolderPath))
+		for (const auto& file : std::filesystem::directory_iterator(file_system::paths::ThemesDir))
 		{
 			if (file.path().extension() == ".ini")
 			{
@@ -236,14 +188,14 @@ void Cheat::CheatFunctions::SaveSelectable(std::string OptionName, std::string O
 			std::string LogMessage = "'" + OptionName + "' (" + GUI::CurrentSubmenu + " submenu) selectable state saved";
 			Cheat::GameFunctions::AdvancedMinimapNotification(StringToChar(LogMessage), (char*)"Textures", (char*)"AdvancedNotificationImage", false, 4, (char*)"Config", (char*)"", 0.5f, (char*)"");
 			Logger::LogMsg(LOGGER_DBG_MSG, "'%s' (%s submenu) selectable state saved", OptionName.c_str(), GUI::CurrentSubmenu.c_str());
-			IniFileWriteString(OptionValue, ReturnConfigFilePath(), "submenu_" + GUI::CurrentSubmenu, OptionName);
+			IniFileWriteString(OptionValue, file_system::paths::ConfigFile, "submenu_" + GUI::CurrentSubmenu, OptionName);
 		}
 	}
 }
 
 std::string Cheat::CheatFunctions::GetSelectableValueFromConfig(std::string OptionName)
 {
-	return IniFileReturnKeyValueAsString(ReturnConfigFilePath(), "submenu_" + GUI::CurrentSubmenu, OptionName);
+	return IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_" + GUI::CurrentSubmenu, OptionName);
 }
 
 void LoadConfigThreadFunction()
@@ -268,25 +220,25 @@ void Cheat::CheatFunctions::LoadConfig()
 	Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_INFO_MSG, "Loading Configuration");
 
 	// Load hotkeys
-	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Menu GUI Key");
+	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_settings", "Menu GUI Key");
 	if (!MenuGUIKey.empty()) { Controls::OpenMenuGUIKey = StringToInt(MenuGUIKey); }
 	
-	std::string CursorNavigationKeyString = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Cursor Navigation Key");
+	std::string CursorNavigationKeyString = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_settings", "Cursor Navigation Key");
 	if (!CursorNavigationKeyString.empty()) { Controls::CursorNavigationKey = StringToInt(CursorNavigationKeyString); }
 
-	std::string SaveSelectableKey = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Save Selectable Key");
+	std::string SaveSelectableKey = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_settings", "Save Selectable Key");
 	if (!SaveSelectableKey.empty()) { Controls::SaveSelectableKey = StringToInt(SaveSelectableKey); }
 
 	// Load Active Theme
-	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Active Theme");
+	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_settings", "Active Theme");
 	if (!ActiveThemeSetting.empty()) { GUI::LoadTheme(ActiveThemeSetting, true); }
 
 	// Load Vehicle Spawner Custom License Plate Text
-	std::string VehicleSpawnerCustomLicensePlateText = CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_vehicle spawn settings", "Custom License Plate Text");
+	std::string VehicleSpawnerCustomLicensePlateText = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_vehicle spawn settings", "Custom License Plate Text");
 	if (!VehicleSpawnerCustomLicensePlateText.empty()) { CheatFeatures::VehicleSpawnerCustomLicensePlateTextString = VehicleSpawnerCustomLicensePlateText; }
 
 	// Do not overwrite "Textures.ytd" at init feature - setting must be loaded immediately (not async)
-	CheatFeatures::NoTextureFileOverwrite = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "do not overwrite \"textures.ytd\" at init"));
+	CheatFeatures::NoTextureFileOverwrite = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_settings", "do not overwrite \"textures.ytd\" at init"));
 
 	std::thread LoadConfigThreadHandle(LoadConfigThreadFunction);
 	LoadConfigThreadHandle.detach();
@@ -657,7 +609,7 @@ bool Cheat::CheatFunctions::AddCustomTeleportLocation(std::string CustomTeleport
 	Json::Value JsonData;
 
 	// Only procceed if getting the JSON data succeeds and 'CustomTeleportLocationName' is in the JSON data
-	if (GetJsonFromFile(ReturnCustomTeleportLocationsFilePath(), JsonData))
+	if (GetJsonFromFile(file_system::paths::CusTelLocFile, JsonData))
 	{
 		// Remove the member if it already exists
 		if (JsonData.isMember(CustomTeleportLocationName))
@@ -672,7 +624,7 @@ bool Cheat::CheatFunctions::AddCustomTeleportLocation(std::string CustomTeleport
 		JsonData[CustomTeleportLocationName]["Z"] = LocalPlayerCoords.z;
 
 		// Rewrite the JSON file
-		std::fstream FileHandle(ReturnCustomTeleportLocationsFilePath(), std::ios_base::out);
+		std::fstream FileHandle(file_system::paths::CusTelLocFile, std::ios_base::out);
 		FileHandle << JsonData;
 		FileHandle.close();
 		return true;
@@ -688,13 +640,13 @@ bool Cheat::CheatFunctions::DeleteCustomTeleportLocation(std::string CustomTelep
 	Json::Value JsonData;
 
 	// Only procceed if getting the JSON data succeeds and 'CustomTeleportLocationName' is in the JSON data
-	if (GetJsonFromFile(ReturnCustomTeleportLocationsFilePath(), JsonData) && JsonData.isMember(CustomTeleportLocationName))
+	if (GetJsonFromFile(file_system::paths::CusTelLocFile, JsonData) && JsonData.isMember(CustomTeleportLocationName))
 	{
 		// Remove the specified member from the JSON data
 		JsonData.removeMember(CustomTeleportLocationName);
 
 		// Rewrite the JSON file
-		std::fstream FileHandle(ReturnCustomTeleportLocationsFilePath(), std::ios_base::out);
+		std::fstream FileHandle(file_system::paths::CusTelLocFile, std::ios_base::out);
 		FileHandle << JsonData;
 		FileHandle.close();
 		return true;

@@ -14,7 +14,6 @@ namespace Cheat
     namespace Logger
     {
         extern bool LoggerInitialized;
-        extern std::string LogDirectory;
         extern std::string CheatLogFilePath;
         void Init();
         void LogMsg(LoggerMsgTypes Type, const char* Message, ...);

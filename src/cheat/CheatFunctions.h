@@ -1,4 +1,8 @@
 #pragma once
+#include <iostream>
+#include <vector>
+#include <json/json.h>
+#include <Windows.h>
 
 namespace Cheat
 {
@@ -10,11 +14,6 @@ namespace Cheat
 		extern bool CheatInitEntirelyCompleted;
 		extern bool ConfigLoaded;
 		extern std::vector <std::string> LoadedSelectablesVector;
-		const std::string ReturnConfigFilePath();
-		const std::string ReturnChatLogFilePath();
-		const std::string ReturnHUDColorsFilePath();
-		const std::string ReturnCustomTeleportLocationsFilePath();
-		const std::string ReturnThemeFilePath(std::string ThemeName);
 		int StringToInt(std::string String);
 		bool StringToBool(std::string String);
 		void LoadConfig();
@@ -25,12 +24,9 @@ namespace Cheat
 		void LoadSelectableSaveStateInt(std::string SelectableName, int& ReturnedInt);
 		void LoadSelectableSaveStateFloat(std::string SelectableName, float& ReturnedFloat);
 		std::string ReturnCheatModuleDirectoryPath();
-		std::string GetWindowsUserDocumentsFolderPath();
-		void CreateNewDirectory(std::string Path);
 		void Loop();
 		bool IsGameWindowFocussed();
 		bool StringIsInteger(std::string String);
-		std::string ReturnTextureFilePath();
 		int WaitForAndReturnPressedKey();
 		char* StringToChar(std::string String);
 		std::string VirtualKeyCodeToString(UCHAR virtualKey);

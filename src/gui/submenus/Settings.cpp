@@ -1,4 +1,5 @@
 #include "../../src/cheat/fibermain.h"
+#include "../../src/cheat/file_system.hpp"
 
 using namespace Cheat;
 void GUI::Submenus::Settings()
@@ -15,7 +16,7 @@ void GUI::Submenus::Settings()
 		if (PressedKey != 0)
 		{
 			Controls::OpenMenuGUIKey = PressedKey;
-			CheatFunctions::IniFileWriteString(std::to_string(PressedKey), CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Menu GUI Key");
+			CheatFunctions::IniFileWriteString(std::to_string(PressedKey), file_system::paths::ConfigFile, "submenu_settings", "Menu GUI Key");
 			GameFunctions::MinimapNotification((char*)"Menu GUI key has been set");
 		}
 	}
@@ -25,7 +26,7 @@ void GUI::Submenus::Settings()
 		if (PressedKey != 0)
 		{
 			Controls::CursorNavigationKey = PressedKey;
-			CheatFunctions::IniFileWriteString(std::to_string(PressedKey), CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Cursor Navigation Key");
+			CheatFunctions::IniFileWriteString(std::to_string(PressedKey), file_system::paths::ConfigFile, "submenu_settings", "Cursor Navigation Key");
 			GameFunctions::MinimapNotification((char*)"Cursor Navigation key has been set");
 		}
 	}
@@ -35,7 +36,7 @@ void GUI::Submenus::Settings()
 		if (PressedKey != 0)
 		{
 			Controls::SaveSelectableKey = PressedKey;
-			CheatFunctions::IniFileWriteString(std::to_string(PressedKey), CheatFunctions::ReturnConfigFilePath(), "submenu_settings", "Save Selectable Key");
+			CheatFunctions::IniFileWriteString(std::to_string(PressedKey), file_system::paths::ConfigFile, "submenu_settings", "Save Selectable Key");
 			GameFunctions::MinimapNotification((char*)"Cursor Navigation key has been set");
 		}
 	}
