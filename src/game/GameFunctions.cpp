@@ -807,7 +807,7 @@ void Cheat::GameFunctions::ChangePedModelLocalPlayer(Hash PedModel)
 
 bool Cheat::GameFunctions::PlayerIsFreemodeScriptHost(Player Player)
 {
-	if (Player == NETWORK::NETWORK_GET_HOST_OF_SCRIPT("Freemode", 4294967295, 0))
+	if (Player == NETWORK::NETWORK_GET_HOST_OF_SCRIPT("freemode", -1, 0))
 	{
 		return true;
 	}

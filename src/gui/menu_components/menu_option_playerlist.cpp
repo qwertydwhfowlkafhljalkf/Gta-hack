@@ -4,16 +4,18 @@ using namespace Cheat;
 
 bool GUI::MenuOptionPlayerList(Player Player)
 {
-	std::string PlayerName = PLAYER::GET_PLAYER_NAME(Player);
 	bool IsLocalPlayer = GameFunctions::PlayerID == Player;
-	std::string PlayerNameString = IsLocalPlayer ? "~g~YOU~s~ (" + PlayerName + ")" : PlayerName;
-	const char* CurrentOnlinePlayerPictureName = "AdvancedNotificationImage";
-	if (!IsLocalPlayer)
-	{
-		CurrentOnlinePlayerPictureName = GameFunctions::ReturnOnlinePlayerPictureString(Player);
-	}
+	std::string PlayerName = PLAYER::GET_PLAYER_NAME(Player);
+	PlayerName = GameFunctions::PlayerID == Player ? "~g~YOU~w~ (" + PlayerName + ")" : PlayerName;
 
-	if (Option("      " + PlayerNameString, "", SELECTABLE_HIDE_INFO_BOX))
+	// Append player tags
+	if (GameFunctions::PlayerIsFreemodeScriptHost(Player)) { PlayerName.append(" ~o~[HOST]"); }
+	if (GameFunctions::IsPlayerFriend(Player)) { PlayerName.append(" ~b~[FRIEND]"); }
+	if (GameFunctions::IsEntityInInterior(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Player))) { PlayerName.append(" ~p~[INTERIOR]"); }
+
+	std::string CurrentOnlinePlayerPictureName = GameFunctions::ReturnOnlinePlayerPictureString(Player);
+
+	if (Option("      " + PlayerName, "", SELECTABLE_HIDE_INFO_BOX))
 	{
 		GUI::MoveMenu(Submenus::SelectedPlayer);
 		return true;
@@ -28,6 +30,6 @@ bool GUI::MenuOptionPlayerList(Player Player)
 	{
 		Position = { GUI::guiX - (GUI::guiWidth * 45 / 100), GUI::guiY + (GUI::optionCount - (GUI::currentOption - GUI::maxVisOptions)) * SelectableHeight - 0.158f };
 	}
-	DrawSpriteInGame(IsLocalPlayer ? "Textures" : CurrentOnlinePlayerPictureName, CurrentOnlinePlayerPictureName, Position.x, Position.y, 0.02f, 0.03f, 0.f, 255, 255, 255, OnlinePlayerPictureTransparency);
+	DrawSpriteInGame(IsLocalPlayer ? "Textures" : CurrentOnlinePlayerPictureName, IsLocalPlayer ? "AdvancedNotificationImage" : CurrentOnlinePlayerPictureName, Position.x, Position.y, 0.02f, 0.03f, 0.f, 255, 255, 255, OnlinePlayerPictureTransparency);
 	return false;
 }
