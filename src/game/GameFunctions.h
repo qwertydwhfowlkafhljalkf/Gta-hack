@@ -69,7 +69,6 @@ namespace Cheat
 		void MaxUpgradeAllWeapons();
 		void ShowTeleportLocationsMenu(std::vector<TeleportLocationStruct> category);
 		void FadeRGB(int& r, int& g, int& b);
-		bool ShowFullScreenMessage(std::string Message);
 		void SetCharacterSkillStat(std::string Skill, int Level);
 		int GetCharacterSkillStat(std::string Skill);
 		void ChangeGTAOSessionType(eSessionTypes SessionType);

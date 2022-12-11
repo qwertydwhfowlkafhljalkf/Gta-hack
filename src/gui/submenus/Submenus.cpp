@@ -4,7 +4,7 @@ using namespace Cheat;
 using namespace GUI;
 
 void (*Submenus::FunctionPointers[])() = {
-	Submenus::Home, Submenus::Self, Submenus::AllPlayersExclusions, Submenus::AllPlayers, Submenus::Session, Submenus::RecoverySubmenuWarning,
+	Submenus::Home, Submenus::Self, Submenus::AllPlayersExclusions, Submenus::AllPlayers, Submenus::Session,
 	Submenus::RecoveryStatistics, Submenus::Recovery, Submenus::ReportStatistics, Submenus::SelfModel,
 	Submenus::SpawnedVehicles, Submenus::Spawn, Submenus::PlayerList, Submenus::PedSpawn,
 	Submenus::ThemeFiles, Submenus::Theme, Submenus::About, Submenus::Settings,

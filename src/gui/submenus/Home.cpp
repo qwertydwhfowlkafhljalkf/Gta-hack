@@ -12,7 +12,7 @@ void GUI::Submenus::Home()
 	GUI::MenuOption("World", Submenus::World);
 	GUI::MenuOption("Session", Submenus::Session);
 	GUI::MenuOption("Protection", Submenus::Protection);
-	GUI::MenuOption("Recovery", Submenus::RecoverySubmenuWarning);
+	GUI::MenuOption("Recovery", Submenus::Recovery);
 	GUI::MenuOption("Miscellaneous", Submenus::Miscellaneous);
 	GUI::MenuOption("Settings", Submenus::Settings);
 }

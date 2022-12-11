@@ -170,7 +170,6 @@
     <ClCompile Include="src\gui\submenus\Radio.cpp" />
     <ClCompile Include="src\gui\submenus\Recovery.cpp" />
     <ClCompile Include="src\gui\submenus\RecoveryStatistics.cpp" />
-    <ClCompile Include="src\gui\submenus\RecoverySubmenuWarning.cpp" />
     <ClCompile Include="src\gui\submenus\ReportStatistics.cpp" />
     <ClCompile Include="src\gui\submenus\SafehousesTeleportLocations.cpp" />
     <ClCompile Include="src\gui\submenus\SelectedPlayer.cpp" />
