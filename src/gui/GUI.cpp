@@ -383,6 +383,8 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 			GUI::DrawRectInGame({ 0, 0, 0, GUI::PrimaryColor.a }, { guiX - (GUI::guiWidth / 2) - 0.166f,GUI::guiY - 0.156f }, { 0.32f, 0.030f });
 		}
 
+
+		
 		//Text Entry's
 		GUI::AddPlayerInfoBoxTextEntry("Name", 1);
 		GUI::AddPlayerInfoBoxTextEntry(PLAYER::GET_PLAYER_NAME(PlayerID), NULL, 1);
@@ -406,6 +408,7 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 			GUI::AddPlayerInfoBoxTextEntry("N/A", NULL, 3);
 		}
 
+		
 		//Health
 		std::ostringstream Health;
 		float health = ENTITY::GET_ENTITY_HEALTH(SelectedPlayerPed);
@@ -449,6 +452,7 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 		else { Status << "~c~Unknown"; }
 		GUI::AddPlayerInfoBoxTextEntry(Status.str(), NULL, 6);
 
+		
 
 		//Vehicle
 		bool InAnyVehicle = PED::IS_PED_IN_ANY_VEHICLE(SelectedPlayerPed, 0);
@@ -464,7 +468,7 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 		}
 		GUI::AddPlayerInfoBoxTextEntry(Vehicle.str(), NULL, 7);
 
-
+		
 		//Speed
 		std::ostringstream Speed;
 		if (InAnyVehicle)
@@ -496,6 +500,7 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 		WantedLevel << PlayerWantedLevel << "/5";
 		GUI::AddPlayerInfoBoxTextEntry(WantedLevel.str(), NULL, 9);
 
+		
 
 		Hash WeaponHash;
 		GUI::AddPlayerInfoBoxTextEntry("Weapon", 10);
@@ -509,7 +514,6 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 					WeaponName = i.WeaponName;
 				}
 			}
-
 		}
 		else
 		{
@@ -517,7 +521,7 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 		}
 		GUI::AddPlayerInfoBoxTextEntry(WeaponName, NULL, 10);
 
-
+		
 		//Coords
 		Vector3 SelectedPlayerPedCoords = ENTITY::GET_ENTITY_COORDS(SelectedPlayerPed, false);
 		std::ostringstream CoordX;
@@ -534,7 +538,7 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 		GUI::AddPlayerInfoBoxTextEntry(CoordX.str(), NULL, 11);
 		GUI::AddPlayerInfoBoxTextEntry(CoordY.str(), NULL, 12);
 		GUI::AddPlayerInfoBoxTextEntry(CoordZ.str(), NULL, 13);
-
+		
 
 		std::ostringstream Zone;
 		GUI::AddPlayerInfoBoxTextEntry("Zone", 14);
@@ -542,6 +546,7 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 		GUI::AddPlayerInfoBoxTextEntry(Zone.str(), NULL, 14);
 
 
+		/*
 		Hash streetName, crossingRoad;
 		PATHFIND::GET_STREET_NAME_AT_COORD(SelectedPlayerPedCoords.x, SelectedPlayerPedCoords.y, SelectedPlayerPedCoords.z, &streetName, &crossingRoad);
 		GUI::AddPlayerInfoBoxTextEntry("Street", 15);
@@ -571,8 +576,8 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 		}
 		GUI::AddPlayerInfoBoxTextEntry("Distance", NULL, NULL, 1);
 		GUI::AddPlayerInfoBoxTextEntry(Distance.str(), NULL, NULL, NULL, 1);
-
-
+		*/
+		
 		//Modded Model
 		Hash SelectedPlayerPedModel = ENTITY::GET_ENTITY_MODEL(SelectedPlayerPed);
 		GUI::AddPlayerInfoBoxTextEntry("Modded Model", NULL, NULL, 2);
@@ -606,7 +611,7 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 		{
 			GUI::AddPlayerInfoBoxTextEntry("No", NULL, NULL, NULL, 4);
 		}
-
+		
 		//Rockstar ID
 		GUI::AddPlayerInfoBoxTextEntry("Rockstar ID", NULL, NULL, 5);
 		GUI::AddPlayerInfoBoxTextEntry(std::to_string(GameFunctions::ReturnPlayerRockstarID(PlayerID)), NULL, NULL, NULL, 5);

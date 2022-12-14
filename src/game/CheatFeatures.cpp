@@ -82,23 +82,23 @@ void Cheat::CheatFeatures::Loop()
 	GameFunctions::CheckNewSessionMembersLoop();
 
 	// Speedometer
-	if (PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false)) 
+	if (SpeedometerVectorPosition > 0 && PED::IS_PED_IN_ANY_VEHICLE(GameFunctions::PlayerPedID, false))
 	{
 		std::ostringstream Speed;
 		if (MISC::SHOULD_USE_METRIC_MEASUREMENTS())
 		{
-			Speed << GameFunctions::MSToKMH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0))) << " KM/H";
+			Speed << GameFunctions::MSToKMH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0))) << " KM";
 		}
 		else
 		{
-			Speed << GameFunctions::MSToMPH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0))) << " MP/H";
+			Speed << GameFunctions::MSToMPH(ENTITY::GET_ENTITY_SPEED(PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0))) << " MP";
 		}
 		if (SpeedometerVectorPosition == 1 || SpeedometerVectorPosition == 3) { GUI::DrawTextInGame(Speed.str(), { 0, 0, 255, 255 }, { 0.85f, 0.5000f }, { 0.70f, 0.70f }, false); }
 		if (SpeedometerVectorPosition == 2 || SpeedometerVectorPosition == 3) { VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(PED::GET_VEHICLE_PED_IS_IN(GameFunctions::PlayerPedID, 0), CheatFunctions::StringToChar(Speed.str())); }
 	}
 
 	// Impact ammo
-	if (ImpactAmmoVectorPosition != 0)
+	if (ImpactAmmoVectorPosition > 0)
 	{
 		if (ImpactAmmoVectorPosition == 1)
 		{
@@ -143,7 +143,7 @@ void Cheat::CheatFeatures::Loop()
 	}
 
 	// Sprint Speed
-	if (FastSuperRunPosition != 0 && (TASK::IS_PED_SPRINTING(GameFunctions::PlayerPedID) || TASK::IS_PED_RUNNING(GameFunctions::PlayerPedID)))
+	if (FastSuperRunPosition > 0 && (TASK::IS_PED_SPRINTING(GameFunctions::PlayerPedID) || TASK::IS_PED_RUNNING(GameFunctions::PlayerPedID)))
 	{
 		if (FastSuperRunPosition == 1)
 		{
@@ -156,7 +156,7 @@ void Cheat::CheatFeatures::Loop()
 	}
 
 	// Custom ammo
-	if (CustomAmmoVectorPosition != 0)
+	if (CustomAmmoVectorPosition > 0)
 	{
 		Vector3 CameraRotation			= CAM::GET_GAMEPLAY_CAM_ROT(0);
 		Vector3 Direction				= GameFunctions::RotationToDirection(&CameraRotation);
@@ -205,7 +205,7 @@ void Cheat::CheatFeatures::Loop()
 	}
 
 	// Particle ammo
-	if (ParticleAmmoVectorPosition != 0)
+	if (ParticleAmmoVectorPosition > 0)
 	{
 		const char* PTFX;
 		const char* EffectName;

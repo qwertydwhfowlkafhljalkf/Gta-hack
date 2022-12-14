@@ -109,7 +109,11 @@ const std::vector<WeaponHashesStruct> Cheat::GameArrays::WeaponsHashList = {
 	{ "Compact EMP Launcher", 0xDB26713A	}, //WeaponEMPLauncher
 	{ "StunGun MP", 0x45CD9CF3				}, //WeaponStunGunMP
 	{ "Precision Rifle", 0x6E7DDDEC			}, //WeaponPrecisionRifle
-	{ "Service Carbine", 0xD1D5F52B			}  //WeaponTacticalRifle
+	{ "Service Carbine", 0xD1D5F52B			}, //WeaponTacticalRifle
+	{ "WM 29 Pistol", 0x1BC4FDB9			}, //WeaponPistolXM3
+	{ "Candy Cane", 0x6589186A				}, //WeaponCandyCane
+	{ "Railgun (XM3)", 0xFEA23564			}, //WeaponRailgunXM3
+	{ "Acid Package", 0xF7F1E25E			}  //WeaponAcidPackage
 };
 
 const std::vector<std::string> Cheat::GameArrays::PedModels = {
@@ -1101,7 +1105,34 @@ const std::vector<std::string> Cheat::GameArrays::PedModels = {
 	"IG_WarehouseBoss",
 	"S_F_M_Warehouse_01",
 	"S_M_M_Warehouse_01",
-	"U_M_Y_Juggernaut_02"
+	"U_M_Y_Juggernaut_02",
+	"A_C_Chimp_02"
+	"A_C_Rabbit_02"
+	"A_F_M_GenStreet_01"
+	"A_M_M_BankRobber_01"
+	"CS_DrFriedlander_02"
+	"CS_NervousRon_02"
+	"CSB_Chef_03"
+	"CSB_Dax"
+	"CSB_Labrat"
+	"CSB_Luchadora"
+	"G_F_M_Fooliganz_01"
+	"G_M_M_Fooliganz_01"
+	"G_M_M_FriedlanderGoons_01"
+	"IG_AcidLabCook"
+	"IG_Chef_03"
+	"IG_Dax"
+	"IG_DrFriedlander_02"
+	"IG_Fooliganz_01"
+	"IG_Fooliganz_02"
+	"IG_Furry"
+	"IG_GunVanSeller"
+	"IG_HippyLeader"
+	"IG_Labrat"
+	"IG_Luchadora"
+	"IG_NervousRon_02"
+	"S_M_M_HazmatWorker_01"
+	"U_M_M_YuleMonster"
 };
 
 const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
@@ -1117,7 +1148,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x31F0B376, // annihilator
 	0x11962E49, // annihilator2
 	0x2189D250, // apc
-	0x97E5533, // ardent
+	0x97E5533,	// ardent
 	0xB8081009, // armytanker
 	0xA7FF33F5, // armytrailer
 	0x9E6B14D6, // armytrailer2
@@ -1134,7 +1165,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x806B9CC3, // bagger
 	0xE82AE656, // baletrailer
 	0xCFCA3668, // baller
-	0x8852855, // baller2
+	0x8852855,	// baller2
 	0x6FF0F727, // baller3
 	0x25CBE2E2, // baller4
 	0x1C09CF5E, // baller5
@@ -1151,7 +1182,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x7A61B330, // benson
 	0x6CBD1D6D, // besra
 	0x4BFCF28B, // bestiagts
-	0x5283265, // bf400
+	0x5283265,	// bf400
 	0x432AA566, // bfinjection
 	0x32B91AE8, // biff
 	0xEB298297, // bifta
@@ -1178,28 +1209,28 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0xFE0A508C, // bombushka
 	0x898ECCEA, // boxville
 	0xF21B33BE, // boxville2
-	0x7405E08, // boxville3
+	0x7405E08,	// boxville3
 	0x1A79847A, // boxville4
 	0x28AD20E1, // boxville5
 	0xA7CE1BC5, // brawler
 	0xEDC6F847, // brickade
 	0x5C55CB39, // brioso
 	0x55365079, // brioso2
-	0xE827DE, // brioso3
+	0xE827DE,	// brioso3
 	0x27D79225, // bruiser
 	0x9B065C9E, // bruiser2
 	0x8644331A, // bruiser3
 	0x7F81A829, // brutus
 	0x8F49AE28, // brutus2
 	0x798682A2, // brutus3
-	0x6FF6914, // btype
+	0x6FF6914,	// btype
 	0xCE6B35A4, // btype2
 	0xDC19D101, // btype3
 	0xD756460C, // buccaneer
 	0xC397F748, // buccaneer2
 	0xEDD516C6, // buffalo
 	0x2BEC3CBE, // buffalo2
-	0xE2C013E, // buffalo3
+	0xE2C013E,	// buffalo3
 	0xDB0C9B04, // buffalo4
 	0x7074F39D, // bulldozer
 	0x9AE6DDA1, // bullet
@@ -1220,7 +1251,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x4ABEBF23, // caracara
 	0xAF966F3C, // caracara2
 	0x7B8AB45F, // carbonizzare
-	0xABB0C0, // carbonrs
+	0xABB0C0,	// carbonrs
 	0xFCFCB68B, // cargobob
 	0x60A7EA10, // cargobob2
 	0x53174EEF, // cargobob3
@@ -1235,9 +1266,9 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0xC972A155, // champion
 	0xC514AAE0, // cheburek
 	0xB1D95DA0, // cheetah
-	0xD4E5F4D, // cheetah2
+	0xD4E5F4D,	// cheetah2
 	0xD6BC7523, // chernobog
-	0x675ED7, // chimera
+	0x675ED7,	// chimera
 	0x14D69010, // chino
 	0xAED64A63, // chino2
 	0xA4F52C13, // cinquemila
@@ -1258,7 +1289,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x440851D8, // comet7
 	0xE384DD25, // conada
 	0x28B67ACA, // contender
-	0x67BC037, // coquette
+	0x67BC037,	// coquette
 	0x3C4E2113, // coquette2
 	0x2EC385FE, // coquette3
 	0x98F65A5E, // coquette4
@@ -1292,7 +1323,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x806EFBEE, // docktrailer
 	0xCB44B1CA, // docktug
 	0xCA495705, // dodo
-	0x4CE68AC, // dominator
+	0x4CE68AC,	// dominator
 	0xC96B73D9, // dominator2
 	0xC52C6B93, // dominator3
 	0xD6FB0F30, // dominator4
@@ -1317,7 +1348,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0xED62BFA9, // dune5
 	0x39D6779E, // duster
 	0x127E90D5, // dynasty
-	0xBBA2261, // elegy
+	0xBBA2261,	// elegy
 	0xDE3D9D22, // elegy2
 	0xB472D2B5, // ellie
 	0x4EE74355, // emerus
@@ -1337,7 +1368,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x866BCE26, // faction3
 	0x6068AD86, // fagaloa
 	0x9229E4EB, // faggio
-	0x350D1AB, // faggio2
+	0x350D1AB,	// faggio2
 	0xB328B188, // faggio3
 	0x432EA949, // fbi
 	0x9DC66994, // fbi2
@@ -1358,10 +1389,10 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0xBC32A33B, // fq2
 	0xFCC2F483, // freecrawler
 	0x3D6AAA9B, // freight
-	0xAFD22A6, // freightcar
+	0xAFD22A6,	// freightcar
 	0xBDEC3D99, // freightcar2
 	0x36DCFF98, // freightcont1
-	0xE512E79, // freightcont2
+	0xE512E79,	// freightcont2
 	0x264D9262, // freightgrain
 	0xD1ABB666, // freighttrailer
 	0x2C634FBD, // frogger
@@ -1381,13 +1412,13 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x71CBEA98, // gb200
 	0x97FA4F36, // gburrito
 	0x11AA0E14, // gburrito2
-	0x47A6BC1, // glendale
+	0x47A6BC1,	// glendale
 	0xC98BBAD6, // glendale2
 	0x4992196C, // gp1
 	0x3CC7F596, // graintrailer
 	0x9628879C, // granger
 	0xF06C29C7, // granger2
-	0x26ED430, // greenwood
+	0x26ED430,	// greenwood
 	0xA3FC0F4D, // gresley
 	0x4DC079D7, // growler
 	0x8408F33A, // gt500
@@ -1401,9 +1432,9 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x171C92C4, // hauler2
 	0x89BA59F5, // havok
 	0xEA6A047F, // hellion
-	0xE83C17, // hermes
+	0xE83C17,	// hermes
 	0x11F76C14, // hexer
-	0x239E390, // hotknife
+	0x239E390,	// hotknife
 	0x42836BE5, // hotring
 	0xC3F25753, // howard
 	0xFD707EDE, // hunter
@@ -1450,7 +1481,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0xF8D48E7A, // journey
 	0x1B8165D3, // jubilee
 	0xF38C4245, // jugular
-	0x5852838, // kalahari
+	0x5852838,	// kalahari
 	0xF8C2E0E7, // kamacho
 	0x18619B7E, // kanjo
 	0xFC2E479A, // kanjosj
@@ -1493,7 +1524,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x33C9E158, // metrotrain
 	0x3E5BD8D9, // michelli
 	0x96E24857, // microlight
-	0x9D80F93, // miljet
+	0x9D80F93,	// miljet
 	0xB53C6C52, // minitank
 	0xED7EADA4, // minivan
 	0xBCDE91F0, // minivan2
@@ -1560,7 +1591,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x92EF6E04, // pfister811
 	0x809AA4CB, // phantom
 	0x9DAE1398, // phantom2
-	0xA90ED5C, // phantom3
+	0xA90ED5C,	// phantom3
 	0x831A21D5, // phoenix
 	0x59E0FBF3, // picador
 	0x404B6381, // pigalle
@@ -1602,10 +1633,10 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0xD83C13CE, // ratloader
 	0xDCE1D9F7, // ratloader2
 	0xEEF345EC, // rcbandito
-	0xDF381E5, // reaper
+	0xDF381E5,	// reaper
 	0xB802DD46, // rebel
 	0x8612B64B, // rebel2
-	0x4F48FC4, // rebla
+	0x4F48FC4,	// rebla
 	0x76D7C404, // reever
 	0xFF22D208, // regina
 	0x5216AD5E, // remus
@@ -1637,7 +1668,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x2AE524A8, // ruston
 	0xECA6B6A3, // s80
 	0x9B909C94, // sabregt
-	0xD4EA603, // sabregt2
+	0xD4EA603,	// sabregt2
 	0xDC434E51, // sadler
 	0x2BC345D1, // sadler2
 	0x2EF89E46, // sanchez
@@ -1694,11 +1725,11 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x2C509634, // sovereign
 	0x706E2B40, // specter
 	0x400F5147, // specter2
-	0xDC60D2B, // speeder
+	0xDC60D2B,	// speeder
 	0x1A144F2A, // speeder2
 	0xCFB3870C, // speedo
 	0x2B6DC64A, // speedo2
-	0xD17099D, // speedo4
+	0xD17099D,	// speedo4
 	0xF9E67C05, // squaddie
 	0x17DF5EC2, // squalo
 	0x1324E960, // stafford
@@ -1759,7 +1790,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x6D6F8F43, // thrust
 	0x58CDAF30, // thruster
 	0xAF0B8D48, // tigon
-	0x2E19879, // tiptruck
+	0x2E19879,	// tiptruck
 	0xC7824E5E, // tiptruck2
 	0x761E2AD3, // titan
 	0x56C8A5EF, // toreador
@@ -1797,7 +1828,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x4339CD69, // tribike
 	0xB67597EC, // tribike2
 	0xE823FB48, // tribike3
-	0x612F4B6, // trophytruck
+	0x612F4B6,	// trophytruck
 	0xD876DBE2, // trophytruck2
 	0x1149422F, // tropic
 	0x56590FE9, // tropic2
@@ -1835,7 +1866,7 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0xAF599F01, // vindicator
 	0xE2504942, // virgo
 	0xCA62927A, // virgo2
-	0xFDFFB0, // virgo3
+	0xFDFFB0,	// virgo3
 	0xE8A8BA94, // viseris
 	0xC4810400, // visione
 	0x1AAD0DED, // volatol
@@ -1861,8 +1892,8 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0xE6401328, // xls2
 	0x6F946279, // yosemite
 	0x64F49967, // yosemite2
-	0x409D787, // yosemite3
-	0x3E5F6B8, // youga
+	0x409D787,	// yosemite3
+	0x3E5F6B8,	// youga
 	0x3D29CD2B, // youga2
 	0x6B73A9BE, // youga3
 	0x589A840C, // youga4
@@ -1880,7 +1911,24 @@ const std::vector<DWORD> Cheat::GameArrays::VehicleModels = {
 	0x20314B42, // zr380
 	0xBE11EFC6, // zr3802
 	0xA7DCC35C, // zr3803
-	0x2D3BD401  // ztype
+	0x2D3BD401, // ztype
+	0x3B639C8D, // boor
+	0xA2073353, // brickade2
+	0x8CC51028, // broadway
+	0x8B4864E1, // cargoplane2
+	0x6838FC1D, // entity3
+	0xB581BF9A, // eudora
+	0xF82BC92E, // everon2
+	0x5C6C00B4, // issi8
+	0x9F04C481, // journey2
+	0x5285D628, // manchez3
+	0x7D326F04, // panthere
+	0xAD5E30D7, // powersurge
+	0x402586F8, // r300
+	0xC247AEE5, // surfer3
+	0xE478B977, // tahoma
+	0x1004EDA4, // tulip2
+	0x27E34161  // virtue
 };
 
 const std::vector<VehicleModelPicturesStruct> Cheat::GameArrays::VehicleModelPictures = {
@@ -2429,7 +2477,24 @@ const std::vector<VehicleModelPicturesStruct> Cheat::GameArrays::VehicleModelPic
 	{"sssa_dlc_tuner","remus" },
 	{"sssa_dlc_tuner","rt3000" },
 	{"sssa_dlc_tuner","sultan3" },
-	{"sssa_dlc_tuner","warrener2" }
+	{"sssa_dlc_tuner","warrener2" },
+	{"sssa_dlc_xmas2022","boor" },
+	{"candc_xmas2022","brickade2" },
+	{"lgm_dlc_xmas2022","broadway" },
+	{"sssa_dlc_xmas2022","cargoplane2" },
+	{"lgm_dlc_xmas2022","entity3" },
+	{"sssa_dlc_xmas2022","eudora" },
+	{"sssa_dlc_xmas2022","everon2" },
+	{"sssa_dlc_xmas2022","issi8" },
+	{"sssa_dlc_xmas2022","journey2" },
+	{"sssa_dlc_xmas2022","manchez3" },
+	{"lgm_dlc_xmas2022","panthere" },
+	{"lgm_dlc_xmas2022","powersurge" },
+	{"lgm_dlc_xmas2022","r300" },
+	{"sssa_dlc_xmas2022","surfer3" },
+	{"sssa_dlc_xmas2022","tahoma" },
+	{"sssa_dlc_xmas2022","tulip2" },
+	{"lgm_dlc_xmas2022","virtue" }
 };
 
 const std::vector<TeleportLocationStruct> Cheat::GameArrays::TeleportLocationsSafehouses = {
@@ -2764,7 +2829,8 @@ const std::vector<MaxUpgradeWeaponComponentsStruct> Cheat::GameArrays::MaxUpgrad
 	{ 0xC78D71B4, "COMPONENT_AT_AR_FLSH" },
 	{ 0xC78D71B4, "COMPONENT_AT_AR_SUPP" },
 	{ 0xC78D71B4, "COMPONENT_AT_AR_AFGRIP" },
-	{ 0xC78D71B4, "COMPONENT_HEAVYRIFLE_CAMO1" }
+	{ 0xC78D71B4, "COMPONENT_HEAVYRIFLE_CAMO1" },
+	{ 0x1E02B7E0, "COMPONENT_PISTOLXM3_SUPP" }
 };
 
 const std::vector<AnimationsStruct> Cheat::GameArrays::Animations = {

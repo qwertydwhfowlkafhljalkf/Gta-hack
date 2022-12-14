@@ -932,7 +932,7 @@ void Cheat::GameFunctions::ChangeGTAOSessionType(eSessionTypes SessionType)
 {
 	if (SessionType >= 0 && SessionType <= 12)
 	{
-		globalHandle(1575015).As<int>() = (int)SessionType;
+		globalHandle(1575017).As<int>() = (int)SessionType;
 		globalHandle(1574589).As<int>() = 1;
 		GameHooking::PauseMainFiber(50, false);
 		globalHandle(1574589).As<int>() = 0;
