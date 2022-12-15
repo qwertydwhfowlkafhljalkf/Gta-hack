@@ -36,7 +36,7 @@
 // Project Header Files
 #include "../../src/hooking/Memory.h"
 #include "../../src/hooking/Types.h"
-#include "../../src/game/Enums.h"
+#include "../../src/game/enums.hpp"
 #include "../../src/hooking/crossmap.hpp"
 #include "../../src/hooking/NativeInvoker.h"
 #include "../../src/hooking/NativeCaller.h"

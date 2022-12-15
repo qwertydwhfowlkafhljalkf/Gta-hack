@@ -311,7 +311,6 @@ bool GetEventDataHooked(std::int32_t eventGroup, std::int32_t eventIndex, std::i
 				}
 				break;
 			case eRemoteEvents::NetworkBail:
-			case eRemoteEvents::NetworkBail2:
 				if (CheatFeatures::ProtectionScriptEvents_NetworkBail)
 				{
 					BlockScriptEvent = true;
@@ -321,8 +320,6 @@ bool GetEventDataHooked(std::int32_t eventGroup, std::int32_t eventIndex, std::i
 			case eRemoteEvents::Crash:
 			case eRemoteEvents::Crash2:
 			case eRemoteEvents::Crash3:
-			case eRemoteEvents::Crash4:
-			case eRemoteEvents::Crash5:
 				if (CheatFeatures::ProtectionScriptEvents_Crash)
 				{
 					BlockScriptEvent = true;

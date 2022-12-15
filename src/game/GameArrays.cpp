@@ -2830,7 +2830,7 @@ const std::vector<MaxUpgradeWeaponComponentsStruct> Cheat::GameArrays::MaxUpgrad
 	{ 0xC78D71B4, "COMPONENT_AT_AR_SUPP" },
 	{ 0xC78D71B4, "COMPONENT_AT_AR_AFGRIP" },
 	{ 0xC78D71B4, "COMPONENT_HEAVYRIFLE_CAMO1" },
-	{ 0x1E02B7E0, "COMPONENT_PISTOLXM3_SUPP" }
+	{ 0x1BC4FDB9, "COMPONENT_PISTOLXM3_SUPP" }
 };
 
 const std::vector<AnimationsStruct> Cheat::GameArrays::Animations = {

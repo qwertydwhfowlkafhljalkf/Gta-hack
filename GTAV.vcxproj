@@ -93,7 +93,7 @@
     <ClInclude Include="src\game\GameArrays.h" />
     <ClInclude Include="src\game\GameFunctions.h" />
     <ClInclude Include="src\hooking\crossmap.hpp" />
-    <ClInclude Include="src\game\Enums.h" />
+    <ClInclude Include="src\game\enums.hpp" />
     <ClInclude Include="src\hooking\GameHooking.h" />
     <ClInclude Include="src\hooking\Memory.h" />
     <ClInclude Include="src\hooking\NativeCaller.h" />

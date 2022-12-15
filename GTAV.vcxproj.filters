@@ -381,7 +381,7 @@
     <ClInclude Include="src\gui\submenus\submenus.hpp">
       <Filter>Source\gui\submenus</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\Enums.h">
+    <ClInclude Include="src\game\enums.hpp">
       <Filter>Source\game</Filter>
     </ClInclude>
     <ClInclude Include="src\cheat\version.hpp">
