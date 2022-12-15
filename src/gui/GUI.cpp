@@ -391,7 +391,7 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 
 		// Statistics
 		GUI::AddPlayerInfoBoxTextEntry("Rank", 2);
-		GUI::AddPlayerInfoBoxTextEntry("Money (bank & cash)", 3);
+		GUI::AddPlayerInfoBoxTextEntry("Money (cash only)", 3);
 		if (NETWORK::NETWORK_IS_SESSION_STARTED())
 		{
 			std::ostringstream PlayerRank;
@@ -399,7 +399,7 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 			GUI::AddPlayerInfoBoxTextEntry(PlayerRank.str(), NULL, 2);
 
 			std::ostringstream PlayerMoney;
-			PlayerMoney << "$" << globalHandle(GLOBAL_PLAYERSTAT_TOTALMONEY[0]).At(PlayerID, GLOBAL_PLAYERSTAT_TOTALMONEY[1]).At(GLOBAL_PLAYERSTAT_TOTALMONEY[2]).At(GLOBAL_PLAYERSTAT_TOTALMONEY[3]).As<__int64>();
+			PlayerMoney << "$" << globalHandle(GLOBAL_PLAYERSTAT_TOTALCASH[0]).At(PlayerID, GLOBAL_PLAYERSTAT_TOTALCASH[1]).At(GLOBAL_PLAYERSTAT_TOTALCASH[2]).At(GLOBAL_PLAYERSTAT_TOTALCASH[3]).As<__int64>();
 			GUI::AddPlayerInfoBoxTextEntry(PlayerMoney.str(), NULL, 3);
 		}
 		else
@@ -545,11 +545,9 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 		Zone << UI::_GET_LABEL_TEXT(ZONE::GET_NAME_OF_ZONE(SelectedPlayerPedCoords.x, SelectedPlayerPedCoords.y, SelectedPlayerPedCoords.z));
 		GUI::AddPlayerInfoBoxTextEntry(Zone.str(), NULL, 14);
 
-
-		/*
 		Hash streetName, crossingRoad;
 		PATHFIND::GET_STREET_NAME_AT_COORD(SelectedPlayerPedCoords.x, SelectedPlayerPedCoords.y, SelectedPlayerPedCoords.z, &streetName, &crossingRoad);
-		GUI::AddPlayerInfoBoxTextEntry("Street", 15);
+		GUI::AddPlayerInfoBoxTextEntry("Street", 15);	
 		std::ostringstream Street;
 		Street << UI::GET_STREET_NAME_FROM_HASH_KEY(streetName);
 		GUI::AddPlayerInfoBoxTextEntry(Street.str(), NULL, 15);
@@ -576,7 +574,6 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 		}
 		GUI::AddPlayerInfoBoxTextEntry("Distance", NULL, NULL, 1);
 		GUI::AddPlayerInfoBoxTextEntry(Distance.str(), NULL, NULL, NULL, 1);
-		*/
 		
 		//Modded Model
 		Hash SelectedPlayerPedModel = ENTITY::GET_ENTITY_MODEL(SelectedPlayerPed);
