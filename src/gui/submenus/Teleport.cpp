@@ -8,7 +8,7 @@ void GUI::Submenus::Teleport()
 	if (GUI::Option("Teleport To Waypoint", "")) { GameFunctions::TeleportToBlipCoord(SpriteWaypoint); }
 	GUI::Toggle("Auto Teleport To Waypoint", CheatFeatures::AutoTeleportToWaypointBool, "");
 	if (GUI::Option("Teleport into Personal Vehicle", "")) 
-	{ 
+	{
 		globalHandle(GLOBAL_TP_INTO_PERSONAL_VEHICLE[0]).At(GLOBAL_TP_INTO_PERSONAL_VEHICLE[1]).As<bool>() = true;
 	}
 	if (GUI::Option("Teleport To Objective", "")) { GameFunctions::TeleportToObjective(); }

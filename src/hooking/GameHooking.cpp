@@ -376,7 +376,7 @@ bool GetEventDataHooked(std::int32_t eventGroup, std::int32_t eventIndex, std::i
 		{
 			if (!CheatFeatures::BlockAllScriptEvents)
 			{
-				std::string MessageString = "Event ID: " + std::to_string(args[0]);
+				std::string MessageString = "ID: " + std::to_string(args[0]);
 				if (!ScriptEventIDType.empty())
 				{
 					MessageString.append(" ~n~Block reason: attempted " + ScriptEventIDType);

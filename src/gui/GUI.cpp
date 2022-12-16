@@ -391,16 +391,16 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 
 		// Statistics
 		GUI::AddPlayerInfoBoxTextEntry("Rank", 2);
-		GUI::AddPlayerInfoBoxTextEntry("Money (cash only)", 3);
+		GUI::AddPlayerInfoBoxTextEntry("Money (cash)", 3);
 		if (NETWORK::NETWORK_IS_SESSION_STARTED())
 		{
 			std::ostringstream PlayerRank;
 			PlayerRank << globalHandle(GLOBAL_PLAYERSTAT_RANK[0]).At(PlayerID, GLOBAL_PLAYERSTAT_RANK[1]).At(GLOBAL_PLAYERSTAT_RANK[2]).At(GLOBAL_PLAYERSTAT_RANK[3]).As<int>();
 			GUI::AddPlayerInfoBoxTextEntry(PlayerRank.str(), NULL, 2);
 
-			std::ostringstream PlayerMoney;
-			PlayerMoney << "$" << globalHandle(GLOBAL_PLAYERSTAT_TOTALCASH[0]).At(PlayerID, GLOBAL_PLAYERSTAT_TOTALCASH[1]).At(GLOBAL_PLAYERSTAT_TOTALCASH[2]).At(GLOBAL_PLAYERSTAT_TOTALCASH[3]).As<__int64>();
-			GUI::AddPlayerInfoBoxTextEntry(PlayerMoney.str(), NULL, 3);
+			std::ostringstream PlayerCash;
+			PlayerCash << "$" << globalHandle(GLOBAL_PLAYERSTAT_CASH[0]).At(PlayerID, GLOBAL_PLAYERSTAT_CASH[1]).At(GLOBAL_PLAYERSTAT_CASH[2]).At(GLOBAL_PLAYERSTAT_CASH[3]).As<__int64>();
+			GUI::AddPlayerInfoBoxTextEntry(PlayerCash.str(), NULL, 3);
 		}
 		else
 		{
@@ -408,7 +408,6 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 			GUI::AddPlayerInfoBoxTextEntry("N/A", NULL, 3);
 		}
 
-		
 		//Health
 		std::ostringstream Health;
 		float health = ENTITY::GET_ENTITY_HEALTH(SelectedPlayerPed);
@@ -441,14 +440,14 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 		//Status
 		std::ostringstream Status;
 		GUI::AddPlayerInfoBoxTextEntry("Status", 6);
-		if (TASK::IS_PED_STILL(SelectedPlayerPed)) { Status << "Player is still"; }
-		else if (TASK::IS_PED_WALKING(SelectedPlayerPed)) { Status << "Player is walking"; }
-		else if (TASK::IS_PED_RUNNING(SelectedPlayerPed)) { Status << "Player is running"; }
-		else if (TASK::IS_PED_SPRINTING(SelectedPlayerPed)) { Status << "Player is sprinting"; }
-		else if (PED::IS_PED_CLIMBING(SelectedPlayerPed)) { Status << "Player is climbing"; }
-		else if (PED::IS_PED_DIVING(SelectedPlayerPed)) { Status << "Player is diving"; }
-		else if (PED::IS_PED_FALLING(SelectedPlayerPed)) { Status << "Player is falling"; }
-		else if (PED::IS_PED_DEAD_OR_DYING(SelectedPlayerPed, true)) { Status << "Player is dead"; }
+		if (TASK::IS_PED_STILL(SelectedPlayerPed)) { Status << "Still"; }
+		else if (TASK::IS_PED_WALKING(SelectedPlayerPed)) { Status << "Walking"; }
+		else if (TASK::IS_PED_RUNNING(SelectedPlayerPed)) { Status << "Running"; }
+		else if (TASK::IS_PED_SPRINTING(SelectedPlayerPed)) { Status << "Sprinting"; }
+		else if (PED::IS_PED_CLIMBING(SelectedPlayerPed)) { Status << "Climbing"; }
+		else if (PED::IS_PED_DIVING(SelectedPlayerPed)) { Status << "Diving"; }
+		else if (PED::IS_PED_FALLING(SelectedPlayerPed)) { Status << "Falling"; }
+		else if (PED::IS_PED_DEAD_OR_DYING(SelectedPlayerPed, true)) { Status << "Dead"; }
 		else { Status << "~c~Unknown"; }
 		GUI::AddPlayerInfoBoxTextEntry(Status.str(), NULL, 6);
 
@@ -464,7 +463,7 @@ void GUI::ShowPlayerInformationBox(Player PlayerID)
 		}
 		else
 		{
-			Vehicle << "~c~Not in a vehicle";
+			Vehicle << "~c~Not in any";
 		}
 		GUI::AddPlayerInfoBoxTextEntry(Vehicle.str(), NULL, 7);
 

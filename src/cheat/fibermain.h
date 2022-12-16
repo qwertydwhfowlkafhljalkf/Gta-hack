@@ -34,24 +34,23 @@
 #include <json/json.h>
 
 // Project Header Files
-#include "../../src/hooking/Memory.h"
-#include "../../src/hooking/Types.h"
+#include "../../src/hooking/memory.hpp"
+#include "../../src/hooking/types.hpp"
 #include "../../src/game/enums.hpp"
 #include "../../src/hooking/crossmap.hpp"
-#include "../../src/hooking/NativeInvoker.h"
-#include "../../src/hooking/NativeCaller.h"
-#include "../../src/hooking/Natives.h"
-#include "../../src/hooking/GameHooking.h"
+#include "../../src/hooking/nativeinvoker.hpp"
+#include "../../src/hooking/nativecaller.hpp"
+#include "../../src/hooking/natives.hpp"
+#include "../../src/hooking/hooking.hpp"
 #include "../../src/gui/GUI.h"
-#include "../../src/cheat/Controls.h"
-#include "../../src/cheat/CheatFunctions.h"
+#include "../../src/cheat/controls.hpp"
+#include "../../src/cheat/cheatfunctions.hpp"
 #include "../../src/gui/submenus/submenus.hpp"
-#include "../../src/game/GameArrays.h"
-#include "../../src/hooking/Offsets.h"
+#include "../../src/game/gamearrays.hpp"
+#include "../../src/hooking/offsets.hpp"
 #include "../../src/cheat/Logger.hpp"
-#include "../../src/game/CheatFeatures.h"
-#include "../../src/cheat/CheatFunctions.h"
-#include "../../src/game/GameFunctions.h"
+#include "../../src/game/cheatfeatures.hpp"
+#include "../../src/game/gamefunctions.hpp"
 
 namespace Cheat
 {

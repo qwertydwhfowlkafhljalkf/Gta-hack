@@ -83,24 +83,24 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\cheat\CheatFunctions.h" />
-    <ClInclude Include="src\cheat\Controls.h" />
+    <ClInclude Include="src\cheat\cheatfunctions.hpp" />
+    <ClInclude Include="src\cheat\controls.hpp" />
     <ClInclude Include="src\cheat\fibermain.h" />
     <ClInclude Include="src\cheat\file_system.hpp" />
     <ClInclude Include="src\cheat\Logger.hpp" />
     <ClInclude Include="src\cheat\version.hpp" />
-    <ClInclude Include="src\game\CheatFeatures.h" />
-    <ClInclude Include="src\game\GameArrays.h" />
-    <ClInclude Include="src\game\GameFunctions.h" />
+    <ClInclude Include="src\game\cheatfeatures.hpp" />
+    <ClInclude Include="src\game\gamearrays.hpp" />
+    <ClInclude Include="src\game\gamefunctions.hpp" />
     <ClInclude Include="src\hooking\crossmap.hpp" />
     <ClInclude Include="src\game\enums.hpp" />
-    <ClInclude Include="src\hooking\GameHooking.h" />
-    <ClInclude Include="src\hooking\Memory.h" />
-    <ClInclude Include="src\hooking\NativeCaller.h" />
-    <ClInclude Include="src\hooking\NativeInvoker.h" />
-    <ClInclude Include="src\hooking\Natives.h" />
-    <ClInclude Include="src\hooking\Offsets.h" />
-    <ClInclude Include="src\hooking\Types.h" />
+    <ClInclude Include="src\hooking\hooking.hpp" />
+    <ClInclude Include="src\hooking\memory.hpp" />
+    <ClInclude Include="src\hooking\nativecaller.hpp" />
+    <ClInclude Include="src\hooking\nativeinvoker.hpp" />
+    <ClInclude Include="src\hooking\natives.hpp" />
+    <ClInclude Include="src\hooking\offsets.hpp" />
+    <ClInclude Include="src\hooking\types.hpp" />
     <ClInclude Include="src\gui\GUI.h" />
     <ClInclude Include="src\gui\submenus\submenus.hpp" />
     <ClInclude Include="src\resource.h" />

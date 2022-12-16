@@ -67,7 +67,7 @@ void Cheat::CheatFeatures::Loop()
 	{
 		GameFunctions::InGameHelpTextMessage = "Press " + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey) + " to open Menu GUI";
 		std::string WelcomeText = "Welcome " + (std::string)SOCIALCLUB::_SC_GET_NICKNAME() + ", have fun!";
-		GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(WelcomeText), (char*)"Textures", (char*)"AdvancedNotificationImage", false, 4, (char*)"GTAV Cheat", (char*)"", 0.3f, (char*)"");
+		GameFunctions::AdvancedMinimapNotification(CheatFunctions::StringToChar(WelcomeText), (char*)"Textures", (char*)"AdvancedNotificationImage", false, 4, (char*)"GTAV Cheat", (char*)"", 0.1f, (char*)"");
 		UI::DISPLAY_HELP_TEXT_THIS_FRAME("LETTERS_HELP2", false);
 	}
 	GameFunctions::InGameKeyboardWindowTitle.clear();
@@ -1130,15 +1130,15 @@ void Cheat::CheatFeatures::PlayerESP()
 bool Cheat::CheatFeatures::OffRadarBool = false;
 void Cheat::CheatFeatures::OffRadar()
 {
-	globalHandle(2689235).At(1 + (Cheat::GameFunctions::PlayerID * 453)).At(208).As<bool>() = true;
-	globalHandle(2815059).At(4627).As<int>() = NETWORK::GET_NETWORK_TIME();
+	globalHandle(GLOBAL_OFFRADAR[0]).At( 1 + GameFunctions::PlayerID * GLOBAL_OFFRADAR[1]).At(GLOBAL_OFFRADAR[2]).As<bool>() = true;
+	globalHandle(GLOBAL_NETWORK_STOPWATCH[0]).At(GLOBAL_NETWORK_STOPWATCH[1]).As<int>() = NETWORK::GET_NETWORK_TIME();
 }
 
 bool Cheat::CheatFeatures::CopsTurnBlindEyeBool = false;
 void Cheat::CheatFeatures::CopsTurnBlindEye()
 {
-	globalHandle(2815059).At(4624).As<int>() = 5;
-	globalHandle(2815059).At(4627).As<int>() = NETWORK::GET_NETWORK_TIME();
+	globalHandle(GLOBAL_COPSTURNBLINDEYE[0]).At(GLOBAL_COPSTURNBLINDEYE[1]).As<int>() = GLOBAL_COPSTURNBLINDEYE[2];
+	globalHandle(GLOBAL_NETWORK_STOPWATCH[0]).At(GLOBAL_NETWORK_STOPWATCH[1]).As<int>() = NETWORK::GET_NETWORK_TIME();
 }
 
 bool Cheat::CheatFeatures::ExplodeLoopSelectedPlayerBool = false;
@@ -1314,10 +1314,9 @@ void Cheat::CheatFeatures::AutoGiveAllWeapons()
 	{ 
 		for (auto const& i : GameArrays::WeaponsHashList)
 		{
-			Hash CurrentHash = i.WeaponHash;
-			if (!WEAPON::HAS_PED_GOT_WEAPON(GameFunctions::PlayerPedID, CurrentHash, false))
+			if (!WEAPON::HAS_PED_GOT_WEAPON(GameFunctions::PlayerPedID, i.WeaponHash, false))
 			{
-				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(GameFunctions::PlayerPedID, CurrentHash, 9999, false);
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(GameFunctions::PlayerPedID, i.WeaponHash, 9999, false);
 			}
 		}
 	}

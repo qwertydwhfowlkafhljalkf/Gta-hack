@@ -1,5 +1,5 @@
 #pragma once
-#include "GameHooking.h"
+#include "hooking.hpp"
 #pragma warning( disable : 26495)
 // Boost C++ Libraries Code
 
