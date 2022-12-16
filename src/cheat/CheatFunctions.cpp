@@ -302,11 +302,7 @@ int Cheat::CheatFunctions::GetLatestCheatBuildNumber()
 			{
 				VersionString = JsonData["name"].asString();
 				RemoveChars(VersionString, "v.");
-				try
-				{
-					VersionInt = std::stoi(VersionString);
-				}
-				catch (...) { }
+				VersionInt = StringToInt(VersionString);
 			}
 			else
 			{
@@ -329,38 +325,16 @@ void Cheat::CheatFunctions::RemoveChars(std::string &String, const char* Charact
 	}
 }
 
-//https://www.geeksforgeeks.org/write-your-own-atoi/
 int Cheat::CheatFunctions::StringToInt(std::string String)
 {
-	int sign = 1, base = 0, i = 0;
-	while (String[i] == ' ')
+	try
 	{
-		i++;
+		return std::stoi(String);
 	}
-
-	if (String[i] == '-' || String[i] == '+')
+	catch (...)
 	{
-		sign = 1 - 2 * (String[i++] == '-');
+		return NULL;
 	}
-
-	while (String[i] >= '0' && String[i] <= '9')
-	{
-		if (base > INT_MAX / 10
-			|| (base == INT_MAX / 10
-				&& String[i] - '0' > 7))
-		{
-			if (sign == 1)
-			{
-				return INT_MAX;
-			}
-			else
-			{
-				return INT_MIN;
-			}
-		}
-		base = 10 * base + (String[i++] - '0');
-	}
-	return base * sign;
 }
 
 std::string Cheat::CheatFunctions::TextWrap(std::string String, int Location) 
@@ -371,23 +345,6 @@ std::string Cheat::CheatFunctions::TextWrap(std::string String, int Location)
 		String.at(NewLine) = '\n';
 	}
 	return String;
-}
-
-void Cheat::CheatFunctions::CopyStringToClipboard(const std::string& String)
-{
-	OpenClipboard(NULL);
-	EmptyClipboard();
-	HGLOBAL Global = GlobalAlloc(GMEM_MOVEABLE, String.size() + 1);
-	if (!Global) { CloseClipboard(); return; }
-	LPVOID GlobalPtrn = GlobalLock(Global);
-	if (GlobalPtrn != NULL)
-	{
-		memcpy(GlobalPtrn, String.c_str(), String.size() + 1);
-	}
-	GlobalUnlock(Global);
-	SetClipboardData(CF_TEXT, Global);
-	CloseClipboard();
-	GlobalFree(Global);
 }
 
 bool Cheat::CheatFunctions::GetJsonFromFile(std::string Path, Json::Value& Object)
@@ -421,9 +378,7 @@ bool Cheat::CheatFunctions::AddCustomTeleportLocation(std::string CustomTeleport
 	{
 		// Remove the member if it already exists
 		if (JsonData.isMember(CustomTeleportLocationName))
-		{
 			JsonData.removeMember(CustomTeleportLocationName);
-		}
 
 		// Get local player coordinates
 		Vector3 LocalPlayerCoords = ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false);

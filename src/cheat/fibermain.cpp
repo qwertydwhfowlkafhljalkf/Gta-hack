@@ -67,11 +67,7 @@ void Cheat::FiberMain(LPVOID lpParameter)
 
 			if (!Red.empty() && !Green.empty() && !Blue.empty() && !Alpha.empty())
 			{
-				try
-				{
-					UI::REPLACE_HUD_COLOUR_WITH_RGBA(SavedHUDColorsIndex, std::stoi(Red), std::stoi(Green), std::stoi(Blue), std::stoi(Alpha));
-				}
-				catch (...) {}
+				UI::REPLACE_HUD_COLOUR_WITH_RGBA(SavedHUDColorsIndex, CheatFunctions::StringToInt(Red), CheatFunctions::StringToInt(Green), CheatFunctions::StringToInt(Blue), CheatFunctions::StringToInt(Alpha));
 				Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loaded CHC %s", HUDColorComponentName.c_str());
 			}
 			SavedHUDColorsIndex++;
