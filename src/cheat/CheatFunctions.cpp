@@ -7,7 +7,6 @@ bool Cheat::CheatFunctions::CheatInitEntirelyCompleted = false;									// Set w
 bool Cheat::CheatFunctions::CheatInitCompleted = false;											// Set when all initialization is completed (except for async tasks such as LoadConfig())
 bool Cheat::CheatFunctions::ConfigLoaded = false;												// Set when the LoadConfig thread is completed
 std::vector <std::string> Cheat::CheatFunctions::LoadedSelectablesVector;						// Used during the async LoadConfig process to determine which selectables have been loaded
-bool Cheat::CheatFunctions::StopThreads = false;												// Used to stop all cheat threads during the unloading process
 
 // See https://en.cppreference.com/w/cpp/io/manip/put_time
 std::string Cheat::CheatFunctions::ReturnDateTimeFormatAsString(const char* DateTimeFormat)
@@ -417,32 +416,6 @@ bool Cheat::CheatFunctions::DeleteCustomTeleportLocation(std::string CustomTelep
 
 	// Return false in case of any preceding failure(s)
 	return false;
-}
-
-DWORD WINAPI UnloadThread(LPVOID lpParam)
-{
-	ShowWindow(GetConsoleWindow(), SW_HIDE);
-	FreeConsole();
-
-	Cheat::CheatFunctions::StopThreads = true;
-
-	// Disable & remove MinHook hooks
-	for (int i = 0; i < GameHooking::GetMH_Hooked().size(); i++)
-	{
-		MH_DisableHook(GameHooking::GetMH_Hooked()[i]);
-		MH_RemoveHook(GameHooking::GetMH_Hooked()[i]);
-	}
-
-	// Uninit MinHook
-	MH_Uninitialize();
-
-	// Unload DLL from game process
-	FreeLibraryAndExitThread(Cheat::CheatModuleHandle, EXIT_SUCCESS);
-}
-
-void Cheat::CheatFunctions::UnloadCheat()
-{
-	CreateThread(NULL, NULL, UnloadThread, NULL, NULL, NULL);
 }
 
 void Cheat::CheatFunctions::LoadSelectableSaveStateBool(std::string SelectableName, bool& ReturnedBool)

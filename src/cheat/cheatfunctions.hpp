@@ -8,7 +8,6 @@ namespace Cheat
 {
 	namespace CheatFunctions
 	{
-		extern bool StopThreads;
 		extern bool NewerCheatVersionAvailable;
 		extern bool CheatInitCompleted;
 		extern bool CheatInitEntirelyCompleted;
@@ -43,6 +42,5 @@ namespace Cheat
 		bool GetJsonFromFile(std::string Path, Json::Value& Object);
 		bool AddCustomTeleportLocation(std::string CustomTeleportLocationName);
 		bool DeleteCustomTeleportLocation(std::string CustomTeleportLocationName);
-		void UnloadCheat();
 	}
 }

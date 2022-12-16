@@ -11,6 +11,11 @@ void GUI::Submenus::About()
 	}
 	if (GUI::Option("Unload Cheat", ""))
 	{
-		CheatFunctions::UnloadCheat();
+		// Remove console window
+		ShowWindow(GetConsoleWindow(), SW_HIDE);
+		FreeConsole();
+
+		// Stop MainFiber
+		Cheat::c_running = false;
 	}
 }

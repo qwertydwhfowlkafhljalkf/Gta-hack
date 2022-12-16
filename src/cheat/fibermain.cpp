@@ -2,6 +2,7 @@
 #include "file_system.hpp"
 #include "version.hpp"
 
+bool Cheat::c_running = true;
 void Cheat::FiberMain(LPVOID lpParameter)
 {
 	// Check for availability of newer cheat version
@@ -24,7 +25,7 @@ void Cheat::FiberMain(LPVOID lpParameter)
 	// Create Menu Selectable Arrow Animation Thread
 	std::thread MenuSelectableAnimationThreadHandle([]()
 		{
-			while (!CheatFunctions::StopThreads)
+			while (Cheat::c_running)
 			{
 				if (GUI::menuLevel > 0)
 				{
@@ -79,7 +80,7 @@ void Cheat::FiberMain(LPVOID lpParameter)
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Cheat init completed");
 
 	// Main cheat loop within the created fiber - this runs in the IS_DLC_PRESENT hook (thus, game natives can be called only from within this loop)
-	for (;;)
+	while (c_running)
 	{
 		// Set CheatInitEntirelyCompleted when all init is completed
 		CheatFunctions::CheatInitEntirelyCompleted = CheatFunctions::CheatInitCompleted && CheatFunctions::ConfigLoaded;
@@ -93,4 +94,22 @@ void Cheat::FiberMain(LPVOID lpParameter)
 		// Switch Fiber
 		GameHooking::PauseMainFiber(0, false);
 	}
+
+	// Create shutdown thread
+	auto unload = [](LPVOID data) -> DWORD
+	{ 
+		// Disable & remove MinHook hooks
+		for (int i = 0; i < GameHooking::GetMH_Hooked().size(); i++)
+		{
+			MH_DisableHook(GameHooking::GetMH_Hooked()[i]);
+			MH_RemoveHook(GameHooking::GetMH_Hooked()[i]);
+		}
+
+		// Uninit MinHook
+		MH_Uninitialize();
+
+		// Unload DLL from game process
+		FreeLibraryAndExitThread(Cheat::CheatModuleHandle, EXIT_SUCCESS);
+	};
+	CreateThread(NULL, NULL, unload, NULL, NULL, NULL);
 }
