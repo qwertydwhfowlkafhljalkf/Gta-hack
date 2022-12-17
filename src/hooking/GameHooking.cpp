@@ -246,20 +246,6 @@ bool GetEventDataHooked(std::int32_t eventGroup, std::int32_t eventIndex, std::i
 					ScriptEventIDType = "session kick";
 				}
 				break;
-			case eRemoteEvents::CeoKick:
-				if (CheatFeatures::ProtectionScriptEvents_CEOKick)
-				{
-					BlockScriptEvent = true;
-					ScriptEventIDType = "CEO kick";
-				}
-				break;
-			case eRemoteEvents::CeoBan:
-				if (CheatFeatures::ProtectionScriptEvents_CEOBan)
-				{
-					BlockScriptEvent = true;
-					ScriptEventIDType = "CEO ban";
-				}
-				break;
 			case eRemoteEvents::CeoMoney:
 				if (CheatFeatures::ProtectionScriptEvents_CEOMoney)
 				{

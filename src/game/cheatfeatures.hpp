@@ -20,8 +20,6 @@ namespace Cheat
 		extern int PlayerOpacityInt;
 		extern bool BlockAllScriptEvents;
 		extern bool ProtectionScriptEvents_Kicks;
-		extern bool ProtectionScriptEvents_CEOKick;
-		extern bool ProtectionScriptEvents_CEOBan;
 		extern bool ProtectionScriptEvents_CEOMoney;
 		extern bool ProtectionScriptEvents_PropertyTeleport;
 		extern bool ProtectionScriptEvents_CayoPericoTeleport;

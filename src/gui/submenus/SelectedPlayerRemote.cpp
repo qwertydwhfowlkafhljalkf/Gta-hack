@@ -12,15 +12,6 @@ void GUI::Submenus::SelectedPlayerRemote()
 	{
 		GameFunctions::TriggerScriptEvent(eScriptEventTypes::FORCE_INTO_MISSION, CheatFeatures::SelectedPlayer);
 	}
-	GUI::Break("CEO", SELECTABLE_CENTER_TEXT);
-	if (GUI::Option("Kick", ""))
-	{
-		GameFunctions::TriggerScriptEvent(eScriptEventTypes::CEO_KICK, CheatFeatures::SelectedPlayer);
-	}
-	if (GUI::Option("Ban", ""))
-	{
-		GameFunctions::TriggerScriptEvent(eScriptEventTypes::CEO_BAN, CheatFeatures::SelectedPlayer);
-	}
 	GUI::Break("Teleport", SELECTABLE_CENTER_TEXT);
 	GUI::MenuOption("Apartment", SelectedPlayerApartmentTeleport);
 	if (GUI::Option("Cayo Perico Island", ""))

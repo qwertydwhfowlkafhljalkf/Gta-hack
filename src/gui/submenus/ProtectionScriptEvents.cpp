@@ -7,8 +7,6 @@ void GUI::Submenus::ProtectionScriptEvents()
 	GUI::Toggle("Block All", CheatFeatures::BlockAllScriptEvents, "Blocks all script events send to you - join a session before enabling", SELECTABLE_DISABLE_SAVE);
 	GUI::Break("Script Events", SELECTABLE_CENTER_TEXT);
 	GUI::Toggle("Kicks", CheatFeatures::ProtectionScriptEvents_Kicks, "");
-	GUI::Toggle("CEO Kick", CheatFeatures::ProtectionScriptEvents_CEOKick, "");
-	GUI::Toggle("CEO Ban", CheatFeatures::ProtectionScriptEvents_CEOBan, "");
 	GUI::Toggle("CEO Money", CheatFeatures::ProtectionScriptEvents_CEOMoney, "");
 	GUI::Toggle("Property Teleport", CheatFeatures::ProtectionScriptEvents_PropertyTeleport, "");
 	GUI::Toggle("Cayo Perico Teleport", CheatFeatures::ProtectionScriptEvents_CayoPericoTeleport, "");

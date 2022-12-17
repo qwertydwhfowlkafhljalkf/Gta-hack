@@ -878,8 +878,6 @@ enum eSessionTypes
 enum class eScriptEventTypes
 {
 	KICK_TO_SINGLE_PLAYER,
-	CEO_KICK,
-	CEO_BAN,
 	PROPERTY_TELEPORT,
 	CAYO_PERICO_TELEPORT,
 	FORCE_INTO_MISSION
@@ -889,8 +887,6 @@ enum class eRemoteEvents
 {
 	KickToSP = 1810531023,
 	KickToSP2 = -508465573,
-	CeoKick = -1831959078,
-	CeoBan = 316066012,
 	CeoMoney = 245065909,
 	GameBanner = -795380017,
 	PropertyTeleport = -168599209,

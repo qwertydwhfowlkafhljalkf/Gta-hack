@@ -16,8 +16,6 @@ int Cheat::CheatFeatures::FastSuperRunPosition = 0;
 int Cheat::CheatFeatures::PlayerOpacityInt = 250;
 bool Cheat::CheatFeatures::BlockAllScriptEvents = false;
 bool Cheat::CheatFeatures::ProtectionScriptEvents_Kicks = false;
-bool Cheat::CheatFeatures::ProtectionScriptEvents_CEOKick = false;
-bool Cheat::CheatFeatures::ProtectionScriptEvents_CEOBan = false;
 bool Cheat::CheatFeatures::ProtectionScriptEvents_CEOMoney = false;
 bool Cheat::CheatFeatures::ProtectionScriptEvents_PropertyTeleport = false;
 bool Cheat::CheatFeatures::ProtectionScriptEvents_CayoPericoTeleport = false;
@@ -233,9 +231,9 @@ void Cheat::CheatFeatures::Loop()
 	// Disable Transaction Error Warnings
 	if (DisableTransactionErrorWarning)
 	{
-		globalHandle(GLOBAL_TRANS_ERROR_SHOWN_1).As<BOOL>() = false;
-		globalHandle(GLOBAL_TRANS_ERROR_SHOWN_2).As<BOOL>() = false;
-		globalHandle(GLOBAL_TRANS_ERROR_SHOWN_3).As<BOOL>() = false;
+		globalHandle(GLOBAL_TRANS_ERROR_SHOWN_1).As<bool>() = false;
+		globalHandle(GLOBAL_TRANS_ERROR_SHOWN_2).As<bool>() = false;
+		globalHandle(GLOBAL_TRANS_ERROR_SHOWN_3).As<bool>() = false;
 	}
 
 	// Disable Cutscenes
@@ -724,7 +722,6 @@ void Cheat::CheatFeatures::FreeCam(bool toggle)
 		}
 	}
 }
-
 
 bool Cheat::CheatFeatures::VehicleHornBoostBool = false;
 void Cheat::CheatFeatures::VehicleHornBoost()

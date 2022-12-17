@@ -949,16 +949,6 @@ void Cheat::GameFunctions::TriggerScriptEvent(eScriptEventTypes EventType, Playe
 			uint64_t arguments_aray[4] = { (uint64_t)eRemoteEvents::KickToSP, static_cast<uint64_t>(TargetPlayer), 0, 0 };
 			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
 		}
-		else if (EventType == eScriptEventTypes::CEO_KICK)
-		{
-			uint64_t arguments_aray[4] = { (uint64_t)eRemoteEvents::CeoKick, static_cast<uint64_t>(TargetPlayer), 1, 5 };
-			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
-		}
-		else if (EventType == eScriptEventTypes::CEO_BAN)
-		{
-			uint64_t arguments_aray[4] = { (uint64_t)eRemoteEvents::CeoBan, static_cast<uint64_t>(TargetPlayer), 1, 5 };
-			SCRIPT::TRIGGER_SCRIPT_EVENT(1, arguments_aray, sizeof(arguments_aray) / sizeof(arguments_aray[0]), 1 << TargetPlayer);
-		}
 		else if (EventType == eScriptEventTypes::PROPERTY_TELEPORT)
 		{
 			if (property_teleport_index != -1)
