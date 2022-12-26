@@ -24,6 +24,9 @@ public:
 	static GetScriptHandler				    get_script_handler;
 	static GetLabelText						get_label_text;
 	static GetPlayerAddress					get_player_address;
+	static DWORD							fiber_main_wake_time;
+
+	static IsDLCPresent IsDLCPresentOriginal;
 
 	static void Init();
 	static void PauseMainFiber(DWORD ms, bool ShowMessage = true);

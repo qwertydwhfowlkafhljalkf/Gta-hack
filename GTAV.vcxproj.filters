@@ -310,6 +310,9 @@
     <ClCompile Include="src\cheat\file_system.cpp">
       <Filter>cheat</Filter>
     </ClCompile>
+    <ClCompile Include="src\hooking\detour_hooks\is_dlc_present.cpp">
+      <Filter>hooking\detour_hooks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vendor\minhook\src\buffer.h">
@@ -422,6 +425,9 @@
     </Filter>
     <Filter Include="hooking">
       <UniqueIdentifier>{4d038309-95bb-47b8-8d3a-f21a846ed6ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hooking\detour_hooks">
+      <UniqueIdentifier>{edc3790f-676f-46c6-b44b-7f3df1fa9af6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

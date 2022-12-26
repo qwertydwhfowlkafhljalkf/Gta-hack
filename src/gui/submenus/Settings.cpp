@@ -16,7 +16,7 @@ void GUI::Submenus::Settings()
 		if (PressedKey != 0)
 		{
 			Controls::OpenMenuGUIKey = PressedKey;
-			CheatFunctions::IniFileWriteString(std::to_string(PressedKey), file_system::paths::ConfigFile, "submenu_settings", "Menu GUI Key");
+			file_system::ini_file::write(std::to_string(PressedKey), file_system::paths::ConfigFile, "submenu_settings", "Menu GUI Key");
 			GameFunctions::MinimapNotification((char*)"Menu GUI key has been set");
 		}
 	}
@@ -26,7 +26,7 @@ void GUI::Submenus::Settings()
 		if (PressedKey != 0)
 		{
 			Controls::CursorNavigationKey = PressedKey;
-			CheatFunctions::IniFileWriteString(std::to_string(PressedKey), file_system::paths::ConfigFile, "submenu_settings", "Cursor Navigation Key");
+			file_system::ini_file::write(std::to_string(PressedKey), file_system::paths::ConfigFile, "submenu_settings", "Cursor Navigation Key");
 			GameFunctions::MinimapNotification((char*)"Cursor Navigation key has been set");
 		}
 	}
@@ -36,7 +36,7 @@ void GUI::Submenus::Settings()
 		if (PressedKey != 0)
 		{
 			Controls::SaveSelectableKey = PressedKey;
-			CheatFunctions::IniFileWriteString(std::to_string(PressedKey), file_system::paths::ConfigFile, "submenu_settings", "Save Selectable Key");
+			file_system::ini_file::write(std::to_string(PressedKey), file_system::paths::ConfigFile, "submenu_settings", "Save Selectable Key");
 			GameFunctions::MinimapNotification((char*)"Cursor Navigation key has been set");
 		}
 	}

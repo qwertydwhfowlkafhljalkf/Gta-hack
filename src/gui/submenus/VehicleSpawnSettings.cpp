@@ -26,7 +26,7 @@ void GUI::Submenus::VehicleSpawnSettings()
 				else
 				{
 					CheatFeatures::VehicleSpawnerCustomLicensePlateTextString = Input;
-					CheatFunctions::IniFileWriteString(CheatFeatures::VehicleSpawnerCustomLicensePlateTextString, file_system::paths::ConfigFile, "SETTINGS", "Vehicle Spawner Custom License Plate Text");
+					file_system::ini_file::write(CheatFeatures::VehicleSpawnerCustomLicensePlateTextString, file_system::paths::ConfigFile, "SETTINGS", "Vehicle Spawner Custom License Plate Text");
 				}			
 			}
 		}

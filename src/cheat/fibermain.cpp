@@ -61,10 +61,10 @@ void Cheat::FiberMain(LPVOID lpParameter)
 		int SavedHUDColorsIndex = 0;
 		for (auto const& HUDColorComponentName : GameArrays::HUDColors)
 		{
-			std::string Red = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::HUDColorsFile, HUDColorComponentName, "r");
-			std::string Green = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::HUDColorsFile, HUDColorComponentName, "g");
-			std::string Blue = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::HUDColorsFile, HUDColorComponentName, "b");
-			std::string Alpha = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::HUDColorsFile, HUDColorComponentName, "a");
+			std::string Red = file_system::ini_file::get(file_system::paths::HUDColorsFile, HUDColorComponentName, "r");
+			std::string Green = file_system::ini_file::get(file_system::paths::HUDColorsFile, HUDColorComponentName, "g");
+			std::string Blue = file_system::ini_file::get(file_system::paths::HUDColorsFile, HUDColorComponentName, "b");
+			std::string Alpha = file_system::ini_file::get(file_system::paths::HUDColorsFile, HUDColorComponentName, "a");
 
 			if (!Red.empty() && !Green.empty() && !Blue.empty() && !Alpha.empty())
 			{

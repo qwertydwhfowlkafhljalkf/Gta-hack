@@ -14,6 +14,7 @@ GetPlayerAddress													GameHooking::get_player_address;
 HANDLE																GameHooking::fiber_main;
 uint64_t															GameHooking::world_ptr;
 __int64**															GameHooking::global_ptr;
+DWORD																GameHooking::fiber_main_wake_time;
 static eGameState* 													m_gameState;
 static PVOID														m_ownedExplosionBypass;
 static PUSHORT														m_requestEntityControlSpectateBypass;
@@ -24,8 +25,7 @@ static char EventRestore[EventCountInteger]							= {};
 static std::vector<void*> EventPtr;
 std::vector<LPVOID>													MH_Hooked;
 
-// Function and variable definitions hooks
-IsDLCPresent IsDLCPresentOriginal									= nullptr;
+IsDLCPresent GameHooking::IsDLCPresentOriginal						= nullptr;
 GetScriptHandlerIfNetworked GetScriptHandlerIfNetworkedOriginal		= nullptr;
 GetLabelText GetLabelTextOriginal									= nullptr;
 GetEventData GetEventDataOriginal									= nullptr;
@@ -160,35 +160,6 @@ void GameHooking::Init()
 	status = MH_CreateHook(GameHooking::is_dlc_present, IsDLCPresentHooked, (void**)&IsDLCPresentOriginal);
 	if ((status != MH_OK && status != MH_ERROR_ALREADY_CREATED) || MH_EnableHook(GameHooking::is_dlc_present) != MH_OK) { Logger::LogMsg(LOGGER_FATAL_MSG, "Failed to hook IS_DLC_PRESENT");  std::exit(EXIT_FAILURE); }
 	MH_Hooked.push_back(GameHooking::is_dlc_present);
-}
-
-DWORD WakeTime;
-bool IsDLCPresentHooked(std::uint32_t DLCHash)
-{
-	static uint64_t	Last = 0;
-	uint64_t Current = MISC::GET_FRAME_COUNT();
-	if (Cheat::c_running && Last != Current)
-	{
-		Last = Current;
-		if (GameHooking::fiber_main == nullptr)
-		{ 
-			GameHooking::fiber_main = ConvertThreadToFiber(nullptr);
-		}
-
-		static HANDLE scriptFiber;		
-		if (timeGetTime() > WakeTime) 
-		{  
-			if (scriptFiber != nullptr)
-			{ 
-				SwitchToFiber(scriptFiber); 
-			}
-			else
-			{
-				scriptFiber = CreateFiber(NULL, FiberMain, nullptr); 
-			}
-		}
-	}
-	return IsDLCPresentOriginal(DLCHash);
 }
 
 void* GetScriptHandlerIfNetworkedHooked()
@@ -364,7 +335,7 @@ bool GetEventDataHooked(std::int32_t eventGroup, std::int32_t eventIndex, std::i
 				std::string MessageString = "ID: " + std::to_string(args[0]);
 				if (!ScriptEventIDType.empty())
 				{
-					MessageString.append(" ~n~Block reason: attempted " + ScriptEventIDType);
+					MessageString.append("~n~Block reason: attempted " + ScriptEventIDType);
 				}
 				GameFunctions::AdvancedMinimapNotification(MessageString.data(), (char*)"Textures", (char*)"AdvancedNotificationImage", false, 4, (char*)"Script Events Protection", (char*)"", 0.8f, (char*)"");
 			}			
@@ -377,8 +348,8 @@ bool GetEventDataHooked(std::int32_t eventGroup, std::int32_t eventIndex, std::i
 void GameHooking::PauseMainFiber(DWORD ms, bool ShowMessage)
 {
 	if (ShowMessage) { GUI::DrawTextInGame("One Moment Please", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 1.5f, 1.5f }, true, true); }
-	WakeTime = timeGetTime() + ms;
-	SwitchToFiber(GameHooking::fiber_main);
+	fiber_main_wake_time = timeGetTime() + ms;
+	SwitchToFiber(fiber_main);
 }
 
 static GameHooking::NativeHandler _Handler(uint64_t origHash)

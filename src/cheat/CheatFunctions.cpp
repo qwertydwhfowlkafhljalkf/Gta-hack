@@ -35,11 +35,6 @@ bool Cheat::CheatFunctions::IsGameWindowFocussed()
 	return false;
 }
 
-bool Cheat::CheatFunctions::StringIsInteger(std::string String)
-{
-	return !String.empty() && std::find_if(String.begin(), String.end(), [](unsigned char c) { return !std::isdigit(c); }) == String.end();
-}
-
 int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 {
 	while (true)
@@ -70,14 +65,14 @@ void Cheat::CheatFunctions::SaveSelectable(std::string OptionName, std::string O
 			std::string LogMessage = "'" + OptionName + "' (" + GUI::CurrentSubmenu + " submenu) selectable state saved";
 			Cheat::GameFunctions::AdvancedMinimapNotification(StringToChar(LogMessage), (char*)"Textures", (char*)"AdvancedNotificationImage", false, 4, (char*)"Config", (char*)"", 0.5f, (char*)"");
 			Logger::LogMsg(LOGGER_DBG_MSG, "'%s' (%s submenu) selectable state saved", OptionName.c_str(), GUI::CurrentSubmenu.c_str());
-			IniFileWriteString(OptionValue, file_system::paths::ConfigFile, "submenu_" + GUI::CurrentSubmenu, OptionName);
+			file_system::ini_file::write(OptionValue, file_system::paths::ConfigFile, "submenu_" + GUI::CurrentSubmenu, OptionName);
 		}
 	}
 }
 
-std::string Cheat::CheatFunctions::GetSelectableValueFromConfig(std::string OptionName)
+std::string Cheat::CheatFunctions::GetSelectableValueFromConfig(std::string SelectableName)
 {
-	return IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_" + GUI::CurrentSubmenu, OptionName);
+	return file_system::ini_file::get(file_system::paths::ConfigFile, "submenu_" + GUI::CurrentSubmenu, SelectableName);
 }
 
 void LoadConfigThreadFunction()
@@ -101,26 +96,32 @@ void Cheat::CheatFunctions::LoadConfig()
 {
 	Cheat::Logger::LogMsg(LoggerMsgTypes::LOGGER_INFO_MSG, "Loading Configuration");
 
+	// Create file
+	if (!std::filesystem::exists(file_system::paths::ConfigFile))
+	{
+		file_system::write_file(file_system::paths::ConfigFile, "; GTAV Cheat configuration - contents must always comply with INI file standards");
+	}
+
 	// Load hotkeys
-	std::string MenuGUIKey = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_settings", "Menu GUI Key");
+	std::string MenuGUIKey = file_system::ini_file::get(file_system::paths::ConfigFile, "submenu_settings", "Menu GUI Key");
 	if (!MenuGUIKey.empty()) { Controls::OpenMenuGUIKey = StringToInt(MenuGUIKey); }
 	
-	std::string CursorNavigationKeyString = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_settings", "Cursor Navigation Key");
+	std::string CursorNavigationKeyString = file_system::ini_file::get(file_system::paths::ConfigFile, "submenu_settings", "Cursor Navigation Key");
 	if (!CursorNavigationKeyString.empty()) { Controls::CursorNavigationKey = StringToInt(CursorNavigationKeyString); }
 
-	std::string SaveSelectableKey = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_settings", "Save Selectable Key");
+	std::string SaveSelectableKey = file_system::ini_file::get(file_system::paths::ConfigFile, "submenu_settings", "Save Selectable Key");
 	if (!SaveSelectableKey.empty()) { Controls::SaveSelectableKey = StringToInt(SaveSelectableKey); }
 
 	// Load Active Theme
-	std::string ActiveThemeSetting = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_settings", "Active Theme");
+	std::string ActiveThemeSetting = file_system::ini_file::get(file_system::paths::ConfigFile, "submenu_settings", "Active Theme");
 	if (!ActiveThemeSetting.empty()) { GUI::LoadTheme(ActiveThemeSetting, true); }
 
 	// Load Vehicle Spawner Custom License Plate Text
-	std::string VehicleSpawnerCustomLicensePlateText = CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_vehicle spawn settings", "Custom License Plate Text");
+	std::string VehicleSpawnerCustomLicensePlateText = file_system::ini_file::get(file_system::paths::ConfigFile, "submenu_vehicle spawn settings", "Custom License Plate Text");
 	if (!VehicleSpawnerCustomLicensePlateText.empty()) { CheatFeatures::VehicleSpawnerCustomLicensePlateTextString = VehicleSpawnerCustomLicensePlateText; }
 
 	// Do not overwrite "Textures.ytd" at init feature - setting must be loaded immediately (not async)
-	CheatFeatures::NoTextureFileOverwrite = CheatFunctions::StringToBool(CheatFunctions::IniFileReturnKeyValueAsString(file_system::paths::ConfigFile, "submenu_settings", "do not overwrite \"textures.ytd\" at init"));
+	CheatFeatures::NoTextureFileOverwrite = CheatFunctions::StringToBool(file_system::ini_file::get(file_system::paths::ConfigFile, "submenu_settings", "do not overwrite \"textures.ytd\" at init"));
 
 	std::thread LoadConfigThreadHandle(LoadConfigThreadFunction);
 	LoadConfigThreadHandle.detach();
@@ -182,41 +183,6 @@ int Cheat::CheatFunctions::ReturnNumberOfDigitsInValue(double Number)
 	return i;
 }
 
-void Cheat::CheatFunctions::IniFileWriteString(std::string string, std::string FilePath, std::string Section, std::string Key)
-{
-	mINI::INIFile File(FilePath);
-	mINI::INIStructure IniStruct;
-	File.read(IniStruct);
-	IniStruct[Section][Key] = string;
-	File.write(IniStruct, true);
-}
-
-std::string Cheat::CheatFunctions::IniFileReturnKeyValueAsString(std::string FilePath, std::string Section, std::string Key)
-{
-	mINI::INIFile File(FilePath);
-	mINI::INIStructure IniStruct;
-	File.read(IniStruct);
-	if (!IniStruct.has(Section) || !IniStruct[Section].has(Key)) { return std::string(); }
-	return IniStruct.get(Section).get(Key);
-}
-
-void Cheat::CheatFunctions::IniFileRemoveKey(std::string FilePath, std::string Section, std::string Key)
-{
-	mINI::INIFile File(FilePath);
-	mINI::INIStructure IniStruct;
-	File.read(IniStruct);
-	if (IniStruct[Section].has(Key))
-	{
-		IniStruct[Section].remove(Key);
-		File.write(IniStruct);
-	}
-}
-
-void Cheat::CheatFunctions::WriteBoolToIni(bool b00l, std::string file, std::string app, std::string key)
-{
-	IniFileWriteString(b00l ? "true" : "false", file, app, key);
-}
-
 bool Cheat::CheatFunctions::StringToBool(std::string String)
 {
 	std::transform(String.begin(), String.end(), String.begin(), tolower);
@@ -259,16 +225,6 @@ bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool RepeatInput)
 		}
 	}
 	return false;
-}
-
-void Cheat::CheatFunctions::WriteToFile(std::string FilePath, std::string text, bool Append)
-{
-	auto Modes = std::ofstream::out;
-	auto ModesAppend = Modes + std::ofstream::app;
-	std::ofstream FileHandle;
-	FileHandle.open(FilePath, Append ? ModesAppend : Modes);
-	FileHandle << text;
-	FileHandle.close();
 }
 
 int Cheat::CheatFunctions::GetLatestCheatBuildNumber()

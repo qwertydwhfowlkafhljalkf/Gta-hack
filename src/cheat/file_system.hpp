@@ -5,6 +5,7 @@ namespace Cheat
 {
 	namespace file_system
 	{
+		extern bool write_file(std::string FilePath, std::string data);
 		struct paths
 		{
 			static const std::string UserprofileDir;		// Default: <SystemDriveLetter>:\Users\<username>
@@ -16,6 +17,14 @@ namespace Cheat
 			static const std::string CusTelLocFile;			// Default: <SystemDriveLetter>:\Users\<username>\Documents\GTAV Cheat\CustomTeleportLocations.json
 			static const std::string HUDColorsFile;			// Default: <SystemDriveLetter>:\Users\<username>\Documents\GTAV Cheat\HUDColors.ini
 			static const std::string TextureFile;			// Default: <SystemDriveLetter>:\Users\<username>\Documents\GTAV Cheat\Textures.ytd
+		};
+		class ini_file
+		{
+		public:
+			static bool write(std::string data, std::string FilePath, std::string Section, std::string Key);
+			static bool write_bool(bool State, std::string FilePath, std::string Section, std::string Key);
+			static bool remove_key(std::string FilePath, std::string Section, std::string Key);
+			static std::string get(std::string FilePath, std::string Section, std::string Key);
 		};
 	}
 }

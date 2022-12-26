@@ -21,10 +21,10 @@ void GUI::Submenus::HUD()
 		UI::REPLACE_HUD_COLOUR_WITH_RGBA(SelectedComponent, HUDColorRed, HUDColorGreen, HUDColorBlue, HUDColorAlpha);
 
 		// Write to ini file
-		CheatFunctions::IniFileWriteString(std::to_string(HUDColorRed), file_system::paths::HUDColorsFile, GameArrays::HUDColors[SelectedComponent], "r");
-		CheatFunctions::IniFileWriteString(std::to_string(HUDColorGreen), file_system::paths::HUDColorsFile, GameArrays::HUDColors[SelectedComponent], "g");
-		CheatFunctions::IniFileWriteString(std::to_string(HUDColorBlue), file_system::paths::HUDColorsFile, GameArrays::HUDColors[SelectedComponent], "b");
-		CheatFunctions::IniFileWriteString(std::to_string(HUDColorAlpha), file_system::paths::HUDColorsFile, GameArrays::HUDColors[SelectedComponent], "a");
+		file_system::ini_file::write(std::to_string(HUDColorRed), file_system::paths::HUDColorsFile, GameArrays::HUDColors[SelectedComponent], "r");
+		file_system::ini_file::write(std::to_string(HUDColorGreen), file_system::paths::HUDColorsFile, GameArrays::HUDColors[SelectedComponent], "g");
+		file_system::ini_file::write(std::to_string(HUDColorBlue), file_system::paths::HUDColorsFile, GameArrays::HUDColors[SelectedComponent], "b");
+		file_system::ini_file::write(std::to_string(HUDColorAlpha), file_system::paths::HUDColorsFile, GameArrays::HUDColors[SelectedComponent], "a");
 	}
 	if (GUI::StringVector("Reset Color", { "Selected", "All" }, ResetColorStringVector, "", SELECTABLE_DISABLE_SAVE))
 	{

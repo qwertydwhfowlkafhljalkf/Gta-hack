@@ -1,4 +1,6 @@
-#include "../../src/cheat/fibermain.h"
+#include <filesystem>
+#include "Logger.hpp"
+#include "cheatfunctions.hpp"
 #include "version.hpp"
 #include "file_system.hpp"
 #include <color.hpp>
@@ -22,7 +24,7 @@ void Logger::Init()
     std::cout << "Version: " << build_info::VersionString << std::endl;
 
     // Write text
-    CheatFunctions::WriteToFile(CheatLogFilePath, MessageString, true);
+    file_system::write_file(CheatLogFilePath, MessageString);
 
     LoggerInitialized = true;
 
@@ -93,6 +95,6 @@ void Logger::LogMsg(LoggerMsgTypes Type, const char* Message, ...)
             FormattedMsg = CurrentTime + LogMsgTypeStrings[4] + buf + "\n";
             std::cout << CurrentTime << dye::grey(LogMsgTypeStrings[4]) << dye::grey(buf) << std::endl;
         }
-        CheatFunctions::WriteToFile(CheatLogFilePath, FormattedMsg, true);
+        file_system::write_file(CheatLogFilePath, FormattedMsg);
     }
 }
