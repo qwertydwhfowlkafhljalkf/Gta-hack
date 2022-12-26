@@ -92,7 +92,7 @@ void Cheat::FiberMain(LPVOID lpParameter)
 		Controls::Loop();			// Responsible for control inputs (keyboard and mouse)
 
 		// Switch Fiber
-		GameHooking::PauseMainFiber(0, false);
+		SwitchToFiber(GameHooking::fiber_main);
 	}
 
 	// Create shutdown thread

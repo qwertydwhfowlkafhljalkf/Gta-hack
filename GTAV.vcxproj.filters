@@ -7,7 +7,7 @@
     <ClCompile Include="src\hooking\crossmap.cpp">
       <Filter>hooking</Filter>
     </ClCompile>
-    <ClCompile Include="src\hooking\GameHooking.cpp">
+    <ClCompile Include="src\hooking\hooking.cpp">
       <Filter>hooking</Filter>
     </ClCompile>
     <ClCompile Include="src\hooking\Memory.cpp">

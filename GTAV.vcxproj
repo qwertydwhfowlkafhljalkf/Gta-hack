@@ -136,7 +136,7 @@
     <ClCompile Include="src\gui\menu_components\toggle.cpp" />
     <ClCompile Include="src\gui\menu_components\vehicle_option.cpp" />
     <ClCompile Include="src\hooking\crossmap.cpp" />
-    <ClCompile Include="src\hooking\GameHooking.cpp" />
+    <ClCompile Include="src\hooking\hooking.cpp" />
     <ClCompile Include="src\hooking\Memory.cpp" />
     <ClCompile Include="src\hooking\NativeInvoker.cpp" />
     <ClCompile Include="src\gui\GUI.cpp" />

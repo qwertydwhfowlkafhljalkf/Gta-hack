@@ -286,7 +286,7 @@ namespace Memory {
 	template <typename T>
 	T get_value(std::vector<DWORD> offsets) {
 
-		uintptr_t Addr = get_multilayer_pointer(GameHooking::getWorldPtr(), offsets);
+		uintptr_t Addr = get_multilayer_pointer(GameHooking::world_ptr, offsets);
 		if (Addr == NULL) 
 		{
 			return NULL;
@@ -297,7 +297,7 @@ namespace Memory {
 	template <typename T>
 	void set_value(std::vector<DWORD> offsets, T value) 
 	{
-		uintptr_t Addr = get_multilayer_pointer(GameHooking::getWorldPtr(), offsets);
+		uintptr_t Addr = get_multilayer_pointer(GameHooking::world_ptr, offsets);
 		if (Addr == NULL) 
 		{
 			return;

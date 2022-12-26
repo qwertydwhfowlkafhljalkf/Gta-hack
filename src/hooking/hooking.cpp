@@ -3,7 +3,6 @@
 
 using namespace Cheat;
 
-HANDLE MainFiber;
 IsDLCPresent														GameHooking::is_dlc_present;
 TextureFileRegister													GameHooking::texture_file_register;
 GetEventData														GameHooking::get_event_data;
@@ -12,14 +11,14 @@ GetScriptHandlerIfNetworked											GameHooking::get_script_handler_if_network
 GetScriptHandler													GameHooking::get_script_handler;
 GetPlayerAddress													GameHooking::get_player_address;
 
+HANDLE																GameHooking::fiber_main;
+uint64_t															GameHooking::world_ptr;
+__int64**															GameHooking::global_ptr;
 static eGameState* 													m_gameState;
-static uint64_t														m_worldPtr;
 static PVOID														m_ownedExplosionBypass;
 static PUSHORT														m_requestEntityControlSpectateBypass;
 static GameHooking::NativeRegistrationNew**							m_registrationTable;
 static std::unordered_map<uint64_t, GameHooking::NativeHandler>		m_handlerCache;
-static __int64**													m_globalPtr;
-ScriptThread* (*GetActiveThread)()									= nullptr;
 const int EventCountInteger											= 85;
 static char EventRestore[EventCountInteger]							= {};
 static std::vector<void*> EventPtr;
@@ -46,7 +45,7 @@ void GameHooking::Init()
 	
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Getting GSHIN pointer");
 	GameHooking::get_script_handler_if_networked = static_cast<GetScriptHandlerIfNetworked>(Memory::pattern("40 53 48 83 EC 20 E8 ? ? ? ? 48 8B D8 48 85 C0 74 12 48 8B 10 48 8B C8").count(1).get(0).get<void>(0));
-	
+
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Getting GSH pointer");
 	GameHooking::get_script_handler = static_cast<GetScriptHandler>(Memory::pattern("48 83 EC 28 E8 ? ? ? ? 33 C9 48 85 C0 74 0C E8 ? ? ? ? 48 8B 88 ? ? ? ?").count(1).get(0).get<void>(0));
 	
@@ -87,14 +86,14 @@ void GameHooking::Init()
 	// Load Game World Pointer
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Getting WLD pointer");
 	c_location = Memory::pattern("48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07").count(1).get(0).get<char>(0);
-	if (c_location == nullptr) { Logger::LogMsg(LOGGER_ERROR_MSG, "Failed to load World Pointer"); } else { m_worldPtr = reinterpret_cast<uint64_t>(c_location) + *reinterpret_cast<int*>(reinterpret_cast<uint64_t>(c_location) + 3) + 7; }
+	if (c_location == nullptr) { Logger::LogMsg(LOGGER_ERROR_MSG, "Failed to load World Pointer"); } else { GameHooking::world_ptr = reinterpret_cast<uint64_t>(c_location) + *reinterpret_cast<int*>(reinterpret_cast<uint64_t>(c_location) + 3) + 7; }
 
 	// Get Global Pointer
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Getting GLB pointer");
 	c_location = Memory::pattern("4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11").count(1).get(0).get<char>(0);
 	__int64 patternAddr = NULL;
 	if (c_location == nullptr) { Logger::LogMsg(LOGGER_ERROR_MSG, "Failed to load Global Pointer"); } else { patternAddr = reinterpret_cast<decltype(patternAddr)>(c_location);	}
-	m_globalPtr = (__int64**)(patternAddr + *(int*)(patternAddr + 3) + 7);
+	GameHooking::global_ptr = (__int64**)(patternAddr + *(int*)(patternAddr + 3) + 7);
 
 	// Get Event Hook -> Used by defuseEvent
 	Logger::LogMsg(LoggerMsgTypes::LOGGER_DBG_MSG, "Loading EH");
@@ -164,7 +163,6 @@ void GameHooking::Init()
 }
 
 DWORD WakeTime;
-static HANDLE scriptFiber;
 bool IsDLCPresentHooked(std::uint32_t DLCHash)
 {
 	static uint64_t	Last = 0;
@@ -172,11 +170,12 @@ bool IsDLCPresentHooked(std::uint32_t DLCHash)
 	if (Cheat::c_running && Last != Current)
 	{
 		Last = Current;
-		if (MainFiber == nullptr)
+		if (GameHooking::fiber_main == nullptr)
 		{ 
-			MainFiber = ConvertThreadToFiber(nullptr); 
+			GameHooking::fiber_main = ConvertThreadToFiber(nullptr);
 		}
-		
+
+		static HANDLE scriptFiber;		
 		if (timeGetTime() > WakeTime) 
 		{  
 			if (scriptFiber != nullptr)
@@ -379,7 +378,7 @@ void GameHooking::PauseMainFiber(DWORD ms, bool ShowMessage)
 {
 	if (ShowMessage) { GUI::DrawTextInGame("One Moment Please", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 1.5f, 1.5f }, true, true); }
 	WakeTime = timeGetTime() + ms;
-	SwitchToFiber(MainFiber);
+	SwitchToFiber(GameHooking::fiber_main);
 }
 
 static GameHooking::NativeHandler _Handler(uint64_t origHash)
@@ -415,11 +414,6 @@ GameHooking::NativeHandler GameHooking::GetNativeHandler(uint64_t origHash)
 	return handler;
 }
 
-uint64_t GameHooking::getWorldPtr()
-{
-	return m_worldPtr;
-}
-
 void GameHooking::defuseEvent(GameEvents e, bool toggle)
 {
 	static const unsigned char retn = 0xC3;
@@ -435,11 +429,6 @@ void GameHooking::defuseEvent(GameEvents e, bool toggle)
 		if (EventRestore[e] != 0)
 			*p = EventRestore[e];
 	}
-}
-
-__int64** GameHooking::getGlobalPtr()
-{
-	return m_globalPtr;
 }
 
 std::vector<LPVOID> GameHooking::GetMH_Hooked()
