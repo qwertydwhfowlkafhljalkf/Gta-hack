@@ -69,14 +69,6 @@ void Cheat::GameFunctions::TeleportToObjective()
 	blipFound ? Cheat::GameFunctions::TeleportToCoords(e, wayp, false, false) : Cheat::GameFunctions::MinimapNotification((char*)"~r~Objective not found");
 }
 
-void Cheat::GameFunctions::SetOffAlarmPlayerVehicle(Ped selectedPed)
-{
-	Entity selectedVehicle = PED::GET_VEHICLE_PED_IS_USING(selectedPed);
-	RequestNetworkControlOfEntity(selectedVehicle);
-	VEHICLE::SET_VEHICLE_ALARM(selectedVehicle, true);
-	VEHICLE::START_VEHICLE_ALARM(selectedVehicle);
-}
-
 bool Cheat::GameFunctions::IsPlayerFriend(Player player)
 {
 	int handle[76];

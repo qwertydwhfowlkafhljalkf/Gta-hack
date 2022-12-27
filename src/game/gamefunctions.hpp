@@ -13,7 +13,6 @@ namespace Cheat
 		void SubtitleNotification(char* Message, int ShowDuration = 4000);
 		void TeleportToBlipCoord(Blip TargetBlip);
 		void TeleportToObjective();
-		void SetOffAlarmPlayerVehicle(Ped selectedPed);
 		bool IsPlayerFriend(Player player);
 		Vector3 MultiplyVector(Vector3 vector, float inc);
 		Vector3 AddVector(Vector3 vector, Vector3 vector2);

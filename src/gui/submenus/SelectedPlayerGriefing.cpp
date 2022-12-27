@@ -11,14 +11,12 @@ void GUI::Submenus::SelectedPlayerGriefing()
 	GUI::Toggle("Shake Camera", CheatFeatures::ShakeCamSelectedPlayerBool, "", SELECTABLE_DISABLE_SAVE);
 	if (GUI::Option("Set Off Vehicle Alarm", ""))
 	{
-		int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer);
-		if (PED::IS_PED_IN_ANY_VEHICLE(Handle, false))
+		if (PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer), false))
 		{
-			GameFunctions::SetOffAlarmPlayerVehicle(Handle);
-		}
-		else
-		{
-			GameFunctions::MinimapNotification((char*)"~r~Player is not in a vehicle");
+			::Vehicle selectedVehicle = PED::GET_VEHICLE_PED_IS_USING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(CheatFeatures::SelectedPlayer));
+			GameFunctions::RequestNetworkControlOfEntity(selectedVehicle);
+			VEHICLE::SET_VEHICLE_ALARM(selectedVehicle, true);
+			VEHICLE::START_VEHICLE_ALARM(selectedVehicle);
 		}
 	}
 	if (GUI::Option("Burst Vehicle Tires", ""))

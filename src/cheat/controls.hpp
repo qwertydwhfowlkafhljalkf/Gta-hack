@@ -18,5 +18,6 @@ namespace Cheat
 		extern bool SelectPressed;
 		extern bool LeftPressed;
 		extern bool RightPressed;
+		extern const std::map<int, std::string> VirtualKeyToString;
 	}
 }

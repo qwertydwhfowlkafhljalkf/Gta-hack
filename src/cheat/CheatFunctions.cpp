@@ -39,12 +39,12 @@ int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 {
 	while (true)
 	{
-		GUI::DrawTextInGame("~bold~Press any key, press Escape to cancel", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 0.900f, 0.900f }, true); GameHooking::PauseMainFiber(0, false);
+		GUI::DrawTextInGame("Press any key, press Backspace to cancel", { 255, 255, 255, 255 }, { 0.525f, 0.400f }, { 0.900f, 0.900f }, true);
 		for (int i = 1; i < 256; i++)
 		{
-			if (IsKeyCurrentlyPressed(i) && i != VK_RETURN && i != VK_NUMPAD5)
+			if (IsKeyCurrentlyPressed(i, true) && i != VK_RETURN && i != VK_NUMPAD5 && i != VK_ESCAPE)
 			{
-				if (i == VK_ESCAPE)
+				if (i == VK_BACK)
 				{
 					Cheat::GameFunctions::MinimapNotification((char*)"Canceled Key Selection");
 					return 0;
@@ -52,6 +52,7 @@ int Cheat::CheatFunctions::WaitForAndReturnPressedKey()
 				return i;
 			}
 		}
+		SwitchToFiber(GameHooking::fiber_main);
 	}
 }
 
@@ -146,27 +147,14 @@ char* Cheat::CheatFunctions::StringToChar(std::string String)
 
 std::string Cheat::CheatFunctions::VirtualKeyCodeToString(UCHAR virtualKey)
 {
-	UINT scanCode = MapVirtualKey(virtualKey, MAPVK_VK_TO_VSC);
-
-	CHAR szName[128];
-	int result = 0;
-	switch (virtualKey)
+	for (auto& pl : Controls::VirtualKeyToString)
 	{
-	case VK_LEFT:		case VK_UP: case VK_RIGHT: case VK_DOWN:
-	case VK_RCONTROL:	case VK_RMENU:
-	case VK_LWIN:		case VK_RWIN: case VK_APPS:
-	case VK_PRIOR:		case VK_NEXT:
-	case VK_END:		case VK_HOME:
-	case VK_INSERT:		case VK_DELETE:
-	case VK_DIVIDE:
-	case VK_NUMLOCK:
-		scanCode |= KF_EXTENDED;
-		break;
-	default:
-		result = GetKeyNameTextA(scanCode << 16, szName, 128);
+		if (pl.first == virtualKey)
+		{
+			return pl.second;
+		}
 	}
-	if (result == 0) { return "Unknown"; }
-	return szName;
+	return std::to_string(virtualKey);
 }
 
 int Cheat::CheatFunctions::ReturnNumberOfDigitsInValue(double Number) 
@@ -201,27 +189,15 @@ bool Cheat::CheatFunctions::IsKeyCurrentlyPressed(int vKey, bool RepeatInput)
 {
 	if (IsGameWindowFocussed() && !Controls::KeyInputDisabled)
 	{
-		if (!RepeatInput)
+		if (RepeatInput)
 		{
-			if (GetAsyncKeyState(vKey) & 0x01)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			if (GetAsyncKeyState(vKey) & 0x8000)
+				return true;	
 		}
 		else
 		{
-			if (GetAsyncKeyState(vKey) & 0x8000)
-			{
+			if (GetAsyncKeyState(vKey) & 0x01)
 				return true;
-			}
-			else
-			{
-				return false;
-			}
 		}
 	}
 	return false;

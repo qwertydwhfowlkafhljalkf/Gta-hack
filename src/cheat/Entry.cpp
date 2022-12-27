@@ -14,16 +14,15 @@ DWORD WINAPI InitializationThread(LPVOID lpParam)
 
 	// Data migration for existing config and data prior to v2.2.1.0
 	std::string OldDataPath = CheatFunctions::ReturnCheatModuleDirectoryPath() + "\\gtav";
-	std::string NewDataPath = file_system::paths::DataDir;
 	if (std::filesystem::exists(OldDataPath))
 	{
 		// Move Logs directory
 		std::string OldLogsDirectory = OldDataPath + "\\Logs";
-		MoveFileExA(OldLogsDirectory.c_str(), NewDataPath.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH | MOVEFILE_COPY_ALLOWED);
+		MoveFileExA(OldLogsDirectory.c_str(), file_system::paths::DataDir.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH | MOVEFILE_COPY_ALLOWED);
 
 		// Move Themes directory
 		std::string OldThemesDirectory = OldDataPath + "\\Themes";
-		MoveFileExA(OldThemesDirectory.c_str(), NewDataPath.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH | MOVEFILE_COPY_ALLOWED);
+		MoveFileExA(OldThemesDirectory.c_str(), file_system::paths::DataDir.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH | MOVEFILE_COPY_ALLOWED);
 
 		// Move Config.ini
 		std::string OldConfigPath = OldDataPath + "\\Config.ini";

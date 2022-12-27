@@ -7,8 +7,8 @@ void GUI::Submenus::Settings()
 	GUI::Title("Settings");
 	GUI::MenuOption("Theme", Submenus::Theme);
 	GUI::MenuOption("Hide Elements", Submenus::HideElements);
-	GUI::Int("Max Visible Menu Options", GUI::maxVisOptions, 5, 16, 1, "", SELECTABLE_RETURN_VALUE_CHANGE);
-	GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores previous submenu");
+	GUI::Int("Max Visible Menu Selectables", GUI::maxVisOptions, 5, 16, 1, "", SELECTABLE_RETURN_VALUE_CHANGE);
+	GUI::Toggle("Restore To Previous Submenu", GUI::RestorePreviousSubmenu, "When opening restores to previous submenu");
 	GUI::Break("Keys", SELECTABLE_CENTER_TEXT);
 	if (GUI::Option("Menu GUI: ~c~" + CheatFunctions::VirtualKeyCodeToString(Controls::OpenMenuGUIKey), "Select to change"))
 	{
