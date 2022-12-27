@@ -14,7 +14,7 @@ namespace Cheat
 			static const std::string LogDir;				// Default: <SystemDriveLetter>:\Users\<username>\Documents\GTAV Cheat\Logs
 			static const std::string ThemesDir;				// Default: <SystemDriveLetter>:\Users\<username>\Documents\GTAV Cheat\Themes
 			static const std::string ConfigFile;			// Default: <SystemDriveLetter>:\Users\<username>\Documents\GTAV Cheat\Config.ini
-			static const std::string CusTelLocFile;			// Default: <SystemDriveLetter>:\Users\<username>\Documents\GTAV Cheat\CustomTeleportLocations.json
+			static const std::string CusTelLocFile;			// Default: <SystemDriveLetter>:\Users\<username>\Documents\GTAV Cheat\CustomTeleportLocations.ini
 			static const std::string HUDColorsFile;			// Default: <SystemDriveLetter>:\Users\<username>\Documents\GTAV Cheat\HUDColors.ini
 			static const std::string TextureFile;			// Default: <SystemDriveLetter>:\Users\<username>\Documents\GTAV Cheat\Textures.ytd
 		};
@@ -24,6 +24,7 @@ namespace Cheat
 			static bool write(std::string data, std::string FilePath, std::string Section, std::string Key);
 			static bool write_bool(bool State, std::string FilePath, std::string Section, std::string Key);
 			static bool remove_key(std::string FilePath, std::string Section, std::string Key);
+			static bool remove_section(std::string FilePath, std::string Section);
 			static std::string get(std::string FilePath, std::string Section, std::string Key);
 		};
 	}

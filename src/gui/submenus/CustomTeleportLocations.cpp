@@ -1,42 +1,40 @@
 #include "../../src/cheat/fibermain.h"
 #include "../../src/cheat/file_system.hpp"
+#include "../../src/game/features/custom_teleport_locations.hpp"
 
 using namespace Cheat;
-int CustomLocationsAmount;
+mINI::INIFile File(file_system::paths::CusTelLocFile);
+mINI::INIStructure StructData;
 void GUI::Submenus::CustomTeleportLocations()
 {
-	GUI::Title("Custom Locations");
-	if (std::filesystem::exists(file_system::paths::CusTelLocFile))
+	GUI::Title("Custom Teleport Locations");
+	File.read(StructData);
+	if (std::filesystem::exists(file_system::paths::CusTelLocFile) && StructData.size() > 0)
 	{
-		Json::Value JsonData;
-		try 
+		for (auto const& it : StructData)
 		{
-			if (CheatFunctions::GetJsonFromFile(file_system::paths::CusTelLocFile, JsonData))
+			Vector3 Coordinates;
+			try
 			{
-				for (auto it = JsonData.begin(); it != JsonData.end(); ++it)
-				{
-					CustomLocationsAmount++;
-					Vector3 Target;
-					Target.x = JsonData[it.key().asString()]["X"].asFloat();
-					Target.y = JsonData[it.key().asString()]["Y"].asFloat();
-					Target.z = JsonData[it.key().asString()]["Z"].asFloat();
-					GUI::Break(it.key().asString(), SELECTABLE_CENTER_TEXT);
-					if (GUI::Option("Teleport To", ""))
-					{
-						GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Target, false, false);
-					}
-					if (GUI::Option("Delete", ""))
-					{
-						CheatFunctions::DeleteCustomTeleportLocation(it.key().asString());
-					}
-				}
+				Coordinates.x = std::stof(it.second.get("x"));
+				Coordinates.y = std::stof(it.second.get("y"));
+				Coordinates.z = std::stof(it.second.get("z"));
+			}
+			catch (...) {}
+
+			GUI::Break(it.first, SELECTABLE_CENTER_TEXT);
+			if (GUI::Option("Teleport To", ""))
+			{
+				GameFunctions::TeleportToCoords(GameFunctions::PlayerPedID, Coordinates, false, false);
+			}
+			if (GUI::Option("Remove", ""))
+			{
+				CheatFeatures::custom_tel_locations::Remove(it.first);
 			}
 		}
-		catch (...){};
 	}
-	if (CustomLocationsAmount == 0)
+	else
 	{
 		GUI::Break("No custom locations have been saved");
 	}
-	CustomLocationsAmount = 0;
 }

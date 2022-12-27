@@ -33,8 +33,5 @@ namespace Cheat
 		int GetLatestCheatBuildNumber();
 		void RemoveChars(std::string &String, const char* CharactersToRemove);
 		std::string TextWrap(std::string String, int Location);
-		bool GetJsonFromFile(std::string Path, Json::Value& Object);
-		bool AddCustomTeleportLocation(std::string CustomTeleportLocationName);
-		bool DeleteCustomTeleportLocation(std::string CustomTeleportLocationName);
 	}
 }

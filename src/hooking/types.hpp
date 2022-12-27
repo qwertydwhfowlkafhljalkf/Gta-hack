@@ -1,4 +1,5 @@
 #pragma once
+#include <Windows.h>
 
 typedef DWORD Void;
 typedef DWORD Any;

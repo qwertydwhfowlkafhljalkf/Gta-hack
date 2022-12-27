@@ -28,16 +28,19 @@ DWORD WINAPI InitializationThread(LPVOID lpParam)
 		std::string OldConfigPath = OldDataPath + "\\Config.ini";
 		MoveFileExA(OldConfigPath.c_str(), file_system::paths::ConfigFile.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH | MOVEFILE_COPY_ALLOWED);
 
-		// Move CustomTeleportLocations.json
-		std::string OldCustomTeleportLocationsPath = OldDataPath + "\\CustomTeleportLocations.json";
-		MoveFileExA(OldCustomTeleportLocationsPath.c_str(), file_system::paths::CusTelLocFile.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH | MOVEFILE_COPY_ALLOWED);
-
 		// Move HUDColors.ini
 		std::string OldHUDColorsPath = OldDataPath + "\\HUDColors.ini";
 		MoveFileExA(OldHUDColorsPath.c_str(), file_system::paths::HUDColorsFile.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH | MOVEFILE_COPY_ALLOWED);
 
 		// Delete old data folder
 		std::filesystem::remove_all(OldDataPath);
+	}
+
+	// Data cleanup for Custom TP Location, version v2.2.2.0 and older
+	std::string OldCustomTPLocationFile = file_system::paths::DataDir + "\\CustomTeleportLocations.json";
+	if (std::filesystem::exists(OldCustomTPLocationFile))
+	{
+		std::filesystem::remove(OldCustomTPLocationFile);
 	}
 	
 	// Initalize Logger

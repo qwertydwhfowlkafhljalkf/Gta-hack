@@ -313,6 +313,9 @@
     <ClCompile Include="src\hooking\detour_hooks\is_dlc_present.cpp">
       <Filter>hooking\detour_hooks</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\features\custom_teleport_locations.cpp">
+      <Filter>game\features</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vendor\minhook\src\buffer.h">
@@ -397,6 +400,9 @@
       <Filter>cheat</Filter>
     </ClInclude>
     <ClInclude Include="src\resource.h" />
+    <ClInclude Include="src\game\features\custom_teleport_locations.hpp">
+      <Filter>game\features</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vendor">
@@ -428,6 +434,9 @@
     </Filter>
     <Filter Include="hooking\detour_hooks">
       <UniqueIdentifier>{edc3790f-676f-46c6-b44b-7f3df1fa9af6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game\features">
+      <UniqueIdentifier>{33c20d2e-1b62-4623-963c-8d22d358e0f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

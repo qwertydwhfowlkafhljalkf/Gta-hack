@@ -1,4 +1,5 @@
 #include "../../src/cheat/fibermain.h"
+#include "../../game/features/custom_teleport_locations.hpp"
 
 using namespace Cheat;
 float TeleportFoward = 1.f;
@@ -51,10 +52,10 @@ void GUI::Submenus::Teleport()
 	if (GUI::Option("Save Current Location", ""))
 	{
 		const char* NewThemeFileName;
-		if (GameFunctions::DisplayKeyboardAndReturnInput(20, "Enter Custom Teleport Location Name", NewThemeFileName))
+		if (GameFunctions::DisplayKeyboardAndReturnInput(25, "Enter Custom Teleport Location Name", NewThemeFileName))
 		{
-			CheatFunctions::AddCustomTeleportLocation(NewThemeFileName);
-			GameFunctions::MinimapNotification((char*)"Custom Location Saved");
+			if (CheatFeatures::custom_tel_locations::Add(NewThemeFileName, ENTITY::GET_ENTITY_COORDS(GameFunctions::PlayerPedID, false)))
+				GameFunctions::MinimapNotification((char*)"Custom Location Saved");
 		}
 	}
 	GUI::MenuOption("View Locations", Submenus::CustomTeleportLocations);

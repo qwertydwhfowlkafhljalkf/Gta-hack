@@ -90,6 +90,7 @@
     <ClInclude Include="src\cheat\Logger.hpp" />
     <ClInclude Include="src\cheat\version.hpp" />
     <ClInclude Include="src\game\cheatfeatures.hpp" />
+    <ClInclude Include="src\game\features\custom_teleport_locations.hpp" />
     <ClInclude Include="src\game\gamearrays.hpp" />
     <ClInclude Include="src\game\gamefunctions.hpp" />
     <ClInclude Include="src\hooking\crossmap.hpp" />
@@ -121,6 +122,7 @@
     <ClCompile Include="src\cheat\Logger.cpp" />
     <ClCompile Include="src\cheat\version.cpp" />
     <ClCompile Include="src\game\CheatFeatures.cpp" />
+    <ClCompile Include="src\game\features\custom_teleport_locations.cpp" />
     <ClCompile Include="src\game\GameArrays.cpp" />
     <ClCompile Include="src\game\GameFunctions.cpp" />
     <ClCompile Include="src\gui\menu_components\break.cpp" />

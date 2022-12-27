@@ -11,7 +11,7 @@ namespace Cheat
 		const std::string paths::LogDir = DataDir + "\\Logs";
 		const std::string paths::ThemesDir = DataDir + "\\Themes";
 		const std::string paths::ConfigFile = DataDir + "\\Config.ini";
-		const std::string paths::CusTelLocFile = DataDir + "\\CustomTeleportLocations.json";
+		const std::string paths::CusTelLocFile = DataDir + "\\CustomTeleportLocations.ini";
 		const std::string paths::HUDColorsFile = DataDir + "\\HUDColors.ini";
 		const std::string paths::TextureFile = DataDir + "\\Textures.ytd";
 		bool ini_file::write(std::string data, std::string FilePath, std::string Section, std::string Key)
@@ -51,6 +51,17 @@ namespace Cheat
 			if (StructData[Section].has(Key))
 				return StructData.get(Section).get(Key);
 			return std::string();
+		}
+		bool ini_file::remove_section(std::string FilePath, std::string Section)
+		{
+			mINI::INIFile File(FilePath);
+			mINI::INIStructure StructData;
+			File.read(StructData);
+			if (!StructData.has(Section))
+				return false;
+			StructData.remove(Section);
+			File.write(StructData);
+			return true;
 		}
 		bool write_file(std::string FilePath, std::string data)
 		{
